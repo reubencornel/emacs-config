@@ -20,7 +20,7 @@
 
 
 (defun make-backup-file-name(file) 
-  (concat "~/emacs/emacsAutosave/" (file-name-nondirectory file) "~")) 
+  (concat "~/trash/emacsAutosave/" (file-name-nondirectory file) "~")) 
 
 (defun match-paren (arg)
   "Go to the matching parenthesis if on parenthesis otherwise insert %."
