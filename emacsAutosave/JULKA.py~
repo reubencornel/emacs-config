@@ -1,9 +1,0 @@
-import sys
-
-def calc_apples(total, more):
-	x = (total - more) / 2
-	y = more + x
-	print x
-	print y
-
-for i in range(1,10):

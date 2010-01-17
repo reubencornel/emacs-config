@@ -1,3 +1,0 @@
-(defun heros-method(number)
-  (let ((epsilon .001))
-    (

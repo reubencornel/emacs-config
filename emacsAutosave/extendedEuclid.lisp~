@@ -1,4 +1,0 @@
-(defun extended-euclid(a b)
-  (cond ((= b 0) (list a 1 0))
-	(t (multiple-value-bind (dp xp yp) (extended-euclid a (rem a b))
-	     

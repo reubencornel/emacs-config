@@ -1,8 +1,0 @@
-Printf.printf "Hello out there\n%!";;
-
-let rec fibonacci n = if n < 3 then 1 else fibonacci (n-1) + fibonacci (n-2);;
-
-Printf.printf "Please enter an integer number:%!";;
-
-let n = read_int ()
-    in Printf.printf "The %d'th fibonacci number is %d\n" n (fibonacci n);;

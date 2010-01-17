@@ -1,9 +1,0 @@
-import java.lang.StringBuilder.*;
-
-public class test{
-    public static void main(String[] args){
-	StringBuilder obj = new StringBuilder("Test");
-	obj.deleteCharAt(1);
-	System.out.println(obj);
-    }
-}

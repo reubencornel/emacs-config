@@ -1,2 +1,0 @@
-(defn is-blank? [str]
-  (and (not 

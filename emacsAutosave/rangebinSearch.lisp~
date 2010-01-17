@@ -1,2 +1,0 @@
-(defun range-bin-search(range-start range-end)
-  

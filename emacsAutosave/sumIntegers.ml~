@@ -1,2 +1,0 @@
-let rec sum x = 
-  if (x == 0)
