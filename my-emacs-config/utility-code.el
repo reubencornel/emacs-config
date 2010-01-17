@@ -10,6 +10,14 @@
   (and (string-match "GNU Emacs" (version))
        (string-match "Carbon Version" (version))))
 
+(defun linux-p()
+  (string= system-type "gnu/linux"))
+
+(defun darwin-p()
+  (string= system-type "darwin"))
+
+(print system-type)
+
 
 (defun make-backup-file-name(file) 
   (concat "~/emacs/emacsAutosave/" (file-name-nondirectory file) "~")) 
