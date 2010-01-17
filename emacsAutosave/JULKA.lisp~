@@ -1,0 +1,13 @@
+(defun calculate-apples(total more)
+  (let* ((x (* 1.0 (/ (- total more) 2)))
+	 (y (* 1.0 (+ x more))))
+    (format t "~a~%~a~%" y x)))
+
+;(compile 'calculate-apples)
+(defun main()
+  (loop for i from 1 to 9
+     do (calculate-apples (read) (read))))
+
+(main)
+(quit )
+  

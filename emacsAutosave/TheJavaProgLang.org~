@@ -1,0 +1,221 @@
+#+SETUPFILE: ~/emacs/org-templates/level-0.org
+#+TITLE: The Java Programming Language - Ken Arnold, James Gosling, David Holmes
+
+* The Java programming language - 2005 edition
+* A quick tour
+** Getting started
+   - Ok I like this, the book starts of in a no nonsense way. It talks
+     about classes and objects.
+      - Classes: Are like blueprints from which more objects can be created
+      - Objects are instances of classes
+   - A class consists of
+      - Methods: Represent methods that can manipulate the state of the object.
+      - Fields: represent the state of the object
+   - The book then discusses the obligatory "Hello World" program.
+
+** Variables
+   - The section starts up with a dicussion of a program fibonacci
+     numbers. The idea being to demonstrate the concept of local
+     variables and instance variables
+   - Basic data types  of the language
+     - Byte  - 1 Byte
+     - Boolean - =True= or =False=
+     - Char  - 1 Byte
+     - Short - 2 Bytes
+     - Int   - 4 Bytes
+     - Long  - 8 Bytes
+     - Float - 4 Bytes
+     - Double - 8 Bytes
+   - Local variables can be declared with out being initialized but
+     then the compiler will complain with you try to use them with out
+     initializing them. *So in short, always initialize your local variables*
+   - A loop will always run till either the condition becomes false or
+     an exception occurs or it encounters a break statement.
+** Comments in code
+   - Single line comments //
+   - multiline comments /* */
+   - Java doc comments
+** Named constants
+   - Constants are defined using the keywords =static final=
+   - enums are a way to represent a set of associated values. They are
+     better than using a set of in
+** Unicdode
+   - Java code can be written in unicode too
+** Flow of control
+   - This section gives an overview of the most commonly used control
+     flow constructs like =if..else=, operators 
+** Classes and objects
+   - Discusses the syntax behind the class declaration
+*** Creating objects
+    - Objects are created using the new keyword
+    - Objects are allocated in the heap. When ever a variable appears
+      to point to an object it always points to its reference. A
+      variable containing a =null= reference does not point to anything.
+    - So typically when people tell you to pass an object to a
+      function what you actually are doing is passing a copy of the reference.
+    - Fields in classes are also known as local variables
+    - When =new= is invoked on an object the the constructor of the
+      class is invoked. If we invoke new with out any arguments the
+      default argumentless constructor is invoked.
+*** Static or Class fields
+    - *Class variables*: are variables that are shared between all
+      instances of objects.
+    - They are declared by naming a method =static=.
+*** The garbage collector
+    - The garbage collector runs in the background. When we stop
+      referencing a particular object, the garbage collector is able
+      to detect the object and free it off the heap.
+    - Although you *cannot* force the garbage collector to run at a
+      time of your preference.
+*** Methods and parameters
+    - Instance variables are generally not readily available for
+      manipulation. Instead this ability is provided by
+      methods. This forms the basis of *data encapsulation*.
+    - It discusses how a method can be called from an object.
+    -  It discusses the =return= statement. The type of the value of
+      the return statement has to match the declared return type of
+      the function.
+    - the =this= reference always points to the current reference.
+*** Static or class methods
+    - Methods that perform operations on the class itself are known as
+      =class methods= they can be declared using the =static= keyword.
+    - There are two reasons why this would be required
+      - To group functions providing that are related to the same
+        class but it doesn't make sense to instaniate the class. For
+        example the =Math= class has a bunch of functions that are
+        common but it does not make sense instantiating the objects.
+      - Static methods cannot access non static members of the class
+*** Arrays
+    - Arrays are a collection of variables of the same type.
+    - All array accesses in java are bound checked as a result they
+      throw =ArrayIndexOutOfBoundsException= in case of an invalid access.
+    - An empty array is not the same a null. An *empty array* is *one
+      with zero elements*. 
+*** String Objects
+    - String objects can be created directly by wraping the string up
+      in double quotes
+    - The string concatenation operator java is totally messed up
+      primarily because you can use =+= to concatenate string which is
+      somehow now right.
+    - String objects are read-only or immutable. So that means that
+      when you use a =+= 
+**** Formatting
+     - Can be done using the =Formatter= class
+     - The formatter class can insert the right separator because of
+       the %n 
+*** Extending a class
+    - Talks about inteheritance etc, nothing new if you know oo
+    - All classes extend the Object class
+    - There is basic type checking in the Java compiler, so we have to
+      be careful when assigning stuff around.
+*** Interfaces
+    - Essentially used to define objects that behave according to a
+    specified contract.
+    - Intefaces can define nested interfaces and classes too
+    - *All members of an interface are explicitly or implicitly
+      public*.
+      - This makes sense cause the whole idea of an inteface is to
+        provide some sort of contract to the outside world.
+    - An interface can be extended using the =extends= keyword,
+      usually an interface extends another inteface
+      /Does it make sense for an interface to extend a class?/
+      Actually no, come to think of it, an interface is not meant to
+      provide an implementation, but if it were to extend a class, the
+      class would have an implementation which screws up the whole thing.
+
+    
+
+*** Generic Types
+    - Generic types introduce type safety into code
+    - They also reduce code duplication
+    
+*** Exceptions
+    - If a method notices something out of place it can throw an exception
+    - We have checked exceptions that force you to check for those
+      exceptions explicitly.
+    - Exceptions are handled using the =try...catch...finally= blocks.
+    - You can have just the =try..finally= block with out any catch blocks
+    - A method *has* to declare if it is going to throw checked exceptions
+    - Unchecked exceptions can be thrown with out the need to declare them.
+    - All exceptions must subclass the Throwable class
+    - It makes sense to represent exceptions as objects as they can
+      have error dectection code in them.
+    - The reason for unchecked exceptions is that, they are exceptions
+      that cannot be recovered at runtime. For example if it were a
+      ArrayIndexOutOfBoundsException, that essentially means that we
+      goofed up some where in the code and the only way to fix it is
+      by changing the code.
+    - /So does that mean unchecked exceptions represent more severe
+      conditions that checked exceptions?/
+*** Annotations
+    - Annotations are qualifiers. They must be put on a line of their own
+    - Annotations are a way to provide meta data about the code of the
+      classes.
+    - They are a kind of special interface where their members are
+      called /elements/. They are declared using =@interface=
+      structure.
+*** Packages
+    - They essentially are meant to prevent issues caused by naming
+    - But I see them as a way to logically group classes that provide
+      a specific functionality. 
+    - Java packages are hierarchical. 
+    - When we refer to a particular package in the code, the compiler
+      /does not/ "include" it in the compiled file. It serves the
+      purpose of provding information to where the compiler has to
+      look for the referenced classes.
+    - Java packages can be referenced by using the =import= keyword.
+    - Packages are defined using the =package= keyword at the start of
+      the file.
+* Classes and Objects
+** Introduction
+   - Classes are one of the fundamental building blocks of the java language.
+   - They encapsulate methods that perform manipulations on data and
+     they also provide a mechanism to create obects from the class definitions.
+   - The contract of a method refers to both its signature and semantics
+** A simple class
+   - Shows how a simple class is defined, in this case they use an
+     example class that represents a celestial body.
+   - Classes can have
+     - Fields: These hold data values that represent the state of the
+       object and class
+     - Methods: These contain the executable code of the class.
+     - Nested classes and interfaces: 
+*** Class modifiers
+    - annotations
+    - public: the class is accessible by any other class
+    - abstract: is an incomplete class. the idea is that a class that
+      sub-classes this has to implement the incomplete methods left
+      out by this.
+    - final: These classes cannot be subclasses. *A class cannot be
+      both final and abstract*
+    - strict floating point: floating point arithmetic is evaluated strictly.
+    - You can have *only one public class per file*.
+** Fields
+   - Modifiers that can be applied to fields
+     - annotations
+     - access modifiers
+     - static
+     - final
+     - transient: related to serialization
+     - volatile: Related to syncronization
+   - A field *cannot be both final and volatile*
+   - Field initialization: We can set the initializer to anything as
+     long as it 
+     - Is of the same type as the field
+     - If a method is being called it does not throw a checked
+       exception
+   - If a field is not initalized it is usually set to a value that
+     essentially would evaluate to false in computer science specific
+     context.
+   - If a field is marked static it is shared by all objects of the class
+   - if a field is marked final it *cannot* be used with out
+     initializing it.
+
+** Access Control
+   - private: accessible within the class itself only
+   - package: accessible within the class and the package
+   - protected: Accessible within subclasses of the class and classes
+     within the same package
+   - public: accessible anywhere the class is accessible
+** Creating Objects
+   - 

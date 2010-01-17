@@ -1,0 +1,192 @@
+
+\documentclass[12pt]{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{portland}
+\usepackage{float}
+
+%TCIDATA{OutputFilter=LATEX.DLL}
+%TCIDATA{Created=Saturday, October 28, 2000 14:49:29}
+%TCIDATA{LastRevised=Thursday, March 08, 2001 14:01:23}
+%TCIDATA{<META NAME="ViewSettings" CONTENT="31">}
+%TCIDATA{<META NAME="GraphicsSave" CONTENT="32">}
+%TCIDATA{CSTFile=LaTeX Article (bright).cst}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+\newdimen\dummy
+\dummy=\oddsidemargin
+\addtolength{\dummy}{72pt}
+\marginparwidth=.5\dummy
+\marginparsep=.1\dummy
+\input{tcilatex}
+
+\begin{document}
+
+\title{Using the \texttt{portland} Package}
+\author{MacKichan Software, Inc. \\
+%EndAName
+Las Cruces, New Mexico}
+\maketitle
+
+\section{Using the \texttt{portland} Package}
+
+It is sometimes necessary to typeset tables in landscape orientation instead
+of the normal portrait orientation. This is not easily done, but can be
+accomodated using the \texttt{portland }package. The \texttt{portland }%
+package will change the page margins to the landscape orientation according
+to TeX commands that are added to a document. The landscape pages must then
+be typeset separately and landscape page orientation selected.
+
+This sample document contains two instances of the same table. Both tables
+are typeset in the landscape orientation. This is done by first adding the 
+\texttt{portland }package to the document (select \textsf{Typeset, Options
+and Packages, }the \textsf{Package Options }tab, choose \textsf{Add }\
+select \texttt{portland }from the list of packages and then \textsf{OK }to
+close the open dialogs). Next, insert a TeX field (\textsf{Insert, Field, Tex%
+}) that contains \texttt{\textbackslash landscape }where landscape
+orientation is to start and add another TeX field that contsins \texttt{%
+\textbackslash portrait }where the normal portrait orientation is to resume.
+
+The table that follows is an example of using the \texttt{portland }package
+commands.
+
+\landscape%
+%TCIMACRO{\TeXButton{B}{\begin{table}[tbp] \centering}}%
+%BeginExpansion
+\begin{table}[tbp] \centering%
+%EndExpansion
+\begin{tabular}{|l|l|l|l|l|l|l|}
+\hline
+References & Config. & Fluids & $p$, MPa & $p_{r}$ & $T$, K & $T_{r}$ \\ 
+\hline\hline
+Anderson, T. J. et al., 1994 & drops &  &  &  &  &  \\ \hline
+Birk, A. et al., 1995 & circ./ann. & $CH_{3}I$ in $N_{2}$ or in mixtues of & 
+6.48-13.79 & 0.88-1.87 & 293-623 & 0.55-1.18 \\ 
+& jets$^{e}$ & $H_{2}O$, $O_{2},H_{2},N_{2}$ and/or $Ar$ & 1.38-13.79 & 
+0.187-1.87 & 293-2225 & 0.55-4.21 \\ \hline
+Brustowsky, T. A. and & drops$^{e,co}$ & aniline in $N_{2}+O_{2}$ mixtures & 
+0.68-5.44? & 0.129-1.04 & 446-773 & 0.87-1.54 \\ 
+Natarajan, R., 1966 &  &  &  &  &  &  \\ \hline
+Chesnau, X. et al., 1994 & drops$^{e}$ & $LO_{x}$ in air, $N_{2}$ or $He$ & 
+0.1- 3 & 0.02-0.59 & 300 & 1.94 \\ \hline
+Chehroudi, B et al., 1999 & jets$^{e}$ & $N_{2},$in $N_{2},$ or $CO+N_{2}$ & 
+0.77-9.19 & 0.23-2.74 & 300 & 2.37 \\ 
+&  & $He$ in $N_{2},$ & 0.77-9.19 &  & 300 &  \\ 
+&  & $O_{2}$ in $N_{2}$ & 0.77-9.19 & 0.15-1.8 & 300 & 1.94 \\ \hline
+Faeth, G. M., et al., 1969 & drops$^{co}$ & $C_{10}H_{22}$ in $N_{2}+O_{2}$
+mixtures & 0.68-14.3? &  & n.a. & n.a. \\ \hline
+Kadota, T. and & drops$^{co}$ & $C_{7}H_{16},C_{10}H_{22},C_{12}H_{26},$ & 
+0.1-4.0? &  & n.a. & n.a. \\ 
+Hiroyasu, H., 1981 &  & $C_{6}H_{14},C_{8}H_{18}$ and light oil in air &  & 
+&  &  \\ \hline
+Mayer, W. and Tamura, H., 1995 & spray$^{e,co}$ & $LO_{x}$ in air, $H_{2}$ & 
+1-10 & 0.2-1.98 & 150-300 & 0.97-1.94 \\ \hline
+Natarajan, R. and Brustowsky, & drops$^{e,co}$ & $C_{5}H_{12}$ in $%
+O_{2}+(H_{2}$ or $He)$ & 0.46-4.39? & 1.26 & 588.5 & 1.34 \\ 
+T. A., 1970 &  &  &  &  &  &  \\ \hline
+Sankar S. V. et al., 1992 & sprays & water in air & up to 0.68 & 0.03 &  & 
+\\ \hline
+Savery, C. W., 1969 & drops$^{e}$ & water in air & 2-6? & 0.09-0.27 & 358-416
+&  \\ 
+&  & $Fr-13$ in air & 2.9-6.8? &  & 310-422 &  \\ 
+&  & $C_{7}H_{16}$ in air & 0.1-10? &  & 310-422 &  \\ \hline
+Vieille, B. et al., 1996 & drops$^{co}$ & $CH_{4}O,C_{2}H_{6}O,C_{6}H_{14},$
+& up to 7 & up to 1.15 & 300 & 0.53-0.59 \\ 
+&  & $C_{8}H_{18}$ in air &  &  &  &  \\ \hline
+\end{tabular}%
+\caption{Experimental conditions for the references discussed in this paper. The pressure and temperature refer to the chamber conditions.
+ Both $p_r$ and $T_r$ refer to the fluid in the drops, jet or spray.The superscript $co$ indicates a combustion whereas $e$ indicates an evaporation experiment.}%
+%TCIMACRO{\TeXButton{E}{\end{table}}}%
+%BeginExpansion
+\end{table}%
+%EndExpansion
+\portrait
+
+The first table is still too wide, even for a landscape orientation page.
+This can be changed by adding sizing commands that change the font sized
+used by the table. LaTeX provides a number of font sizing commands. In order
+from smallest to largest, the commands are: \texttt{\TEXTsymbol{\backslash}%
+tiny \TEXTsymbol{\backslash}scriptsize\ \TEXTsymbol{\backslash}footnotesize 
+\TEXTsymbol{\backslash}small \TEXTsymbol{\backslash}normalsize \TEXTsymbol{%
+\backslash}large \TEXTsymbol{\backslash}Large \TEXTsymbol{\backslash}LARGE 
+\TEXTsymbol{\backslash}huge \TEXTsymbol{\backslash}Huge.} The \texttt{%
+\TEXTsymbol{\backslash}normalsize }command selects the base font size used
+by the document. Since smaller sizes are wanted, one of the first four size
+commands should be used. Add the size command to the [B] TeX field that is
+used to start the table. In the second table the \texttt{\TEXTsymbol{%
+\backslash}footnotesize }command is used, but depending on the margins you
+want a smaller size command might also be used.
+
+\landscape%
+%TCIMACRO{\TeXButton{B}{\begin{table}[tbp] \centering \footnotesize}}%
+%BeginExpansion
+\begin{table}[tbp] \centering \footnotesize%
+%EndExpansion
+\begin{tabular}{|l|l|l|l|l|l|l|}
+\hline
+References & Config. & Fluids & $p$, MPa & $p_{r}$ & $T$, K & $T_{r}$ \\ 
+\hline\hline
+Anderson, T. J. et al., 1994 & drops &  &  &  &  &  \\ \hline
+Birk, A. et al., 1995 & circ./ann. & $CH_{3}I$ in $N_{2}$ or in mixtues of & 
+6.48-13.79 & 0.88-1.87 & 293-623 & 0.55-1.18 \\ 
+& jets$^{e}$ & $H_{2}O$, $O_{2},H_{2},N_{2}$ and/or $Ar$ & 1.38-13.79 & 
+0.187-1.87 & 293-2225 & 0.55-4.21 \\ \hline
+Brustowsky, T. A. and & drops$^{e,co}$ & aniline in $N_{2}+O_{2}$ mixtures & 
+0.68-5.44? & 0.129-1.04 & 446-773 & 0.87-1.54 \\ 
+Natarajan, R., 1966 &  &  &  &  &  &  \\ \hline
+Chesnau, X. et al., 1994 & drops$^{e}$ & $LO_{x}$ in air, $N_{2}$ or $He$ & 
+0.1- 3 & 0.02-0.59 & 300 & 1.94 \\ \hline
+Chehroudi, B et al., 1999 & jets$^{e}$ & $N_{2},$in $N_{2},$ or $CO+N_{2}$ & 
+0.77-9.19 & 0.23-2.74 & 300 & 2.37 \\ 
+&  & $He$ in $N_{2},$ & 0.77-9.19 &  & 300 &  \\ 
+&  & $O_{2}$ in $N_{2}$ & 0.77-9.19 & 0.15-1.8 & 300 & 1.94 \\ \hline
+Faeth, G. M., et al., 1969 & drops$^{co}$ & $C_{10}H_{22}$ in $N_{2}+O_{2}$
+mixtures & 0.68-14.3? &  & n.a. & n.a. \\ \hline
+Kadota, T. and & drops$^{co}$ & $C_{7}H_{16},C_{10}H_{22},C_{12}H_{26},$ & 
+0.1-4.0? &  & n.a. & n.a. \\ 
+Hiroyasu, H., 1981 &  & $C_{6}H_{14},C_{8}H_{18}$ and light oil in air &  & 
+&  &  \\ \hline
+Mayer, W. and Tamura, H., 1995 & spray$^{e,co}$ & $LO_{x}$ in air, $H_{2}$ & 
+1-10 & 0.2-1.98 & 150-300 & 0.97-1.94 \\ \hline
+Natarajan, R. and Brustowsky, & drops$^{e,co}$ & $C_{5}H_{12}$ in $%
+O_{2}+(H_{2}$ or $He)$ & 0.46-4.39? & 1.26 & 588.5 & 1.34 \\ 
+T. A., 1970 &  &  &  &  &  &  \\ \hline
+Sankar S. V. et al., 1992 & sprays & water in air & up to 0.68 & 0.03 &  & 
+\\ \hline
+Savery, C. W., 1969 & drops$^{e}$ & water in air & 2-6? & 0.09-0.27 & 358-416
+&  \\ 
+&  & $Fr-13$ in air & 2.9-6.8? &  & 310-422 &  \\ 
+&  & $C_{7}H_{16}$ in air & 0.1-10? &  & 310-422 &  \\ \hline
+Vieille, B. et al., 1996 & drops$^{co}$ & $CH_{4}O,C_{2}H_{6}O,C_{6}H_{14},$
+& up to 7 & up to 1.15 & 300 & 0.53-0.59 \\ 
+&  & $C_{8}H_{18}$ in air &  &  &  &  \\ \hline
+\end{tabular}
+\caption{Experimental conditions for the references discussed in this paper. The pressure and temperature refer to the chamber conditions.
+ Both $p_r$ and $T_r$ refer to the fluid in the drops, jet or spray.The superscript $co$ indicates a combustion whereas $e$ indicates an evaporation experiment.}%
+%TCIMACRO{\TeXButton{E}{\end{table}}}%
+%BeginExpansion
+\end{table}%
+%EndExpansion
+\portrait
+
+\end{document}

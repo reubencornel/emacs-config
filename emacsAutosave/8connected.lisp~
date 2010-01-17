@@ -1,0 +1,36 @@
+(setq test-image
+      (make-array '(8 8) :initial-contents
+		  '((0 1 0 0 0 0 0 0)
+		    (0 1 1 0 0 0 0 0)
+		    (0 0 0 1 0 0 0 0)
+		    (0 0 0 0 1 1 1 0)
+		    (0 0 0 0 1 0 1 0)
+		    (1 1 1 0 1 1 1 0)
+		    (0 1 1 0 0 0 0 0)
+		    (0 0 0 0 0 0 0 0))))
+
+
+
+(defun negate (a)
+  (let ((b (make-array '(8 8))))
+    (dotimes (i 8) 
+      (dotimes (j 8)
+	(setf (aref b i j) (- 0 (aref a i j)))))
+    b))
+
+(defun scan(image)
+  (let ((count 0))
+    (dotimes (i 8)
+      (dotimes (j 8)
+	(cond ((= (aref image i j) -1) 
+	       (incf count)
+	       (dfs image count i j)))))
+    image))
+
+(defun dfs(image count i j)
+  (cond ((= (aref image i j) -1)
+	 (setf (aref image i j) count))
+	(
+	       
+
+

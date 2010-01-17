@@ -1,0 +1,185 @@
+import java.io.*;
+import java.lang.*;
+import java.util.Formatter;
+import java.math.BigInteger;
+import java.util.Arrays;
+
+interface Expression{
+    String getFormattedOutput(Formatter fp);
+}
+
+class Utils{
+    static String genSeperator(int length){
+	char []charArr = new char[length];
+	Arrays.fill(charArr, 0, length, '-');
+	return new String(charArr);
+    }
+    
+    static int max(int a, int b){
+	if (a > b)
+	    return a;
+	return b;
+    }
+
+    static int max(int exp1Len, int exp2Len, int opLen){
+	int max = 0;
+	if(exp1Len > exp2Len)
+	    max = exp1Len;
+	else
+	    max = exp2Len;
+	if(max < opLen)
+	    max = opLen;
+	return max;
+    }
+}
+
+
+enum Operator {SUM, DIFFERENCE}
+
+class SumDifferenceFormatter implements Expression{
+
+    String exp1;
+    String exp2;
+    String result;
+    int exp1Len;
+    int exp2Len;
+    int resultLen;
+    String operator;
+
+    public SumDifferenceFormatter(String exp1, int exp1Len, String exp2, int exp2Len, Operator op){
+	this.exp1 = exp1;
+	this.exp2 = exp2;
+	BigInteger intExp1 = new BigInteger(exp1);
+	if (op == Operator.SUM)
+	    this.result = intExp1.add(new BigInteger(exp2)).toString(10);
+	else
+	    this.result = intExp1.subtract(new BigInteger(exp2)).toString(10);
+		
+	this.exp1Len = exp1Len+1;
+	this.exp2Len = exp2Len+1;
+	this.resultLen = result.length();
+	if (op == Operator.SUM)
+	    this.operator = "+";
+	else
+	    this.operator = "-";
+    }
+
+    public String getFormattedOutput(Formatter fp){
+	int max = Utils.max(exp1Len, exp2Len+1, resultLen);
+	int seperatorMax = Utils.max(exp2Len+1, resultLen);
+	String sMax = Integer.toString(max);
+	String formatStr = null;
+	if (max == exp2Len+1){
+	    formatStr = "%"+sMax+"s\n%s%s\n%s\n%"+sMax+"s\n";
+	}else{
+	    formatStr = "%"+sMax+"s\n%"+Integer.toString(max-exp2Len)+"s%s\n%"+sMax+"s\n%"+sMax+"s\n";
+	}
+
+	fp.format(formatStr, exp1, operator, exp2, Utils.genSeperator(seperatorMax),result);
+	return null;
+    }
+}
+
+class Product implements Expression{
+    String exp1;
+    String exp2;
+    String result;
+    int exp1Len;
+    int exp2Len;
+    int resultLen;
+    BigInteger intExp1;
+
+    public Product(String exp1, int exp1Len, String exp2, int exp2Len){
+	intExp1 = new BigInteger(exp1);
+	result = intExp1.multiply(new BigInteger(exp2)).toString();
+	this.exp1 = exp1;
+	this.exp2 = exp2;
+
+	this.exp1Len = exp1Len+1;
+	this.exp2Len = exp2Len+1;
+	this.resultLen = result.length();
+    }
+    public String getFormattedOutput(Formatter fp){
+	int max = Utils.max(exp1Len, exp2Len+1, resultLen);
+	String strMax = Integer.toString(max);
+	if(exp2Len < 2){
+	    String fpOutput = "%"+strMax+"s\n%"+Integer.toString(max-exp2Len)+"s%s\n%"+strMax+"s\n%"+strMax+"s\n";
+	    //	    System.out.println(fpOutput);
+	    fp.format(fpOutput, exp1, "*", exp2, Utils.genSeperator(max-1), result);
+	} else {
+	    int separator1Len = exp2Len+1;
+	    //	    if (exp1Len > exp2Len + 1)
+	    //		separator1Len = exp1Len;
+	    
+	    fp.format("%"+strMax+"s\n", exp1);
+	    fp.format("%"+strMax+"s\n", "*"+ exp2);
+	    fp.format("%"+strMax+"s\n", Utils.genSeperator(separator1Len));
+	    
+	    int i = max;
+	    for(int j = exp2Len-1; j > -1; j--){
+		fp.format("%"+Integer.toString(i)+"s\n", intExp1.multiply(new BigInteger(exp2.substring(j,j+1))));
+		i--;
+	    }
+	    
+	    fp.format("%s\n", Utils.genSeperator(max));
+	    fp.format("%"+strMax+"s\n", result);
+	}
+	return null;
+    }
+}
+
+class ExpressionFactory{
+    static Expression getExpression(String expression) throws InvalidExpressionException{
+	int val = 0;
+	int exprLength = expression.length();
+	//	System.out.println(expression);
+	if((val = expression.indexOf('+')) > 0){
+	    return new SumDifferenceFormatter(expression.substring(0, val), val-1,
+					      expression.substring(val+1, exprLength ), (exprLength - (val + 2)),
+					      Operator.SUM);
+	} else if ((val = expression.indexOf('-')) > 0){
+	    return new SumDifferenceFormatter(expression.substring(0, val), val-1,
+					      expression.substring(val+1, exprLength), (exprLength - (val + 2)),
+					      Operator.DIFFERENCE);
+	} else if((val = expression.indexOf('*')) > 0) {
+	    return new Product(expression.substring(0, val), val-1,
+			       expression.substring(val+1, exprLength),(exprLength - (val + 2)));
+	}else{
+	    throw new InvalidExpressionException();
+	}
+    }
+}
+
+class InvalidExpressionException extends Exception {
+}
+
+
+public class SimpleArithmetics {
+    public static void main(String[] args){
+	PrintWriter pw = new PrintWriter(System.out);
+	BufferedReader rd = new BufferedReader(new InputStreamReader(System.in));
+	Formatter fp = new Formatter(pw);
+	String input = null;
+	
+	
+	try {
+	    int noOfLines = Integer.valueOf(rd.readLine());
+		
+	    while(noOfLines > 0){
+		input = rd.readLine();
+		if (input == null)
+		    break;
+		Expression exp = ExpressionFactory.getExpression(input);
+		exp.getFormattedOutput(fp);
+		fp.format("\n");
+		noOfLines--;
+	    }
+	} catch (IOException e){
+	} catch (InvalidExpressionException e){
+	    System.out.println("Invalid Expression");
+	    System.out.println(input);
+	}
+	pw.flush();
+	System.exit(0);
+    }
+}

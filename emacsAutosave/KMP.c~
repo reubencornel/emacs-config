@@ -1,0 +1,36 @@
+#include<assert.h>
+#include<string.h>
+#include<stdio.h>
+#include<stdlib.h>
+
+#define ASSERTS
+
+
+int main(){
+  char str[] = "abcabcacab";
+  int next[10];
+  int i = 0;
+
+  
+  int j = 0;
+  int t = -1;
+  
+  for(i = 0; i < 10;i++)
+    next[i] = 0;
+
+  next[0] = 0;
+  while(j < strlen(str)){
+    while (t > 0 && str[j] != str[t])
+     x` t = next[t];
+    t++;
+    j++;
+    if(str[j] == str[t])
+      next[j] = next[t];
+    else
+      next[j] = t;
+  }
+
+  for(i = 0; i < 10; i++){
+    printf("%d\n", next[i]);
+  }
+}

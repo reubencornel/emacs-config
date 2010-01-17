@@ -1,0 +1,6 @@
+#+AUTHOR:    Reuben Francis Cornel
+#+LANGUAGE:  en
+#+OPTIONS:   H:3 num:t toc:t \n:nil @:t ::t |:t ^:t *:t TeX:t LaTeX:nil
+#+STYLE: <link rel="stylesheet" type="text/css" href="orgstyle.css" />
+#+INFOJS_OPT: view:toc toc:t path:'org-info.js'
+

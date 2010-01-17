@@ -1,0 +1,6 @@
+#include <stdio.h>
+
+void main() {
+	int a=-1;
+	printf("a=%d hex: %x a>>1=%d hex: %x\n", a, a, a>>1, a>>1);
+}

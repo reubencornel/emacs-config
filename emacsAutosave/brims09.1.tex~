@@ -1,0 +1,497 @@
+% NCSU thesis template updated by Eric Adles to include required
+% changes as per thesis editor March 27, 2007.  Changes I made
+% will be prefaced with my initials: EA
+
+% NCSU thesis template updated by Jason Brinkley to include required
+% changes as per thesis editor August 2008.  Changes I made
+% will be prefaced with my initials: JSB
+
+%Other changes and suggestions made by Terry Byron - NCSU Statistics
+
+\documentclass[twocolumn]{article}
+
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{fancyvrb}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{latexsym}
+\usepackage{bm}
+\usepackage{amsmath}
+\usepackage{multirow}
+\usepackage{rotating}
+\usepackage{pdflscape}
+\usepackage{mathrsfs}
+\usepackage{appendix}
+\usepackage{longtable}
+
+\marginparsep     0.17in
+\marginparwidth   0.83in
+\topmargin       -0.35in
+\headheight       0.25in
+\headsep          0.10in
+\footskip         0.35in
+\textheight       9.00in
+\textwidth        6.50in
+\columnsep        0.50in
+\columnseprule    0.00in
+
+\newcommand{\ignore}[1]{}
+
+\setlength\topskip{24pt}
+
+% \pagestyle{plain} %{empty} to get Appendix without page number
+
+\newcommand{\nullset}[0]{\varnothing}
+\newcommand{\ctt}[0]{\tt}
+
+\def\coglaborate/{{CogLaborate}}
+\def\biobike/{{BioBike}}
+
+%======================================================================
+
+\title{Collaboration and Modeling Support in CogLaborate}
+\author{Reuben Cornel, Robert St.~Amant, Jeff Shrager, J. P. Massar \\
+{\em Author ordering and affiliations TBD}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+  This paper describes the \coglaborate/ system, a collaborative,
+  tool-based environment for the ACT-R cognitive modeling community.
+  \coglaborate/ is based on BioBike, which supports collaboration
+  between biologists and computer scientists.  This paper discusses
+  how comparable benefits can be brought to cognitive modelers, and
+  presents the design of \coglaborate/, its frame-based representation
+  for models, and a proof of concept in the form of an ACT-R module
+  developed within the environment.
+\end{abstract}
+
+{%======================================================================
+
+\section{Introduction}
+
+Research on cognitive modeling has driven the formation of active,
+thriving communities.  With ACT-R, for example, beyond the core group
+of researchers at Carnegie Mellon University, we have annual
+workshops, a summer school to introduce new researchers to the
+framework, a Web site, an active mailing list, and any number of small
+interdisciplinary groups of collaborators distributed throughout the
+world.  The result has been a continuous stream of refinements and
+extensions to ACT-R, both the theory and the software architecture, as
+well as models, experiments, development tools, and the like.
+
+In important ways the ACT-R research community is not unique.
+Consider a vision of online communities that dates back to
+1968~\cite{licklider1968computer}:
+\begin{quotation}
+  \ldots geographically separated members, sometimes grouped in small
+  clusters and sometimes working individually.  They will be
+  communities not of common location, but of common interest.  In each
+  field, the overall community of interest will be large enough to
+  support a comprehensive system of field-oriented programs and data.
+\end{quotation}
+
+A subfield of human-computer interaction, computer-supported
+collaborative work (CSCW), has produced a variety of concepts and
+tools based on this vision to help support collaboration and to foster
+online communities.  The research described in this paper is an
+attempt to build a collaborative online environment for cognitive
+modelers, to explore the potential benefits of a CSCW approach to the
+field.  We have developed a system called \coglaborate/ for this
+purpose.
+
+In contrast to related research on extending the scope of modeling
+efforts beyond individual researchers and small teams
+(e.g. \cite{gluck2007combinatorics}), the focus of \coglaborate/ is on
+model development rather than model execution.  \coglaborate/
+currently runs in prototype form on the Cyano server at the Carnegie
+Institution of Washington in Washington DC and client machines at
+North Carolina State University.
+%
+We have built \coglaborate/ to support the following:
+
+\begin{itemize}
+\item {\em Sharing of running models and architecture extensions.}
+  Some extensions to ACT-R are more difficult to set up than others.
+  In \coglaborate/, such extensions can be integrated, tested, and
+  used by modeling researchers---original developers as well as
+  others---who connect to the server from remote locations.  Further,
+  in contrast to a static repository of models, \coglaborate/ can
+  maintain running models.
+
+\item {\em Sharing of software and hardware resources} to support the
+  development and dissemination of models and modeling software.
+  Although \coglaborate/ does not approach the model execution
+  capabilities of other systems (e.g. \cite{gluck2007combinatorics}),
+  it outmatches performance of local machines in our experience, even
+  given network communication overhead.
+
+\item {\em Support for model analysis tools.}  One of the most
+  promising aspects of the \coglaborate/ project is the potential to
+  support analysis of the structure and content of models.
+  \coglaborate/ translates ACT-R models into a frame-based
+  representation~\cite{Minsky1974a}, to support search and browsing by
+  modelers.  This means that analysis procedures (currently under
+  development) need not parse the code for ACT-R models directly;
+  instead they can rely on slightly more abstract and uniformly
+  structured representation.
+
+\end{itemize}
+
+\coglaborate/ is a new system, and we have not yet evaluated how and
+whether collaboration can benefit cognitive modeling research.  Even
+in its prototype state, however, the promise of \coglaborate/ can be
+seen in two ways.  First, we believe that a frame-based representation
+offers significant advantages for sharing and analyzing models, in
+comparison with their storage as modeling code.  {\bf More here on a
+  bit of new coding by Reuben, I hope.}  Second, we have exercised
+\coglaborate/ by building a specialized ACT-R module that relies on an
+existing extension to ACT-R (WNLexical) and a model to test the
+module.  This experience exposed some of the procedural difficulties
+in carrying out such a task, and we believe that the result---a new
+model running on a new ACT-R extension that requires no more effort to
+install than logging into a remote server---demonstrates the value of
+our approach.
+
+}
+
+{%======================================================================
+
+\section{BioBike}
+
+\coglaborate/ is built on the Biobike platform.  BioBike is an
+instantiation of KnowOS~\cite{oai:CiteSeerXPSU:10.1.1.75.7132}, a
+refinement of the concept of the operating system.  Operating systems
+provide useful abstractions for users to work with the elements of a
+system.  Files, for example, abstract away the details of how data is
+stored on hardware, and an OS provides functions for creating,
+managing, and manipulating data using this abstraction.  The KnowOS
+vision extends this analogy to the realm of knowledge.  An
+implementation of the KnowOS consists of the following
+layers~\cite{oai:CiteSeerXPSU:10.1.1.75.7132}:
+
+\begin{itemize}
+\item A knowledge base, in a frame representation.
+\item An extensible programming language with appropriate abstractions
+  for users to work with the system.
+\item A interface to the programming language and to other KnowOS
+  services.
+\end{itemize}
+
+BioBike (originally known as BioLingua) provides biologists with the
+ability to perform computational biology operations on large data sets
+using a simple language~\cite{journals/bioinformatics/MassarTES05}.
+BioBike ties a number of knowledge bases together transparently, using
+frames to represent organisms.  As a KnowOS, it provides features
+customized for molecular biologists.  These include
+
+\begin{itemize}
+\item A common framework to access genomic, metabolic, and
+  experimental data.
+\item A general-purpose programming language (Lisp) customized for
+  transparent access to the underlying knowledge bases.
+\item A highly interactive environment where code can be evaluated and
+  its results displayed immediately.
+\item A number of general-purpose tools that help in analyzing interactions.
+\item A wiki through which scientists can collaborate and announce results.
+\end{itemize}
+
+BioBike provides biologists, in principle, with an environment in
+which they interact with the computer in the same terms as they would
+interact with their peers; with a uniform framework for accessing
+knowledge from a number of different knowledge bases; and with a
+common work area where data and results can be shared and external
+tools can be integrated.  BioBike has been in place over a number
+years and has demonstrated benefits to collaborating teams of
+biologists and computer scientists during that
+time~\cite{journals/bioinformatics/MassarTES05}.
+
+Figure~\ref{SysOverview} provides a high-level overview of
+\coglaborate/, implemented on the BioBike chassis.
+%
+The ACT-R component in \coglaborate/ replaces biology-specific
+functionality in BioBike; the modular structure of BioBike made this
+feasible.
+%
+\coglaborate/ added about 1,000 lines of new code to the existing code
+bases of ACT-R and BioBike.
+
+{\begin{figure}[t]
+  \centering
+  \includegraphics[width=3in]{SystemOverview}
+  \caption{System Design}
+  \label{SysOverview}
+\end{figure}}
+
+
+}
+
+{%======================================================================
+
+\section{Model representation}
+
+ACT-R models are essentially Lisp data structures.  One plausible
+representation of models in \coglaborate/ is simply the Lisp code that
+defines models at the top level.  This approach has a few
+disadvantages, however.  A direct representation exposes search,
+browsing, and analysis tools to the syntax and structure of models, in
+some cases requiring parsing at the textual level.  (For example,
+consider searching for productions that access but do not modify slots
+in the goal buffer, represented as \texttt{=goal>} in a model.)  Other
+software engineering issues arise as well in the context of
+collaboration, such as the difficulty of managing meta-data associated
+with models and knowledge structures (e.g., for version control).
+
+Instead, \coglaborate/ adopts a frame representation.  Frames were
+introduced by Marvin Minsky~\cite{Minsky1974a} in 1975, in one the
+seminal papers in the area of knowledge representation.  Frames are
+structures that can represent objects, situations, and concepts.
+Frames are arranged in a parent-child hierarchical taxonomy, with
+child frames representing specializations of their
+parents~\cite{karp-93}.  A frame contains slots that define the
+properties of the object being represented by the frame.  Slots can
+also represent relationships between two frames.
+
+\coglaborate/ provides translation between the Lisp source code of
+models and a frame representation, in both directions.  Descriptions
+of the frames for representing models are given below; their structure
+is shown in Figure~\ref{fig:frames}.
+
+{\begin{figure}[t]
+  \centering
+  \includegraphics[width=3in]{FrameDiagram}
+  \caption{Frame representation for ACT-R models}
+  \label{fig:frames}
+\end{figure}}
+
+
+\begin{itemize}
+\item \emph{The model frame} represents an ACT-R model.  It consists
+  of a code slot that holds all the code that is required by the
+  model, including code for initialization of the model, chunk
+  definitions for the model, and miscellaneous utility functions that
+  may be required by the model.  It also has a slot for productions.
+
+\item \emph{Production frames} contain a conditions slot, which
+  defines the conditions that are required for the condition to fire,
+  and an actions slot, which lists all the actions that will be
+  executed if that production is fired.
+
+\item \emph{Buffer test frames} capture the tests that are part of
+  conditions in a production.  Each buffer test frame represents one
+  such test.  A buffer test frame has a slot to represent individual
+  clauses within the test.
+
+\item \emph{Conditions frames} represent an individual clause
+  consisting of a test field and a value field for comparison of a
+  buffer slot and a value.  The value field can also hold variables,
+  as is common in ACT-R productions.
+
+\item \emph{Buffer actions frames} hold actions that can modify,
+  clear, or retrieve a chunk in a buffer.
+
+\item \emph{Action frames} represent individual clauses for
+  modifications to a buffer.
+\end{itemize}
+
+The AllegroServe Web Application server acts as a front end for
+interaction with \coglaborate/.  When a model is evaluated in
+\coglaborate/, it is compiled by the ACT-R running on the server.
+\coglaborate/ code is plugged into the ACT-R compiler to allow access
+to the internal data structures generated as the model is parsed.
+This model representation is then converted into frames as described
+above.
+
+}
+
+{%======================================================================
+
+\section{Using \coglaborate/}
+
+Briefly, cognitive modelers using \coglaborate/ for ACT-R development
+rely on a Lisp listener in a Web browser, where code can be evaluated;
+a structured representation for models in frames; and mechanisms for
+sharing and examining models at different levels of detail.
+%
+The local development of cognitive models is not necessarily
+eliminated in the workflow of using \coglaborate/: Modelers can use
+the graphical user interface to ACT-R or their preferred software
+development environment to construct an initial model.  Alternatively,
+models can be built entirely from scratch in \coglaborate/, though the
+Web interface does not provide as rich a development environment.
+
+The user interacts with the \coglaborate/ system through a Web
+interface.  On logging in, users are put into the ACT-R package.
+Models are submitted through the Web interface in their source code
+representation, with the only difference being the requirement that
+code be wrapped in a \texttt{with-user-meta-process} form.  This macro
+creates a new meta-process for each user and allows models to be run
+without conflict with other users of the system, who may be running
+their own models at the same time.
+
+Let's consider a more detailed scenario.  A user creates a model and
+evaluates it in \coglaborate/.  
+%
+This is done by entering a model into the Lisp listener displayed in
+the Web interface, as shown in Figure~\ref{UserCreatesModel}.  The
+Lisp listener has two text boxes.  The larger text area is used to
+enter complete models; the smaller text box to enter individual
+commands.
+
+{\begin{figure*}[t]
+  \centering
+  \includegraphics[width=90mm]{UserCreatesModel}
+  \caption{A user creates and evaluates a model}
+  \label{UserCreatesModel}
+\end{figure*}}
+
+{\begin{figure*}[t]
+  \centering
+  \includegraphics[width=6in]{ConvertFrameToImage}
+  \caption{A user displays the source of a model}
+  \label{ConvertFrameToImage}
+\end{figure*}}
+
+Once a model is entered into \coglaborate/, it can be accessed (via
+its name) by any other user of the system, through a simple search.
+%
+The model resulting from the search is displayed in its frame
+representation.  The model can be navigated by active links
+corresponding to the slots of the current frame, whether at the level
+of models, productions, or lower in the frame hierarchy.
+%
+To see the source code of the model, users can click the
+Frame$\rightarrow$Listener link on the index page of the model.  The
+result is shown in Figure \ref{ConvertFrameToImage}.
+
+% Figure \ref{NavigateFrame} shows the frame representation of what the
+% model that the user was searching for.  Once the user finds the model
+% that he was searching for, he can navigate the model by clicking on
+% the links inside the frame table.
+
+% Figure \ref{NavigatingAProduction} shows us the frame representation
+% of a production; this is obtained by clicking any link in the slot
+% value column of the model frame for the slot name ``productions''.  The
+% user can investigate a production further by clicking on the links in
+% the slot value section.  
+
+}
+
+{%======================================================================
+
+\section{A proof of concept}
+
+To evaluate the capabilities of \coglaborate/ we built a simple,
+medium-scale model.  The point of this exercise is twofold.
+First, it shows that the system is capable of supporting a non-trivial
+cognitive modeling effort.  Second, it demonstrates the level of
+maturity of the system.  This section discusses the problem
+description, the approach we took to solving the problem, and what we
+learned through the exercise.
+
+In a crossword puzzle, words or phrases are positioned in an
+interlocking grid, horizontally and vertically.  The words are to be
+guessed by a set of clues that define the words or phrases.  Our
+proof-of-concept problem is a crossword puzzle where the clues and the
+solutions are synonyms of each other.
+
+This problem is appropriate for the following reasons: it demonstrates
+that the system is ready to solve practical problems; it shows that
+the system can be used to write and test an ACT-R module, with the
+environment acting as a sandbox; finally, it places considerable
+demands on the hardware of the computer, in terms of memory and CPU.
+
+The crosswords are generated by a new {\em Crossword} module for
+ACT-R.  
+%
+This module relies on information from the WNLexical
+module~\cite{emond2006wn}, which enables ACT-R to make use of the
+WordNet lexical database.  WordNet is~\cite{journals/cacm/Miller95}
+``an online lexical database designed for use under program control.
+English nouns, verbs, adjectives, and adverbs are organized into sets
+of synonyms [synsets], each representing a lexicalized concept.
+Semantic relations link the synonym sets.''
+
+Each clue is represented as a list that consists of the starting
+co-ordinates of the word, the direction (across or down), the clue
+string, a location to put in a solution, and the actual solution.
+These data structures are manipulated by the crossword
+module, which translates clues into chunks.  It can also set words in
+specific locations, verify that the crossword solution under
+construction respects the constraints of the puzzle, and return
+results from queries about the parameters of a specific clue.  The
+module maintains the current state of the crossword solution, with
+some entries filled in and others empty.
+
+When the model is run it defines three chunk types, one for clues and
+two for maintenance of the state of the crossword problem as it is
+being solved.
+%
+The basic problem-solving strategy the model follows is to check
+memory for clues that have not been added to the puzzle
+representation.  If one is found, it is used to retrieve all the
+synsets of the clue word via the \texttt{wn-lexical} buffer.  (A
+single word may have more than one synset.)  For every synset found a
+chunk is created with the \texttt{imaginal} buffer.  If the word is
+not found, this results in an error.  For each synset chunk, its
+corresponding words are tested against the constraints of the puzzle
+by the crossword module, which also marks the clue as being solved.
+This process repeats until all the clues have been solved or have been
+marked as being unsolvable.
+
+This is not intended to be a cognitively plausible model of crossword
+puzzle solving, but rather to exercise \coglaborate/.  The model
+consists of sixteen productions with a total of about four hundred and
+sixty lines of code, which can be fairly described as medium-sized.
+
+}
+
+{%======================================================================
+
+\section{Discussion}
+
+
+{\em To be refined:
+
+We can demonstrate the capability of resource sharing.  Running the
+model on my personal computer brought my computer to a crawl because
+the WordNet module loads all the chunks into memory, whereas the model
+runs fine when executed on the server.
+
+We have demonstrated that we can share software resources.  As a
+result we gain a saving in the amount of effort spent.  For example,
+it took me a while to figure out that there was a bug in the version
+of the WN-Lexical module, and I had to upgrade the module.  Now
+consider the amount of effort wasted by numerous other researchers
+working with the same module.  With a system like \coglaborate/ we would
+require to expend that amount of effort only once and the entire
+community would be benefited.
+
+Although the model did not make use of any third party tools the
+system has a regular expression library and a package management,
+Another System Definition Facility(ASDF), system integrated into it.
+
+}
+
+}
+
+%======================================================================
+
+\bibliographystyle{/Users/stamant/Writing/bibtex/abbrev}
+\bibliography{brims09}
+
+\end{document}
+
+%======================================================================
+% TBD
+
+Preece, J., Rogers, Y., & Sharp, H.  (2002).  Interaction Design: Beyond Human-Computer Interaction.
+
+``shared external representations'' for coordination
+
+%======================================================================
+% EOF

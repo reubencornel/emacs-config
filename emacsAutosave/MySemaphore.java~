@@ -1,0 +1,74 @@
+public class MySemaphore{
+    int size = 0;
+    public MySemaphore(int n){
+	size = n;
+    }
+
+    public MySemaphore(){
+	size = 0;
+    }
+
+    public void semWait(){
+	synchronized(this){
+	    try{
+	    while(size < 0){
+		wait();
+	    }
+	    }catch(InterruptedException e){
+	    }
+	    System.out.println("Wait" + size);
+	    size--;
+	}
+    }   
+    public void semSignal(){
+	size++;
+	synchronized(this){
+	    notifyAll();
+	}
+	System.out.println("Signal");
+    }
+
+    public static void main(String []args){
+	final MySemaphore obj = new MySemaphore(1);
+	Thread tobj = new Thread(){
+		public void run(){
+		    try{
+			obj.semWait();
+			sleep(1000);
+			obj.semSignal();
+			
+		    }catch(InterruptedException e){
+		    }
+
+		}
+	    };
+	Thread tobj2 = new Thread(){
+		public void run(){
+		    try{
+			obj.semWait();
+			sleep(2000);
+			obj.semSignal();
+			
+		    }catch(InterruptedException e){
+		    }
+
+		}
+	    };
+	Thread tobj3 = new Thread(){
+		public void run(){
+		    try{
+			obj.semWait();
+			sleep(3000);
+			obj.semSignal();
+			
+		    }catch(InterruptedException e){
+		    }
+
+		}
+	    };
+
+	tobj3.start();
+	tobj2.start();
+	tobj.start();
+    }
+}

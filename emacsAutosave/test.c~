@@ -1,0 +1,49 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+int main(){
+  int m, n,ch;
+  int **intArray;
+  int count = 0;
+
+  int i, j;
+ 
+
+  FILE *fp = fopen("test1.txt", "r");
+ 
+  if (fp == NULL){
+    printf("File Pointer\n");
+    exit(1);
+  }
+
+  fscanf(fp, "%d", &m);
+  fscanf(fp, "%d", &n);
+  
+  printf("Count\n");
+  printf("%d %d\n", m, n);
+
+  printf("Array\n");
+
+  intArray = (int **) malloc (sizeof(int *) * m);
+
+  count = 0;
+  while(!feof(fp)) { 
+    intArray[count] = (int *)malloc (sizeof(int) * n);
+    for(j = 0; j < n && !feof(fp); j++){
+      fscanf(fp, "%d", &intArray[count][j]);
+      printf("%d ", intArray[count][j]);
+    }
+    printf("\n");
+    count++;
+  }
+
+  printf("Array--\n");
+  
+  for(i = 0; i < m;i++){
+    for(j = 0; j < n; j++) { 
+      printf("%d ", intArray[i][j]);
+    }
+    printf("\n");
+  }
+
+}

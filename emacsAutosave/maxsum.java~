@@ -1,0 +1,7 @@
+public class maxsum{
+    public static void main(String[] args){
+	int arr[] = {-2,-5,0,1,4,2};
+
+	
+    }
+}

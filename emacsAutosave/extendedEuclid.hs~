@@ -1,0 +1,3 @@
+extendedEuclid :: int -> int -> (int, int, int)
+
+extendedEuclid x 0 = (x, 1, 0)

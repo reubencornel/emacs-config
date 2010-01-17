@@ -1,0 +1,30 @@
+
+(require 'org-publish)
+
+(setq org-publish-project-alist
+      '(
+
+	("org-notes"
+	 :base-directory "/Users/reuben/Everything/EverythingEmacs/orgTutorial/org/"
+	 :base-extension "org"
+	 :publishing-directory "/Users/reuben/Everything/EverythingEmacs/orgTutorial/public_html/"
+	 :recursive t
+	 :style     "<link rel=\"stylesheet\" type=\"text/css\" href=\"stylesheet.css\" />"	 
+	 :publishing-function org-publish-org-to-html
+	 :headline-levels 4             ; Just the default for this project.
+	 :auto-preamble t
+	 )
+	
+	("org-css"
+	 :base-directory "/Users/reuben/Everything/EverythingEmacs/orgTutorial/org/css"
+	 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+	 :publishing-directory "/Users/reuben/Everything/EverythingEmacs/orgTutorial/public_html/"
+	 :recursive t
+	 :publishing-function org-publish-attachment
+	 )
+
+	("org" :components ("org-notes" "org-css"))
+	;; ... add all the components here (see below)...
+	
+
+	))

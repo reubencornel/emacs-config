@@ -1,0 +1,90 @@
+import java.util.Random;
+
+
+class FixedBuffer{
+    int []buffer;
+    int size = -1;
+
+    public FixedBuffer(int s){
+	buffer = new int[s];
+	
+    }
+
+    public boolean isFull(){
+	return (size+1 >= buffer.length);
+    }
+
+    public synchronized void add(int n){
+	buffer[++size] = n;
+    }
+
+    public boolean canRemove(){
+	return size > 0;
+    }
+
+    public synchronized int  remove(){
+	return buffer[size--];
+    }
+}
+
+class Producer extends Thread{
+    FixedBuffer buffer;
+    Random rand;
+    Random sleep;
+    public Producer(FixedBuffer b){
+	buffer = b;
+	rand = new Random();
+	sleep = new Random();
+    }
+
+    public synchronized void run(){
+	while(true){
+	    try{
+		while(buffer.isFull()){
+		    System.out.println("Cannot add");
+		    wait();
+		}
+		int no = rand.nextInt();
+		System.out.println("Adding: " + no);
+		buffer.add(no);
+		Thread.sleep(sleep.nextInt(5) * 1000);
+	    }catch(InterruptedException e){
+		return;
+	    }
+
+	}
+    }
+}
+
+class Consumer extends Thread{
+    FixedBuffer buffer;
+    Random sleep;
+
+    public Consumer(FixedBuffer b){
+	buffer = b;
+	sleep = new Random();
+    }
+
+    public void run(){
+	while(true){
+	    synchronized(this){
+		try{
+		    while(!buffer.canRemove()){
+			wait();
+		    }
+		}catch(InterruptedException e){
+		}
+		buffer.remove()
+	    }
+	}
+    }
+}
+
+
+public class ProducerConsumer{
+    public static void main(String[] args){
+	FixedBuffer buf = new FixedBuffer(10);
+	Producer producerObj = new Producer(buf);
+	producerObj.run();
+    }
+}

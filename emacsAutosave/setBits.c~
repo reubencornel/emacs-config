@@ -1,0 +1,10 @@
+#include<stdio.h>
+
+int main(){
+
+  unsigned int c = 0;
+  unsigned int v = 3;
+  
+  for (c = 0; v; c++){
+    
+  }

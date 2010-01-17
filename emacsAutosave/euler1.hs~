@@ -1,0 +1,12 @@
+multiple_of x = \ y -> (rem y x) == 0
+multiple_of_3 = multiple_of 3
+multiple_of_5 = multiple_of 5
+multiple_of_3_or_5 x = multiple_of_3 x || multiple_of_5 x
+
+generate_list f x c = if c == 0 
+                      then [] 
+                      else x : generate_list f (f x) (c - 1)
+
+euler1 = foldl (+) 0 (filter (\ x -> multiple_of_3_or_5 x) (generate_list (\ x -> x + 1) 1 200000))
+
+main = print (show (euler1))

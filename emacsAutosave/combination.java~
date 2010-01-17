@@ -1,0 +1,6 @@
+public class combination{
+    static void doCombine(char []instr, StringBuilder outstr, int length, int level, int start){
+
+
+    }
+}

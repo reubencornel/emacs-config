@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+cd $WEBSITE make clean make all rm website.tar.gz tar -czf
+website.tar.gz website/ expect -c 'spawn sftp
+rfcornel@tty.freeshell.org' -c 'expect "sftp>"' -c 'send "put
+website.tar.gz\r"' -c 'expect "sftp>"' -c 'send "exit\r"' ssh
+rfcornel@tty.freeshell.org '~/bin/deploy'

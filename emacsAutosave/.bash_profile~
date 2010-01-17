@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+# Setting PATH for MacPython 2.5
+# The orginal version is saved in .bash_profile.pysave
+clear
+
+WEBSITE=/Users/reuben/webpage
+export WEBSITE
+
+REPLYTO="reuben.cornel@gmail.com"
+export REPLYTO
+
+USER="Reuben Cornel"
+export USER
+
+alias ls='ls -ltr'
+alias thesis='cd ~/Courses/Research/Thesis'
+alias actr='cd ~/Courses/Research/actr6/'
+alias nostoc='ssh rfcornel@nostoc.stanford.edu'
+alias thesis='cd ~/Courses/Research/Thesis'
+alias actr='cd ~/Courses/Research/actr6'
+alias actrenv="open ~/Courses/Research/actr6/environment/Start\ Environment\ OSX.app"
+
+find ~/trash -atime +30 -ctime +30 -mtime +30 -exec rm -rf {} ';'
+
+echo "=== ALIASES ==="
+alias
+echo "==============="
+
+PATH=~/bin:$PATH
+PATH="/Library/Frameworks/Python.framework/Versions/Current/bin:${PATH}"
+ ulimit -s 16384
+PATH=/opt/local/bin:$PATH
+PATH=/Library/Frameworks/GHC.framework/Versions/Current/usr/bin:$PATH
+PATH=/Users/reuben/bin/mzscheme/bin/:$PATH
+
+# Setting PATH for MacPython 2.5
+# The orginal version is saved in .bash_profile.pysave
+PATH="/Library/Frameworks/Python.framework/Versions/Current/bin:${PATH}"
+PATH=/usr/local/mysql-5.1.24-rc-osx10.5-x86/bin:$PATH
+PATH=/opt/mit-scheme/bin/:$PATH
+PATH=$PATH:/usr/texbin
+
+test -r /sw/bin/init.sh && . /sw/bin/init.sh
+PATH=/Users/reuben/javaBin/apache-ant-1.7.1/bin/:$PATH
+PATH=/Applications/SUNWappserver/bin:$PATH
+PATH=/Users/reuben/javaBin/apache-tomcat-5.5.27/bin:$PATH
+CLASSPATH=/Users/reuben/javaBin/axis/axis.jar:$CLASSPATH
+CLASSPATH=/Users/reuben/javaBin/axis/jaxrpc.jar:$CLASSPATH
+CLASSPATH=/Users/reuben/javaBin/axis/commons-logging-1.0.4.jar:$CLASSPATH
+CLASSPATH=/Users/reuben/javaBin/axis/commons-discovery-0.2.jar:$CLASSPATH
+CLASSPATH=/Users/reuben/javaBin/axis/saaj.jar:$CLASSPATH
+CLASSPATH=log4j.properties:$CLASSPATH
+CLASSPATH=/Applications/SUNWappserver/lib:$CLASSPATH
+CLASSPATH=/Applications/SUNWappserver/lib/j2ee.jar:$CLASSPATH
+CLASSPATH=wsdl4j-1.5.1.jar:$CLASSPATH
+CLASSPATH=/Users/reuben/javaBin/axis/wsdl4j-1.5.1.jar:$CLASSPATH
+PATH=/Applications/LilyPond.app/Contents/Resources/bin/:$PATH
+PATH=/usr/local/WordNet-3.0/bin:$PATH
+CLASSPATH=/Users/reuben/bin/clojureDir/clojure.jar:$CLASSPATH
+CLASSPATH=/Users/reuben/javaBin/java3d/lib/ext/j3dcore.jar:$CLASSPATH
+CLASSPATH=/Users/reuben/javaBin/java3d/lib/ext/j3dutils.jar:$CLASSPATH
+CLASSPATH=/Users/reuben/javaBin/java3d/lib/ext/vecmath.jar:$CLASSPATH
+CLASSPATH=/Users/reuben/bin/clojureDir/clojure-contrib.jar:$CLASSPATH
+export CLASSPATH
+
+##
+# Your previous /Users/reuben/.bash_profile file was backed up as /Users/reuben/.bash_profile.macports-saved_2009-09-10_at_19:40:04
+##
+
+# MacPorts Installer addition on 2009-09-10_at_19:40:04: adding an appropriate PATH variable for use with MacPorts.
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+# Finished adapting your PATH environment variable for use with MacPorts.
+
+PATH=/usr/local/bin:$PATH
+export PATH

@@ -1,0 +1,7 @@
+(defun init-assert()
+  (interactive)
+  (goto-char 0)
+  (insert "\n")
+  (insert "#define<assert.h>\n")
+  (insert "#define ASSERTS\n"))
+

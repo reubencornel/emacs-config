@@ -1,0 +1,9 @@
+public class Rendezvous {
+    public static void main(String[] args){
+	Thread obj1 = new Thread(){
+		public void run(){
+		    System.out.println("Hello");
+		}
+	    };
+    }
+}

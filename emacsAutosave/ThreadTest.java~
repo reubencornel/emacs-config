@@ -1,0 +1,24 @@
+import java.lang.*;
+
+public class ThreadTest extends Thread{ 
+    
+    public void run(){
+	if (Thread.currentThread() != this)
+	    System.out.println("Not the current threaD");
+	System.out.println("Thread output.");
+    }
+
+    public void testMethod(){
+	if (Thread.currentThread() == this)
+	    System.out.println("Current Thread");
+    }
+
+    public static void main(String[] args){
+	ThreadTest obj = new ThreadTest();
+	
+	obj.run();
+	obj.testMethod();
+    }
+	
+    
+}

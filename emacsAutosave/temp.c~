@@ -1,0 +1,6 @@
+#include<assert.h>
+
+
+#define ASSERTS
+int main(){
+}

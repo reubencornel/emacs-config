@@ -1,0 +1,23 @@
+(asdf:oos 'asdf:load-op 'fiveam)
+(asdf:oos 'asdf:load-op 'flexi-streams)
+
+(defpackage #:bencode
+  (:use :cl :asdf))
+
+(in-package :bencode)
+
+;; This is utility library that aims to parse bencoded files
+
+(with-open-file (in (pathname "wallpapers.torrent")
+		    :element-type '(unsigned-byte 8))
+  (do ((x (read-byte in nil nil) (read-byte in nil nil)))
+      ((null x) nil)
+    (print (code-char x))))
+  
+;; The deal is that bencoding represents four types of data
+
+;; Byte strings: are of the form
+;; <length> : <data of length>
+
+
+
