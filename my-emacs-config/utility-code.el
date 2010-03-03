@@ -158,3 +158,20 @@ being the working directory of the buffer"
   (maphash '(lambda(key value)
 	      (print key))
 	   *config-table*))
+
+(defun diary-config()
+  (interactive)
+  (load-config 'color-theme)
+  (color-theme-dark-laptop)
+  (load-config 'emacs-graphical-font)
+  (load-config 'thin-cursor-config)
+  (forward-char (point-max))
+  (auto-fill-mode)
+  (text-mode)
+  (load (expand-file-name "~/emacs/my-emacs-config/my-key-bindings.el")))
+
+(defun toggle-fullscreen ()
+  (interactive)
+  (set-frame-parameter nil 'fullscreen (if (frame-parameter nil 'fullscreen)
+                                           nil
+                                           'fullboth)))

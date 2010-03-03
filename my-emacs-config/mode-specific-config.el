@@ -1,6 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Emacs lisp load paths
 ;;
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/w3m")
 (add-to-list 'load-path (expand-file-name "~/emacs/"))
 (add-to-list 'load-path (expand-file-name "~/emacs/auto-install"))
 (add-to-list 'load-path (expand-file-name "~/emacs/tuareg-mode"))
@@ -13,12 +14,21 @@
 (add-to-list 'load-path (expand-file-name "~/emacs/color-themes"))
 
 
+
 ;;;;;; Haskell mode
 (defconfig haskell-mode
   (require 'haskell-mode)
   (require 'inf-haskell)
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+  
   (setf haskell-program-name "/Library/Frameworks/GHC.framework/Versions/Current/usr/bin/ghci")
   (setq auto-mode-alist (cons '("\\.hs$" . haskell-mode) auto-mode-alist)))
+
+;;;; w3m config - requires the w3m browser
+(defconfig w3m-config
+  (require 'w3m-load))
+
 
 
 ;;;;;;;; Tex mode config
@@ -114,8 +124,7 @@
 
 (defconfig color-theme
   (require 'color-theme)
-  (color-theme-initialize)
-  (color-theme-dark-laptop))
+  (color-theme-initialize))
 
 (defconfig itunes-config
   (require 'osx-itunes))
@@ -214,4 +223,13 @@
   (blink-cursor-mode 1)
   (require 'bar-cursor)
   (bar-cursor-mode 1))
-  
+
+(defconfig icicles-mode-config
+  (require 'icicles)
+  (require 'lacarte)
+  (global-set-key [?\e ?\M-x] 'lacarte-execute-menu-command)
+  (icy-mode 1))
+
+(defconfig carbon-emacs-22-font-config
+  (set-default-font "-apple-inconsolata-medium-r-normal--16-0-72-72-m-0-iso10646-1"))
+ 
