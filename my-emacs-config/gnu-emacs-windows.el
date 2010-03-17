@@ -5,13 +5,14 @@
 (load-config 'itunes-config)
 (load-config 'ocaml-support)
 (load-config 'c-mode-config)
-(load-config 'ido-mode)
+;(load-config 'ido-mode)
 (load-config 'htmlize)
 (load-config 'org-publish-config)
 (load-config 'article-file-support)
 (load-config 'color-theme)
 (load-config 'twit)
 (load-config 'emacs-graphical-font-windows)
+(load-config 'icicles-mode-config)
 (load-config 'thin-cursor-config)
 
 
