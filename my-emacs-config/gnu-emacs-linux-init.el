@@ -11,7 +11,7 @@
 ;(load-config 'itunes-config)
 (load-config 'ocaml-support)
 (load-config 'c-mode-config)
-(load-config 'ido-mode)
+;(load-config 'ido-mode)
 (load-config 'htmlize)
 (load-config 'org-publish-config)
 (load-config 'article-file-support)
