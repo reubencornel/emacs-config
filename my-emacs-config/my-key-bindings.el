@@ -5,7 +5,8 @@
 ;;; My Key bindings
 
 (global-unset-key [(f1)])
-(global-set-key [(f1)] 'other-window)
+;(global-set-key [(f1)] 'other-window)
+(global-set-key [(f1)] 'next-multiframe-window)
 
 (global-unset-key [(f2)])
 (global-set-key [(f2)] 'enlarge-window)
@@ -45,6 +46,9 @@
 
 (global-unset-key [(control f8)])
 (global-set-key [(control f8)] 'ispell-word)
+
+(global-unset-key "\M-g")
+(global-set-key "\M-g" 'goto-line)
 ;;;;;;;;;;;;;;;
 ;; org-mode key  bindings
 ;;;;;;;;;;;;;;;
