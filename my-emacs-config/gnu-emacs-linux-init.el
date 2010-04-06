@@ -12,13 +12,14 @@
 (load-config 'ocaml-support)
 (load-config 'c-mode-config)
 ;(load-config 'ido-mode)
+(load-config 'icicles-mode-config)
 (load-config 'htmlize)
 (load-config 'org-publish-config)
 (load-config 'article-file-support)
 (load-config 'color-theme)
 (load-config 'twit)
+(load-config 'anything-mode)
 ;(load-config 'emacs-graphical-font)
 (load-config 'thin-cursor-config)
-
 
 (load (expand-file-name "~/emacs/my-emacs-config/my-key-bindings.el"))

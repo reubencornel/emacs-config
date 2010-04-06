@@ -19,7 +19,7 @@
 (global-set-key [(f4)] 'shrink-window-horizontally)
 
 (global-unset-key [(f5)])
-(global-set-key [(f5)] 'anything)
+(global-set-key [(f5)] 'my-anything)
 
 (global-unset-key [(f6)])
 (global-set-key [(f6)] 'itunes-playpause)

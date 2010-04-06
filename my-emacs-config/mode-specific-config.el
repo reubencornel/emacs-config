@@ -12,6 +12,7 @@
 (add-to-list 'load-path "~/emacs/clojure-mode")
 (add-to-list 'load-path "/Users/reuben/emacs/swank-clojure")
 (add-to-list 'load-path (expand-file-name "~/emacs/color-themes"))
+(add-to-list 'load-path (expand-file-name "~/emacs/anything"))
 
 
 
@@ -237,3 +238,19 @@
 (defconfig carbon-emacs-22-font-config
   (set-default-font "-apple-inconsolata-medium-r-normal--16-0-72-72-m-0-iso10646-1"))
  
+(defconfig anything-mode
+  (load "anything")
+  (load "anything-config.el")
+  
+ (defun my-anything ()
+   (interactive)
+   (anything-other-buffer
+    '(anything-c-source-buffers
+      anything-c-source-file-name-history
+      anything-c-source-info-pages
+      anything-c-source-info-elisp
+      anything-c-source-man-pages
+      anything-c-source-locate
+      anything-c-source-emacs-commands)
+    " *my-anything*")))
+
