@@ -254,3 +254,6 @@
       anything-c-source-emacs-commands)
     " *my-anything*")))
 
+
+(defconfig select-enable-clipboard
+  (setq x-select-enable-clipboard t))

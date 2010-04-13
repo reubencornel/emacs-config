@@ -21,5 +21,6 @@
 (load-config 'anything-mode)
 ;(load-config 'emacs-graphical-font)
 (load-config 'thin-cursor-config)
+(load-config 'select-enable-clipboard)
 
 (load (expand-file-name "~/emacs/my-emacs-config/my-key-bindings.el"))
