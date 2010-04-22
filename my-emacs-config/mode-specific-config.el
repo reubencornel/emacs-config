@@ -10,7 +10,7 @@
 (add-to-list 'load-path (expand-file-name "~/emacs/yasnippet"))
 (add-to-list 'load-path "~/emacs/slime")
 (add-to-list 'load-path "~/emacs/clojure-mode")
-(add-to-list 'load-path "/Users/reuben/emacs/swank-clojure")
+(add-to-list 'load-path "~/emacs/swank-clojure")
 (add-to-list 'load-path (expand-file-name "~/emacs/color-themes"))
 (add-to-list 'load-path (expand-file-name "~/emacs/anything"))
 
@@ -56,6 +56,19 @@
   (slime-setup '(slime-fancy slime-asdf))
   (setq scheme-program-name "/opt/mit-scheme/bin/scheme")
   (setq inferior-lisp-program "/usr/local/bin/sbcl"))
+
+;;;;;;; Linux path config
+(defconfig linux-clojure-config
+  (setq swank-clojure-binary "/home/rcornel/bin/clojure")
+  (setq swank-clojure-jar-path "/home/rcornel/src/clojure/clojure.jar")
+  (require 'clojure-mode)
+  (require 'swank-clojure-autoload)
+  (swank-clojure-config
+   (setq swank-clojure-jar-path "/home/rcornel/clojure/clojure.jar")
+   (setq swank-clojure-extra-classpaths 
+	 (list "/home/rcornel/src/clojure-contrib/target/clojure-contrib-1.2.0-SNAPSHOT.jar")))
+  (require 'swank-clojure)
+  (add-to-list 'slime-lisp-implementations '(sbcl ("/usr/bin/local/sbcl"))))
 
 
 ;;;;;;;; clojure slime config
