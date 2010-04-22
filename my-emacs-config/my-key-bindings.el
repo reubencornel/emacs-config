@@ -5,10 +5,12 @@
 ;;; My Key bindings
 
 (global-unset-key [(f1)])
-(global-set-key [(f1)] 'other-window)
+;(global-set-key [(f1)] 'other-window)
+(global-set-key [(f1)] 'next-multiframe-window)
 
 (global-unset-key [(f2)])
-(global-set-key [(f2)] 'enlarge-window)
+;(global-set-key [(f2)] 'enlarge-window)
+(global-set-key [(f2)] 'previous-multiframe-window)
 
 (global-unset-key [(f3)])
 (global-set-key [(f3)] 'enlarge-window-horizontally)
@@ -17,7 +19,7 @@
 (global-set-key [(f4)] 'shrink-window-horizontally)
 
 (global-unset-key [(f5)])
-(global-set-key [(f5)] 'anything)
+(global-set-key [(f5)] 'my-anything)
 
 (global-unset-key [(f6)])
 (global-set-key [(f6)] 'itunes-playpause)
@@ -45,6 +47,9 @@
 
 (global-unset-key [(control f8)])
 (global-set-key [(control f8)] 'ispell-word)
+
+(global-unset-key "\M-g")
+(global-set-key "\M-g" 'goto-line)
 ;;;;;;;;;;;;;;;
 ;; org-mode key  bindings
 ;;;;;;;;;;;;;;;
