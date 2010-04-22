@@ -50,16 +50,17 @@
 
 ;;;;;;; common lisp slime config
 (defconfig cl-config
+  (defvar package-activated-list nil)
   (require 'slime)
   (slime-setup)
-  (slime-setup '(slime-fancy slime-asdf))
+;  (slime-setup '(slime-fancy slime-asdf))
   (setq scheme-program-name "/opt/mit-scheme/bin/scheme")
   (setq inferior-lisp-program "/usr/local/bin/sbcl"))
 
 
 ;;;;;;;; clojure slime config
 (defconfig clojure-config
-  (setq swank-clojure-binary "/Users/reuben/bin/clojure")
+  (setq swank-clojure-binary "~/bin/clojure")
   (setq swank-clojure-jar-path "/Users/reuben/javaBin/clojure/clojure/clojure.jar")
   (require 'clojure-mode)
   (require 'swank-clojure-autoload)
