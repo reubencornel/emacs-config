@@ -384,34 +384,18 @@
   (setq ccl:*select-interactive-process-hook* 'find-repl-thread)
   )
 
-(let ((ccl::*warn-if-redefine-kernel* nil))
-  ;; Everybody (error, cerror, break, invoke-debugger, and async interrupts) ends up
-  ;; in CCL::BREAK-LOOP, which implements the default debugger. Regardless of how it
-  ;; was entered, make sure it runs with the swank connection state established so
-  ;; that i/o happens via emacs and there is no contention for the terminal (stdin).
-  (ccl:advise
-   ccl::break-loop
-   (if (symbol-value (swank-sym *emacs-connection*))
-     (:do-it)
-     (let ((conn (funcall (swank-sym default-connection))))
-       (if conn
-         (funcall (swank-sym call-with-connection) conn
-                  (lambda () (:do-it)))
-         (:do-it))))
-   :when :around
-   :name swank-default-debugger-context))
-
 (defun map-backtrace (function &optional
-                               (start-frame-number 0)
-                               (end-frame-number most-positive-fixnum))
+                      (start-frame-number 0)
+                      end-frame-number)
   "Call FUNCTION passing information about each stack frame
  from frames START-FRAME-NUMBER to END-FRAME-NUMBER."
-  (ccl:map-call-frames function
-                       :origin ccl:*top-error-frame*
-                       :start-frame-number start-frame-number
-                       :count (- end-frame-number start-frame-number)
-                       :test (and (not t) ;(not (symbol-value (swank-sym *sldb-show-internal-frames*)))
-                                  'interesting-frame-p)))
+  (let ((end-frame-number (or end-frame-number most-positive-fixnum)))
+    (ccl:map-call-frames function
+                         :origin ccl:*top-error-frame*
+                         :start-frame-number start-frame-number
+                         :count (- end-frame-number start-frame-number)
+                         :test (and (not t) ;(not (symbol-value (swank-sym *sldb-show-internal-frames*)))
+                                    'interesting-frame-p))))
 
 ;; Exceptions
 (defvar *interesting-internal-frames* ())
@@ -598,13 +582,17 @@
               (t `(:error ,(funcall if-nil-thunk))))
       (error (c) `(:error ,(princ-to-string c))))))
 
-(defimplementation find-definitions (obj)
-  (loop for ((type . name) . sources) in (ccl:find-definition-sources obj)
-        collect (list (definition-name type name)
-                      (source-note-to-source-location
-                       (find-if-not #'null sources)
-                       (lambda () "No source-note available")
-                       name))))
+(defimplementation find-definitions (name)
+  (let ((defs (or (ccl:find-definition-sources name)
+                  (and (symbolp name)
+                       (fboundp name)
+                       (ccl:find-definition-sources (symbol-function name))))))
+    (loop for ((type . name) . sources) in defs
+          collect (list (definition-name type name)
+                        (source-note-to-source-location
+                         (find-if-not #'null sources)
+                         (lambda () "No source-note available")
+                         name)))))
 
 (defimplementation find-source-location (obj)
   (let* ((defs (ccl:find-definition-sources obj))
