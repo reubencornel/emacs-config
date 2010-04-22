@@ -3,6 +3,11 @@
 ;; Original Author: Helmut Eller
 ;; Contributors: to many to mention
 ;; License: GNU GPL (same license as Emacs)
+;; URL: http://common-lisp.net/project/slime/
+;; Version: 20091016
+;; Keywords: languages, lisp, slime
+;; Package-Requires: ((slime "20091016"))
+;; Adapted-by: Phil Hagelberg
 ;;
 ;;; Description:
 ;;
@@ -819,7 +824,8 @@ earlier in the buffer."
   (let ((inhibit-read-only t))
     (delete-region (point-min) slime-repl-prompt-start-mark)
     (delete-region slime-output-start slime-output-end)
-    (goto-char slime-repl-input-start-mark)
+    (when (< (point) slime-repl-input-start-mark)
+      (goto-char slime-repl-input-start-mark))
     (recenter t))
   (run-hooks 'slime-repl-clear-buffer-hook))
 
@@ -846,14 +852,15 @@ earlier in the buffer."
                             (p (and (not (equal p (slime-lisp-package))) p)))
                        (slime-read-package-name "Package: " p))))
   (with-current-buffer (slime-output-buffer)
-    (let ((unfinished-input (slime-repl-current-input)))
+    (let ((previouse-point (- (point) slime-repl-input-start-mark)))
       (destructuring-bind (name prompt-string)
           (slime-repl-shortcut-eval `(swank:set-package ,package))
         (setf (slime-lisp-package) name)
         (setf (slime-lisp-package-prompt-string) prompt-string)
         (setf slime-buffer-package name)
         (slime-repl-insert-prompt)
-        (insert unfinished-input)))))
+        (when (plusp previouse-point)
+          (goto-char (+ previouse-point slime-repl-input-start-mark)))))))
 
 
 ;;;;; History
@@ -1448,23 +1455,24 @@ expansion will be added to the REPL's history.)"
 (defun slime-sync-package-and-default-directory ()
   "Set Lisp's package and directory to the values in current buffer."
   (interactive)
-  (let ((package (slime-repl-shortcut-eval `(swank:set-package 
-                                             ,(slime-find-buffer-package))))
-	(directory (slime-from-lisp-filename
-                    (slime-repl-shortcut-eval `(swank:set-default-directory 
-                                                ,(slime-to-lisp-filename
-                                                  default-directory))))))
-    (let ((dir default-directory))
-      ;; Sync REPL dir
-      (with-current-buffer (slime-output-buffer)
-        (setq default-directory dir))
-      ;; Sync *inferior-lisp* dir
-      (let* ((proc (slime-process))
-             (buffer (and proc (process-buffer proc))))
-        (when buffer 
-          (with-current-buffer buffer
-            (setq default-directory dir)))))
-    (message "package: %s  default-directory: %s" (car package) directory)))
+  (let* ((package (slime-current-package))
+         (exists-p (or (null package)
+                       (slime-eval `(cl:packagep (swank::guess-package ,package)))))
+         (directory default-directory))
+    (when (and package exists-p)
+      (slime-repl-set-package package))
+    (slime-set-default-directory directory)
+    ;; Sync *inferior-lisp* dir
+    (let* ((proc (slime-process))
+           (buffer (and proc (process-buffer proc))))
+      (when buffer
+        (with-current-buffer buffer
+          (setq default-directory directory))))
+    (message "package: %s%s  directory: %s"
+             (with-current-buffer (slime-output-buffer)
+               (slime-lisp-package))
+             (if exists-p "" (format " (package %s doesn't exist)" package))
+             directory)))
 
 (defun slime-goto-connection ()
   "Switch to the REPL buffer for the connection at point."
@@ -1548,9 +1556,15 @@ expansion will be added to the REPL's history.)"
      t)
     (t nil)))
 
+(defun slime-repl-find-buffer-package ()
+  (or (slime-search-buffer-package)
+      (slime-lisp-package)))
+
+;;;###autoload
 (defun slime-repl-init ()
   (add-hook 'slime-event-hooks 'slime-repl-event-hook-function)
-  (add-hook 'slime-connected-hook 'slime-repl-connected-hook-function))
+  (add-hook 'slime-connected-hook 'slime-repl-connected-hook-function)
+  (setq slime-find-buffer-package-function 'slime-repl-find-buffer-package))
 
 (defun slime-repl-remove-hooks ()
   (remove-hook 'slime-event-hooks 'slime-repl-event-hook-function)
@@ -1833,4 +1847,8 @@ SWANK> " (buffer-string)))))
 	  slime-repl-emit
 	  slime-repl-show-maximum-output)))
 
+;;;###autoload
+(add-hook 'slime-load-hook 'slime-repl-init)
+
 (provide 'slime-repl)
+;;; slime-repl.el ends here
