@@ -26,6 +26,10 @@
   (setf haskell-program-name "/Library/Frameworks/GHC.framework/Versions/Current/usr/bin/ghci")
   (setq auto-mode-alist (cons '("\\.hs$" . haskell-mode) auto-mode-alist)))
 
+;;;; Salesforce .cls files
+(defconfig cls-files-config
+  (setq auto-mode-alist (cons '("\\.cls$" . java-mode) auto-mode-alist)))
+
 ;;;; w3m config - requires the w3m browser
 (defconfig w3m-config
   (require 'w3m-load))
