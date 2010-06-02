@@ -12,7 +12,7 @@
 (load-config 'thin-cursor-config)
 (load-config 'icicles-mode-config)
 (load-config 'carbon-emacs-22-font-config)
-
+(load-config 'anything-mode)
 
 (load (expand-file-name "~/emacs/my-emacs-config/my-key-bindings.el"))
 (global-set-key [(meta return)] 'toggle-fullscreen) 
