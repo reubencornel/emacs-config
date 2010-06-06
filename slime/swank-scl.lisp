@@ -439,7 +439,9 @@
       (funcall function))))
 
 (defimplementation swank-compile-file (input-file output-file 
-                                       load-p external-format)
+                                       load-p external-format
+                                       &key policy)
+  (declare (ignore policy))
   (with-compilation-hooks ()
     (let ((*buffer-name* nil)
           (ext:*ignore-extra-close-parentheses* nil))
@@ -1315,9 +1317,6 @@ Signal an error if no constructor can be found."
 (defimplementation pathname-to-filename (pathname)
   (ext:unix-namestring pathname nil))
 
-(defimplementation call-without-interrupts (fn)
-  (funcall fn))
-
 (defimplementation getpid ()
   (unix:unix-getpid))
 
@@ -2029,8 +2028,3 @@ The `symbol-value' of each element is a type tag.")
 ;;; Not implemented in SCL.
 (defimplementation make-weak-key-hash-table (&rest args)
   (apply #'make-hash-table :weak-p t args))
-
-;; Local Variables:
-;; pbook-heading-regexp:    "^;;;\\(;+\\)"
-;; pbook-commentary-regexp: "^;;;\\($\\|[^;]\\)"
-;; End:
