@@ -24,6 +24,7 @@
 (autoload 'hyperspec-lookup "hyperspec" nil t)
 
 (autoload 'slime-lisp-mode-hook "slime")
+(autoload 'slime-scheme-mode-hook "slime")
 
 (defvar slime-lisp-modes '(lisp-mode))
 (defvar slime-setup-contribs nil

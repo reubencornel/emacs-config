@@ -169,9 +169,6 @@
                                (declare (ignore args))
                                (mp:process-interrupt self handler)))))
 
-(defimplementation call-without-interrupts (fn)
-  (lw:without-interrupts (funcall fn)))
-  
 (defimplementation getpid ()
   #+win32 (win32:get-current-process-id)
   #-win32 (system::getpid))
@@ -327,7 +324,6 @@ Return NIL if the symbol is unbound."
         ((dbg::binding-frame-p frame) dbg:*print-binding-frames*)
         ((dbg::handler-frame-p frame) dbg:*print-handler-frames*)
         ((dbg::restart-frame-p frame) dbg:*print-restart-frames*)
-        ((dbg::open-frame-p frame) dbg:*print-open-frames*)
         (t nil)))
 
 (defun nth-next-frame (frame n)
@@ -468,7 +464,9 @@ Return NIL if the symbol is unbound."
                                        ,location))))))
 
 (defimplementation swank-compile-file (input-file output-file
-                                       load-p external-format)
+                                       load-p external-format
+                                       &key policy)
+  (declare (ignore policy))
   (with-swank-compilation-unit (input-file)
     (compile-file input-file 
                   :output-file output-file

@@ -8,9 +8,9 @@
 (add-to-list 'load-path "~/emacs/haskell-mode")
 (add-to-list 'load-path "~/emacs/auctex")
 (add-to-list 'load-path (expand-file-name "~/emacs/yasnippet"))
-(add-to-list 'load-path "~/emacs/slime")
 (add-to-list 'load-path "~/emacs/clojure-mode")
 (add-to-list 'load-path "~/emacs/swank-clojure")
+(add-to-list 'load-path "~/emacs/slime")
 (add-to-list 'load-path (expand-file-name "~/emacs/color-themes"))
 (add-to-list 'load-path (expand-file-name "~/emacs/anything"))
 
@@ -58,7 +58,7 @@
 (defconfig cl-config
   (defvar package-activated-list nil)
   (require 'slime)
-  (slime-setup)
+  (slime-setup '(slime-repl))
 ;  (slime-setup '(slime-fancy slime-asdf))
   (setq scheme-program-name "/opt/mit-scheme/bin/scheme")
   (setq inferior-lisp-program "/usr/local/bin/sbcl"))

@@ -1,9 +1,20 @@
-;;; slime-package-fu.el --- Exporting/Unexporting symbols at point.
-;;
-;; Author:  Tobias C. Rittweiler <tcr@freebits.de>
-;;
-;; License: GNU GPL (same license as Emacs)
-;;
+
+(defvar slime-package-fu-init-undo-stack nil)
+
+(define-slime-contrib slime-package-fu
+  "Exporting/Unexporting symbols at point."
+  (:authors "Tobias C. Rittweiler <tcr@freebits.de>")
+  (:license "GPL")
+  (:swank-dependencies swank-package-fu)
+  (:on-load 
+   (push `(progn (define-key slime-mode-map "\C-cx"
+                   ',(lookup-key slime-mode-map "\C-cx")))
+         slime-package-fu-init-undo-stack)
+   (define-key slime-mode-map "\C-cx"  'slime-export-symbol-at-point))
+  (:on-unload
+   (while slime-c-p-c-init-undo-stack
+     (eval (pop slime-c-p-c-init-undo-stack)))))
+
 
 (defvar slime-package-file-candidates
   (mapcar #'file-name-nondirectory
@@ -26,7 +37,9 @@
       (block nil
 	(while (re-search-forward slime-defpackage-regexp nil t)
 	  (when (slime-package-equal package (slime-sexp-at-point))
-	    (return (make-slime-file-location (buffer-file-name) (point)))))))))
+            (backward-sexp)
+	    (return (make-slime-file-location (buffer-file-name)
+                                              (1- (point))))))))))
 
 (defun slime-package-equal (designator1 designator2)
   ;; First try to be lucky and compare the strings themselves (for the
@@ -76,6 +89,15 @@ places the cursor at the start of the DEFPACKAGE form."
 		 (slime-find-package-definition-regexp package))))
 	(error "Couldn't find source definition of package: %s" package))))
 
+(defun slime-at-expression-p (pattern)
+  (when (ignore-errors
+          ;; at a list?
+          (= (point) (progn (down-list 1)
+                            (backward-up-list 1)
+                            (point))))
+    (save-excursion
+      (down-list 1)
+      (slime-in-expression-p pattern))))
 
 (defun slime-goto-next-export-clause ()
   ;; Assumes we're inside the beginning of a DEFPACKAGE form.
@@ -83,7 +105,7 @@ places the cursor at the start of the DEFPACKAGE form."
     (save-excursion
       (block nil
 	(while (ignore-errors (slime-forward-sexp) t)
-	  (slime-forward-blanks)
+          (skip-chars-forward " \n\t")
 	  (when (slime-at-expression-p '(:export *))
 	    (setq point (point))
 	    (return)))))
@@ -94,14 +116,17 @@ places the cursor at the start of the DEFPACKAGE form."
 (defun slime-search-exports-in-defpackage (symbol-name)
   "Look if `symbol-name' is mentioned in one of the :EXPORT clauses."
   ;; Assumes we're inside the beginning of a DEFPACKAGE form.
-  (save-excursion
-    (block nil
-      (while (ignore-errors (slime-goto-next-export-clause) t)
-	(let ((clause-end (save-excursion (forward-sexp) (point))))
-	  (when (and (search-forward symbol-name clause-end t)
-		     (equal (slime-symbol-at-point) symbol-name))
-	    (return (point))))))))
-
+  (flet ((target-symbol-p (symbol)
+           (string-match-p (format "^\\(\\(#:\\)\\|:\\)?%s$"
+                                   (regexp-quote symbol-name))
+                           symbol)))
+    (save-excursion
+      (block nil
+        (while (ignore-errors (slime-goto-next-export-clause) t)
+          (let ((clause-end (save-excursion (forward-sexp) (point))))
+            (when (and (search-forward symbol-name clause-end t)
+                       (target-symbol-p (slime-symbol-at-point)))
+              (return (point)))))))))
 
 (defun slime-frob-defpackage-form (current-package do-what symbol)
   "Adds/removes `symbol' from the DEFPACKAGE form of `current-package'
@@ -182,19 +207,5 @@ symbol in the Lisp image if possible."
 	       (message "Symbol `%s' now exported from `%s'" symbol package)
 	       (message "Symbol `%s' already exported from `%s'" symbol package))
 	   (slime-export-symbol symbol package)))))
-
-
-(defvar slime-package-fu-init-undo-stack nil)
-
-(defun slime-package-fu-init ()
-  (slime-require :swank-package-fu)
-  (push `(progn (define-key slime-mode-map "\C-cx"
-		  ',(lookup-key slime-mode-map "\C-cx")))
-	slime-package-fu-init-undo-stack)
-  (define-key slime-mode-map "\C-cx"  'slime-export-symbol-at-point))
-
-(defun slime-package-fu-unload ()
-  (while slime-c-p-c-init-undo-stack
-    (eval (pop slime-c-p-c-init-undo-stack))))
 
 (provide 'slime-package-fu)
