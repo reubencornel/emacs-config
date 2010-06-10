@@ -13,7 +13,7 @@
 (add-to-list 'load-path "~/emacs/slime")
 (add-to-list 'load-path (expand-file-name "~/emacs/color-themes"))
 (add-to-list 'load-path (expand-file-name "~/emacs/anything"))
-
+(add-to-list 'load-path (expand-file-name "~/emacs/minor-modes"))
 
 
 ;;;;;; Haskell mode
@@ -57,7 +57,13 @@
 (defconfig cl-config
   (defvar package-activated-list nil)
   (require 'slime)
-  (slime-setup '(slime-repl))
+
+  (autoload 'paredit-mode "paredit"
+    "Minor mode for pseudo-structurally editing Lisp code." t)
+  (add-hook 'lisp-mode-hook             (lambda () (paredit-mode +1)))
+  (add-hook 'lisp-interaction-mode-hook (lambda () (paredit-mode +1)))
+
+  (slime-setup )
 ;  (slime-setup '(slime-fancy slime-asdf))
   (setq scheme-program-name "/opt/mit-scheme/bin/scheme")
   (setq inferior-lisp-program "/usr/local/bin/sbcl"))
