@@ -28,6 +28,7 @@
 
 ;;;; Salesforce .cls files
 (defconfig cls-files-config
+  (add-hook 'java-mode-hook 'my-java-mode-hook)
   (setq auto-mode-alist (cons '("\\.cls$" . java-mode) auto-mode-alist)))
 
 ;;;; w3m config - requires the w3m browser
@@ -79,7 +80,7 @@
    (setq swank-clojure-extra-classpaths 
 	 (list "/home/rcornel/src/clojure-contrib/target/clojure-contrib-1.2.0-SNAPSHOT.jar")))
   (require 'swank-clojure)
-  (add-to-list 'slime-lisp-implementations '(sbcl ("/usr/bin/local/sbcl"))))
+  (add-to-list 'slime-lisp-implementations '(sbcl ("/usr/bin/sbcl"))))
 
 
 ;;;;;;;; clojure slime config
