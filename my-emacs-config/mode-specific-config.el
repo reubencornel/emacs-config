@@ -276,6 +276,7 @@
       anything-c-source-info-elisp
       anything-c-source-man-pages
       anything-c-source-locate
+      anything-c-source-imenu
       anything-c-source-emacs-commands)
     " *my-anything*")))
 
