@@ -13,6 +13,7 @@
 (add-to-list 'load-path "~/emacs/slime")
 (add-to-list 'load-path (expand-file-name "~/emacs/color-themes"))
 (add-to-list 'load-path (expand-file-name "~/emacs/anything"))
+(add-to-list 'load-path (expand-file-name "~/emacs/magit"))
 
 
 
@@ -273,6 +274,8 @@
       anything-c-source-emacs-commands)
     " *my-anything*")))
 
+(defconfig magit
+  (require 'magit))
 
 (defconfig select-enable-clipboard
   (setq x-select-enable-clipboard t))
