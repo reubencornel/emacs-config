@@ -1,5 +1,5 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Emacs lisp load paths
+	;;;;;;;;;;;;;;;;;;;;;;;;;;
+	;; Emacs lisp load paths
 ;;
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/w3m")
 (add-to-list 'load-path (expand-file-name "~/emacs/"))
@@ -14,7 +14,7 @@
 (add-to-list 'load-path (expand-file-name "~/emacs/color-themes"))
 (add-to-list 'load-path (expand-file-name "~/emacs/anything"))
 (add-to-list 'load-path (expand-file-name "~/emacs/magit"))
-
+(add-to-list 'load-path (expand-file-name "~/emacs/minor-modes"))
 
 
 ;;;;;; Haskell mode
@@ -59,7 +59,13 @@
 (defconfig cl-config
   (defvar package-activated-list nil)
   (require 'slime)
-  (slime-setup '(slime-repl))
+
+  (autoload 'paredit-mode "paredit"
+    "Minor mode for pseudo-structurally editing Lisp code." t)
+  (add-hook 'lisp-mode-hook             (lambda () (paredit-mode +1)))
+  (add-hook 'lisp-interaction-mode-hook (lambda () (paredit-mode +1)))
+
+  (slime-setup '(slime-repl) )
 ;  (slime-setup '(slime-fancy slime-asdf))
   (setq scheme-program-name "/opt/mit-scheme/bin/scheme")
   (setq inferior-lisp-program "/usr/local/bin/sbcl"))
@@ -271,6 +277,7 @@
       anything-c-source-info-elisp
       anything-c-source-man-pages
       anything-c-source-locate
+      anything-c-source-imenu
       anything-c-source-emacs-commands)
     " *my-anything*")))
 
