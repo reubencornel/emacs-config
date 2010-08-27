@@ -821,10 +821,10 @@ With two prefix args allow choosing in which symbol to search."
   (interactive)
   (anything-other-buffer 'anything-c-source-locate "*anything locate*"))
 
-(defun anything-w3m-bookmarks ()
-  "Preconfigured `anything' for w3m bookmark."
-  (interactive)
-  (anything-other-buffer 'anything-c-source-w3m-bookmarks "*anything w3m bookmarks*"))
+;; (defun anything-w3m-bookmarks ()
+;;   "Preconfigured `anything' for w3m bookmark."
+;;   (interactive)
+;;   (anything-other-buffer 'anything-c-source-w3m-bookmarks "*anything w3m bookmarks*"))
 
 (defun anything-colors ()
   "Preconfigured `anything' for color."
@@ -1043,11 +1043,11 @@ Use `anything-for-files' instead."
                                 "Files from Current Directory"
                                 "Recentf")))
 
-(defun anything-show-w3m-bookmarks-only ()
-  "[OBSOLETE] Only show source about w3m bookmark.
-Use `anything-w3m-bookmarks' instead."
-  (interactive)
-  (anything-set-source-filter '("W3m Bookmarks")))
+;; (defun anything-show-w3m-bookmarks-only ()
+;;   "[OBSOLETE] Only show source about w3m bookmark.
+;; Use `anything-w3m-bookmarks' instead."
+;;   (interactive)
+;;   (anything-set-source-filter '("W3m Bookmarks")))
 
 (defun anything-show-colors-only ()
   "[OBSOLETE] Only show source about color.
@@ -2522,8 +2522,8 @@ Work both with standard Emacs bookmarks and bookmark-extensions.el."
                                   (bmkext-get-end-position i)))
      for handlerp      = (and (fboundp 'bookmark-get-handler)
                               (bookmark-get-handler i))
-     for isw3m         = (and (fboundp 'bmkext-w3m-bookmark-p)
-                              (bmkext-w3m-bookmark-p i))
+     ;; for isw3m         = (and (fboundp 'bmkext-w3m-bookmark-p)
+     ;;                          (bmkext-w3m-bookmark-p i))
      for isgnus        = (and (fboundp 'bmkext-gnus-bookmark-p)
                               (bmkext-gnus-bookmark-p i)) 
      for isman         = (and (fboundp 'bmkext-man-bookmark-p) ; Man
@@ -2539,8 +2539,8 @@ Work both with standard Emacs bookmarks and bookmark-extensions.el."
      if (eq handlerp 'Info-bookmark-jump)
      collect (propertize i 'face 'anything-bmkext-info 'help-echo pred)
      ;; w3m buffers
-     if isw3m
-     collect (propertize i 'face 'anything-bmkext-w3m 'help-echo pred)
+     ;; if isw3m
+     ;; collect (propertize i 'face 'anything-bmkext-w3m 'help-echo pred)
      ;; gnus buffers
      if isgnus
      collect (propertize i 'face 'anything-bmkext-gnus 'help-echo pred)
@@ -2568,10 +2568,10 @@ Work both with standard Emacs bookmarks and bookmark-extensions.el."
   "*Face used for W3m Emacs bookmarks (not w3m bookmarks)."
   :group 'anything)
 
-(defface anything-bmkext-w3m
-  '((t (:foreground "yellow")))
-  "*Face used for W3m Emacs bookmarks (not w3m bookmarks)."
-  :group 'anything)
+;; (defface anything-bmkext-w3m
+;;   '((t (:foreground "yellow")))
+;;   "*Face used for W3m Emacs bookmarks (not w3m bookmarks)."
+;;   :group 'anything)
 
 (defface anything-bmkext-gnus
   '((t (:foreground "magenta")))
@@ -2656,20 +2656,20 @@ Work both with standard Emacs bookmarks and bookmark-extensions.el."
   (anything-c-bmkext-filter-setup-alist 'bmkext-region-alist-only))
 
 ;; W3m
-(defvar anything-c-source-bookmark-w3m
-  '((name . "Bookmark W3m")
-    (init . (lambda ()
-              (require 'bookmark-extensions)
-              (bookmark-maybe-load-default-file)))
-    (candidates . anything-c-bookmark-w3m-setup-alist)
-    (candidate-transformer anything-c-highlight-bookmark)
-    (filtered-candidate-transformer . anything-c-adaptive-sort)
-    (type . bookmark)))
+;; (defvar anything-c-source-bookmark-w3m
+;;   '((name . "Bookmark W3m")
+;;     (init . (lambda ()
+;;               (require 'bookmark-extensions)
+;;               (bookmark-maybe-load-default-file)))
+;;     (candidates . anything-c-bookmark-w3m-setup-alist)
+;;     (candidate-transformer anything-c-highlight-bookmark)
+;;     (filtered-candidate-transformer . anything-c-adaptive-sort)
+;;     (type . bookmark)))
 ;; (anything 'anything-c-source-bookmark-w3m)
 
-(defun anything-c-bookmark-w3m-setup-alist ()
-  "Specialized filter function for bookmarks w3m."
-  (anything-c-bmkext-filter-setup-alist 'bmkext-w3m-alist-only))
+;; (defun anything-c-bookmark-w3m-setup-alist ()
+;;   "Specialized filter function for bookmarks w3m."
+;;   (anything-c-bmkext-filter-setup-alist 'bmkext-w3m-alist-only))
 
 ;; Woman Man
 (defvar anything-c-source-bookmark-man
@@ -2799,7 +2799,7 @@ Work both with standard Emacs bookmarks and bookmark-extensions.el."
 See: <http://mercurial.intuxication.org/hg/emacs-bookmark-extension>."
   (interactive)
   (anything '(anything-c-source-bookmark-files&dirs
-              anything-c-source-bookmark-w3m
+;;              anything-c-source-bookmark-w3m
               anything-c-source-bookmark-gnus
               anything-c-source-bookmark-info
               anything-c-source-bookmark-man
