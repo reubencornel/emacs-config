@@ -23,6 +23,7 @@
 (load-config 'thin-cursor-config)
 (load-config 'select-enable-clipboard)
 (load-config 'cls-files-config)
+(load-config 'yasnippet)
 (load-config 'magit)
 
 (load (expand-file-name "~/emacs/my-emacs-config/my-key-bindings.el"))
