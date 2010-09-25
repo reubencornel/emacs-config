@@ -15,6 +15,7 @@
 (add-to-list 'load-path (expand-file-name "~/emacs/anything"))
 (add-to-list 'load-path (expand-file-name "~/emacs/magit"))
 (add-to-list 'load-path (expand-file-name "~/emacs/minor-modes"))
+(add-to-list 'load-path (expand-file-name "~/emacs/misc"))
 
 
 ;;;;;; Haskell mode
