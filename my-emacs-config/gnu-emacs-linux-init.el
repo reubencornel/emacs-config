@@ -25,5 +25,7 @@
 (load-config 'cls-files-config)
 (load-config 'yasnippet)
 (load-config 'magit)
+(load-config 'nxhtml-mode-config)
+(load-config 'mmm-mode-config)
 
 (load (expand-file-name "~/emacs/my-emacs-config/my-key-bindings.el"))

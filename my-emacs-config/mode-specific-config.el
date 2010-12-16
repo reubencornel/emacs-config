@@ -16,6 +16,8 @@
 (add-to-list 'load-path (expand-file-name "~/emacs/magit"))
 (add-to-list 'load-path (expand-file-name "~/emacs/minor-modes"))
 (add-to-list 'load-path (expand-file-name "~/emacs/misc"))
+(add-to-list 'load-path (expand-file-name "~/emacs/nxhtml"))
+(add-to-list 'load-path (expand-file-name "~/emacs/mmm-mode"))
 
 
 ;;;;;; Haskell mode
@@ -30,7 +32,7 @@
 
 ;;;; Salesforce .cls files
 (defconfig cls-files-config
-  (add-hook 'java-mode-hook 'my-java-mode-hook)
+;;  (add-hook 'java-mode-hook 'my-java-mode-hook)
   (setq auto-mode-alist (cons '("\\.cls$" . java-mode) auto-mode-alist)))
 
 ;;;; w3m config - requires the w3m browser
@@ -38,6 +40,45 @@
   (require 'w3m-load))
 
 
+;;;; nxhtml mode - used for jsp mode
+(defconfig nxhtml-mode-config
+  (load (expand-file-name "~/emacs/nxhtml/autostart.el")))
+
+;;;; mmm mode - used to get a custom jsp "mode"
+(defconfig mmm-mode-config
+  (require 'mmm-mode)
+  (mmm-add-group
+   'fancy-html
+   '(
+     (html-php-tagged
+      :submode php-mode
+      :face mmm-code-submode-face
+      :front "<[?]php"
+      :back "[?]>")
+     (html-css-attribute
+      :submode css-mode
+      :face mmm-declaration-submode-face
+      :front "styleNO=\""
+      :back "\"")
+     (jsp-code
+      :submode java
+      :match-face (("<%!" . mmm-declaration-submode-face)
+		   ("<%=" . mmm-output-submode-face)
+		   ("<%"  . mmm-code-submode-face))
+      :front "<%[!=]?"
+      :back "%>"
+      :insert ((?% jsp-code nil @ "<%" @ " " _ " " @ "%>" @)
+	       (?! jsp-declaration nil @ "<%!" @ " " _ " " @ "%>" @)
+	       (?= jsp-expression nil @ "<%=" @ " " _ " " @ "%>" @))
+      )
+     (jsp-directive
+      :submode text-mode
+      :face mmm-special-submode-face
+      :front "<%@"
+      :back "%>"
+      :insert ((?@ jsp-directive nil @ "<%@" @ " " _ " " @ "%>" @))
+      )
+     )))
 
 ;;;;;;;; Tex mode config
 (defconfig tex-mode
