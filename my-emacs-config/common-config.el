@@ -7,6 +7,8 @@
 (setq display-time-day-and-date t)
 (display-time)
 
+(setq tabs-indent-mode nil)
+
 (setq scroll-step 1)
 
 ;; Turn on transient mark mode
