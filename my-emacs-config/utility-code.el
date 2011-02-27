@@ -112,6 +112,8 @@
 
 (defun my-c-mode-hook()
   (define-key c-mode-map "\C-cn" 'insert-assert)
+  (insert "#include<stdio.h>\n")
+  (insert "#include<stdlib.h>\n")
   (init-assert))
 
 (defun has-disk-file-p(buffer)
