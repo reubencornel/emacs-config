@@ -91,10 +91,12 @@
   (interactive)
   (insert (get-date)))
 
-(defun init-assert()
+(defun init-c-file()
   (interactive)
   (when (= (point-max) 1) ;; Insert these lines if and only if we have
 			  ;; a new buffer
+    (insert "#include<stdio.h>\n")
+    (insert "#include<stdlib.h>\n")
     (insert "#include<assert.h>\n\n\n")
     (insert "#define ASSERTS\n")
     (goto-line (- (line-number-at-pos) 3))))
@@ -112,9 +114,7 @@
 
 (defun my-c-mode-hook()
   (define-key c-mode-map "\C-cn" 'insert-assert)
-  (insert "#include<stdio.h>\n")
-  (insert "#include<stdlib.h>\n")
-  (init-assert))
+  (init-c-file))
 
 (defun has-disk-file-p(buffer)
   "Checks if a file has been saved."
