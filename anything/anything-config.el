@@ -2866,14 +2866,11 @@ See: <http://mercurial.intuxication.org/hg/emacs-bookmark-extension>."
                             anything-c-firefox-bookmarks-alist)))
     (candidate-transformer anything-c-highlight-firefox-bookmarks)
     (filtered-candidate-transformer . anything-c-adaptive-sort)
-    (action . (("Browse Url" . (lambda (candidate)
-                                 (w3m-browse-url
-                                  (anything-c-firefox-bookmarks-get-value candidate)))) 
-               ("Browse Url Firefox" . (lambda (candidate)
+    (action . (("Browse Url Firefox" . (lambda (candidate)
                                          (browse-url-firefox
-                                          (anything-c-firefox-bookmarks-get-value candidate)))) 
-               ("Copy Url" . (lambda (elm)
-                               (kill-new (anything-c-w3m-bookmarks-get-value elm))))))))
+                                          (anything-c-firefox-bookmarks-get-value candidate))))))))
+               ;; ("Copy Url" . (lambda (elm)
+               ;;                 (kill-new (anything-c-w3m-bookmarks-get-value elm))))))))
 
 ;; (anything 'anything-c-source-firefox-bookmarks)
 
@@ -2890,89 +2887,89 @@ See: <http://mercurial.intuxication.org/hg/emacs-bookmark-extension>."
                             'help-echo (anything-c-firefox-bookmarks-get-value i))))
 
 ;; W3m bookmark
-(eval-when-compile (require 'w3m-bookmark nil t))
-(unless (and (require 'w3m nil t)
-             (require 'w3m-bookmark nil t))
-  (defvar w3m-bookmark-file "~/.w3m/bookmark.html"))
+;;(eval-when-compile (require 'w3m-bookmark nil t))
+;;(unless (and (require 'w3m nil t)
+;;             (require 'w3m-bookmark nil t))
+;;  (defvar w3m-bookmark-file "~/.w3m/bookmark.html"))
 
 
-(defface anything-w3m-bookmarks-face '((t (:foreground "cyan1" :underline t)))
-  "Face for w3m bookmarks" :group 'anything)
+;; (defface anything-w3m-bookmarks-face '((t (:foreground "cyan1" :underline t)))
+;;   "Face for w3m bookmarks" :group 'anything)
 
-(defvar anything-w3m-bookmarks-regexp ">\\([^><]+.[^</a>]\\)")
-(defvar anything-w3m-bookmark-url-regexp "\\(https\\|http\\|ftp\\|file\\)://[^>]*")
-(defvar anything-c-w3m-bookmarks-alist nil)
-(defvar anything-c-source-w3m-bookmarks
-  '((name . "W3m Bookmarks")
-    (init . (lambda ()
-              (setq anything-c-w3m-bookmarks-alist
-                    (anything-html-bookmarks-to-alist
-                     w3m-bookmark-file
-                     anything-w3m-bookmark-url-regexp
-                     anything-w3m-bookmarks-regexp))))
-    (candidates . (lambda ()
-                    (mapcar #'car anything-c-w3m-bookmarks-alist)))
-    (candidate-transformer anything-c-highlight-w3m-bookmarks)
-    (filtered-candidate-transformer . anything-c-adaptive-sort)
-    (action . (("Browse Url" . (lambda (candidate)
-                                 (anything-c-w3m-browse-bookmark candidate)))
-               ("Copy Url" . (lambda (elm)
-                               (kill-new (anything-c-w3m-bookmarks-get-value elm))))
-               ("Browse Url Firefox" . (lambda (candidate)
-                                         (anything-c-w3m-browse-bookmark candidate t)))
-               ("Delete Bookmark" . (lambda (candidate)
-                                      (anything-c-w3m-delete-bookmark candidate)))
-               ("Rename Bookmark" . (lambda (candidate)
-                                      (anything-c-w3m-rename-bookmark candidate)))))
-    (persistent-action . (lambda (candidate)
-                           (if current-prefix-arg
-                               (anything-c-w3m-browse-bookmark candidate t)
-                               (anything-c-w3m-browse-bookmark candidate nil t))))
-    (persistent-help . "Open URL with emacs-w3m in new tab / \
-C-u \\[anything-execute-persistent-action]: Open URL with Firefox")))
+;; (defvar anything-w3m-bookmarks-regexp ">\\([^><]+.[^</a>]\\)")
+;; (defvar anything-w3m-bookmark-url-regexp "\\(https\\|http\\|ftp\\|file\\)://[^>]*")
+;; (defvar anything-c-w3m-bookmarks-alist nil)
+;; (defvar anything-c-source-w3m-bookmarks
+;;   '((name . "W3m Bookmarks")
+;;     (init . (lambda ()
+;;               (setq anything-c-w3m-bookmarks-alist
+;;                     (anything-html-bookmarks-to-alist
+;;                      w3m-bookmark-file
+;;                      anything-w3m-bookmark-url-regexp
+;;                      anything-w3m-bookmarks-regexp))))
+;;     (candidates . (lambda ()
+;;                     (mapcar #'car anything-c-w3m-bookmarks-alist)))
+;;     (candidate-transformer anything-c-highlight-w3m-bookmarks)
+;;     (filtered-candidate-transformer . anything-c-adaptive-sort)
+;;     (action . (("Browse Url" . (lambda (candidate)
+;;                                  (anything-c-w3m-browse-bookmark candidate)))
+;;                ("Copy Url" . (lambda (elm)
+;;                                (kill-new (anything-c-w3m-bookmarks-get-value elm))))
+;;                ("Browse Url Firefox" . (lambda (candidate)
+;;                                          (anything-c-w3m-browse-bookmark candidate t)))
+;;                ("Delete Bookmark" . (lambda (candidate)
+;;                                       (anything-c-w3m-delete-bookmark candidate)))
+;;                ("Rename Bookmark" . (lambda (candidate)
+;;                                       (anything-c-w3m-rename-bookmark candidate)))))
+;;     (persistent-action . (lambda (candidate)
+;;                            (if current-prefix-arg
+;;                                (anything-c-w3m-browse-bookmark candidate t)
+;;                                (anything-c-w3m-browse-bookmark candidate nil t))))
+;;     (persistent-help . "Open URL with emacs-w3m in new tab / \
+;; C-u \\[anything-execute-persistent-action]: Open URL with Firefox")))
 
-;; (anything 'anything-c-source-w3m-bookmarks)
+;; ;; (anything 'anything-c-source-w3m-bookmarks)
 
-(defun anything-c-w3m-bookmarks-get-value (elm)
-  (replace-regexp-in-string
-   "\"" "" (cdr (assoc elm anything-c-w3m-bookmarks-alist))))
+;; (defun anything-c-w3m-bookmarks-get-value (elm)
+;;   (replace-regexp-in-string
+;;    "\"" "" (cdr (assoc elm anything-c-w3m-bookmarks-alist))))
 
-(defun anything-c-w3m-browse-bookmark (elm &optional use-firefox new-tab)
-  (let* ((fn (if use-firefox 'browse-url-firefox 'w3m-browse-url))
-         (arg (and (eq fn 'w3m-browse-url) new-tab)))
-    (funcall fn (anything-c-w3m-bookmarks-get-value elm) arg)))
+;; (defun anything-c-w3m-browse-bookmark (elm &optional use-firefox new-tab)
+;;   (let* ((fn (if use-firefox 'browse-url-firefox 'w3m-browse-url))
+;;          (arg (and (eq fn 'w3m-browse-url) new-tab)))
+;;     (funcall fn (anything-c-w3m-bookmarks-get-value elm) arg)))
 
-(defun anything-c-highlight-w3m-bookmarks (books)
-  (loop for i in books
-        collect (propertize
-                 i 'face 'anything-w3m-bookmarks-face
-                 'help-echo (anything-c-w3m-bookmarks-get-value i))))
+;; (defun anything-c-highlight-w3m-bookmarks (books)
+;;   (loop for i in books
+;;         collect (propertize
+;;                  i 'face 'anything-w3m-bookmarks-face
+;;                  'help-echo (anything-c-w3m-bookmarks-get-value i))))
 
 
-(defun anything-c-w3m-delete-bookmark (elm)
-  (save-excursion
-    (find-file-literally w3m-bookmark-file)
-    (goto-char (point-min))
-    (when (re-search-forward elm nil t)
-      (beginning-of-line)
-      (delete-region (point)
-                     (line-end-position))
-      (delete-blank-lines))
-    (save-buffer (current-buffer))
-    (kill-buffer (current-buffer))))
+;; (defun anything-c-w3m-delete-bookmark (elm)
+;;   (save-excursion
+;;     (find-file-literally w3m-bookmark-file)
+;;     (goto-char (point-min))
+;;     (when (re-search-forward elm nil t)
+;;       (beginning-of-line)
+;;       (delete-region (point)
+;;                      (line-end-position))
+;;       (delete-blank-lines))
+;;     (save-buffer (current-buffer))
+;;     (kill-buffer (current-buffer))))
 
-(defun anything-c-w3m-rename-bookmark (elm)
-  (let* ((old-title (replace-regexp-in-string ">" "" elm))
-         (new-title (read-string "NewTitle: " old-title)))
-    (save-excursion
-      (find-file-literally w3m-bookmark-file)
-      (goto-char (point-min))
-      (when (re-search-forward (concat elm "<") nil t)
-        (goto-char (1- (point)))
-        (delete-backward-char (length old-title))
-        (insert new-title))
-      (save-buffer (current-buffer))
-      (kill-buffer (current-buffer)))))
+;; (defun anything-c-w3m-rename-bookmark (elm)
+;;   (let* ((old-title (replace-regexp-in-string ">" "" elm))
+;;          (new-title (read-string "NewTitle: " old-title)))
+;;     (save-excursion
+;;       (find-file-literally w3m-bookmark-file)
+;;       (goto-char (point-min))
+;;       (when (re-search-forward (concat elm "<") nil t)
+;;         (goto-char (1- (point)))
+;;         (delete-backward-char (length old-title))
+;;         (insert new-title))
+;;       (save-buffer (current-buffer))
+;;       (kill-buffer (current-buffer)))))
 
 ;;;; <Library>
 ;;; Elisp library scan

@@ -21,7 +21,7 @@
 (load-config 'thin-cursor-config)
 (load-config 'magit)
 (load-config 'yasnippet)
-;(load-config 'anything-mode)
+(load-config 'anything-mode)
 
 (load (expand-file-name "~/emacs/my-emacs-config/my-key-bindings.el"))
 (global-set-key (kbd "M-RET") 'ns-toggle-fullscreen)

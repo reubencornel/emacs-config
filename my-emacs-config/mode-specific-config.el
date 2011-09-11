@@ -164,14 +164,18 @@
     (defun my-appt-disp-window (min-to-app new-time msg)
       (call-process (expand-file-name "~/bin/popup.py") nil 0 nil min-to-app msg new-time)))
 
-  (setq org-todo-keywords '("TODO" "STARTED" "WAITING" "DONE"))  ;; (6)
+  (setq org-todo-keywords '((sequence "TODO" "STARTED" "WAITING" "|" "DONE")
+                            (sequence "NOTPICKEDUP" "|" "PICKEDUP")))
+;; (6)
 
   ;; (require 'remember)
-  (setq org-directory "/Users/reuben/")
+  (setq org-directory "/Users/reuben/org")
   (setq org-default-notes-file (concat org-directory "notes.org"))
+  (setq org-mobile-inbox-for-pull "~/org/notes.org")
+  (setq org-mobile-directory "~/Dropbox/MobileOrg")
   (setq org-remember-templates
-	'((?t "* TODO %?" "/Users/reuben/organizer.org")
-	  (?n "* Note %t\n %?" "/Users/reuben/notes.org"))))
+	'((?t "* TODO %?" "/Users/reuben/org/organizer.org")
+	  (?n "* Note %t\n %?" "/Users/reuben/org/notes.org"))))
   ;; (setq remember-annotation-functions '(org-remember-annotation))
   ;; (setq remember-handler-functions '(org-remember-handler))
   ;; (eval-after-load 'remember
@@ -224,6 +228,7 @@
 
 (defconfig ido-mode
   (ido-mode 1)
+  (ido-everywhere t)
   (setq ido-enable-flex-matching t))
 
 (defconfig htmlize
