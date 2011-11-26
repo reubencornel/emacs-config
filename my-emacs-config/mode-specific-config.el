@@ -1,5 +1,5 @@
-	;;;;;;;;;;;;;;;;;;;;;;;;;;
-	;; Emacs lisp load paths
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Emacs lisp load paths
 ;;
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/w3m")
 (add-to-list 'load-path (expand-file-name "~/emacs/"))
@@ -333,3 +333,7 @@
 
 (defconfig select-enable-clipboard
   (setq x-select-enable-clipboard t))
+
+(defconfig auto-save-config
+  (require 'real-auto-save)
+  (add-hook 'text-mode-hook 'turn-on-real-auto-save))
