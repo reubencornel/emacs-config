@@ -29,6 +29,21 @@
         ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
         (t (self-insert-command (or arg 1)))))
 
+(defun grep-ffap ()
+  "This is a wrapper over ffap, to jump to the line in file found by grep -n."
+  (interactive)
+  ;; Figure out if the current line is of the format <filename>:<line number>: <text>
+  (let* ((split-string (split-string (buffer-substring-no-properties (line-beginning-position)
+								     (line-end-position))
+				     ":"))
+	 (file-name (car split-string))
+	 (line-number (cadr split-string)))
+    (if (and  (> (length split-string) 2)
+	      (not (null line-number)))
+	(progn 
+	  (ffap (car split-string))
+	  (goto-line (string-to-number line-number)))
+      (ffap))))
 
 (defun fullscreen (&optional f)
   (interactive)

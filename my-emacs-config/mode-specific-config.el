@@ -87,7 +87,7 @@
 ;;;;; Tramp config
 (defconfig tramp
   (setq tramp-default-method "ssh")
-  (setq tramp-default-user "rfcornel")
+  (setq tramp-default-user "rcornel")
   (require 'tramp))
 
 ;;;;;; yassnippet 
@@ -164,14 +164,19 @@
     (defun my-appt-disp-window (min-to-app new-time msg)
       (call-process (expand-file-name "~/bin/popup.py") nil 0 nil min-to-app msg new-time)))
 
-  (setq org-todo-keywords '("TODO" "STARTED" "WAITING" "DONE"))  ;; (6)
+  (setq org-todo-keywords '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "|" "DONE(d)" "DELEGATED(g)")))  ;; (6)
 
-  ;; (require 'remember)
-  (setq org-directory "/Users/reuben/")
+  (require 'remember)
+  (setq org-directory "/home/rcornel/org/")
   (setq org-default-notes-file (concat org-directory "notes.org"))
   (setq org-remember-templates
-	'((?t "* TODO %?" "/Users/reuben/organizer.org")
-	  (?n "* Note %t\n %?" "/Users/reuben/notes.org"))))
+	'(("Todo" ?t "* TODO %^{Brief Description} %^g\nAdded: %U" (concat org-directory "index.org") "Tasks")
+	  ("Note" ?n "* Note %t\n %?" (concat org-directory "notes.org"))))
+  (setq remember-annotation-functions '(org-remember-annotation))
+  (setq remember-handler-functions '(org-remember-handler))
+  (eval-after-load 'remember
+    '(add-hook 'remember-mode-hook 'org-remember-apply-template))
+)
   ;; (setq remember-annotation-functions '(org-remember-annotation))
   ;; (setq remember-handler-functions '(org-remember-handler))
   ;; (eval-after-load 'remember
