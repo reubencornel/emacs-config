@@ -1,5 +1,5 @@
-	;;;;;;;;;;;;;;;;;;;;;;;;;;
-	;; Emacs lisp load paths
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Emacs lisp load paths
 ;;
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/w3m")
 (add-to-list 'load-path (expand-file-name "~/emacs/"))
@@ -164,19 +164,18 @@
     (defun my-appt-disp-window (min-to-app new-time msg)
       (call-process (expand-file-name "~/bin/popup.py") nil 0 nil min-to-app msg new-time)))
 
-  (setq org-todo-keywords '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "|" "DONE(d)" "DELEGATED(g)")))  ;; (6)
+  (setq org-todo-keywords '((sequence "TODO" "STARTED" "WAITING" "|" "DONE")
+                            (sequence "NOTPICKEDUP" "|" "PICKEDUP")))
+;; (6)
 
-  (require 'remember)
-  (setq org-directory "/home/rcornel/org/")
+  ;; (require 'remember)
+  (setq org-directory "/Users/reuben/org")
   (setq org-default-notes-file (concat org-directory "notes.org"))
+  (setq org-mobile-inbox-for-pull "~/org/notes.org")
+  (setq org-mobile-directory "~/Dropbox/MobileOrg")
   (setq org-remember-templates
-	'(("Todo" ?t "* TODO %^{Brief Description} %^g\nAdded: %U" (concat org-directory "index.org") "Tasks")
-	  ("Note" ?n "* Note %t\n %?" (concat org-directory "notes.org"))))
-  (setq remember-annotation-functions '(org-remember-annotation))
-  (setq remember-handler-functions '(org-remember-handler))
-  (eval-after-load 'remember
-    '(add-hook 'remember-mode-hook 'org-remember-apply-template))
-)
+	'((?t "* TODO %?" "/Users/reuben/org/organizer.org")
+	  (?n "* Note %t\n %?" "/Users/reuben/org/notes.org"))))
   ;; (setq remember-annotation-functions '(org-remember-annotation))
   ;; (setq remember-handler-functions '(org-remember-handler))
   ;; (eval-after-load 'remember
@@ -229,6 +228,7 @@
 
 (defconfig ido-mode
   (ido-mode 1)
+  (ido-everywhere t)
   (setq ido-enable-flex-matching t))
 
 (defconfig htmlize
@@ -333,3 +333,7 @@
 
 (defconfig select-enable-clipboard
   (setq x-select-enable-clipboard t))
+
+(defconfig auto-save-config
+  (require 'real-auto-save)
+  (add-hook 'text-mode-hook 'turn-on-real-auto-save))
