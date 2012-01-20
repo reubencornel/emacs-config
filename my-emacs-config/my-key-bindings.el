@@ -65,5 +65,3 @@
 ;;* key binding
 (global-set-key [(control x) (control o)] 'grep-ffap)
 ;;* end
-
-
