@@ -19,7 +19,6 @@
 (add-to-list 'load-path (expand-file-name "~/emacs/nxhtml"))
 (add-to-list 'load-path (expand-file-name "~/emacs/mmm-mode"))
 
-
 ;;;;;; Haskell mode
 (defconfig haskell-mode
   (require 'haskell-mode)
@@ -337,3 +336,9 @@
 (defconfig auto-save-config
   (require 'real-auto-save)
   (add-hook 'text-mode-hook 'turn-on-real-auto-save))
+
+(defconfig markdown-mode
+     (autoload 'markdown-mode "markdown-mode.el"
+       "Major mode for editing Markdown files" t)
+     (setq auto-mode-alist
+        (cons '("\\.md" . markdown-mode) auto-mode-alist)))

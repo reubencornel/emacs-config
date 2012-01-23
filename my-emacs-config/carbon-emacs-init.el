@@ -1,5 +1,5 @@
 
-(load-config 'w3m-config)
+;(load-config 'w3m-config)
 (load-config 'cl-config)
 (load-config 'org-mode-config)
 (load-config 'itunes-config)
