@@ -12,6 +12,7 @@
 (add-to-list 'load-path "~/emacs/swank-clojure")
 (add-to-list 'load-path "~/emacs/slime")
 (add-to-list 'load-path (expand-file-name "~/emacs/color-themes"))
+(add-to-list 'load-path (expand-file-name "~/emacs/color-themes/solarized"))
 (add-to-list 'load-path (expand-file-name "~/emacs/anything"))
 (add-to-list 'load-path (expand-file-name "~/emacs/magit"))
 (add-to-list 'load-path (expand-file-name "~/emacs/minor-modes"))
@@ -86,7 +87,7 @@
 ;;;;; Tramp config
 (defconfig tramp
   (setq tramp-default-method "ssh")
-  (setq tramp-default-user "rfcornel")
+  (setq tramp-default-user "rcornel")
   (require 'tramp))
 
 ;;;;;; yassnippet 
@@ -196,7 +197,8 @@
 
 (defconfig color-theme
   (require 'color-theme)
-  (color-theme-initialize))
+  (color-theme-initialize)
+  (require 'color-theme-solarized))
 
 (defconfig itunes-config
   (require 'osx-itunes))

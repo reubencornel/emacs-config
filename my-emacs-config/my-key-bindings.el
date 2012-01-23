@@ -63,7 +63,5 @@
 
 (global-unset-key [(control x) (control o)])
 ;;* key binding
-(global-set-key [(control x) (control o)] 'ffap)
+(global-set-key [(control x) (control o)] 'grep-ffap)
 ;;* end
-
-
