@@ -19,6 +19,10 @@
 (add-to-list 'load-path (expand-file-name "~/emacs/misc"))
 (add-to-list 'load-path (expand-file-name "~/emacs/nxhtml"))
 (add-to-list 'load-path (expand-file-name "~/emacs/mmm-mode"))
+(add-to-list 'load-path (expand-file-name "~/emacs/nav"))
+
+(defconfig nav
+	(require 'nav))
 
 ;;;;;; Haskell mode
 (defconfig haskell-mode

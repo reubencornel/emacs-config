@@ -17,6 +17,7 @@
 ;(load-config 'org-publish-config)
 ;(load-config 'article-file-support)
 (load-config 'color-theme)
+(load-config 'nav)
 ;(load-config 'twit)
 (load-config 'anything-mode)
 ;(load-config 'emacs-graphical-font)
