@@ -22,6 +22,7 @@
 (load-config 'magit)
 (load-config 'yasnippet)
 (load-config 'anything-mode)
+(load-config 'nav)
 
 
 (load (expand-file-name "~/emacs/my-emacs-config/my-key-bindings.el"))
