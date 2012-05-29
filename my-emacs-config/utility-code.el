@@ -137,6 +137,10 @@
 	(not (null (buffer-file-name buffer)))
     (print "Function requires a buffer")))
 
+(defun set-my-margins(arg)
+  (interactive "nMargin Width: ")
+  (set-window-margins (car (get-buffer-window-list (current-buffer) nil t)) arg arg ))
+
 
 (defun switch-to-shell-with-current-cwd()
 
@@ -192,3 +196,4 @@ being the working directory of the buffer"
   (set-frame-parameter nil 'fullscreen (if (frame-parameter nil 'fullscreen)
                                            nil
                                            'fullboth)))
+

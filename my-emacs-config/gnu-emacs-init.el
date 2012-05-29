@@ -23,7 +23,7 @@
 (load-config 'yasnippet)
 (load-config 'anything-mode)
 (load-config 'nav)
-
+(load-config 'auto-save-config)
 
 (load (expand-file-name "~/emacs/my-emacs-config/my-key-bindings.el"))
 (global-set-key (kbd "M-RET") 'ns-toggle-fullscreen)
