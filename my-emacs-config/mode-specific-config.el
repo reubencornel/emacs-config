@@ -1,6 +1,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Emacs lisp load paths
 ;;
+
+(add-to-list 'load-path (expand-file-name "~/emacs/org-mode/lisp"))
+
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/w3m")
 (add-to-list 'load-path (expand-file-name "~/emacs/"))
 (add-to-list 'load-path (expand-file-name "~/emacs/auto-install"))
@@ -145,6 +148,7 @@
 
 
 (defconfig org-mode-config
+  (require 'org-install)
   (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
   (setq org-hide-leading-stars 't)
   (setq org-log-done 'time)
@@ -348,3 +352,8 @@
        "Major mode for editing Markdown files" t)
      (setq auto-mode-alist
         (cons '("\\.md" . markdown-mode) auto-mode-alist)))
+
+(defconfig text-mode-config
+  (fringe-mode -1)
+  (add-hook 'text-mode-hook (lambda() (setq line-spacing 10))))
+

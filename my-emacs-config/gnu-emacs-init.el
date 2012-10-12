@@ -7,7 +7,7 @@
 (load-config 'haskell-mode)
 (load-config 'tramp)
 (load-config 'cl-config)
-(load-config 'org-mode-config)
+;(load-config 'org-mode-config)
 (load-config 'itunes-config)
 (load-config 'ocaml-support)
 (load-config 'c-mode-config)
@@ -24,6 +24,7 @@
 (load-config 'anything-mode)
 (load-config 'nav)
 (load-config 'auto-save-config)
+(load-config 'text-mode-config)
 
 (load (expand-file-name "~/emacs/my-emacs-config/my-key-bindings.el"))
 (global-set-key (kbd "M-RET") 'ns-toggle-fullscreen)

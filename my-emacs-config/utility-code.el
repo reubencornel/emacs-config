@@ -79,7 +79,7 @@
 	  ((equal last-digit "3") "rd")
 	  (t "th"))))
 
-(defun indent-line()
+(defun indent()
   (interactive)
   (when indent-region-function
     (save-excursion
