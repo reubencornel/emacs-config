@@ -152,38 +152,22 @@
   (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
   (setq org-hide-leading-stars 't)
   (setq org-log-done 'time)
-  (require 'appt)
-  (setq org-agenda-include-diary t)
-  (setq appt-time-msg-list nil)
-  ;;(org-agenda-to-appt)
-
-  (defadvice  org-agenda-redo (after org-agenda-redo-add-appts)
-    "Pressing `r' on the agenda will also add appointments."
-    (progn 
-      (setq appt-time-msg-list nil)
-      (org-agenda-to-appt)))
-
-  (ad-activate 'org-agenda-redo)
-
-  (progn
-    (appt-activate 1)
-    (setq appt-display-format 'window)
-    (setq appt-disp-window-function (function my-appt-disp-window))
-    (defun my-appt-disp-window (min-to-app new-time msg)
-      (call-process (expand-file-name "~/bin/popup.py") nil 0 nil min-to-app msg new-time)))
 
   (setq org-todo-keywords '((sequence "TODO" "STARTED" "WAITING" "|" "DONE")
                             (sequence "NOTPICKEDUP" "|" "PICKEDUP")))
-;; (6)
 
-  ;; (require 'remember)
-  (setq org-directory "/Users/reuben/org")
-  (setq org-default-notes-file (concat org-directory "notes.org"))
-  (setq org-mobile-inbox-for-pull "~/org/notes.org")
-  (setq org-mobile-directory "~/Dropbox/MobileOrg")
-  (setq org-remember-templates
-	'((?t "* TODO %?" "/Users/reuben/org/organizer.org")
-	  (?n "* Note %t\n %?" "/Users/reuben/org/notes.org"))))
+  (setq org-directory (expand-file-name "~/Dropbox"))
+  (setq org-default-notes-file (concat org-directory "/notes.org"))
+  (setq org-default-journal-file (concat org-directory "/notes.org"))
+  (setq org-capture-templates
+	'(("t" "Todo" entry (file+headline org-default-notes-file "Tasks")
+	   "* TODO %? \n %i\n %a")
+	  ("r" "Lookup Entry in region" entry (file+headline org-default-notes-file "Lookup")
+	   "* %i :LOOKUP:\n")
+	  ("l" "Lookup Entry" entry (file+headline org-default-notes-file "Lookup")
+	   "* %?  :LOOKUP:\n %i \n")
+	  ("j" "Journal" entry (file+datetree org-default-journal-file)
+	   "* %? \nEntered on %U\n %i\n  %a"))) )
   ;; (setq remember-annotation-functions '(org-remember-annotation))
   ;; (setq remember-handler-functions '(org-remember-handler))
   ;; (eval-after-load 'remember
