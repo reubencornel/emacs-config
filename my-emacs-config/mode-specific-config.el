@@ -367,6 +367,7 @@
 
 (defconfig auto-save-config
   (require 'real-auto-save)
+  (add-hook 'org-mode-hook 'turn-on-real-auto-save)
   (add-hook 'text-mode-hook 'turn-on-real-auto-save))
 
 (defconfig markdown-mode

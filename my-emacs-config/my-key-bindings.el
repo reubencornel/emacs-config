@@ -19,16 +19,19 @@
 (global-set-key [(f4)] 'shrink-window-horizontally)
 
 (global-unset-key [(f5)])
-(global-set-key [(f5)] 'my-anything)
+(global-set-key [(f5)] 'enlarge-window)
 
 (global-unset-key [(f6)])
-(global-set-key [(f6)] 'itunes-playpause)
+(global-set-key [(f6)] 'my-anything)
 
-(global-unset-key [(f8)])
-(global-set-key [(f8)] 'itunes-next-track)
+;; (global-unset-key [(f6)])
+;; (global-set-key [(f6)] 'itunes-playpause)
 
-(global-unset-key [(f7)])
-(global-set-key [(f7)] 'itunes-prev-track)
+;; (global-unset-key [(f8)])
+;; (global-set-key [(f8)] 'itunes-next-track)
+
+;; (global-unset-key [(f7)])
+;; (global-set-key [(f7)] 'itunes-prev-track)
 
 (global-unset-key [(control f2)])
 (global-set-key [(control f2)] 'twit-post)
