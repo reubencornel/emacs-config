@@ -83,12 +83,15 @@ that the character is not escaped."
         (cond ((slime-compare-char-syntax #'char-after "(" t)
                ;; We're at the start of some expression, so make sure
                ;; that SWANK::%CURSOR-MARKER% will come after that
-               ;; expression.
-               (ignore-errors (forward-sexp)))
+               ;; expression. If the expression is not balanced, make
+               ;; still sure that the marker does *not* come directly
+               ;; after the preceding expression.
+               (or (ignore-errors (forward-sexp) t)
+                   (push "" suffix)))
               ((or (bolp) (slime-compare-char-syntax #'char-before " " t))
                ;; We're after some expression, so we have to make sure
-               ;; that %CURSOR-MARKER% does not come directly after that
-               ;; expression.
+               ;; that %CURSOR-MARKER% does *not* come directly after
+               ;; that expression.
                (push "" suffix))
               ((slime-compare-char-syntax #'char-before "(" t)
                ;; We're directly after an opening parenthesis, so we
@@ -395,5 +398,46 @@ Point is placed before the first expression in the list."
 (defun slime-inside-string-or-comment-p ()
   (let ((state (slime-current-parser-state)))
     (or (nth 3 state) (nth 4 state))))
+
+;;; The following two functions can be handy when inspecting
+;;; source-location while debugging `M-.'.
+;;;
+(defun slime-current-tlf-number ()
+  "Return the current toplevel number."
+  (interactive)
+  (let ((original-pos (car (slime-region-for-defun-at-point)))
+        (n 0))
+    (save-excursion
+      ;; We use this and no repeated `beginning-of-defun's to get
+      ;; reader conditionals right.
+      (goto-char (point-min))
+      (while (progn (slime-forward-sexp)
+                    (< (point) original-pos))
+        (incf n)))
+    n))
+
+;;; This is similiar to `slime-enclosing-form-paths' in the
+;;; `slime-parse' contrib except that this does not do any duck-tape
+;;; parsing, and gets reader conditionals right.
+(defun slime-current-form-path ()
+  "Returns the path from the beginning of the current toplevel
+form to the atom at point, or nil if we're in front of a tlf."
+  (interactive)
+  (let ((source-path nil))
+    (save-excursion
+      ;; Moving forward to get reader conditionals right.
+      (loop for inner-pos = (point)
+            for outer-pos = (nth-value 1 (slime-current-parser-state))
+            while outer-pos do
+            (goto-char outer-pos)
+            (unless (eq (char-before) ?#) ; when at #(...) continue.
+              (forward-char)
+              (let ((n 0))
+                (while (progn (slime-forward-sexp)
+                              (< (point) inner-pos))
+                  (incf n))
+                (push n source-path)
+                (goto-char outer-pos)))))
+    source-path))
 
 (provide 'slime-parse)
