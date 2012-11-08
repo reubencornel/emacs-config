@@ -28,5 +28,6 @@
 (load-config 'magit)
 ;(load-config 'nxhtml-mode-config)
 ;(load-config 'mmm-mode-config)
+(load-config 'emacs-graphical-font-linux)
 
 (load (expand-file-name "~/emacs/my-emacs-config/my-key-bindings.el"))

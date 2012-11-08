@@ -318,6 +318,9 @@
 (defconfig emacs-graphical-font-windows
   (set-frame-font "Inconsolata-13"))
 
+(defconfig emacs-graphical-font-linux
+  (set-frame-font "Inconsolata-11"))
+
 
 (defconfig aquamacs-config
   (tabbar-mode -1)
