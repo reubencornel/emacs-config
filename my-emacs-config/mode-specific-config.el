@@ -9,7 +9,6 @@
 (add-to-list 'load-path (expand-file-name "~/emacs/auto-install"))
 (add-to-list 'load-path (expand-file-name "~/emacs/tuareg-mode"))
 (add-to-list 'load-path "~/emacs/haskell-mode")
-(add-to-list 'load-path "~/emacs/auctex")
 (add-to-list 'load-path (expand-file-name "~/emacs/yasnippet"))
 (add-to-list 'load-path "~/emacs/clojure-mode")
 (add-to-list 'load-path "~/emacs/swank-clojure")
@@ -25,7 +24,7 @@
 (add-to-list 'load-path (expand-file-name "~/emacs/nav"))
 
 (defconfig nav
-	(require 'nav))
+  (require 'nav))
 
 ;;;;;; Haskell mode
 (defconfig haskell-mode
@@ -39,7 +38,7 @@
 
 ;;;; Salesforce .cls files
 (defconfig cls-files-config
-;;  (add-hook 'java-mode-hook 'my-java-mode-hook)
+  ;;  (add-hook 'java-mode-hook 'my-java-mode-hook)
   (setq auto-mode-alist (cons '("\\.cls$" . java-mode) auto-mode-alist)))
 
 ;;;; w3m config - requires the w3m browser
@@ -87,10 +86,6 @@
       )
      )))
 
-;;;;;;;; Tex mode config
-(defconfig tex-mode
-  (load "auctex.el"))
-
 ;;;;; Tramp config
 (defconfig tramp
   (setq tramp-default-method "ssh")
@@ -115,7 +110,7 @@
   (add-hook 'lisp-interaction-mode-hook (lambda () (paredit-mode +1)))
 
   (slime-setup '(slime-repl) )
-;  (slime-setup '(slime-fancy slime-asdf))
+					;  (slime-setup '(slime-fancy slime-asdf))
   (setq scheme-program-name "/opt/mit-scheme/bin/scheme")
   (setq inferior-lisp-program "/usr/local/bin/sbcl"))
 
@@ -156,7 +151,7 @@
   (setq org-todo-keywords '((sequence "TODO" "STARTED" "WAITING" "|" "DONE")
                             (sequence "NOTPICKEDUP" "|" "PICKEDUP")))
 
-    (setq org-modules '(org-bbdb 
+  (setq org-modules '(org-bbdb 
                       org-contacts
                       org-gnus
                       org-info
@@ -185,10 +180,10 @@
 	   "* %?  :LOOKUP:\n %i \n")
 	  ("j" "Journal" entry (file+datetree org-default-journal-file)
 	   "* %? \nEntered on %U\n %i\n  %a"))) )
-  ;; (setq remember-annotation-functions '(org-remember-annotation))
-  ;; (setq remember-handler-functions '(org-remember-handler))
-  ;; (eval-after-load 'remember
-  ;;   '(add-hook 'remember-mode-hook 'org-remember-apply-template))
+;; (setq remember-annotation-functions '(org-remember-annotation))
+;; (setq remember-handler-functions '(org-remember-handler))
+;; (eval-after-load 'remember
+;;   '(add-hook 'remember-mode-hook 'org-remember-apply-template))
 
 (defconfig linux-org-mode-config
   (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
@@ -333,31 +328,25 @@
   (require 'bar-cursor)
   (bar-cursor-mode 1))
 
-(defconfig icicles-mode-config
-  (require 'icicles)
-  (require 'lacarte)
-  (global-set-key [?\e ?\M-x] 'lacarte-execute-menu-command)
-  (icy-mode 1))
-
 (defconfig carbon-emacs-22-font-config
   (set-default-font "-apple-inconsolata-medium-r-normal--16-0-72-72-m-0-iso10646-1"))
- 
+
 (defconfig anything-mode
   (load "anything")
   (load "anything-config.el")
   
- (defun my-anything ()
-   (interactive)
-   (anything-other-buffer
-    '(anything-c-source-buffers
-      anything-c-source-file-name-history
-      anything-c-source-info-pages
-      anything-c-source-info-elisp
-      anything-c-source-man-pages
-      anything-c-source-locate
-      anything-c-source-imenu
-      anything-c-source-emacs-commands)
-    " *my-anything*")))
+  (defun my-anything ()
+    (interactive)
+    (anything-other-buffer
+     '(anything-c-source-buffers
+       anything-c-source-file-name-history
+       anything-c-source-info-pages
+       anything-c-source-info-elisp
+       anything-c-source-man-pages
+       anything-c-source-locate
+       anything-c-source-imenu
+       anything-c-source-emacs-commands)
+     " *my-anything*")))
 
 (defconfig magit
   (require 'magit))
@@ -371,9 +360,9 @@
   (add-hook 'text-mode-hook 'turn-on-real-auto-save))
 
 (defconfig markdown-mode
-     (autoload 'markdown-mode "markdown-mode.el"
-       "Major mode for editing Markdown files" t)
-     (setq auto-mode-alist
+  (autoload 'markdown-mode "markdown-mode.el"
+    "Major mode for editing Markdown files" t)
+  (setq auto-mode-alist
         (cons '("\\.md" . markdown-mode) auto-mode-alist)))
 
 (defconfig text-mode-config
