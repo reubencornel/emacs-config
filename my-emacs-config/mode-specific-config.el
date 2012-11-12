@@ -37,8 +37,11 @@
   (setq auto-mode-alist (cons '("\\.hs$" . haskell-mode) auto-mode-alist)))
 
 ;;;; Salesforce .cls files
-(defconfig cls-files-config
+(defconfig salesforce-config
   ;;  (add-hook 'java-mode-hook 'my-java-mode-hook)
+  (setq auto-mode-alist (cons '("\\.translation$" . xml-mode) auto-mode-alist))
+  (setq auto-mode-alist (cons '("\\.label$" . xml-mode) auto-mode-alist))
+  (setq auto-mode-alist (cons '("\\.trigger$" . java-mode) auto-mode-alist))
   (setq auto-mode-alist (cons '("\\.cls$" . java-mode) auto-mode-alist)))
 
 ;;;; w3m config - requires the w3m browser
