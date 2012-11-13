@@ -68,9 +68,7 @@ in order to expand or compress the tonal range displayed."
   "This is a table of all the colors used by the Solarized color theme. Each
    column is a different set, one of which will be chosen based on term
    capabilities, etc.")
-
-(defun solarized-color-definitions (mode)
-  (flet ((find-color (name)
+(defun solarized-find-color (name)
            (let ((index (if window-system
                             (if solarized-degrade
                                 3
@@ -78,23 +76,25 @@ in order to expand or compress the tonal range displayed."
 			  (if (= solarized-termcolors 256)
 			      3
 			    4))))
-             (nth index (assoc name solarized-colors)))))
-    (let ((base03    (find-color 'base03))
-          (base02    (find-color 'base02))
-          (base01    (find-color 'base01))
-          (base00    (find-color 'base00))
-          (base0     (find-color 'base0))
-          (base1     (find-color 'base1))
-          (base2     (find-color 'base2))
-          (base3     (find-color 'base3))
-          (yellow    (find-color 'yellow))
-          (orange    (find-color 'orange))
-          (red       (find-color 'red))
-          (magenta   (find-color 'magenta))
-          (violet    (find-color 'violet))
-          (blue      (find-color 'blue))
-          (cyan      (find-color 'cyan))
-          (green     (find-color 'green))
+             (nth index (assoc name solarized-colors))))
+
+(defun solarized-color-definitions (mode)
+    (let ((base03    (solarized-find-color 'base03))
+          (base02    (solarized-find-color 'base02))
+          (base01    (solarized-find-color 'base01))
+          (base00    (solarized-find-color 'base00))
+          (base0     (solarized-find-color 'base0))
+          (base1     (solarized-find-color 'base1))
+          (base2     (solarized-find-color 'base2))
+          (base3     (solarized-find-color 'base3))
+          (yellow    (solarized-find-color 'yellow))
+          (orange    (solarized-find-color 'orange))
+          (red       (solarized-find-color 'red))
+          (magenta   (solarized-find-color 'magenta))
+          (violet    (solarized-find-color 'violet))
+          (blue      (solarized-find-color 'blue))
+          (cyan      (solarized-find-color 'cyan))
+          (green     (solarized-find-color 'green))
           (bold      (if solarized-bold 'bold 'normal))
           (underline (if solarized-underline t nil))
           (opt-under nil)
@@ -317,7 +317,7 @@ in order to expand or compress the tonal range displayed."
           ((foreground-color . ,base0)
            (background-color . ,base03)
            (background-mode . ,mode)
-           (cursor-color . ,base0)))))))
+           (cursor-color . ,base0))))))
 
 (defmacro create-solarized-theme (mode)
   (let* ((theme-name (intern (concat "solarized-" (symbol-name mode))))
