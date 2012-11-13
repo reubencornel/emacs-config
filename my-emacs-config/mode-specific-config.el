@@ -26,6 +26,9 @@
 (defconfig nav
   (require 'nav))
 
+(defconfig sentence-highlight-mode
+  (require 'sentence-highlight))
+
 ;;;;;; Haskell mode
 (defconfig haskell-mode
   (require 'haskell-mode)
@@ -36,14 +39,14 @@
   (setf haskell-program-name "/Library/Frameworks/GHC.framework/Versions/Current/usr/bin/ghci")
   (setq auto-mode-alist (cons '("\\.hs$" . haskell-mode) auto-mode-alist)))
 
-;;;; Salesforce files config
-(defconfig salesforce-files-config
+;;;; Salesforce .cls files
+(defconfig salesforce-config
   ;;  (add-hook 'java-mode-hook 'my-java-mode-hook)
-  (setq auto-mode-alist (cons '("\\.cls$" . java-mode) auto-mode-alist))
-  (setq auto-mode-alist (cons '("\\.trigger$" . java-mode) auto-mode-alist))
+  (setq auto-mode-alist (cons '("\\.translation$" . xml-mode) auto-mode-alist))
+  (setq auto-mode-alist (cons '("\\.label$" . xml-mode) auto-mode-alist))
   (setq auto-mode-alist (cons '("\\.object$" . xml-mode) auto-mode-alist))
-  (setq auto-mode-alist (cons '("\\.label$" . xml-mode) auto-mode-alist)))
-
+  (setq auto-mode-alist (cons '("\\.trigger$" . java-mode) auto-mode-alist))
+  (setq auto-mode-alist (cons '("\\.cls$" . java-mode) auto-mode-alist)))
 
 ;;;; w3m config - requires the w3m browser
 (defconfig w3m-config
