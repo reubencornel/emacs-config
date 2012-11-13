@@ -26,6 +26,9 @@
 (defconfig nav
   (require 'nav))
 
+(defconfig sentence-highlight-mode
+  (require 'sentence-highlight))
+
 ;;;;;; Haskell mode
 (defconfig haskell-mode
   (require 'haskell-mode)
