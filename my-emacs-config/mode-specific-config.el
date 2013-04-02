@@ -171,10 +171,13 @@
                       org-expiry
                       org-interactive-query
                       org-man
+		      org-latex
                       org-panel
                       org-screen
                       org-toc))
-  
+
+  (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+       
   (setq org-directory (expand-file-name "~/Dropbox"))
   (setq org-default-notes-file (concat org-directory "/notes.org"))
   (setq org-default-journal-file (concat org-directory "/notes.org"))
@@ -199,6 +202,8 @@
 
   (setq org-todo-keywords '((sequence "TODO" "STARTED" "WAITING" "|" "DONE")
                             (sequence "NOTPICKEDUP" "|" "PICKEDUP")))
+
+  (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 
   (setq org-directory (expand-file-name "~/Dropbox"))
   (setq org-default-notes-file (concat org-directory "/notes.org"))
