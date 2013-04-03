@@ -6,7 +6,7 @@
 
 ;(load-config 'haskell-mode)
 (load-config 'tramp)
-;(load-config 'cl-config)
+(load-config 'cl-config)
 (load-config 'org-mode-config)
 (load-config 'itunes-config)
 ;(load-config 'ocaml-support)

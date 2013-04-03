@@ -104,11 +104,6 @@
   (defvar package-activated-list nil)
   (require 'slime)
 
-  (autoload 'paredit-mode "paredit"
-    "Minor mode for pseudo-structurally editing Lisp code." t)
-  (add-hook 'lisp-mode-hook             (lambda () (paredit-mode +1)))
-  (add-hook 'lisp-interaction-mode-hook (lambda () (paredit-mode +1)))
-
   (slime-setup '(slime-repl) )
 					;  (slime-setup '(slime-fancy slime-asdf))
   (setq scheme-program-name "/opt/mit-scheme/bin/scheme")
@@ -305,7 +300,7 @@
 	   :publishing-function org-publish-attachment)
 
 	  
-	  ("org" :components ("org-notes" "org-css" "org-js" "org-source")))))
+	  ("org" :components ("org-notes" "org-css" "org-js" ))))) ;"org-source"
 
 ;; Article file support
 (defconfig article-file-support
@@ -313,7 +308,7 @@
 
 ;; Emacs 23 font configuration.
 (defconfig emacs-graphical-font
-  (set-frame-font "Inconsolata-16"))
+  (set-frame-font "Inconsolata-14"))
 
 (defconfig emacs-graphical-font-windows
   (set-frame-font "Inconsolata-13"))
