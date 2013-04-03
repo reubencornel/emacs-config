@@ -1,0 +1,5 @@
+ WARN [2011-08-03 13:32:24,017] (ProxyManager.java:init:49) - No proxy bundle found - default proxy service will be initialized
+Initiated 'com.salesforce.ide.core' plugin, version 20.0.1.201011121559
+Initiated 'com.salesforce.ide.ui.editors' plugin, version 20.0.1.201011121559
+Initiated 'com.salesforce.ide.ui' ForceIdeUIPlugin, version 20.0.1.201011121559
+Initiated 'com.salesforce.ide.upgrade' plugin, version 20.0.1.201011121559

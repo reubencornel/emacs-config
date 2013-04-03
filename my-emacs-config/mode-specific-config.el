@@ -26,6 +26,9 @@
 (defconfig nav
   (require 'nav))
 
+(defconfig sentence-highlight-mode
+  (require 'sentence-highlight))
+
 ;;;;;; Haskell mode
 (defconfig haskell-mode
   (require 'haskell-mode)
@@ -37,8 +40,12 @@
   (setq auto-mode-alist (cons '("\\.hs$" . haskell-mode) auto-mode-alist)))
 
 ;;;; Salesforce .cls files
-(defconfig cls-files-config
+(defconfig salesforce-config
   ;;  (add-hook 'java-mode-hook 'my-java-mode-hook)
+  (setq auto-mode-alist (cons '("\\.translation$" . xml-mode) auto-mode-alist))
+  (setq auto-mode-alist (cons '("\\.label$" . xml-mode) auto-mode-alist))
+  (setq auto-mode-alist (cons '("\\.object$" . xml-mode) auto-mode-alist))
+  (setq auto-mode-alist (cons '("\\.trigger$" . java-mode) auto-mode-alist))
   (setq auto-mode-alist (cons '("\\.cls$" . java-mode) auto-mode-alist)))
 
 ;;;; w3m config - requires the w3m browser
@@ -159,10 +166,13 @@
                       org-expiry
                       org-interactive-query
                       org-man
+		      org-latex
                       org-panel
                       org-screen
                       org-toc))
-  
+
+  (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+       
   (setq org-directory (expand-file-name "~/Dropbox"))
   (setq org-default-notes-file (concat org-directory "/notes.org"))
   (setq org-default-journal-file (concat org-directory "/notes.org"))
@@ -187,6 +197,8 @@
 
   (setq org-todo-keywords '((sequence "TODO" "STARTED" "WAITING" "|" "DONE")
                             (sequence "NOTPICKEDUP" "|" "PICKEDUP")))
+
+  (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 
   (setq org-directory (expand-file-name "~/Dropbox"))
   (setq org-default-notes-file (concat org-directory "/notes.org"))
@@ -308,10 +320,17 @@
 
 ;; Emacs 23 font configuration.
 (defconfig emacs-graphical-font
+<<<<<<< HEAD
   (set-frame-font "Inconsolata-14"))
+=======
+  (set-frame-font "Inconsolata-11"))
+>>>>>>> 34944651bed72be881edec53e7987a61e6373a79
 
 (defconfig emacs-graphical-font-windows
   (set-frame-font "Inconsolata-13"))
+
+(defconfig emacs-graphical-font-linux
+  (set-frame-font "Inconsolata-11"))
 
 
 (defconfig aquamacs-config

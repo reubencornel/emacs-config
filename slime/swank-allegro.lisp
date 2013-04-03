@@ -108,6 +108,9 @@
     (simple-error () :not-available)))
 
 (defimplementation macroexpand-all (form)
+  #+(version>= 8 0)
+  (excl::walk-form form)
+  #-(version>= 8 0)
   (excl::walk form))
 
 (defimplementation describe-symbol-for-emacs (symbol)
@@ -136,6 +139,11 @@
      (describe (symbol-function symbol)))
     (:class
      (describe (find-class symbol)))))
+
+(defimplementation type-specifier-p (symbol)
+  (or (ignore-errors
+       (subtypep nil symbol))
+      (not (eq (type-specifier-arglist symbol) :not-available))))
 
 ;;;; Debugger
 
@@ -229,7 +237,8 @@
           (t
            (let* ((code-loc (find-if (lambda (c)
                                        (<= (- pc (sys::natural-width))
-                                           (excl::ldb-code-pc c)
+                                           (let ((x (excl::ldb-code-pc c)))
+                                             (or x -1))
                                            pc))
                                      debug-info)))
              (cond ((not code-loc)
@@ -239,8 +248,13 @@
 
 #+(version>= 8 2)
 (defun ldb-code-to-src-loc (code)
-  (let* ((start (excl::ldb-code-start-char code))
-         (func (excl::ldb-code-func code))
+  (declare (optimize debug))
+  (let* ((func (excl::ldb-code-func code))
+         (debug-info (excl::function-source-debug-info func))
+         (start (loop for i from (excl::ldb-code-index code) downto 0
+                      for bpt = (aref debug-info i)
+                      for start = (excl::ldb-code-start-char bpt)
+                      when start return start))
          (src-file (excl:source-file func)))
     (cond (start
            (buffer-or-file-location src-file start))
@@ -250,7 +264,7 @@
                   (paths (source-paths-of (excl::ldb-code-source whole)
                                           (excl::ldb-code-source code)))
                   (path (if paths (longest-common-prefix paths) '()))
-                  (start (excl::ldb-code-start-char whole)))
+                  (start 0))
              (buffer-or-file
               src-file
               (lambda (file)
@@ -286,9 +300,9 @@
     ;; let-bind lexical variables
     (let ((vars (loop for i below (debugger:frame-number-vars frame)
                       for name = (debugger:frame-var-name frame i)
-                      if (symbolp name)
+                      if (typep name '(and symbol (not null) (not keyword)))
                       collect `(,name ',(debugger:frame-var-value frame i)))))
-      (debugger:eval-form-in-context 
+      (debugger:eval-form-in-context
        `(let* ,vars ,form)
        (debugger:environment-of-frame frame)))))
 
@@ -296,7 +310,9 @@
   (let* ((frame (nth-frame frame-number))
          (exp (debugger:frame-expression frame)))
     (typecase exp
-      ((cons symbol) (symbol-package (car exp))))))
+      ((cons symbol) (symbol-package (car exp)))
+      ((cons (cons (eql :internal) (cons symbol)))
+       (symbol-package (cadar exp))))))
 
 (defimplementation return-from-frame (frame-number form)
   (let ((frame (nth-frame frame-number)))
@@ -347,9 +363,16 @@
 
 (defun handle-compiler-warning (condition)
   (declare (optimize (debug 3) (speed 0) (space 0)))
-  (cond ((and (not *buffer-name*) 
+  (cond ((and (not *buffer-name*)
               (compiler-undefined-functions-called-warning-p condition))
          (handle-undefined-functions-warning condition))
+        ((and (typep condition 'excl::compiler-note)
+              (let ((format (slot-value condition 'excl::format-control)))
+                (and (search "Closure" format)
+                     (search "will be stack allocated" format))))
+         ;; Ignore "Closure <foo> will be stack allocated" notes.
+         ;; That occurs often but is usually uninteresting.
+         )
         (t
          (signal-compiler-condition
           :original-condition condition
@@ -361,7 +384,7 @@
                       (reader-error  :read-error)
                       (error         :error))
           :message (format nil "~A" condition)
-          :location (if (typep condition 'reader-error) 
+          :location (if (typep condition 'reader-error)
                         (location-for-reader-error condition)
                         (location-for-warning condition))))))
 
