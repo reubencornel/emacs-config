@@ -110,6 +110,7 @@
 (defconfig cl-config
   (defvar package-activated-list nil)
   (require 'slime)
+  (autoload 'paredit-mode "paredit" "Minor Mode for editing lisp code")
 
   (slime-setup '(slime-repl) )
 					;  (slime-setup '(slime-fancy slime-asdf))
