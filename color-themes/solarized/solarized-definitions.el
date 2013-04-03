@@ -68,18 +68,7 @@ in order to expand or compress the tonal range displayed."
   "This is a table of all the colors used by the Solarized color theme. Each
    column is a different set, one of which will be chosen based on term
    capabilities, etc.")
-<<<<<<< HEAD
 
-(defun solarized-find-color(name)
-  (let ((index (if window-system
-                   (if solarized-degrade
-                       3
-                     2)
-                 (if (= solarized-termcolors 256)
-                     3
-                   4))))
-    (nth index (assoc name solarized-colors))))
-=======
 (defun solarized-find-color (name)
            (let ((index (if window-system
                             (if solarized-degrade
@@ -89,7 +78,7 @@ in order to expand or compress the tonal range displayed."
 			      3
 			    4))))
              (nth index (assoc name solarized-colors))))
->>>>>>> 34944651bed72be881edec53e7987a61e6373a79
+
 
 (defun solarized-color-definitions (mode)
     (let ((base03    (solarized-find-color 'base03))

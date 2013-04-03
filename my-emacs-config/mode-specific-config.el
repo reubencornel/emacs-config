@@ -320,11 +320,7 @@
 
 ;; Emacs 23 font configuration.
 (defconfig emacs-graphical-font
-<<<<<<< HEAD
-  (set-frame-font "Inconsolata-14"))
-=======
   (set-frame-font "Inconsolata-11"))
->>>>>>> 34944651bed72be881edec53e7987a61e6373a79
 
 (defconfig emacs-graphical-font-windows
   (set-frame-font "Inconsolata-13"))
