@@ -29,6 +29,11 @@
 (defconfig sentence-highlight-mode
   (require 'sentence-highlight))
 
+(defconfig nrepl
+  (require 'paredit)
+  (require 'clojure-mode)
+  (require 'nrepl))
+
 ;;;;;; Haskell mode
 (defconfig haskell-mode
   (require 'haskell-mode)
@@ -321,7 +326,7 @@
 
 ;; Emacs 23 font configuration.
 (defconfig emacs-graphical-font
-  (set-frame-font "Inconsolata-11"))
+  (set-frame-font "Inconsolata-14"))
 
 (defconfig emacs-graphical-font-windows
   (set-frame-font "Inconsolata-13"))
