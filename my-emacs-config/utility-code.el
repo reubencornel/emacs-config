@@ -210,5 +210,8 @@ being the working directory of the buffer"
         (copy-file (buffer-file-name) 
                    (expand-file-name "~/Dropbox/Apps/MobileOrg/")
                    t)
-        (shell-command (concat "md5 " (buffer-file-name) " > "
+        (shell-command (concat (if (equal system-type "darwin")
+				   "md5 "
+				 "md5sum ")
+			       (buffer-file-name) " > "
                                (expand-file-name "~/Dropbox/Apps/MobileOrg/checksums.dat"))))))
