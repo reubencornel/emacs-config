@@ -201,4 +201,14 @@ being the working directory of the buffer"
   "Switch entry to DONE when all subentries are done, to TODO otherwise."
   (let (org-log-done org-log-states)   ; turn off logging
     (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+
      
+(defun sync-index-org()
+  "Copies the index.org file from the dropbox dir to the mobile org dir so that it can be accessed on my phone"
+  (if (string-match "index\.org$" (buffer-file-name))
+      (progn
+        (copy-file (buffer-file-name) 
+                   (expand-file-name "~/Dropbox/Apps/MobileOrg/")
+                   t)
+        (shell-command (concat "md5 " (buffer-file-name) " > "
+                               (expand-file-name "~/Dropbox/Apps/MobileOrg/checksums.dat"))))))

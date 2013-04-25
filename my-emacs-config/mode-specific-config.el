@@ -155,6 +155,8 @@
   (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
   (setq org-hide-leading-stars 't)
   (setq org-log-done 'time)
+  (add-hook 'after-save-hook 'sync-index-org)
+
 
   (setq org-todo-keywords '((sequence "TODO" "STARTED" "WAITING" "|" "DONE")
                             (sequence "NOTPICKEDUP" "|" "PICKEDUP")))
@@ -382,6 +384,6 @@
         (cons '("\\.md" . markdown-mode) auto-mode-alist)))
 
 (defconfig text-mode-config
-  (fringe-mode -1)
-  (add-hook 'text-mode-hook (lambda() (setq line-spacing 10))))
+  (fringe-mode -1))
+
 
