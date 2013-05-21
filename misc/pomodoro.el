@@ -38,12 +38,14 @@
 (defvar pomodoro-task nil "Name of the task that is currently being executed")
 (defvar pomodoro-timer nil)
 (defvar pomodoro-mode-line-string "")
+(defvar pomodoro-max-number-of-small-breaks 3)
 
 (defvar pomodoro-size-of-tick 60 "Number seconds after which the timer is set off in seconds")
 (defvar pomodoro-max-size 25 "Max time for the pomodoro in minutes")
 (defvar pomodoro-short-break-size 5)
 (defvar pomodoro-long-break-size 15)
 (defvar pomodoro-time-remaining 0)
+(defvar pomodoro-number-of-small-breaks 0)
 
 (defvar pomodoro-custom-on-start-functions '() "Functions that are executed on start of the pomodoro")
 (defvar pomodoro-custom-on-complete-functions '() "Functions that are executed on complete of the timer")
@@ -119,6 +121,17 @@
                                          (pomodoro-message (concat "Completed Task:" pomodoro-task)))
                                    pomodoro-custom-on-complete-functions)))
 
+(defun pomodoro-break()
+  "Function that decides how you break"
+  (interactive)
+  (if (< pomodoro-number-of-small-breaks pomodoro-max-number-of-small-breaks)
+      (progn 
+        (incf pomodoro-number-of-small-breaks)
+        (pomodoro-short-break))
+    (progn
+      (setq pomodoro-number-of-small-breaks 0)
+      (pomodoro-long-break))))
+
 (defun pomodoro-short-break()
   "Function that controls a short break"
   (interactive)
@@ -140,7 +153,9 @@
   (setq pomodoro-state "LB")
   (setq pomodoro-task "Long Break")
   (pomodoro-timer-template pomodoro-long-break-size
-                           (cons (update-mode-line) pomodoro-custom-on-start-functions)
+                           (append (list (update-mode-line)
+                                         (pomodoro-message "Starting long break"))
+                                   pomodoro-custom-on-start-functions)
                            (cons (update-mode-line)
                                  pomodoro-custom-on-tick-functions)
                            (append (list (update-mode-line)
