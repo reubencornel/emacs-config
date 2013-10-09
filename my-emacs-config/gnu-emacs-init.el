@@ -17,7 +17,7 @@
 (load-config 'article-file-support)
 (load-config 'color-theme)
 (load-config 'twit)
-(load-config 'emacs-graphical-font)
+;(load-config 'emacs-graphical-font)
 (load-config 'thin-cursor-config)
 (load-config 'magit)
 (load-config 'yasnippet)
