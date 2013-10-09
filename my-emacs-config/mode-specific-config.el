@@ -177,10 +177,10 @@
 		      org-latex
                       org-panel
                       org-screen
-                      org-toc)
-	(setq org-directory "~/Dropbox")
-	(setq org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
-	(setq org-mobile-inbox-for-pull "~/Dropbox/inbox.org"))
+                      org-toc))
+  (setq org-directory "~/Dropbox")
+  (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
+  (setq org-mobile-inbox-for-pull "~/Dropbox/inbox.org")
   
   (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
        
