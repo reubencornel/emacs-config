@@ -116,8 +116,7 @@
   (defvar package-activated-list nil)
   (require 'slime)
   (autoload 'paredit-mode "paredit" "Minor Mode for editing lisp code")
-
-  (slime-setup '(slime-repl) )
+  (slime-setup )
 					;  (slime-setup '(slime-fancy slime-asdf))
   (setq scheme-program-name "/opt/mit-scheme/bin/scheme")
   (setq inferior-lisp-program "/usr/local/bin/sbcl"))
