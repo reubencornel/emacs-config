@@ -9,7 +9,7 @@
 (load-config 'cl-config)
 (load-config 'org-mode-config)
 (load-config 'itunes-config)
-(load-config 'clojure-config)
+;(load-config 'clojure-config)
 ;(load-config 'ocaml-support)
 (load-config 'c-mode-config)
 (load-config 'ido-mode)
@@ -29,3 +29,4 @@
 
 (load (expand-file-name "~/emacs/my-emacs-config/my-key-bindings.el"))
 (global-set-key (kbd "M-RET") 'ns-toggle-fullscreen)
+(set-frame-font "Inconsolata 19")
