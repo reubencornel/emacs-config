@@ -1,6 +1,6 @@
 ;;; org-timer.el --- The relative timer code for Org-mode
 
-;; Copyright (C) 2008-2012 Free Software Foundation, Inc.
+;; Copyright (C) 2008-2014 Free Software Foundation, Inc.
 
 ;; Author: Carsten Dominik <carsten at orgmode dot org>
 ;; Keywords: outlines, hypermedia, calendar, wp
@@ -130,7 +130,6 @@ the region 0:00:00."
 	       (org-timer-secs-to-hms (or delta 0)))
       (run-hooks 'org-timer-start-hook))))
 
-;;;###autoload
 (defun org-timer-pause-or-continue (&optional stop)
   "Pause or continue the relative timer.
 With prefix arg STOP, stop it entirely."
@@ -157,14 +156,14 @@ With prefix arg STOP, stop it entirely."
     (org-timer-set-mode-line 'pause)
     (message "Timer paused at %s" (org-timer-value-string)))))
 
-;;;###autoload
 (defun org-timer-stop ()
   "Stop the relative timer."
   (interactive)
   (run-hooks 'org-timer-stop-hook)
   (setq org-timer-start-time nil
 	org-timer-pause-time nil)
-  (org-timer-set-mode-line 'off))
+  (org-timer-set-mode-line 'off)
+  (message "Timer stopped"))
 
 ;;;###autoload
 (defun org-timer (&optional restart no-insert-p)
@@ -371,6 +370,8 @@ VALUE can be `on', `off', or `pause'."
       (message "%d minute(s) %d seconds left before next time out"
 	       rmins rsecs))))
 
+(defvar org-clock-sound)
+
 ;;;###autoload
 (defun org-timer-set-timer (&optional opt)
   "Prompt for a duration and set a timer.
@@ -430,7 +431,7 @@ replace any running timer."
 		    (run-with-timer
 		     secs nil `(lambda ()
 				 (setq org-timer-current-timer nil)
-				 (org-notify ,(format "%s: time out" hl) t)
+				 (org-notify ,(format "%s: time out" hl) ,org-clock-sound)
 				 (setq org-timer-timer-is-countdown nil)
 				 (org-timer-set-mode-line 'off)
 				 (run-hooks 'org-timer-done-hook))))
@@ -442,5 +443,9 @@ replace any running timer."
 	  (message "No timer set"))))))
 
 (provide 'org-timer)
+
+;; Local variables:
+;; generated-autoload-file: "org-loaddefs.el"
+;; End:
 
 ;;; org-timer.el ends here

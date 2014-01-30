@@ -1,6 +1,6 @@
 ;;; ob-ref.el --- org-babel functions for referencing external data
 
-;; Copyright (C) 2009-2012  Free Software Foundation, Inc.
+;; Copyright (C) 2009-2014 Free Software Foundation, Inc.
 
 ;; Authors: Eric Schulte
 ;;	 Dan Davison
@@ -40,7 +40,7 @@
 ;; So an example of a simple src block referencing table data in the
 ;; same file would be
 
-;;  #+TBLNAME: sandbox
+;;  #+NAME: sandbox
 ;;  | 1 |         2 | 3 |
 ;;  | 4 | org-babel | 6 |
 ;;
@@ -49,7 +49,7 @@
 ;;  #+end_src
 
 ;;; Code:
-(require 'ob)
+(require 'ob-core)
 (eval-when-compile
   (require 'cl))
 
@@ -59,6 +59,7 @@
 (declare-function org-at-item-p "org-list" ())
 (declare-function org-narrow-to-subtree "org" ())
 (declare-function org-id-find-id-in-file "org-id" (id file &optional markerp))
+(declare-function org-id-find-id-file "org-id" (id))
 (declare-function org-show-context "org" (&optional key))
 (declare-function org-pop-to-buffer-same-window
 		  "org-compat" (&optional buffer-or-name norecord label))
@@ -82,7 +83,12 @@ the variable."
     (let ((var (match-string 1 assignment))
 	  (ref (match-string 2 assignment)))
       (cons (intern var)
-	    (let ((out (org-babel-read ref)))
+	    (let ((out (save-excursion
+			 (when org-babel-current-src-block-location
+			   (goto-char (if (markerp org-babel-current-src-block-location)
+					  (marker-position org-babel-current-src-block-location)
+					org-babel-current-src-block-location)))
+			 (org-babel-read ref))))
 	      (if (equal out ref)
 		  (if (string-match "^\".*\"$" ref)
 		      (read ref)
