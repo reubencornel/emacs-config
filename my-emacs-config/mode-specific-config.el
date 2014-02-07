@@ -13,6 +13,7 @@
 (add-to-list 'load-path "~/emacs/clojure-mode")
 (add-to-list 'load-path "~/emacs/swank-clojure")
 (add-to-list 'load-path "~/emacs/slime")
+(add-to-list 'load-path "~/emacs/slime/contrib")
 (add-to-list 'load-path (expand-file-name "~/emacs/color-themes"))
 (add-to-list 'load-path (expand-file-name "~/emacs/color-themes/solarized"))
 (add-to-list 'load-path (expand-file-name "~/emacs/anything"))
@@ -115,9 +116,8 @@
 (defconfig cl-config
   (defvar package-activated-list nil)
   (require 'slime)
+  (slime-setup '(slime-repl))
   (autoload 'paredit-mode "paredit" "Minor Mode for editing lisp code")
-  (slime-setup )
-					;  (slime-setup '(slime-fancy slime-asdf))
   (setq scheme-program-name "/opt/mit-scheme/bin/scheme")
   (setq inferior-lisp-program "/usr/local/bin/sbcl"))
 
@@ -135,20 +135,6 @@
   (add-to-list 'slime-lisp-implementations '(sbcl ("/usr/bin/sbcl"))))
 
 
-;;;;;;;; clojure slime config
-(defconfig clojure-config
-  (setq swank-clojure-binary "~/bin/clojure")
-  (setq swank-clojure-jar-path "/Users/reuben/javaBin/clojure/clojure/clojure.jar")
-  (require 'clojure-mode)
-  (require 'swank-clojure-autoload)
-  (swank-clojure-config
-   (setq swank-clojure-jar-path "/Users/reuben/javaBin/clojure/clojure/clojure.jar")
-   (setq swank-clojure-extra-classpaths 
-	 (list "/Users/reuben/javaBin/clojure/clojure-contrib/clojure-contrib.jar")))
-  (require 'swank-clojure)
-  (add-to-list 'slime-lisp-implementations '(sbcl ("/usr/bin/local/sbcl"))))
-
-
 (defconfig org-mode-config
   (require 'org-install)
   (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
@@ -156,6 +142,11 @@
   (setq org-log-done 'time)
   (add-hook 'after-save-hook 'sync-index-org)
 
+  (setq org-agenda-custom-commands
+        '(("wt" tags-todo "+WORK+TASKS")
+          ("ht" tags-todo "+HOME+TASKS")
+          ("wp" tags-todo "+WORK+PROJECTS")
+          ("hp" tags-todo "+HOME+PROJECTS")))
 
   (setq org-todo-keywords '((sequence "TODO" "STARTED" "WAITING" "|" "DONE")
                             (sequence "NOTPICKEDUP" "|" "PICKEDUP")))
@@ -195,10 +186,6 @@
 	   "* %?  :LOOKUP:\n %i \n")
 	  ("j" "Journal" entry (file+datetree org-default-journal-file)
 	   "* %? \nEntered on %U\n %i\n  %a"))) )
-;; (setq remember-annotation-functions '(org-remember-annotation))
-;; (setq remember-handler-functions '(org-remember-handler))
-;; (eval-after-load 'remember
-;;   '(add-hook 'remember-mode-hook 'org-remember-apply-template))
 
 (defconfig linux-org-mode-config
   (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
