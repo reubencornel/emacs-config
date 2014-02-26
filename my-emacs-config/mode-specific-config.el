@@ -185,7 +185,8 @@
 	  ("l" "Lookup Entry" entry (file+headline org-default-notes-file "Lookup")
 	   "* %?  :LOOKUP:\n %i \n")
 	  ("j" "Journal" entry (file+datetree org-default-journal-file)
-	   "* %? \nEntered on %U\n %i\n  %a"))) )
+	   "* %? \nEntered on %U\n %i\n  %a"))) 
+  (run-with-timer 0 (* 60 60) 'org-mobile-push))
 
 (defconfig linux-org-mode-config
   (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
