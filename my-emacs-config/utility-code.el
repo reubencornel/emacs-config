@@ -215,3 +215,8 @@ being the working directory of the buffer"
 				 "md5sum "))
 			       (buffer-file-name) " > "
                                (expand-file-name "~/Dropbox/Apps/MobileOrg/checksums.dat"))))))
+
+(defun my-appt-display (min-to-app new-time msg)
+  (my-appt-send-notification 
+    (format "'Appointment in %s minutes'" min-to-app)
+    (format "'%s'" msg)))                       

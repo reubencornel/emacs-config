@@ -5,6 +5,14 @@
 ;;(load (expand-file-name "~/my-key-bindings.el"))
 
 ;(load-config 'haskell-mode)
+
+;; Custom os code
+(defvar my-notifier-path   "/usr/local/bin/growlnotify")
+
+(defun my-appt-send-notification (title msg)
+  (shell-command (concat my-notifier-path " -m " msg " -t " title " -w &"))) 
+
+;; modes
 (load-config 'tramp)
 (load-config 'cl-config)
 (load-config 'org-mode-config)
@@ -30,3 +38,4 @@
 (load (expand-file-name "~/emacs/my-emacs-config/my-key-bindings.el"))
 (global-set-key (kbd "M-RET") 'ns-toggle-fullscreen)
 (set-frame-font "Inconsolata 19")
+

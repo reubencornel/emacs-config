@@ -173,7 +173,21 @@
   (setq org-mobile-inbox-for-pull "~/Dropbox/inbox.org")
   
   (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
-       
+
+  (require 'appt)
+  (setq appt-time-msg-list nil)    ;; clear existing appt list
+  (setq appt-display-interval '10) ;; warn every 10 minutes from t - appt-message-warning-time
+  (setq
+   appt-message-warning-time '10  ;; send first warning 10 minutes before appointment
+   appt-display-mode-line nil     ;; don't show in the modeline
+   appt-display-format 'window)   ;; pass warnings to the designated window function
+  (appt-activate 1)                ;; activate appointment notification
+
+  (org-agenda-to-appt)             ;; generate the appt list from org agenda files on emacs launch
+  (run-at-time "24:01" 3600 'org-agenda-to-appt)           ;; update appt list hourly
+  (add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt) ;; update appt list on agenda view
+  (setq appt-disp-window-function (function my-appt-display))
+  
   (setq org-directory (expand-file-name "~/Dropbox"))
   (setq org-default-notes-file (concat org-directory "/notes.org"))
   (setq org-default-journal-file (concat org-directory "/notes.org"))

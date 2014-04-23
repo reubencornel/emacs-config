@@ -4,6 +4,14 @@
 ;;(require 'osx-itunes)
 ;;(load (expand-file-name "~/my-key-bindings.el"))
 
+
+;; Custom os code
+(defvar my-notifier-path "/usr/bin/zenity")
+
+(defun my-appt-send-notification (title msg)
+  (shell-command (concat my-notifier-path " --warning " " --text " msg " &")))
+
+;; Custom modes
 ;(load-config 'haskell-mode)
 (load-config 'tramp)
 (load-config 'cl-config)
