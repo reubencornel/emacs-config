@@ -9,7 +9,7 @@
                        slime-c-p-c
                        slime-editing-commands
                        slime-fancy-inspector
-                       slime-fuzzy
+;                       slime-fuzzy
                        slime-presentations
                        slime-scratch
                        slime-references
@@ -21,7 +21,7 @@
    (slime-c-p-c-init)
    (slime-editing-commands-init)
    (slime-fancy-inspector-init)
-   (slime-fuzzy-init)
+;   (slime-fuzzy-init)
    (slime-presentations-init)
    (slime-scratch-init)
    (slime-references-init)
