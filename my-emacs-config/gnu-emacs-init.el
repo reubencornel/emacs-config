@@ -32,6 +32,7 @@
 (load-config 'nav)
 (load-config 'auto-save-config)
 (load-config 'text-mode-config)
+(load-config 'cider-config)
 
 (load (expand-file-name "~/emacs/my-emacs-config/my-key-bindings.el"))
 (global-set-key (kbd "M-RET") 'ns-toggle-fullscreen)

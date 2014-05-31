@@ -23,6 +23,7 @@
 (add-to-list 'load-path (expand-file-name "~/emacs/nxhtml"))
 (add-to-list 'load-path (expand-file-name "~/emacs/mmm-mode"))
 (add-to-list 'load-path (expand-file-name "~/emacs/nav"))
+(add-to-list 'load-path (expand-file-name "~/emacs/cider"))
 
 (defconfig nav
   (require 'nav))
@@ -391,3 +392,5 @@
   (fringe-mode -1))
 
 
+(defconfig cider-config
+  (require 'cider))
