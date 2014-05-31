@@ -56,7 +56,6 @@
     (should (equal (cider-repl--banner) "; CIDER 0.2.0 (Java 1.7, Clojure 1.5.1, nREPL 0.2.1)"))))
 
 (ert-deftest test-cider-repl--banner-version-fallback ()
-  (require 'pkg-info)
   (noflet ((pkg-info-version-info (library) (error "No package version"))
            (cider--java-version () "1.7")
            (cider--clojure-version () "1.5.1")
@@ -84,9 +83,9 @@
           (should (equal (cadr (assoc "doc" (cider-var-info "str"))) "stub" ))))
 
 (ert-deftest test-cider-get-var-attr ()
-  (let ((var-info '(("doc" "var doc") ("arglists" "var arglists"))))
-    (should (equal (cider-get-var-attr var-info "doc") "var doc"))
-    (should (equal (cider-get-var-attr var-info "arglists") "var arglists"))))
+  (noflet ((cider-var-info (var) '(("doc" "var doc") ("arglists" "var arglists"))))
+          (should (equal (cider-get-var-attr "test" "doc") "var doc"))
+          (should (equal (cider-get-var-attr "test" "arglists") "var arglists"))))
 
 (defmacro cider-test-with-buffers (buffer-names &rest body)
   (let ((create (lambda (b) (list b `(generate-new-buffer " *temp*")))))

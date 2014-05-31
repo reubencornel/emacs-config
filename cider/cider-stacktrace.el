@@ -27,7 +27,6 @@
 
 (require 'button)
 (require 'dash)
-(require 'easymenu)
 
 ;; Variables
 
@@ -36,19 +35,10 @@
   :prefix "cider-stacktrace-"
   :group 'cider)
 
-(defcustom cider-stacktrace-fill-column t
-  "Fill column for error messages in stacktrace display.
-If nil, messages will not be wrapped.  If truthy but non-numeric,
-`fill-column' will be used."
-  :type 'list
-  :group 'cider-stacktrace
-  :package-version '(cider . "0.7.0"))
-
 (defcustom cider-stacktrace-default-filters '(tooling dup)
   "Frame types to omit from initial stacktrace display."
   :type 'list
-  :group 'cider-stacktrace
-  :package-version '(cider . "0.6.0"))
+  :group 'cider-stacktrace)
 
 
 ;; Faces
@@ -56,72 +46,53 @@ If nil, messages will not be wrapped.  If truthy but non-numeric,
 (defface cider-stacktrace-error-class-face
   '((t (:inherit font-lock-warning-face)))
   "Face for exception class names"
-  :group 'cider-stacktrace
-  :package-version '(cider . "0.6.0"))
+  :group 'cider-stacktrace)
 
 (defface cider-stacktrace-filter-shown-face
   '((t (:inherit button :underline t)))
   "Face for filter buttons representing frames currently visible"
-  :group 'cider-stacktrace
-  :package-version '(cider . "0.6.0"))
+  :group 'cider-stacktrace)
 
 (defface cider-stacktrace-filter-hidden-face
   '((t (:inherit button :underline nil)))
   "Face for filter buttons representing frames currently filtered out"
-  :group 'cider-stacktrace
-  :package-version '(cider . "0.6.0"))
+  :group 'cider-stacktrace)
 
 (defface cider-stacktrace-face
   '((t (:inherit default)))
   "Face for stack frame text"
-  :group 'cider-stacktrace
-  :package-version '(cider . "0.6.0"))
+  :group 'cider-stacktrace)
 
 (defface cider-stacktrace-ns-face
   '((t (:inherit font-lock-comment-face)))
   "Face for stack frame namespace name"
-  :group 'cider-stacktrace
-  :package-version '(cider . "0.6.0"))
+  :group 'cider-stacktrace)
 
 (defface cider-stacktrace-fn-face
   '((t (:inherit cider-stacktrace-face :weight bold)))
   "Face for stack frame function name"
-  :group 'cider-stacktrace
-  :package-version '(cider . "0.6.0"))
+  :group 'cider-stacktrace)
 
 
 ;; Mode & key bindings
 
 (defvar cider-stacktrace-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "M-.") 'cider-stacktrace-jump)
-    (define-key map "q" 'cider-popup-buffer-quit-function)
     (define-key map "j" 'cider-stacktrace-toggle-java)
     (define-key map "c" 'cider-stacktrace-toggle-clj)
     (define-key map "r" 'cider-stacktrace-toggle-repl)
     (define-key map "t" 'cider-stacktrace-toggle-tooling)
     (define-key map "d" 'cider-stacktrace-toggle-duplicates)
-    (define-key map "a" 'cider-stacktrace-toggle-all)
+    (define-key map "a" 'cider-stacktrace-show-all)
     map))
 
-(easy-menu-define cider-stacktrace-mode-menu cider-stacktrace-mode-map
-  "Menu for CIDER's stacktrace mode"
-  '("Stacktrace"
-    ["Show/hide Java frames" cider-stacktrace-toggle-java]
-    ["Show/hide Clojure frames" cider-stacktrace-toggle-clj]
-    ["Show/hide REPL frames" cider-stacktrace-toggle-repl]
-    ["Show/hide tooling frames" cider-stacktrace-toggle-tooling]
-    ["Show/hide duplicate frames" cider-stacktrace-toggle-duplicates]
-    ["Show/hide all frames" cider-stacktrace-toggle-all]))
-
-(define-derived-mode cider-stacktrace-mode fundamental-mode "Stacktrace"
-  "Major mode for filtering and navigating CIDER stacktraces
-
-\\{cider-stacktrace-mode-map}"
+(define-minor-mode cider-stacktrace-mode
+  "CIDER Stacktrace Buffer Mode."
+  nil
+  (" CIDER Stacktrace")
+  cider-stacktrace-mode-map
   (setq buffer-read-only t)
   (setq-local truncate-lines t)
-  (setq-local electric-indent-chars nil)
-  (setq-local cider-stacktrace-prior-filters nil)
   (setq-local cider-stacktrace-hidden-frame-count 0)
   (setq-local cider-stacktrace-filters cider-stacktrace-default-filters))
 
@@ -178,16 +149,11 @@ Update `cider-stacktrace-hidden-frame-count' and indicate filters applied."
 
 ;; Interactive functions
 
-(defun cider-stacktrace-toggle-all ()
-  "Reset `cider-stacktrace-filters' if present; otherwise restore prior filters."
+(defun cider-stacktrace-show-all ()
+  "Reset `cider-stacktrace-filters', and apply filters."
   (interactive)
-  (when cider-stacktrace-filters
-    (setq-local cider-stacktrace-prior-filters
-                cider-stacktrace-filters))
   (cider-stacktrace-apply-filters
-   (setq cider-stacktrace-filters
-         (unless cider-stacktrace-filters      ; when current filters are nil,
-           cider-stacktrace-prior-filters))))  ;  reenable prior filter set
+   (setq cider-stacktrace-filters nil)))
 
 (defun cider-stacktrace-toggle (flag)
   "Update `cider-stacktrace-filters' to add or remove FLAG, and apply filters."
@@ -231,30 +197,18 @@ Update `cider-stacktrace-hidden-frame-count' and indicate filters applied."
     (let ((flag (button-get button 'filter)))
       (if flag
           (cider-stacktrace-toggle flag)
-        (cider-stacktrace-toggle-all)))
+        (cider-stacktrace-show-all)))
     (sit-for 5)))
 
 (defun cider-stacktrace-navigate (button)
-  "Navigate to the stack frame source represented by the BUTTON."
+  "Navigate to the stack frame represented by the BUTTON."
   (let ((var (button-get button 'var))
-        (class (button-get button 'class))
-        (method (button-get button 'method))
         (line (button-get button 'line)))
-    (let* ((info (if var
-                     (cider-var-info var)
-                   (cider-member-info class method)))
-           (file (cadr (assoc "file" info))))
-      (if (and file line)
-          (cider-jump-to-def-for (vector file file line))
-        (error "No source info")))))
-
-(defun cider-stacktrace-jump ()
-  "Like `cider-jump', but uses the stack frame source at point, if available."
-  (interactive)
-  (let ((button (button-at (point))))
-    (if (and button (button-get button 'line))
-        (cider-stacktrace-navigate button)
-      (call-interactively 'cider-jump))))
+    (condition-case nil
+        (let* ((info (cider-var-info var))
+               (file (cadr (assoc "file" info))))
+          (cider-jump-to-def-for (vector file file line)))
+      (error "No source info"))))
 
 
 ;; Rendering
@@ -300,8 +254,7 @@ This associates text properties to enable filtering and source navigation."
                                     (if (member 'repl flags) "REPL" file) line
                                     (if (member 'clj flags) ns class)
                                     (if (member 'clj flags) fn method))
-                            'var var 'class class 'method method
-                            'name name 'line line 'flags flags
+                            'name name 'var var 'line line 'flags flags
                             'follow-link t
                             'action 'cider-stacktrace-navigate
                             'help-echo "View source at this location"
@@ -317,18 +270,11 @@ This associates text properties to enable filtering and source navigation."
 (defun cider-stacktrace-render (buffer causes frames)
   "Emit into BUFFER useful stacktrace information for the CAUSES and FRAMES."
   (with-current-buffer buffer
-    (cider-stacktrace-mode)
     (let ((inhibit-read-only t))
       ;; Exceptions
       (cider-stacktrace-render-cause buffer (first causes) "Unhandled")
       (dolist (cause (rest causes))
         (cider-stacktrace-render-cause buffer cause "Caused by"))
-      ;; Message wrapping
-      (when cider-stacktrace-fill-column
-        (when (numberp cider-stacktrace-fill-column)
-          (setq-local fill-column cider-stacktrace-fill-column))
-        (setq-local fill-prefix "   ")
-        (fill-region 0 (point)))
       (newline)
       ;; Stacktrace filters
       (cider-stacktrace-render-filters
@@ -339,7 +285,8 @@ This associates text properties to enable filtering and source navigation."
       ;; Stacktrace frames
       (dolist (frame frames)
         (cider-stacktrace-render-frame buffer frame)))
-    ;; Apply filters, move point to first stacktrace frame, and fontify.
+    ;; Set mode, apply filters, move point to first stacktrace frame.
+    (cider-stacktrace-mode 1)
     (cider-stacktrace-apply-filters cider-stacktrace-filters)
     (goto-char (next-single-property-change (point-min) 'flags))
     (font-lock-refresh-defaults)))

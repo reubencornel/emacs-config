@@ -94,22 +94,26 @@ POS is the index of current argument."
 
 (defun cider-eldoc--arglist-op-fn (thing)
   "Return the arglist for THING using nREPL info op."
-  (let* ((var-info (cider-var-info thing t))
-         (candidates (cdadr (assoc "candidates" var-info))))
-    (if candidates
-        (->> candidates
-          (-map (lambda (x) (cdr (assoc "arglists-str" x))))
-          (-map 'read)
-          -flatten
-          -distinct)
-      (let ((arglists (cider-get-var-attr var-info "arglists-str")))
-        (when arglists
-          (read arglists))))))
+  (cider-get-var-attr thing "arglists"))
+
+(defun cider-eldoc--arglist-eval-fn (thing)
+  "Return the arglist for THING using inlined code."
+  (let* ((form (format "(try
+                         (:arglists
+                          (clojure.core/meta
+                           (clojure.core/resolve
+                            (clojure.core/read-string \"%s\"))))
+                         (catch Throwable t nil))" thing))
+         (value (when thing
+                  (cider-get-raw-value (cider-tooling-eval-sync form nrepl-buffer-ns)))))
+    (unless (string= value "nil")
+      (read value))))
 
 (defun cider-eldoc-arglist (thing)
   "Return the arglist for THING."
-  (when (nrepl-op-supported-p "info")
-    (cider-eldoc--arglist-op-fn thing)))
+  (if (nrepl-op-supported-p "info")
+      (cider-eldoc--arglist-op-fn thing)
+    (cider-eldoc--arglist-eval-fn thing)))
 
 (defun cider-eldoc ()
   "Backend function for eldoc to show argument list in the echo area."
@@ -130,5 +134,9 @@ POS is the index of current argument."
   (eldoc-mode +1))
 
 (provide 'cider-eldoc)
+
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; End:
 
 ;;; cider-eldoc.el ends here

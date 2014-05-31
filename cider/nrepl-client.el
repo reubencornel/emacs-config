@@ -185,7 +185,7 @@ To be used for tooling calls (i.e. completion, eldoc, etc)")
 ;;; and modified to work with utf-8
 (defun nrepl-bdecode-buffer ()
   "Decode a bencoded string in the current buffer starting at point."
-  (cond ((looking-at "i\\(-?[0-9]+\\)e")
+  (cond ((looking-at "i\\([0-9]+\\)e")
          (goto-char (match-end 0))
          (string-to-number (match-string 1)))
         ((looking-at "\\([0-9]+\\):")
@@ -328,8 +328,7 @@ Remove the processed data from the buffer if the decode successful."
 Assume that any error during decoding indicates an incomplete message."
   (with-current-buffer (process-buffer process)
     (let ((nrepl-connection-dispatch (current-buffer)))
-      ;; TODO: Implement fine-grained error handling
-      (with-demoted-errors
+      (ignore-errors
         (while (> (buffer-size) 1)
           (let ((responses (nrepl-net-decode)))
             (dolist (response responses)
@@ -985,5 +984,9 @@ Falls back to `nrepl-port' if not found."
       nrepl-port))
 
 (provide 'nrepl-client)
+
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; End:
 
 ;;; nrepl-client.el ends here

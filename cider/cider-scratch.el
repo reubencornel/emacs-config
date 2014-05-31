@@ -62,4 +62,8 @@
 
 (provide 'cider-scratch)
 
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; End:
+
 ;;; cider-scratch.el ends here

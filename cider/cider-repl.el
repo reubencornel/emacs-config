@@ -33,10 +33,10 @@
 (require 'cider-client)
 (require 'cider-interaction)
 (require 'cider-eldoc) ; for cider-turn-on-eldoc-mode
-(require 'cider-util)
 
 (require 'clojure-mode)
 (require 'easymenu)
+(require 'pkg-info)
 
 (eval-when-compile
   (defvar paredit-version)
@@ -130,6 +130,24 @@ you'd like to use the default Emacs behavior use
   :type 'symbol
   :group 'cider-repl)
 
+(defcustom cider-lein-command
+  "lein"
+  "The command used to execute leiningen 2.x."
+  :type 'string
+  :group 'cider-repl)
+
+(defcustom cider-server-command
+  (if (or (locate-file cider-lein-command exec-path)
+          (locate-file (format "%s.bat" cider-lein-command) exec-path))
+      (format "%s repl :headless" cider-lein-command)
+    (format "echo \"%s repl :headless\" | eval $SHELL -l" cider-lein-command))
+  "The command used to start the nREPL via command `cider-jack-in'.
+For a remote nREPL server lein must be in your PATH.  The remote
+proc is launched via sh rather than bash, so it might be necessary
+to specific the full path to it.  Localhost is assumed."
+  :type 'string
+  :group 'cider-repl)
+
 ;;;; REPL buffer local variables
 (defvar-local cider-repl-input-start-mark nil)
 
@@ -206,7 +224,9 @@ positions before and after executing BODY."
 (defun cider-repl--banner ()
   "Generate the welcome REPL buffer banner."
   (format "; CIDER %s (Java %s, Clojure %s, nREPL %s)"
-          (cider--version)
+          (condition-case nil
+              (pkg-info-version-info 'cider)
+            (error cider-version))
           (cider--java-version)
           (cider--clojure-version)
           (cider--nrepl-version)))
@@ -338,39 +358,6 @@ If BACKWARD is non-nil search backward."
               (cider-repl--same-line-p (point) cider-repl-input-start-mark))
          (goto-char cider-repl-input-start-mark))
         (t (beginning-of-line 1))))
-
-(defun cider-repl-mode-beginning-of-defun (&optional arg)
-  (if (and arg (< arg 0))
-      (cider-repl-mode-end-of-defun (- arg))
-    (dotimes (i (or arg 1))
-      (cider-repl-previous-prompt))))
-
-(defun cider-repl-mode-end-of-defun (&optional arg)
-  (if (and arg (< arg 0))
-      (cider-repl-mode-beginning-of-defun (- arg))
-    (dotimes (i (or arg 1))
-      (cider-repl-next-prompt))))
-
-(defun cider-repl-beginning-of-defun ()
-  "Move to beginning of defun."
-  (interactive)
-  ;; We call `beginning-of-defun' if we're at the start of a prompt
-  ;; already, to trigger `cider-repl-mode-beginning-of-defun' by means
-  ;; of the locally bound `beginning-of-defun-function', in order to
-  ;; jump to the start of the previous prompt.
-  (if (and (not (cider-repl--at-prompt-start-p))
-           (cider-repl--in-input-area-p))
-      (goto-char cider-repl-input-start-mark)
-    (beginning-of-defun)))
-
-(defun cider-repl-end-of-defun ()
-  "Move to end of defun."
-  (interactive)
-  ;; C.f. `cider-repl-beginning-of-defun.'
-  (if (and (not (= (point) (point-max)))
-           (cider-repl--in-input-area-p))
-      (goto-char (point-max))
-    (end-of-defun)))
 
 (defun cider-repl-bol ()
   "Go to the beginning of line or the prompt."
@@ -892,8 +879,7 @@ It does not yet set the input history."
   (if (file-readable-p filename)
       (with-temp-buffer
         (insert-file-contents filename)
-        (when (> (buffer-size (current-buffer)) 0)
-            (read (current-buffer))))
+        (read (current-buffer)))
     '()))
 
 (defun cider-repl-history-load (&optional filename)
@@ -1041,6 +1027,7 @@ ENDP) DELIM."
     (define-key map (kbd "C-<return>") 'cider-repl-closing-return)
     (define-key map (kbd "C-j") 'cider-repl-newline-and-indent)
     (define-key map (kbd "C-c C-d") 'cider-doc)
+    (define-key map (kbd "C-c C-s") 'cider-src)
     (define-key map (kbd "C-c C-o") 'cider-repl-clear-output)
     (define-key map (kbd "C-c M-o") 'cider-repl-clear-buffer)
     (define-key map (kbd "C-c M-n") 'cider-repl-set-ns)
@@ -1067,7 +1054,6 @@ ENDP) DELIM."
     (define-key map (kbd "C-c M-f") 'cider-load-fn-into-repl-buffer)
     (define-key map (kbd "C-c C-q") 'cider-quit)
     (define-key map (kbd "C-c M-i") 'cider-inspect)
-    (define-key map (kbd "C-c M-t") 'cider-toggle-trace)
     (define-key map (string cider-repl-shortcut-dispatch-char) 'cider-repl-handle-shortcut)
     map))
 
@@ -1082,11 +1068,6 @@ ENDP) DELIM."
                'cider-complete-at-point)
   (set-syntax-table cider-repl-mode-syntax-table)
   (cider-turn-on-eldoc-mode)
-  ;; At the REPL, we define beginning-of-defun and end-of-defun to be
-  ;; the start of the previous prompt or next prompt respectively.
-  ;; Notice the interplay with `cider-repl-beginning-of-defun'.
-  (setq-local beginning-of-defun-function 'cider-repl-mode-beginning-of-defun)
-  (setq-local end-of-defun-function 'cider-repl-mode-end-of-defun)
   (if (fboundp 'hack-dir-local-variables-non-file-buffer)
       (hack-dir-local-variables-non-file-buffer))
   (when cider-repl-history-file
@@ -1104,12 +1085,13 @@ ENDP) DELIM."
 (easy-menu-define cider-repl-mode-menu cider-repl-mode-map
   "Menu for CIDER's REPL mode"
   '("REPL"
-    ["Complete symbol" complete-symbol]
-    "--"
-    ["Jump to source" cider-jump]
+    ["Jump" cider-jump]
     ["Jump back" cider-jump-back]
     "--"
+    ["Complete symbol" complete-symbol]
+    "--"
     ["Display documentation" cider-doc]
+    ["Display source" cider-src]
     ["Display JavaDoc" cider-javadoc]
     ["Inspect" cider-inspect]
     "--"
@@ -1126,5 +1108,9 @@ ENDP) DELIM."
 
 
 (provide 'cider-repl)
+
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; End:
 
 ;;; cider-repl.el ends here

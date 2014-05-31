@@ -9,8 +9,8 @@
 ;;         Hugo Duncan <hugo@hugoduncan.org>
 ;;         Steve Purcell <steve@sanityinc.com>
 ;; URL: http://www.github.com/clojure-emacs/cider
-;; Version: 0.7.0-cvs
-;; Package-Requires: ((clojure-mode "2.0.0") (cl-lib "0.3") (dash "2.4.1") (pkg-info "0.4") (emacs "24"))
+;; Version: 0.6.0
+;; Package-Requires: ((clojure-mode "2.0.0") (cl-lib "0.3") (dash "2.4.1") (pkg-info "0.4"))
 ;; Keywords: languages, clojure, cider
 
 ;; This program is free software: you can redistribute it and/or modify
@@ -59,29 +59,18 @@
   :link '(url-link :tag "Github" "https://github.com/clojure-emacs/cider")
   :link '(emacs-commentary-link :tag "Commentary" "cider"))
 
+(require 'pkg-info)
+
 (require 'cider-client)
 (require 'cider-interaction)
 (require 'cider-eldoc)
 (require 'cider-repl)
 (require 'cider-mode)
-(require 'cider-util)
 
-(defvar cider-version "0.7.0-snapshot"
+(defvar cider-version "0.6-snapshot"
   "Fallback version used when it cannot be extracted automatically.
 Normally it won't be used, unless `pkg-info' fails to extract the
 version from the CIDER package or library.")
-
-(defcustom cider-lein-command
-  "lein"
-  "The command used to execute Leiningen 2.x."
-  :type 'string
-  :group 'cider)
-
-(defcustom cider-lein-parameters
-  "repl :headless"
-  "Params passed to lein to start an nREPL server via `cider-jack-in'."
-  :type 'string
-  :group 'cider)
 
 (defcustom cider-known-endpoints nil
   "Specify a list of custom endpoints where each endpoint is a list.
@@ -91,16 +80,12 @@ This variable is used by the CIDER command."
   :type 'list
   :group 'cider)
 
-(defun cider--lein-present-p ()
-  "Check if `cider-lein-command' is on the `exec-path'."
-  (or (executable-find cider-lein-command)
-      (executable-find (concat cider-lein-command ".bat"))))
-
 ;;;###autoload
 (defun cider-version ()
   "Display CIDER's version."
   (interactive)
-  (message "CIDER %s" (cider--version)))
+  (let ((version (pkg-info-version-info 'cider)))
+    (message "CIDER %s" version)))
 
 ;;;###autoload
 (defun cider-jack-in (&optional prompt-project)
@@ -109,35 +94,32 @@ If PROMPT-PROJECT is t, then prompt for the project for which to
 start the server."
   (interactive "P")
   (setq cider-current-clojure-buffer (current-buffer))
-  (if (cider--lein-present-p)
-      (let* ((project (when prompt-project
-                        (read-directory-name "Project: ")))
-             (project-dir (nrepl-project-directory-for
-                           (or project (nrepl-current-dir))))
-             (server-command (if prompt-project
-                                 (read-string (format "Server command: %s " cider-lein-command) cider-lein-parameters)
-                               cider-lein-parameters)))
-        (when (nrepl-check-for-repl-buffer nil project-dir)
-          (let* ((nrepl-project-dir project-dir)
-                 (cmd (format "%s %s" cider-lein-command cider-lein-parameters))
-                 (default-directory (or project-dir default-directory))
-                 (nrepl-buffer-name (generate-new-buffer-name
-                                     (nrepl-server-buffer-name)))
-                 (process
-                  (progn
-                    ;; the buffer has to be created before the proc:
-                    (get-buffer-create nrepl-buffer-name)
-                    (start-file-process-shell-command
-                     "nrepl-server"
-                     nrepl-buffer-name
-                     cmd))))
-            (set-process-filter process 'nrepl-server-filter)
-            (set-process-sentinel process 'nrepl-server-sentinel)
-            (set-process-coding-system process 'utf-8-unix 'utf-8-unix)
-            (with-current-buffer (process-buffer process)
-              (setq nrepl-project-dir project-dir))
-            (message "Starting nREPL server..."))))
-    (message "The %s executable (specified by `cider-lein-command') isn't on your exec-path" cider-lein-command)))
+  (let* ((project (when prompt-project
+                    (read-directory-name "Project: ")))
+         (project-dir (nrepl-project-directory-for
+                       (or project (nrepl-current-dir)))))
+    (when (nrepl-check-for-repl-buffer nil project-dir)
+      (let* ((nrepl-project-dir project-dir)
+             (cmd (if project
+                      (format "cd %s && %s" project cider-server-command)
+                    cider-server-command))
+             (default-directory (or project-dir default-directory))
+             (nrepl-buffer-name (generate-new-buffer-name
+                                 (nrepl-server-buffer-name)))
+             (process
+              (progn
+                ;; the buffer has to be created before the proc:
+                (get-buffer-create nrepl-buffer-name)
+                (start-file-process-shell-command
+                 "nrepl-server"
+                 nrepl-buffer-name
+                 cmd))))
+        (set-process-filter process 'nrepl-server-filter)
+        (set-process-sentinel process 'nrepl-server-sentinel)
+        (set-process-coding-system process 'utf-8-unix 'utf-8-unix)
+        (with-current-buffer (process-buffer process)
+          (setq nrepl-project-dir project-dir))
+        (message "Starting nREPL server...")))))
 
 (defun cider-known-endpoint-candidates ()
   "Known endpoint candidates for establishing an nREPL connection.
@@ -183,5 +165,9 @@ The returned endpoint has the label removed."
      (define-key clojure-mode-map (kbd "C-c M-c") 'cider-connect)))
 
 (provide 'cider)
+
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; End:
 
 ;;; cider.el ends here

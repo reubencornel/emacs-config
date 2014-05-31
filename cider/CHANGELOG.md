@@ -2,13 +2,6 @@
 
 ## master
 
-* New interactive command `cider-toggle-trace`.
-
-### Changes
-
-* `cider-nrepl` is now required. Without it pretty much nothing will work.
-* Removed redundant command `cider-src`.
-
 ## 0.6.0 / 2014-04-24
 
 ### New features
