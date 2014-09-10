@@ -220,3 +220,18 @@ being the working directory of the buffer"
   (my-appt-send-notification 
     (format "'Appointment in %s minutes'" min-to-app)
     (format "'%s'" msg)))                       
+
+(defun set-writing-width()
+  (interactive)
+  (let ((width (max (floor (/ (* 0.4 (window-total-width)) 2)) 15)))
+    (set-window-margins (car (get-buffer-window-list (current-buffer) nil t)) width width)))
+
+(defun reset-window-margin()
+  (interactive)
+  (set-window-margins (car (get-buffer-window-list (current-buffer) nil t)) 0 0)
+  (set-fringe-mode '(4 . 4)))
+
+(defun writing-mode()
+  (interactive)
+  (set-writing-width)
+  (set-fringe-mode 0))
