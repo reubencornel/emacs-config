@@ -223,8 +223,9 @@ being the working directory of the buffer"
 
 (defun set-writing-width()
   (interactive)
-  (let ((width (max (floor (/ (* 0.4 (window-total-width)) 2)) 15)))
-    (set-window-margins (car (get-buffer-window-list (current-buffer) nil t)) width width)))
+  (let ((width (max (floor (/ (* 0.6 (window-total-width)) 2)) 30)))
+    (set-window-margins (car (get-buffer-window-list (current-buffer) nil t)) width width)
+    (print width)))
 
 (defun reset-window-margin()
   (interactive)
@@ -233,5 +234,19 @@ being the working directory of the buffer"
 
 (defun writing-mode()
   (interactive)
+  (wc-goal-mode)
+  (set-cursor-color "#07BBF2")
+  (setq-default line-spacing 5)
+  (set-frame-font "Inconsolata 18")
   (set-writing-width)
   (set-fringe-mode 0))
+
+  (defun count-words (start end)
+    "Print number of words in the region."
+    (interactive "r")
+    (save-excursion
+      (save-restriction
+        (narrow-to-region start end)
+        (goto-char (point-min))
+        (count-matches "\\sw+"))))
+
