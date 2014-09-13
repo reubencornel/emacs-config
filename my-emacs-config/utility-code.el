@@ -235,6 +235,7 @@ being the working directory of the buffer"
 (defun writing-mode()
   (interactive)
   (wc-goal-mode)
+  (longlines-mode)
   (set-cursor-color "#07BBF2")
   (setq-default line-spacing 5)
   (set-frame-font "Inconsolata 18")

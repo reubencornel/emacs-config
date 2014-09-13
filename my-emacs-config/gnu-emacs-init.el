@@ -13,6 +13,7 @@
   (save-window-excursion
     (shell-command (concat my-notifier-path " -m " msg " -t " title " -w &"))) )
 
+(package-initialize)
 ;; modes
 (load-config 'tramp)
 (load-config 'cl-config)
@@ -37,4 +38,3 @@
 (load (expand-file-name "~/emacs/my-emacs-config/my-key-bindings.el"))
 (global-set-key (kbd "M-RET") 'ns-toggle-fullscreen)
 ;(set-frame-font "Inconsolata 19")
-
