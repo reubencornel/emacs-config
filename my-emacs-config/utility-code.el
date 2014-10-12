@@ -72,7 +72,7 @@
 (defun get-number-str(day)
   (interactive)
   (destructuring-bind (first-char second-char)
-      (butlast (rest (split-string "21" "")))
+      (butlast (rest (split-string day "")))
     (cond ((and (not (equal first-char "1"))
                 (equal second-char "1")) "st") ;; st is returned on 01, 21, 31
           ((and (not (equal first-char "1"))
