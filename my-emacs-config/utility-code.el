@@ -71,13 +71,15 @@
 
 (defun get-number-str(day)
   (interactive)
-  (let ((last-digit (substring day
-			       (- (length day) 1)
-			       (length day))))
-    (cond ((equal last-digit "1") "st")
-	  ((equal last-digit "2") "nd")
-	  ((equal last-digit "3") "rd")
-	  (t "th"))))
+  (destructuring-bind (first-char second-char)
+      (butlast (rest (split-string "21" "")))
+    (cond ((and (not (equal first-char "1"))
+                (equal second-char "1")) "st") ;; st is returned on 01, 21, 31
+          ((and (not (equal first-char "1"))
+              (equal second-char "2")) "nd") ; nd is returned on 02, 22,32
+          ((equal second-char "3") "rd")
+          (t "th"))))
+
 
 (defun indent()
   (interactive)
