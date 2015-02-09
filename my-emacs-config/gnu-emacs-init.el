@@ -16,7 +16,6 @@
 (package-initialize)
 ;; modes
 (load-config 'tramp)
-(load-config 'cl-config)
 (load-config 'org-mode-config)
 (load-config 'itunes-config)
 (load-config 'c-mode-config)
