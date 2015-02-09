@@ -24,6 +24,5 @@
 (load-config 'cls-files-config)
 (load-config 'yasnippet)
 (load-config 'magit)
-(load-config 'auto-save-config)
 
 (load (expand-file-name "~/emacs/my-emacs-config/my-key-bindings.el"))

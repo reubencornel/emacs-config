@@ -332,11 +332,6 @@
 (defconfig select-enable-clipboard
   (setq x-select-enable-clipboard t))
 
-(defconfig auto-save-config
-;  (require 'real-auto-save)
-					;  (add-hook 'text-mode-hook 'turn-on-real-auto-save))
-  )
-
 (defconfig markdown-mode
   (autoload 'markdown-mode "markdown-mode.el"
     "Major mode for editing Markdown files" t)

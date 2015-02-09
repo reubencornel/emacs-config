@@ -30,7 +30,6 @@
 (load-config 'yasnippet)
 (load-config 'anything-mode)
 (load-config 'nav)
-(load-config 'auto-save-config)
 (load-config 'text-mode-config)
 
 (load (expand-file-name "~/emacs/my-emacs-config/my-key-bindings.el"))
