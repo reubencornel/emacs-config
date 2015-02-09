@@ -1,10 +1,6 @@
 ;;; Gnu Emacs init
 
 ;;(add-to-list 'load-path (expand-file-name "~/emacs"))
-;;(require 'osx-itunes)
-;;(load (expand-file-name "~/my-key-bindings.el"))
-
-
 ;; Custom os code
 (defvar my-notifier-path "/usr/bin/zenity")
 
