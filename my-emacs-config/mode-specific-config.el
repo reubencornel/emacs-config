@@ -138,42 +138,11 @@
   (setq org-todo-keywords '((sequence "TODO" "STARTED" "WAITING" "|" "DONE")
                             (sequence "NOTPICKEDUP" "|" "PICKEDUP")))
 
-  (setq org-modules '(org-bbdb 
-                      org-contacts
-                      org-gnus
-                      org-info
-                      org-jsinfo
-                      org-habit
-                      org-irc
-                      org-mouse
-                      org-annotate-file
-                      org-eval
-                      org-expiry
-                      org-interactive-query
-                      org-man
-		      org-latex
-                      org-panel
-                      org-screen
-                      org-toc))
   (setq org-directory "~/Dropbox")
   (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
   (setq org-mobile-inbox-for-pull "~/Dropbox/inbox.org")
-  
+ 
   (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
-
-  (require 'appt)
-  (setq appt-time-msg-list nil)    ;; clear existing appt list
-  (setq appt-display-interval '10) ;; warn every 10 minutes from t - appt-message-warning-time
-  (setq
-   appt-message-warning-time '10  ;; send first warning 10 minutes before appointment
-   appt-display-mode-line nil     ;; don't show in the modeline
-   appt-display-format 'window)   ;; pass warnings to the designated window function
-  (appt-activate 1)                ;; activate appointment notification
-
-  (org-agenda-to-appt)             ;; generate the appt list from org agenda files on emacs launch
-  (run-at-time "24:01" 3600 'org-agenda-to-appt)           ;; update appt list hourly
-  (add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt) ;; update appt list on agenda view
-  (setq appt-disp-window-function (function my-appt-display))
   
   (setq org-directory (expand-file-name "~/Dropbox"))
   (setq org-default-notes-file (concat org-directory "/notes.org"))
@@ -364,9 +333,9 @@
   (setq x-select-enable-clipboard t))
 
 (defconfig auto-save-config
-  (require 'real-auto-save)
-  (add-hook 'org-mode-hook 'turn-on-real-auto-save)
-  (add-hook 'text-mode-hook 'turn-on-real-auto-save))
+;  (require 'real-auto-save)
+					;  (add-hook 'text-mode-hook 'turn-on-real-auto-save))
+  )
 
 (defconfig markdown-mode
   (autoload 'markdown-mode "markdown-mode.el"
@@ -376,7 +345,3 @@
 
 (defconfig text-mode-config
   (fringe-mode -1))
-
-
-(defconfig cider-config
-  (require 'cider))

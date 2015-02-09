@@ -19,8 +19,8 @@
 (print system-type)
 
 
-(defun make-backup-file-name(file) 
-  (concat "~/trash/emacsAutosave/" (file-name-nondirectory file) "~")) 
+(defun make-backup-file-name(file)
+  (concat "~/trash/emacsAutosave/" (file-name-nondirectory file) "~"))
 
 (defun match-paren (arg)
   "Go to the matching parenthesis if on parenthesis otherwise insert %."
@@ -40,7 +40,7 @@
 	 (line-number (cadr split-string)))
     (if (and  (> (length split-string) 2)
 	      (not (null line-number)))
-	(progn 
+	(progn
 	  (ffap (car split-string))
 	  (goto-line (string-to-number line-number)))
       (ffap))))
@@ -99,10 +99,10 @@
 	  (year (format-time-string "%Y" cur-time)))
       (concat month
 	      day
-	      (get-number-str day) 
+	      (get-number-str day)
 	      ", "
 	      year))))
-	
+
 
 (defun insert-date()
   (interactive)
@@ -164,7 +164,7 @@ being the working directory of the buffer"
 (defvar *config-table* (make-hash-table))
 
 (defmacro defconfig(config-name &rest body)
-  `(puthash ',config-name 
+  `(puthash ',config-name
 	    (lambda()
 	      ,@body) *config-table*))
 
@@ -204,12 +204,12 @@ being the working directory of the buffer"
   (let (org-log-done org-log-states)   ; turn off logging
     (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
 
-     
+
 (defun sync-index-org()
   "Copies the index.org file from the dropbox dir to the mobile org dir so that it can be accessed on my phone"
   (if (string-match "index\.org$" (buffer-file-name))
       (progn
-        (copy-file (buffer-file-name) 
+        (copy-file (buffer-file-name)
                    (expand-file-name "~/Dropbox/Apps/MobileOrg/")
                    t)
         (shell-command (concat (print (if (equal system-type 'darwin)
@@ -219,9 +219,9 @@ being the working directory of the buffer"
                                (expand-file-name "~/Dropbox/Apps/MobileOrg/checksums.dat"))))))
 
 (defun my-appt-display (min-to-app new-time msg)
-  (my-appt-send-notification 
+  (my-appt-send-notification
     (format "'Appointment in %s minutes'" min-to-app)
-    (format "'%s'" msg)))                       
+    (format "'%s'" msg)))
 
 (defun set-writing-width()
   (interactive)
@@ -252,4 +252,3 @@ being the working directory of the buffer"
         (narrow-to-region start end)
         (goto-char (point-min))
         (count-matches "\\sw+"))))
-
