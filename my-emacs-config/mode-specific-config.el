@@ -158,30 +158,6 @@
 	   "* %? \nEntered on %U\n %i\n  %a"))) 
   (run-with-timer 0 (* 60 60) 'org-mobile-push))
 
-(defconfig linux-org-mode-config
-  (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-  (setq org-hide-leading-stars 't)
-  (setq org-log-done 'time)
-
-  (setq org-todo-keywords '((sequence "TODO" "STARTED" "WAITING" "|" "DONE")
-                            (sequence "NOTPICKEDUP" "|" "PICKEDUP")))
-
-  (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
-
-  (setq org-directory (expand-file-name "~/Dropbox"))
-  (setq org-default-notes-file (concat org-directory "/notes.org"))
-  (setq org-default-journal-file (concat org-directory "/notes.org"))
-  (setq org-capture-templates
-	'(("t" "Todo" entry (file+headline org-default-notes-file "Tasks")
-	   "* TODO %? \n %i\n %a")
-	  ("r" "Lookup Entry in region" entry (file+headline org-default-notes-file "Lookup")
-	   "* %i :LOOKUP:\n")
-	  ("l" "Lookup Entry" entry (file+headline org-default-notes-file "Lookup")
-	   "* %?  :LOOKUP:\n %i \n")
-	  ("j" "Journal" entry (file+datetree org-default-journal-file)
-	   "* %? \nEntered on %U\n %i\n  %a"))) )
-
-
 (defconfig auto-install
   (require 'auto-install)
   (setq auto-install-directory "~/emacs/auto-install/")
