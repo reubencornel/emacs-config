@@ -89,9 +89,18 @@
 	       (line-beginning-position)
 	       (line-end-position)))))
 
-(defun get-date ()
-  "Insert the current date according to the variable
-\"insert-date-format\"."
+(defun get-date()
+  "Return a formatted date [Month Day Year, DayOfWeek]"
+  (interactive "*")
+  (let* ((cur-time (current-time))
+         (day (format-time-string "%d" cur-time))
+         (date (format-time-string (concat "[%B %d"                                            
+					   (get-number-str day) 
+					   " %Y, %A]") cur-time)))
+    date))
+
+(defun get-date-time ()
+  "Return a formatted date as [Month Day Year, DayOfWeek Hour:Minute AM/PM Timezone]"
   (interactive "*")
   (let* ((cur-time (current-time))
          (day (format-time-string "%d" cur-time))
@@ -103,6 +112,10 @@
 (defun insert-date()
   (interactive)
   (insert (get-date)))
+
+(defun insert-date-time()
+  (interactive)
+  (insert (get-date-time)))
 
 (defun init-c-file()
   (interactive)
