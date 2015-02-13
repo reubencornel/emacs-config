@@ -73,12 +73,12 @@
   (interactive)
   (destructuring-bind (first-char second-char)
       (butlast (rest (split-string day "")))
-    (cond ((and (not (equal first-char "1"))
-                (equal second-char "1")) "st") ;; st is returned on 01, 21, 31
-          ((and (not (equal first-char "1"))
-              (equal second-char "2")) "nd") ; nd is returned on 02, 22,32
-          ((equal second-char "3") "rd")
-          (t "th"))))
+    (if (equal first-char "1")
+	"th"
+      (cond ((equal second-char "1") "st")
+	    ((equal second-char "2") "nd")
+	    ((equal second-char "3") "rd")
+	    (t "th")))))
 
 
 (defun indent()
