@@ -93,16 +93,12 @@
   "Insert the current date according to the variable
 \"insert-date-format\"."
   (interactive "*")
-  (let ((cur-time (current-time)))
-    (let ((month (format-time-string "%B " cur-time))
-	  (day (format-time-string "%d" cur-time))
-	  (year (format-time-string "%Y" cur-time)))
-      (concat month
-	      day
-	      (get-number-str day)
-	      ", "
-	      year))))
-
+  (let* ((cur-time (current-time))
+         (day (format-time-string "%d" cur-time))
+         (date (format-time-string (concat "[%B %d" 
+                                           (get-number-str day) 
+                                           " %Y, %A %R %p %Z]") cur-time)))
+      date))
 
 (defun insert-date()
   (interactive)
