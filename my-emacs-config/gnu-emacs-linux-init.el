@@ -9,7 +9,7 @@
 
 ;; Custom modes
 (load-config 'tramp)
-(load-config 'linux-org-mode-config)
+(load-config 'org-mode-config)
 (load-config 'c-mode-config)
 (load-config 'ido-mode)
 (load-config 'htmlize)

@@ -70,12 +70,12 @@
   (interactive)
   (destructuring-bind (first-char second-char)
       (butlast (rest (split-string day "")))
-    (cond ((and (not (equal first-char "1"))
-                (equal second-char "1")) "st") ;; st is returned on 01, 21, 31
-          ((and (not (equal first-char "1"))
-		(equal second-char "2")) "nd") ; nd is returned on 02, 22,32
-          ((equal second-char "3") "rd")
-          (t "th"))))
+    (if (equal first-char "1")
+	"th"
+      (cond ((equal second-char "1") "st")
+	    ((equal second-char "2") "nd")
+	    ((equal second-char "3") "rd")
+	    (t "th")))))
 
 
 (defun indent()
@@ -86,23 +86,33 @@
 	       (line-beginning-position)
 	       (line-end-position)))))
 
-(defun get-date ()
-  "Insert the current date according to the variable
-\"insert-date-format\"."
+(defun get-date()
+  "Return a formatted date [Month Day Year, DayOfWeek]"
   (interactive "*")
-  (let ((cur-time (current-time)))
-    (let ((month (format-time-string "%B " cur-time))
-	  (day (format-time-string "%d" cur-time))
-	  (year (format-time-string "%Y" cur-time)))
-      (concat month
-	      day
-	      (get-number-str day)
-	      ", "
-	      year))))
+  (let* ((cur-time (current-time))
+         (day (format-time-string "%d" cur-time))
+         (date (format-time-string (concat "[%B %d"                                            
+					   (get-number-str day) 
+					   " %Y, %A]") cur-time)))
+    date))
+
+(defun get-date-time ()
+  "Return a formatted date as [Month Day Year, DayOfWeek Hour:Minute AM/PM Timezone]"
+  (interactive "*")
+  (let* ((cur-time (current-time))
+         (day (format-time-string "%d" cur-time))
+         (date (format-time-string (concat "[%B %d" 
+                                           (get-number-str day) 
+                                           " %Y, %A %R %p %Z]") cur-time)))
+      date))
 
 (defun insert-date()
   (interactive)
   (insert (get-date)))
+
+(defun insert-date-time()
+  (interactive)
+  (insert (get-date-time)))
 
 (defun init-c-file()
   (interactive)
