@@ -16,9 +16,6 @@
 (defun darwin-p()
   (string= system-type "darwin"))
 
-(print system-type)
-
-
 (defun make-backup-file-name(file)
   (concat "~/trash/emacsAutosave/" (file-name-nondirectory file) "~"))
 
@@ -76,7 +73,7 @@
     (cond ((and (not (equal first-char "1"))
                 (equal second-char "1")) "st") ;; st is returned on 01, 21, 31
           ((and (not (equal first-char "1"))
-              (equal second-char "2")) "nd") ; nd is returned on 02, 22,32
+		(equal second-char "2")) "nd") ; nd is returned on 02, 22,32
           ((equal second-char "3") "rd")
           (t "th"))))
 
@@ -103,7 +100,6 @@
 	      ", "
 	      year))))
 
-
 (defun insert-date()
   (interactive)
   (insert (get-date)))
@@ -111,7 +107,7 @@
 (defun init-c-file()
   (interactive)
   (when (= (point-max) 1) ;; Insert these lines if and only if we have
-			  ;; a new buffer
+    ;; a new buffer
     (insert "#include<stdio.h>\n")
     (insert "#include<stdlib.h>\n")
     (insert "#include<assert.h>\n\n\n")
@@ -136,7 +132,7 @@
 (defun has-disk-file-p(buffer)
   "Checks if a file has been saved."
   (if (bufferp buffer)
-	(not (null (buffer-file-name buffer)))
+      (not (null (buffer-file-name buffer)))
     (print "Function requires a buffer")))
 
 (defun set-my-margins(arg)
@@ -197,7 +193,7 @@ being the working directory of the buffer"
   (interactive)
   (set-frame-parameter nil 'fullscreen (if (frame-parameter nil 'fullscreen)
                                            nil
-                                           'fullboth)))
+					 'fullboth)))
 
 (defun org-summary-todo (n-done n-not-done)
   "Switch entry to DONE when all subentries are done, to TODO otherwise."
@@ -213,15 +209,15 @@ being the working directory of the buffer"
                    (expand-file-name "~/Dropbox/Apps/MobileOrg/")
                    t)
         (shell-command (concat (print (if (equal system-type 'darwin)
-				   "md5 "
-				 "md5sum "))
+					  "md5 "
+					"md5sum "))
 			       (buffer-file-name) " > "
                                (expand-file-name "~/Dropbox/Apps/MobileOrg/checksums.dat"))))))
 
 (defun my-appt-display (min-to-app new-time msg)
   (my-appt-send-notification
-    (format "'Appointment in %s minutes'" min-to-app)
-    (format "'%s'" msg)))
+   (format "'Appointment in %s minutes'" min-to-app)
+   (format "'%s'" msg)))
 
 (defun set-writing-width()
   (interactive)
@@ -236,19 +232,20 @@ being the working directory of the buffer"
 
 (defun writing-mode()
   (interactive)
+  (require 'wc-goal-mode)
   (wc-goal-mode)
-  (longlines-mode)
+  (visual-line-mode)
   (set-cursor-color "#07BBF2")
-  (setq-default line-spacing 5)
-  (set-frame-font "Inconsolata 18")
+  (setq-default line-spacing 4)
+  (set-frame-font "Cousine Regular 15")
   (set-writing-width)
   (set-fringe-mode 0))
 
-  (defun count-words (start end)
-    "Print number of words in the region."
-    (interactive "r")
-    (save-excursion
-      (save-restriction
-        (narrow-to-region start end)
-        (goto-char (point-min))
-        (count-matches "\\sw+"))))
+(defun count-words (start end)
+  "Print number of words in the region."
+  (interactive "r")
+  (save-excursion
+    (save-restriction
+      (narrow-to-region start end)
+      (goto-char (point-min))
+      (count-matches "\\sw+"))))
