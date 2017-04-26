@@ -103,10 +103,10 @@
   (require 'tramp))
 
 ;;;;;; yassnippet 
-(defconfig yasnippet
-  (require 'yasnippet)
-  (yas/initialize)
-  (yas/load-directory "~/emacs/yasnippet/snippets"))
+;; (defconfig yasnippet
+;;   (require 'yasnippet)
+;;   (yas/initialize)
+;;   (yas/load-directory "~/emacs/yasnippet/snippets"))
 
 ;;;;;;; Linux path config
 ;; (defconfig linux-clojure-config
@@ -155,7 +155,7 @@
 	  ("l" "Lookup Entry" entry (file+headline org-default-notes-file "Lookup")
 	   "* %?  :LOOKUP:\n %i \n")
 	  ("j" "Journal" entry (file+datetree org-default-journal-file)
-	   "* %? \nEntered on %U\n %i\n  %a"))) 
+	   "* %^{title} %^G \n\n%?\n\nEntered on %U\n %i\n")))
   (run-with-timer 0 (* 60 60) 'org-mobile-push))
 
 (defconfig auto-install
@@ -292,7 +292,7 @@
   (defun my-anything ()
     (interactive)
     (anything-other-buffer
-     '(anything-c-source-buffers
+     '(anything-c-source-buffer
        anything-c-source-file-name-history
        anything-c-source-info-pages
        anything-c-source-info-elisp
