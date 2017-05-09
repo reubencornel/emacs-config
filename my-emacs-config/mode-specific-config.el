@@ -155,7 +155,10 @@
 	  ("l" "Lookup Entry" entry (file+headline org-default-notes-file "Lookup")
 	   "* %?  :LOOKUP:\n %i \n")
 	  ("j" "Journal" entry (file+datetree org-default-journal-file)
-	   "* %^{title} %^G \n\n%?\n\nEntered on %U\n %i\n")))
+	   "* %^{title} %^G \n\n%?\nEntered on %U\n %i\n")
+	  ("w" "Work Journal" entry (clock)
+	   "* %U %^{title} %^G \n%?\n")))
+	
   (run-with-timer 0 (* 60 60) 'org-mobile-push))
 
 (defconfig auto-install
