@@ -133,3 +133,23 @@
   (check-and-install-if-absent 'zenburn-theme)
   (check-and-install-if-absent 'solarized-theme)
   (require 'color-theme))
+
+(defconfig helm-config
+  (check-and-install-if-absent 'helm-core)
+  (check-and-install-if-absent 'helm)
+  (helm-mode 1)
+  (setq
+					; do not display invisible candidates
+   helm-quick-update                     t
+					; open helm buffer inside current window, not occupy whole other window
+   helm-split-window-in-side-p           t
+					; fuzzy matching buffer names when non--nil
+   helm-buffers-fuzzy-matching           t
+					; move to end or beginning of source when reaching top or bottom of source.
+   helm-move-to-line-cycle-in-source     t
+					; search for library in `require' and `declare-function' sexp.
+   helm-ff-search-library-in-sexp        t
+					; scroll 8 lines other window using M-<next>/M-<prior>
+   helm-scroll-amount                    8
+   helm-ff-file-name-history-use-recentf t))
+
