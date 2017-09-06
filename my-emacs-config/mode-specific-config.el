@@ -1,3 +1,4 @@
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Emacs lisp load paths
 ;;
@@ -28,10 +29,14 @@
 
 (defconfig org-mode-config
   (require 'org-install)
+  (check-and-install-if-absent 'org-bullets)
+  (require 'org-bullets)
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
   (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
   (setq org-hide-leading-stars 't)
   (setq org-log-done 'time)
   (add-hook 'after-save-hook 'sync-index-org)
+  
 
   (setq org-agenda-custom-commands
         '(("wt" tags-todo "+WORK+TASKS")
@@ -59,17 +64,6 @@
 	   "* %?  :LOOKUP:\n %i \n")
 	  ("j" "Journal" entry (file+datetree org-default-journal-file)
 	   "* %^{title} %^G \n\n%?\n\nEntered on %U\n %i\n"))))
-
-;; (defconfig auto-install
-;;   (require 'auto-install)
-;;   (setq auto-install-directory "~/emacs/auto-install/")
-;;   (setq auto-install-save-confirm nil))
-
-
-;; (defconfig synonym-support
-;;   (require 'synonyms)
-;;   (setq synonyms-file "~/emacs/synonyms/mthesaur.txt")
-;;   (setq synonyms-cache-file "~/emacs/synonyms/thesaurus.cache.txt"))
 
 (defconfig c-mode-config
   (setq basic-c-offset 8)
