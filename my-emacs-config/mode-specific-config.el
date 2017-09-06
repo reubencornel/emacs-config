@@ -81,9 +81,6 @@
   (ido-everywhere t)
   (setq ido-enable-flex-matching t))
 
-(defconfig htmlize
-  (require 'htmlize))
-
 ;; Article file support
 (defconfig article-file-support
   (setq auto-mode-alist (cons '("\\.article$" . html-mode) auto-mode-alist)))
@@ -104,3 +101,41 @@
   (require 'markdown-mode)
   (setq auto-mode-alist
         (cons '("\\.md" . markdown-mode) auto-mode-alist)))
+
+(defconfig firacode-config
+  ;; ;; Fira code specific settings.
+  (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
+		 (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
+		 (36 . ".\\(?:>\\)")
+		 (37 . ".\\(?:\\(?:%%\\)\\|%\\)")
+		 (38 . ".\\(?:\\(?:&&\\)\\|&\\)")
+		 (42 . ".\\(?:\\(?:\\*\\*/\\)\\|\\(?:\\*[*/]\\)\\|[*/>]\\)")
+		 (43 . ".\\(?:\\(?:\\+\\+\\)\\|[+>]\\)")
+		 (45 . ".\\(?:\\(?:-[>-]\\|<<\\|>>\\)\\|[<>}~-]\\)")
+		 (46 . ".\\(?:\\(?:\\.[.<]\\)\\|[.=-]\\)")
+		 (47 . ".\\(?:\\(?:\\*\\*\\|//\\|==\\)\\|[*/=>]\\)")
+		 (48 . ".\\(?:x[a-zA-Z]\\)")
+		 (58 . ".\\(?:::\\|[:=]\\)")
+		 (59 . ".\\(?:;;\\|;\\)")
+		 (60 . ".\\(?:\\(?:!--\\)\\|\\(?:~~\\|->\\|\\$>\\|\\*>\\|\\+>\\|--\\|<[<=-]\\|=[<=>]\\||>\\)\\|[*$+~/<=>|-]\\)")
+		 (61 . ".\\(?:\\(?:/=\\|:=\\|<<\\|=[=>]\\|>>\\)\\|[<=>~]\\)")
+		 (62 . ".\\(?:\\(?:=>\\|>[=>-]\\)\\|[=>-]\\)")
+		 (63 . ".\\(?:\\(\\?\\?\\)\\|[:=?]\\)")
+		 (91 . ".\\(?:]\\)")
+		 (92 . ".\\(?:\\(?:\\\\\\\\\\)\\|\\\\\\)")
+		 (94 . ".\\(?:=\\)")
+		 (119 . ".\\(?:ww\\)")
+		 (123 . ".\\(?:-\\)")
+		 (124 . ".\\(?:\\(?:|[=|]\\)\\|[=>|]\\)")
+		 (126 . ".\\(?:~>\\|~~\\|[>=@~-]\\)")
+		 )
+	       ))
+    (dolist (char-regexp alist)
+      (set-char-table-range composition-function-table (car char-regexp)
+			    `([,(cdr char-regexp) 0 font-shape-gstring])))))
+
+(defconfig color-theme
+  (check-and-install-if-absent 'color-theme)
+  (check-and-install-if-absent 'zenburn-theme)
+  (check-and-install-if-absent 'solarized-theme)
+  (require 'color-theme))

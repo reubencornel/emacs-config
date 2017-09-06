@@ -268,4 +268,4 @@ being the working directory of the buffer"
 
 It requires the standard emacs package manager to be working."
   (if (not (package-installed-p package-name))
-      (package-install 'package-name)))
+      (package-install package-name)))
