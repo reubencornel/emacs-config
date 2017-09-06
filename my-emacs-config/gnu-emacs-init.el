@@ -17,6 +17,7 @@
 (load-config 'org-mode-config)
 (load-config 'article-file-support)
 (load-config 'magit)
-
+(load-config 'markdown-mode)
+		   
 (load (expand-file-name "~/emacs/my-emacs-config/my-key-bindings.el"))
 (global-set-key (kbd "M-RET") 'ns-toggle-fullscreen)

@@ -2,23 +2,6 @@
 ;; Emacs lisp load paths
 ;;
 
-;; (add-to-list 'load-path (expand-file-name "~/emacs/org-mode/lisp"))
-;; (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/w3m")
-;; (add-to-list 'load-path (expand-file-name "~/emacs/"))
-;; (add-to-list 'load-path (expand-file-name "~/emacs/auto-install"))
-;; (add-to-list 'load-path (expand-file-name "~/emacs/tuareg-mode"))
-;; (add-to-list 'load-path "~/emacs/haskell-mode")
-;; (add-to-list 'load-path (expand-file-name "~/emacs/yasnippet"))
-;; (add-to-list 'load-path (expand-file-name "~/emacs/color-themes"))
-;; (add-to-list 'load-path (expand-file-name "~/emacs/color-themes/solarized"))
-;; (add-to-list 'load-path (expand-file-name "~/emacs/anything"))
-;; (add-to-list 'load-path (expand-file-name "~/emacs/magit"))
-;; (add-to-list 'load-path (expand-file-name "~/emacs/minor-modes"))
-;; (add-to-list 'load-path (expand-file-name "~/emacs/misc"))
-;; (add-to-list 'load-path (expand-file-name "~/emacs/nxhtml"))
-;; (add-to-list 'load-path (expand-file-name "~/emacs/mmm-mode"))
-;; (add-to-list 'load-path (expand-file-name "~/emacs/nav"))
-;; (add-to-list 'load-path (expand-file-name "~/emacs/cider"))
 
 ;; (defconfig nav
 ;;   (require 'nav))
@@ -93,14 +76,6 @@
   (add-hook 'c-mode-hook 'my-c-mode-hook))
 
 
-(defconfig ruby-mode
-  (autoload 'ruby-mode "ruby-mode" "Major mode for editing ruby scripts." t)
-  (setq interpreter-mode-alist (append '(("ruby" . ruby-mode)) interpreter-mode-alist))
-  (setq auto-mode-alist (cons '("\\.rb$" . ruby-mode) auto-mode-alist))
-  (require 'inf-ruby)
-  (setq ruby-program-name "/usr/local/bin/irb --inf-ruby-mode"))
-
-
 (defconfig ido-mode
   (ido-mode 1)
   (ido-everywhere t)
@@ -114,17 +89,8 @@
   (setq auto-mode-alist (cons '("\\.article$" . html-mode) auto-mode-alist)))
 
 
-(defconfig magit
-  (require 'magit))
-
 (defconfig select-enable-clipboard
   (setq x-select-enable-clipboard t))
-
-(defconfig markdown-mode
-  (autoload 'markdown-mode "markdown-mode.el"
-    "Major mode for editing Markdown files" t)
-  (setq auto-mode-alist
-        (cons '("\\.md" . markdown-mode) auto-mode-alist)))
 
 (defconfig text-mode-config
   (fringe-mode -1))
@@ -133,3 +99,8 @@
   (check-and-install-if-absent 'magit)
   (require 'magit))
 
+(defconfig markdown-mode
+  (check-and-install-if-absent 'markdown-mode)
+  (require 'markdown-mode)
+  (setq auto-mode-alist
+        (cons '("\\.md" . markdown-mode) auto-mode-alist)))
