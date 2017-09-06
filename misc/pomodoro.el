@@ -52,17 +52,27 @@
 (defvar pomodoro-custom-on-tick-functions '() "Functions that are executed on every tick of the timer")
 (defvar pomodoro-custom-on-cancel-functions '() "Functions that are executed when the timer is cancelled")
 (defvar pomodoro-use-notify nil)
+(defvar pomodoro-notifier nil "Is a function that must take in two strings one the title notification and message")
 
 
-;; If notify.el has been installed use it.
-(when (require 'notify nil 'noerror)
-  (setq pomodoro-use-notify t))
+;; ;; If notify.el has been installed use it.
+;; (when (require 'notify nil 'noerror)
+;;   (setq pomodoro-use-notify t))
 
 (defun map-functions(function-list)
   "Function to map across a list of functions."
   (mapcar #'(lambda(function)
               (funcall function))
           function-list))
+
+(defun generic-cleanup-function()
+  "Called when a timer is up"
+  (setq pomodoro-task "")
+  (setq pomodoro-state "")
+  (if (not (null pomodoro-timer))
+      (cancel-timer pomodoro-timer))
+  (setq pomodoro-timer nil)
+  (funcall (update-mode-line)))
 
 (defmacro pomodoro-timer-template(max-size start-functions tick-functions complete-functions)
   "Macro for a pomodoro timer, checks if a timer is active, if not then sets a timer."
@@ -74,8 +84,8 @@
                             pomodoro-size-of-tick
                             (pomodoro-tick ,max-size
                                            ,tick-functions
-                                           (cons #'generic-cleanup-function
-                                                   ,complete-functions)))))
+                                           (append ,complete-functions
+						   (list #'generic-cleanup-function))))))
      (pomodoro-log-to-buffer "There is a timer already running")))
 
 (defun pomodoro-tick(time tick-functions complete-functions)
@@ -94,14 +104,11 @@
 (defun pomodoro-message (msg)
   "Function to write to the pomodoro buffer, just a wrapper, so that I don't have to write lambdas everywhere."
   (lexical-let ((message msg))
+    (if (not (null pomodoro-notifier))
+	(funcall pomodoro-notifier "Emacs Pomodoro Timer" msg))
     #'(lambda()
-        (pomodoro-log-to-buffer message))))
+        (pomodoro-log-to-buffer msg))))
 
-(defun generic-cleanup-function()
-  "Called when a timer is up"
-  (setq pomodoro-task "")
-  (cancel-timer pomodoro-timer)
-  (setq pomodoro-timer nil))
 
 (defun pomodoro-start(task)
   (interactive "MTask Name:")
@@ -117,8 +124,9 @@
                                  pomodoro-custom-on-start-functions)
                            (cons (update-mode-line)
                                  pomodoro-custom-on-tick-functions)
-                           (append (list (update-mode-line)
-                                         (pomodoro-message (concat "Completed Task:" pomodoro-task)))
+                           (append (list #'(lambda()
+					     (pomodoro-message (concat "Pomodoro Completed for " pomodoro-task)))
+					 (update-mode-line))
                                    pomodoro-custom-on-complete-functions)))
 
 (defun pomodoro-break()
@@ -143,7 +151,7 @@
                                    pomodoro-custom-on-start-functions)
                            (cons (update-mode-line)
                                  pomodoro-custom-on-tick-functions)
-                           (append (list #'(lambda()(pomodoro-log-to-buffer "Completed Short Break"))
+                           (append (list #'(lambda()(pomodoro-message "Completed Short Break"))
                                          (update-mode-line))
                                    pomodoro-custom-on-complete-functions)))
 
@@ -159,7 +167,7 @@
                            (cons (update-mode-line)
                                  pomodoro-custom-on-tick-functions)
                            (append (list (update-mode-line)
-                                         #'(lambda()(pomodoro-log-to-buffer "Completed Long Break")))
+                                         #'(lambda()(pomodoro-message "Completed Long Break")))
                                    pomodoro-custom-on-complete-functions)))
 
 (defun update-mode-line()

@@ -1,5 +1,0 @@
-#name: log macro
-# --
-#ifdef DEBUG
-	log("${message}");
-#endif

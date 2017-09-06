@@ -245,9 +245,12 @@ being the working directory of the buffer"
   (require 'wc-goal-mode)
   (wc-goal-mode)
   (visual-line-mode)
+  (set-background-color "#fFCFCFC")
+  (set-foreground-color "#1A1A1A")
   (set-cursor-color "#07BBF2")
   (setq-default line-spacing 4)
-  (set-frame-font "Cousine Regular 15")
+  (set-face-attribute 'mode-line (selected-frame) :background "#fFCFCFC" :overline "#fFCFCFC" :foreground "gray")
+  (set-frame-font "Helvetica Neue 18")
   (set-writing-width)
   (set-fringe-mode 0))
 
@@ -259,3 +262,10 @@ being the working directory of the buffer"
       (narrow-to-region start end)
       (goto-char (point-min))
       (count-matches "\\sw+"))))
+
+(defun check-and-install-if-absent(package-name)
+  "This function checks if a package is installed, if not it installs it.
+
+It requires the standard emacs package manager to be working."
+  (if (not (package-installed-p package-name))
+      (package-install 'package-name)))

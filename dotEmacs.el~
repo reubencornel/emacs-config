@@ -1,3 +1,0 @@
-
-(when (gnu-emacs-p)
-  (setq mac-command-modifier 'meta))
