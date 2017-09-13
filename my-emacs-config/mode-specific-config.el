@@ -163,4 +163,5 @@
 
 (defconfig plantuml-mode-config
   (check-and-install-if-absent 'plantuml-mode)
-  (require 'plantuml-mode))
+  (require 'plantuml-mode)
+  (add-to-list 'auto-mode-alist '("\\.uml\\'" . plantuml-mode)))
