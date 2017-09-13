@@ -160,3 +160,7 @@
   (helm-mode 1)
   )
 
+
+(defconfig plantuml-mode-config
+  (check-and-install-if-absent 'plantuml-mode)
+  (require 'plantuml-mode))
