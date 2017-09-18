@@ -137,8 +137,10 @@
 (defconfig helm-config
   (check-and-install-if-absent 'helm-core)
   (check-and-install-if-absent 'helm)
+  (check-and-install-if-absent 'helm-org-rifle)
   (require 'helm)
   (require 'helm-config)
+  (require 'helm-org-rifle)
   
   (global-set-key (kbd "C-c h") 'helm-command-prefix)
   
