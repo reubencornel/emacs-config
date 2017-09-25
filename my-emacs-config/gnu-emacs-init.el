@@ -18,7 +18,6 @@
 (load-config 'article-file-support)
 (load-config 'magit)
 (load-config 'markdown-mode)
-(load-config 'firacode-config)
 (load-config 'helm-config)
 (load-config 'plantuml-mode-config)
 		   
