@@ -50,19 +50,25 @@
 		("DONE" ("WAITING") ("CANCELLED") ))))
 
   (setq org-agenda-custom-commands
-        '(("wt" tags-todo "+WORK+TASKS")
-          ("ht" tags-todo "+HOME+TASKS")
-          ("wp" tags-todo "+WORK+PROJECTS")
-          ("hp" tags-todo "+HOME+PROJECTS")
-	  ("wq" todo "+QUESTION")
+	'(
+	  ;; ;; ("wt" tags-todo "+WORK+TASKS")
+	  ;; ;;   ("ht" tags-todo "+HOME+TASKS")
+	  ;; ;;   ("wp" tags-todo "+WORK+PROJECTS")
+	  ;; ;;   ("hp" tags-todo "+HOME+PROJECTS")
+	  ("q" tags-todo "TODO=\"QUESTION\"")
   	  ("d" "Daily Agenda" ((agenda "" ((org-agenda-span 1)
 					   (org-agenda-overriding-header "Daily Agenda")))
 			       (todo "NEXT" ((org-agenda-overriding-header "Next Items")))
 			       (todo "QUESTION" ((org-agenda-overriding-header "Open Questions")))
 			       (todo "WAITING" ((org-agenda-overriding-header "Waiting tasks")))
-			       (tags-todo "+UNFILED" ((org-agenda-overriding-header "Unfiled Tasks")))
+			       (tags-todo "+TODO=\"TODO\"-SCHEDULED-TEMPLATE"  ((org-agenda-overriding-header "Unscheduled Tasks")))
 			       (stuck "" ((org-use-tag-inheritance nil)
-					  (org-agenda-overriding-header "Stuck Projecs")))))))
+					  (org-agenda-overriding-header "Stuck Projecs")))))
+	  ("w" "Weekly Review" ((stuck "" ((org-use-tag-inheritance nil)
+					   (org-agenda-overriding-header "Stuck Projecs")))
+				(tags-todo "+TODO=\"TODO\"-SCHEDULED-TEMPLATE"  ((org-agenda-overriding-header "Unscheduled Tasks")))
+				(tags-todo "+TODO=\"WAITING\"+TIMESTAMP_IA<\"<-1w>\"" ((org-agenda-overriding-header "Tasks waiting for more than a week")))
+				(tags-todo "+TODO=\"NEXT\"+TIMESTAMP_IA<\"<-1w>\""  ((org-agenda-overriding-header "Tasks in progress for more than a week")))))))
 
   (setq org-stuck-projects
 	'("+PROJECT-DONE-TEMPLATE" ("NEXT") ()
@@ -190,9 +196,7 @@
   (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
   (define-key helm-map (kbd "C-z")  'helm-select-action)
 
-  (helm-mode 1)
-  )
-
+  (helm-mode 1))
 
 (defconfig plantuml-mode-config
   (check-and-install-if-absent 'plantuml-mode)
