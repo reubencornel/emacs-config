@@ -1,4 +1,3 @@
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Emacs lisp load paths
 ;;
@@ -21,7 +20,7 @@
 ;;   (require 'inf-haskell)
 ;;   (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 ;;   (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-  
+
 ;;   (setf haskell-program-name "/Library/Frameworks/GHC.framework/Versions/Current/usr/bin/ghci")
 ;;   (setq auto-mode-alist (cons '("\\.hs$" . haskell-mode) auto-mode-alist)))
 
@@ -36,34 +35,66 @@
   (setq org-hide-leading-stars 't)
   (setq org-log-done 'time)
   (add-hook 'after-save-hook 'sync-index-org)
-  
+
+  (setq org-todo-keywords
+	(quote ((sequence "TODO(t)" "NEXT(n)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELLED(c@)")
+		(sequence "TOBUY(b)" "TOPACK(p)" "|" "BOUGHT(g)" "PACKED")
+		(sequence "QUESTION(q)" "|" "ANSWERED(a)"))))
+
+  (setq org-todo-state-tags-triggers
+	(quote (("CANCELLED" ("CANCELLED" . t))
+		("WAITING" ("WAITING" . t))
+		(done ("WAITING"))
+		("TODO" ("WAITING") ("CANCELLED") )
+		("NEXT" ("WAITING") ("CANCELLED") )
+		("DONE" ("WAITING") ("CANCELLED") ))))
 
   (setq org-agenda-custom-commands
         '(("wt" tags-todo "+WORK+TASKS")
           ("ht" tags-todo "+HOME+TASKS")
           ("wp" tags-todo "+WORK+PROJECTS")
-          ("hp" tags-todo "+HOME+PROJECTS")))
+          ("hp" tags-todo "+HOME+PROJECTS")
+	  ("wq" todo "+QUESTION")
+  	  ("d" "Daily Agenda" ((agenda "" ((org-agenda-span 1)
+					   (org-agenda-overriding-header "Daily Agenda")))
+			       (todo "NEXT" ((org-agenda-overriding-header "Next Items")))
+			       (todo "QUESTION" ((org-agenda-overriding-header "Open Questions")))
+			       (todo "WAITING" ((org-agenda-overriding-header "Waiting tasks")))
+			       (tags-todo "+UNFILED" ((org-agenda-overriding-header "Unfiled Tasks")))
+			       (stuck "" ((org-use-tag-inheritance nil)
+					  (org-agenda-overriding-header "Stuck Projecs")))))))
 
-  (setq org-todo-keywords '((sequence "TODO" "STARTED" "WAITING" "|" "DONE")
-                            (sequence "NOTPICKEDUP" "|" "PICKEDUP")))
+  (setq org-stuck-projects
+	'("+PROJECT-DONE-TEMPLATE" ("NEXT") ()
+	  "\\<IGNORE\\>"))
 
   (setq org-directory "~/Dropbox")
   (setq org-mobile-inbox-for-pull "~/Dropbox/inbox.org")
- 
+
   (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
-  
+
   (setq org-directory (expand-file-name "~/Dropbox"))
   (setq org-default-notes-file (concat org-directory "/notes.org"))
   (setq org-default-journal-file (concat org-directory "/notes.org"))
   (setq org-capture-templates
 	'(("t" "Todo" entry (file+headline org-default-notes-file "Tasks")
-	   "* TODO %? \n %i\n %a")
+	   "* TODO %^{entry} :UNFILED:\n%T\n %?\n %a")
 	  ("r" "Lookup Entry in region" entry (file+headline org-default-notes-file "Lookup")
 	   "* %i :LOOKUP:\n")
 	  ("l" "Lookup Entry" entry (file+headline org-default-notes-file "Lookup")
 	   "* %?  :LOOKUP:\n %i \n")
 	  ("j" "Journal" entry (file+datetree org-default-journal-file)
-	   "* %^{title} %^G \n\n%?\n\nEntered on %U\n %i\n"))))
+	   "* %^{title} %^G \n\n%?\n\nEntered on %U\n %i\n")))
+
+  (setq org-todo-keyword-faces
+	(quote (("TODO" :foreground "red" :weight bold)
+		("NEXT" :foreground "blue" :weight bold)
+		("DONE" :foreground "forest green" :weight bold)
+		("WAITING" :foreground "orange" :weight bold)
+		("HOLD" :foreground "magenta" :weight bold)
+		("CANCELLED" :foreground "forest green" :weight bold)
+		("QUESTION" :foreground "orange" :weight bold)
+		("ANSWERED" :foreground "forest green" :weight bold)))))
 
 (defconfig c-mode-config
   (setq basic-c-offset 8)
@@ -141,9 +172,9 @@
   (require 'helm)
   (require 'helm-config)
   (require 'helm-org-rifle)
-  
+
   (global-set-key (kbd "C-c h") 'helm-command-prefix)
-  
+
   (setq
    helm-quick-update                     t
    helm-split-window-in-side-p           t
@@ -154,11 +185,11 @@
    helm-ff-file-name-history-use-recentf t
    helm-semantic-fuzzy-match t
    helm-imenu-fuzzy-match    t)
-  
+
   (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
   (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
   (define-key helm-map (kbd "C-z")  'helm-select-action)
-  
+
   (helm-mode 1)
   )
 
