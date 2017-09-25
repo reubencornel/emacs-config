@@ -84,7 +84,7 @@
   (setq org-default-journal-file (concat org-directory "/notes.org"))
   (setq org-capture-templates
 	'(("t" "Todo" entry (file+headline org-default-notes-file "Tasks")
-	   "* TODO %^{entry} :UNFILED:\n%T\n %?\n %a")
+	   "* TODO %^{entry} :UNFILED:\n:PROPERTIES:\n:ENTRYDATE:%U\n:END:\n %?\n %a")
 	  ("r" "Lookup Entry in region" entry (file+headline org-default-notes-file "Lookup")
 	   "* %i :LOOKUP:\n")
 	  ("l" "Lookup Entry" entry (file+headline org-default-notes-file "Lookup")
