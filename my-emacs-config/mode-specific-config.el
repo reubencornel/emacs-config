@@ -57,6 +57,7 @@
 	  ;; ;;   ("hp" tags-todo "+HOME+PROJECTS")
 	  ("q" tags-todo "TODO=\"QUESTION\"")
   	  ("d" "Daily Agenda" ((agenda "" ((org-agenda-span 1)
+					   (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("NEXT" "DONE" "WAITING")))
 					   (org-agenda-overriding-header "Daily Agenda")))
 			       (todo "NEXT" ((org-agenda-overriding-header "Next Items")))
 			       (todo "QUESTION" ((org-agenda-overriding-header "Open Questions")))
