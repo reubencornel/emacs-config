@@ -77,6 +77,7 @@
 
   (setq org-directory "~/Dropbox")
   (setq org-mobile-inbox-for-pull "~/Dropbox/inbox.org")
+  (setq org-refile-targets '((org-agenda-files :maxlevel . 5)))
 
   (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 
