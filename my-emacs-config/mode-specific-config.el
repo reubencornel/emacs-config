@@ -85,6 +85,9 @@
 
   (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 
+  ;; include emacs diary entries in agenda view
+  (setq org-agenda-include-diary t)
+
   (setq org-capture-templates
 	'(("t" "Todo" entry (file+headline org-default-notes-file "Tasks")
 	   "* TODO %^{entry}\n:PROPERTIES:\n:ENTRYDATE:%U\n:END:\n %?\n")
@@ -205,3 +208,8 @@
   (check-and-install-if-absent 'plantuml-mode)
   (require 'plantuml-mode)
   (add-to-list 'auto-mode-alist '("\\.uml\\'" . plantuml-mode)))
+
+(defconfig diary-config
+  (setq diary-file "~/Dropbox/emacsdiary.txt")
+  (add-hook 'diary-list-entries-hook 'diary-include-other-diary-files)
+  (add-hook 'diary-mark-entries-hook 'diary-mark-included-diary-files))

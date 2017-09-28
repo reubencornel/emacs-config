@@ -11,6 +11,7 @@
 
 (package-initialize)
 ;; modes
+(load-config 'diary-config)
 (load-config 'org-mode-config)
 (load-config 'c-mode-config)
 (load-config 'ido-mode)
