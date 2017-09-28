@@ -31,7 +31,8 @@
 
 
 ;; Prevent the start screen from showing up
-;(setq inhibit-startup-message t)
+(setq inhibit-startup-message t)
+(setq inhibit-startup-screen t)
 
 ;; Make delete work as it work on windows o
 (delete-selection-mode 1)
