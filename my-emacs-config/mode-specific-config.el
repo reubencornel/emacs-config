@@ -75,15 +75,16 @@
 	'("+PROJECT-DONE-TEMPLATE" ("NEXT") ()
 	  "\\<IGNORE\\>"))
 
-  (setq org-directory "~/Dropbox")
-  (setq org-mobile-inbox-for-pull "~/Dropbox/inbox.org")
-  (setq org-refile-targets '((org-agenda-files :maxlevel . 5)))
-
-  (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
-
   (setq org-directory (expand-file-name "~/Dropbox"))
   (setq org-default-notes-file (concat org-directory "/notes.org"))
   (setq org-default-journal-file (concat org-directory "/notes.org"))
+
+  (setq org-directory "~/Dropbox")
+  (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
+  (setq org-mobile-inbox-for-pull "~/Dropbox/inbox.org")
+
+  (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+
   (setq org-capture-templates
 	'(("t" "Todo" entry (file+headline org-default-notes-file "Tasks")
 	   "* TODO %^{entry}\n:PROPERTIES:\n:ENTRYDATE:%U\n:END:\n %?\n")
