@@ -35,6 +35,8 @@
   (setq org-hide-leading-stars 't)
   (setq org-log-done 'time)
   (add-hook 'after-save-hook 'sync-index-org)
+  ;; search 5 levels deep in org files.
+  (setq org-refile-targets '((org-agenda-files :maxlevel . 5)))
 
   (setq org-todo-keywords
 	(quote ((sequence "TODO(t)" "NEXT(n)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELLED(c@)")
