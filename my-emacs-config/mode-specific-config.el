@@ -74,9 +74,9 @@
 				(tags-todo "+TODO=\"NEXT\"+TIMESTAMP_IA<\"<-1w>\""  ((org-agenda-overriding-header "Tasks in progress for more than a week")))))))
 
   (setq org-stuck-projects
-	'("+PROJECT-DONE-TEMPLATE" ("NEXT") ()
+	'("+PROJECT-DONE-TEMPLATE-TODO=\"DONE\"" ("NEXT") ()
 	  "\\<IGNORE\\>"))
-
+  
   (setq org-directory (expand-file-name "~/Dropbox"))
   (setq org-default-notes-file (concat org-directory "/notes.org"))
   (setq org-default-journal-file (concat org-directory "/notes.org"))
