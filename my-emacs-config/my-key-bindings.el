@@ -20,34 +20,11 @@
 (global-set-key [(f5)] 'enlarge-window)
 
 (global-unset-key [(f6)])
-(global-set-key [(f6)] 'my-anything)
+(global-set-key [(f6)] 'helm-locate)
 
-;; (global-unset-key [(f6)])
-;; (global-set-key [(f6)] 'itunes-playpause)
+;; (global-unset-key [(control f2)])
+;; (global-set-key [(control f2)] 'twit-post)
 
-;; (global-unset-key [(f8)])
-;; (global-set-key [(f8)] 'itunes-next-track)
-
-;; (global-unset-key [(f7)])
-;; (global-set-key [(f7)] 'itunes-prev-track)
-
-(global-unset-key [(control f2)])
-(global-set-key [(control f2)] 'twit-post)
-
-
-(global-unset-key [(control f1)])
-(global-set-key [(control f1)] 'twit-show-recent-tweets)
-
-(global-unset-key [(control f3)])
-(global-set-key [(control f3)] 'switch-to-shell-with-current-cwd)
-
-(global-unset-key [(control f5)])
-(global-set-key [(control f5)] 'anything-for-files)
-
-(global-unset-key [(control f9)])
-
-(global-unset-key [(control f8)])
-(global-set-key [(control f8)] 'ispell-word)
 
 (global-unset-key "\M-g")
 (global-set-key "\M-g" 'goto-line)
