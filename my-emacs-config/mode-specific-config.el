@@ -51,6 +51,8 @@
 		("NEXT" ("WAITING") ("CANCELLED") )
 		("DONE" ("WAITING") ("CANCELLED") ))))
 
+  (setq unscheduled-tasks-search-string "+TODO=\"TODO\"-SCHEDULED={.+}-DEADLINE={.+}-TEMPLATE")
+
   (setq org-agenda-custom-commands
 	'(
 	  ;; ;; ("wt" tags-todo "+WORK+TASKS")
@@ -64,14 +66,17 @@
 			       (todo "NEXT" ((org-agenda-overriding-header "Next Items")))
 			       (todo "QUESTION" ((org-agenda-overriding-header "Open Questions")))
 			       (todo "WAITING" ((org-agenda-overriding-header "Waiting tasks")))
-			       (tags-todo "+TODO=\"TODO\"-SCHEDULED={.+}-TEMPLATE"  ((org-agenda-overriding-header "Unscheduled Tasks")))
+			       (tags-todo  unscheduled-tasks-search-string ((org-agenda-overriding-header "Unscheduled Tasks")))
 			       (stuck "" ((org-use-tag-inheritance nil)
 					  (org-agenda-overriding-header "Stuck Projecs")))))
 	  ("w" "Weekly Review" ((stuck "" ((org-use-tag-inheritance nil)
 					   (org-agenda-overriding-header "Stuck Projecs")))
-				(tags-todo "+TODO=\"TODO\"-SCHEDULED={.+}-TEMPLATE"  ((org-agenda-overriding-header "Unscheduled Tasks")))
+				(tags-todo unscheduled-tasks-search-string  ((org-agenda-overriding-header "Unscheduled Tasks")))
 				(tags-todo "+TODO=\"WAITING\"+TIMESTAMP_IA<\"<-1w>\"" ((org-agenda-overriding-header "Tasks waiting for more than a week")))
-				(tags-todo "+TODO=\"NEXT\"+TIMESTAMP_IA<\"<-1w>\""  ((org-agenda-overriding-header "Tasks in progress for more than a week")))))))
+				(tags-todo "+TODO=\"NEXT\"+TIMESTAMP_IA<\"<-1w>\""  ((org-agenda-overriding-header "Tasks in progress for more than a week")))))
+	  ("s" "Standup" ((tags "+STANDUP+ENTRYDATE>=\"<-3d>\"" ((org-agenda-overriding-header "Standup updates")
+								 (org-agenda-overriding-columns-format )
+								 (org-agenda-sorting-strategy '(time-down ts-down tsia-down))))))))
 
   (setq org-stuck-projects
 	'("+PROJECT-DONE-TEMPLATE-TODO=\"DONE\"" ("NEXT") ()
@@ -98,7 +103,9 @@
 	  ("l" "Lookup Entry" entry (file+headline org-default-notes-file "Lookup")
 	   "* %?  :LOOKUP:\n %i \n")
 	  ("j" "Journal" entry (file+datetree org-default-journal-file)
-	   "* %^{title} %^G \n\n%?\n\nEntered on %U\n %i\n")))
+	   "* %^{title} %^G \n\n%?\n\nEntered on %U\n %i\n")
+	  ("s" "Standup" entry (file+datetree org-default-notes-file)
+	   "* %^{title} :STANDUP:\n:PROPERTIES:\n:COLUMNS: %50ITEM %ENTRYDATE\n:ENTRYDATE: %u\n:END:\n%?\n\nEntered on %U\n %i\n")))
 
   (setq org-todo-keyword-faces
 	(quote (("TODO" :foreground "red" :weight bold)
