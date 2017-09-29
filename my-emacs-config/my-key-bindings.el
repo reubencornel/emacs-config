@@ -22,6 +22,12 @@
 (global-unset-key [(f6)])
 (global-set-key [(f6)] 'helm-locate)
 
+(global-unset-key [(f11)])
+(global-set-key [(f11)] 'kmacro-start-macro)
+
+(global-unset-key [(f12)])
+(global-set-key [(f12)] 'kmacro-end-macro)
+
 ;; (global-unset-key [(control f2)])
 ;; (global-set-key [(control f2)] 'twit-post)
 
