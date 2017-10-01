@@ -51,7 +51,11 @@
 		("NEXT" ("WAITING") ("CANCELLED") )
 		("DONE" ("WAITING") ("CANCELLED") ))))
 
-  (setq unscheduled-tasks-search-string "+TODO=\"TODO\"-SCHEDULED={.+}-DEADLINE={.+}-TEMPLATE")
+  (setq unscheduled-tasks-search-string "+TODO=\"TODO\"-SCHEDULED={.+}-DEADLINE={.+}-TEMPLATE-IGNORE_UNSCHEDULED")
+  
+  (defun skip-done-functions-or-projects()
+    (org-agenda-skip-entry-if 'todo '("NEXT" "DONE" "WAITING")))
+
 
   (setq org-agenda-custom-commands
 	'(
@@ -61,7 +65,7 @@
 	  ;; ;;   ("hp" tags-todo "+HOME+PROJECTS")
 	  ("q" tags-todo "TODO=\"QUESTION\"")
   	  ("d" "Daily Agenda" ((agenda "" ((org-agenda-span 1)
-					   (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("NEXT" "DONE" "WAITING")))
+					   (org-agenda-skip-function 'skip-done-functions-or-projects)
 					   (org-agenda-overriding-header "Daily Agenda")))
 			       (todo "NEXT" ((org-agenda-overriding-header "Next Items")))
 			       (todo "QUESTION" ((org-agenda-overriding-header "Open Questions")))
