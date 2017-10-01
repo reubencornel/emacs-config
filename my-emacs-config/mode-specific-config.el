@@ -3,29 +3,6 @@
 ;;
 
 
-;; (defconfig nav
-;;   (require 'nav))
-
-;; (defconfig sentence-highlight-mode
-;;   (require 'sentence-highlight))
-
-;; (defconfig nrepl
-;;   (require 'paredit)
-;;   (require 'clojure-mode)
-;;   (require 'nrepl))
-
-;;;;;; Haskell mode
-;; (defconfig haskell-mode
-;;   (require 'haskell-mode)
-;;   (require 'inf-haskell)
-;;   (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-;;   (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-
-;;   (setf haskell-program-name "/Library/Frameworks/GHC.framework/Versions/Current/usr/bin/ghci")
-;;   (setq auto-mode-alist (cons '("\\.hs$" . haskell-mode) auto-mode-alist)))
-
-
-
 (defconfig org-mode-config
   (require 'org-install)
   (check-and-install-if-absent 'org-bullets)
@@ -55,6 +32,40 @@
   
   (defun skip-done-functions-or-projects()
     (org-agenda-skip-entry-if 'todo '("NEXT" "DONE" "WAITING")))
+
+  
+  (defun org-checkbox-todo ()
+    "Switch header TODO state to either DONE, NEXT, or TODO depending on the number of check boxes ticked"
+    (let ((todo-state (org-get-todo-state)) beg end)
+      (unless (not todo-state)
+	(save-excursion
+	  (org-back-to-heading t)
+	  (let* ((line-start (point))
+		 (line-end (line-end-position)))
+	    (if (re-search-forward "\\[\\([0-9]*\\)%\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
+				   end t)
+		(if (match-end 1)	  
+		    (let ((percent-done (string-to-number (match-string 1))))
+		      (handle-percent-case percent-done))
+		  (let ((tasks-done (string-to-number (match-string 2)))
+			(tasks-remaining (string-to-number (match-string 3))))
+		    (handle-task-number-case tasks-done tasks-remaining)))))))))
+  
+  (defun handle-percent-case(percent-done)
+    (if (= percent-done 100)
+	(org-todo "DONE")
+      (if (> percent-done 0)
+	  (org-todo "NEXT")
+	(org-todo "TODO"))))
+
+  (defun handle-task-number-case(tasks-done tasks-remaining)
+    (if (= tasks-done tasks-remaining)
+	(org-todo "DONE")
+      (if (= tasks-done 0)
+	  (org-todo "TODO")
+	(org-todo "NEXT"))))
+
+  (add-hook 'org-checkbox-statistics-hook 'org-checkbox-todo)
 
 
   (setq org-agenda-custom-commands
@@ -93,6 +104,14 @@
   (setq org-directory "~/Dropbox")
   (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
   (setq org-mobile-inbox-for-pull "~/Dropbox/inbox.org")
+
+  (defun org-summary-todo (n-done n-not-done)
+    "Switch entry to DONE when all subentries are done, to TODO otherwise."
+    (let ((todo-state (org-get-todo-state)) beg end)
+      (unless (not todo-state)
+	(let (org-log-done org-log-states)   ; turn off logging
+	  (org-todo (if (= n-not-done 0) "DONE"
+		      (if (> n-done 0) "NEXT" "TODO")))))))
 
   (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 

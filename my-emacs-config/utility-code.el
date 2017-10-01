@@ -205,12 +205,6 @@ being the working directory of the buffer"
                                            nil
 					 'fullboth)))
 
-(defun org-summary-todo (n-done n-not-done)
-  "Switch entry to DONE when all subentries are done, to TODO otherwise."
-  (let (org-log-done org-log-states)   ; turn off logging
-    (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
-
-
 (defun sync-index-org()
   "Copies the index.org file from the dropbox dir to the mobile org dir so that it can be accessed on my phone"
   (if (string-match "index\.org$" (buffer-file-name))
