@@ -78,7 +78,7 @@
   	  ("d" "Daily Agenda" ((agenda "" ((org-agenda-span 1)
 					   (org-agenda-skip-function 'skip-done-functions-or-projects)
 					   (org-agenda-overriding-header "Daily Agenda")))
-			       (todo "NEXT" ((org-agenda-overriding-header "Next Items")))
+			       (tags-todo "TODO=\"NEXT\"&SCHEDULED<\"<+1w>\"|TODO=\"NEXT\"-SCHEDULED={.+}-DEADLINE={.+}|TODO=\"NEXT\"&DEADLINE<\"<+1w>\"" ((org-agenda-overriding-header "Next Items")))
 			       (todo "QUESTION" ((org-agenda-overriding-header "Open Questions")))
 			       (todo "WAITING" ((org-agenda-overriding-header "Waiting tasks")))
 			       (tags-todo  unscheduled-tasks-search-string ((org-agenda-overriding-header "Unscheduled Tasks")))
