@@ -18,7 +18,7 @@
   (setq org-todo-keywords
 	(quote ((sequence "TODO(t)" "NEXT(n)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELLED(c@)")
 		(sequence "TOBUY(b)" "TOPACK(p)" "|" "BOUGHT(g)" "PACKED")
-		(sequence "QUESTION(q)" "|" "ANSWERED(a)"))))
+		(sequence "QUESTION(q)" "|" "ANSWERED(a@)"))))
 
   (setq org-todo-state-tags-triggers
 	(quote (("CANCELLED" ("CANCELLED" . t))
