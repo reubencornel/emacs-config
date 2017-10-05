@@ -125,6 +125,8 @@
 	   "* %i :LOOKUP:\n")
 	  ("l" "Lookup Entry" entry (file+headline org-default-notes-file "Lookup")
 	   "* %?  :LOOKUP:\n %i \n")
+	  ("q" "Question" entry (file+datetree org-default-journal-file)
+	   "* QUESTION %^{question} \n%?\n\nEntered on %U\n %i\n")
 	  ("j" "Journal" entry (file+datetree org-default-journal-file)
 	   "* %^{title} %^G \n\n%?\n\nEntered on %U\n %i\n")
 	  ("s" "Standup" entry (file+datetree org-default-notes-file)
