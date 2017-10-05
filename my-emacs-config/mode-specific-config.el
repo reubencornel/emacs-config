@@ -11,6 +11,20 @@
   (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
   (setq org-hide-leading-stars 't)
   (setq org-log-done 'time)
+  (setq org-export-with-section-numbers nil)
+  (setq org-export-with-toc nil)
+  (setq org-pretty-entities t)
+  (setq org-reverse-note-order t)
+  (setq org-log-into-drawer "LOGBOOK")
+  (setq org-clock-persist t)
+  (setq org-clock-idle-time 60)
+  (setq org-clock-history-length 35)
+  (setq org-clock-in-resume t)
+  (setq org-clock-out-remove-zero-time-clocks t)
+  (setq org-id-method 'uuidgen)
+  (setq org-enforce-todo-dependencies t)
+  (setq org-hide-leading-stars t)
+  
   (add-hook 'after-save-hook 'sync-index-org)
   ;; search 5 levels deep in org files.
   (setq org-refile-targets '((org-agenda-files :maxlevel . 5)))
@@ -70,12 +84,8 @@
 
   (setq org-agenda-custom-commands
 	'(
-	  ;; ;; ("wt" tags-todo "+WORK+TASKS")
-	  ;; ;;   ("ht" tags-todo "+HOME+TASKS")
-	  ;; ;;   ("wp" tags-todo "+WORK+PROJECTS")
-	  ;; ;;   ("hp" tags-todo "+HOME+PROJECTS")
 	  ("q" tags-todo "TODO=\"QUESTION\"")
-  	  ("d" "Daily Agenda" ((agenda "" ((org-agenda-span 1)
+  	  ("d" "Daily Agenda" ((agenda "Daily Agenda" ((org-agenda-span 1)
 					   (org-agenda-skip-function 'skip-done-functions-or-projects)
 					   (org-agenda-overriding-header "Daily Agenda")))
 			       (tags-todo "TODO=\"NEXT\"&SCHEDULED<\"<+1w>\"|TODO=\"NEXT\"-SCHEDULED={.+}-DEADLINE={.+}|TODO=\"NEXT\"&DEADLINE<\"<+1w>\"" ((org-agenda-overriding-header "Next Items")))
@@ -97,7 +107,7 @@
 	'("+PROJECT-DONE-TEMPLATE-TODO=\"DONE\"" ("NEXT") ()
 	  "\\<IGNORE\\>"))
   
-  (setq org-directory (expand-file-name "~/Dropbox"))
+ (setq org-directory (expand-file-name "~/Dropbox"))
   (setq org-default-notes-file (concat org-directory "/notes.org"))
   (setq org-default-journal-file (concat org-directory "/notes.org"))
 
@@ -128,7 +138,7 @@
 	  ("j" "Journal" entry (file+datetree org-default-journal-file)
 	   "* %^{title} %^G \n\n%?\n\nEntered on %U\n %i\n")
 	  ("s" "Standup" entry (file+datetree org-default-notes-file)
-	   "* %^{title} :STANDUP:\n:PROPERTIES:\n:COLUMNS: %50ITEM %ENTRYDATE\n:ENTRYDATE: %u\n:END:\n%?\n\nEntered on %U\n %i\n")))
+	   "*   %^{title} :STANDUP:\n:PROPERTIES:\n:COLUMNS: %50ITEM %ENTRYDATE\n:ENTRYDATE: %u\n:END:\n%?\n\nEntered on %U\n %i\n")))
 
   (setq org-todo-keyword-faces
 	(quote (("TODO" :foreground "red" :weight bold)
