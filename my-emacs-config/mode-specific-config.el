@@ -45,7 +45,7 @@
   (setq unscheduled-tasks-search-string "+TODO=\"TODO\"-SCHEDULED={.+}-DEADLINE={.+}-TEMPLATE-IGNORE_UNSCHEDULED")
   
   (defun skip-done-functions-or-projects()
-    (org-agenda-skip-entry-if 'todo '("DONE" "WAITING")))
+    (org-agenda-skip-entry-if 'todo '("DONE" "WAITING" "NEXT")))
 
   
   (defun org-checkbox-todo ()
