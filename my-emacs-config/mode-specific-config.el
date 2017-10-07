@@ -257,3 +257,9 @@
   (setq diary-file "~/Dropbox/emacsdiary.txt")
   (add-hook 'diary-list-entries-hook 'diary-include-other-diary-files)
   (add-hook 'diary-mark-entries-hook 'diary-mark-included-diary-files))
+
+(defconfig default-font-config
+  (let ((default-font "DejaVu Sans Mono"))
+    (when (font-exists-p default-font)
+      (set-frame-font default-font)
+      (setq-default line-spacing .2))))

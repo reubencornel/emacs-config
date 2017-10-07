@@ -263,3 +263,7 @@ being the working directory of the buffer"
 It requires the standard emacs package manager to be working."
   (if (not (package-installed-p package-name))
       (package-install package-name)))
+
+(defun font-exists-p(name)
+  "Checks if the font exists. This function expects name to be a string"
+  (find-font (font-spec :name name)))
