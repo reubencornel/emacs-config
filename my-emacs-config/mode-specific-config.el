@@ -24,7 +24,7 @@
   (setq org-id-method 'uuidgen)
   (setq org-enforce-todo-dependencies t)
   (setq org-hide-leading-stars t)
-  
+
   (add-hook 'after-save-hook 'sync-index-org)
   ;; search 5 levels deep in org files.
   (setq org-refile-targets '((org-agenda-files :maxlevel . 5)))
@@ -32,7 +32,20 @@
   (setq org-todo-keywords
 	(quote ((sequence "TODO(t)" "NEXT(n)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELLED(c@)")
 		(sequence "TOBUY(b)" "TOPACK(p)" "|" "BOUGHT(g)" "PACKED")
+		(sequence "TOREAD(r)" "|" "READ")
 		(sequence "QUESTION(q)" "|" "ANSWERED(a@)"))))
+
+  (setq org-todo-keyword-faces
+	(quote (("TODO" :foreground "red1" :weight bold)
+		("NEXT" :foreground "turquoise" :weight bold)
+		("DONE" :foreground "light green" :weight bold)
+		("WAITING" :foreground "DarkOrange2" :weight bold)
+		("TOREAD" :foreground "DarkOrange2" :weight bold)
+		("HOLD" :foreground "magenta" :weight bold)
+		("CANCELLED" :foreground "light green" :weight bold)
+		("READ"  :foreground "light green" :weight bold)
+		("QUESTION" :foreground "DarkOrange2" :weight bold)
+		("ANSWERED" :foreground "light green" :weight bold))))
 
   (setq org-todo-state-tags-triggers
 	(quote (("CANCELLED" ("CANCELLED" . t))
@@ -43,11 +56,10 @@
 		("DONE" ("WAITING") ("CANCELLED") ))))
 
   (setq unscheduled-tasks-search-string "+TODO=\"TODO\"-SCHEDULED={.+}-DEADLINE={.+}-TEMPLATE-IGNORE_UNSCHEDULED")
-  
+
   (defun skip-done-functions-or-projects()
     (org-agenda-skip-entry-if 'todo '("DONE" "WAITING" "NEXT")))
 
-  
   (defun org-checkbox-todo ()
     "Switch header TODO state to either DONE, NEXT, or TODO depending on the number of check boxes ticked"
     (let ((todo-state (org-get-todo-state)) beg end)
@@ -58,13 +70,13 @@
 		 (line-end (line-end-position)))
 	    (if (re-search-forward "\\[\\([0-9]*\\)%\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
 				   end t)
-		(if (match-end 1)	  
+		(if (match-end 1)
 		    (let ((percent-done (string-to-number (match-string 1))))
 		      (handle-percent-case percent-done))
 		  (let ((tasks-done (string-to-number (match-string 2)))
 			(tasks-remaining (string-to-number (match-string 3))))
 		    (handle-task-number-case tasks-done tasks-remaining)))))))))
-  
+
   (defun handle-percent-case(percent-done)
     (if (= percent-done 100)
 	(org-todo "DONE")
@@ -86,8 +98,8 @@
 	'(
 	  ("q" tags-todo "TODO=\"QUESTION\"")
   	  ("d" "Daily Agenda" ((agenda "Daily Agenda" ((org-agenda-span 1)
-					   (org-agenda-skip-function 'skip-done-functions-or-projects)
-					   (org-agenda-overriding-header "Daily Agenda")))
+						       (org-agenda-skip-function 'skip-done-functions-or-projects)
+						       (org-agenda-overriding-header "Daily Agenda")))
 			       (tags-todo "TODO=\"NEXT\"&SCHEDULED<\"<+1w>\"|TODO=\"NEXT\"-SCHEDULED={.+}-DEADLINE={.+}|TODO=\"NEXT\"&DEADLINE<\"<+1w>\"" ((org-agenda-overriding-header "Next Items")))
 			       (todo "QUESTION" ((org-agenda-overriding-header "Open Questions")))
 			       (todo "WAITING" ((org-agenda-overriding-header "Waiting tasks")))
@@ -99,15 +111,15 @@
 				(tags-todo unscheduled-tasks-search-string  ((org-agenda-overriding-header "Unscheduled Tasks")))
 				(tags-todo "+TODO=\"WAITING\"+TIMESTAMP_IA<\"<-1w>\"" ((org-agenda-overriding-header "Tasks waiting for more than a week")))
 				(tags-todo "+TODO=\"NEXT\"+TIMESTAMP_IA<\"<-1w>\""  ((org-agenda-overriding-header "Tasks in progress for more than a week")))))
-	  ("s" "Standup" ((tags "+STANDUP+ENTRYDATE>=\"<-3d>\"" ((org-agenda-overriding-header "Standup updates")
+	  ("u" "Standup" ((tags "+STANDUP+ENTRYDATE>=\"<-3d>\"" ((org-agenda-overriding-header "Standup updates")
 								 (org-agenda-overriding-columns-format )
 								 (org-agenda-sorting-strategy '(time-down ts-down tsia-down))))))))
 
   (setq org-stuck-projects
 	'("+PROJECT-DONE-TEMPLATE-TODO=\"DONE\"" ("NEXT") ()
 	  "\\<IGNORE\\>"))
-  
- (setq org-directory (expand-file-name "~/Dropbox"))
+
+  (setq org-directory (expand-file-name "~/Dropbox"))
   (setq org-default-notes-file (concat org-directory "/notes.org"))
   (setq org-default-journal-file (concat org-directory "/notes.org"))
 
@@ -140,17 +152,7 @@
 	  ("j" "Journal" entry (file+datetree org-default-journal-file)
 	   "* %^{title} %^G \n\n%?\n\nEntered on %U\n %i\n")
 	  ("s" "Standup" entry (file+datetree org-default-notes-file)
-	   "*   %^{title} :STANDUP:\n:PROPERTIES:\n:COLUMNS: %50ITEM %ENTRYDATE\n:ENTRYDATE: %u\n:END:\n%?\n\nEntered on %U\n %i\n")))
-
-  (setq org-todo-keyword-faces
-	(quote (("TODO" :foreground "red" :weight bold)
-		("NEXT" :foreground "turquoise" :weight bold)
-		("DONE" :foreground "forest green" :weight bold)
-		("WAITING" :foreground "orange" :weight bold)
-		("HOLD" :foreground "magenta" :weight bold)
-		("CANCELLED" :foreground "forest green" :weight bold)
-		("QUESTION" :foreground "orange" :weight bold)
-		("ANSWERED" :foreground "forest green" :weight bold)))))
+	   "*   %^{title} :STANDUP:\n:PROPERTIES:\n:COLUMNS: %50ITEM %ENTRYDATE\n:ENTRYDATE: %u\n:END:\n%?\n\nEntered on %U\n %i\n"))))
 
 (defconfig c-mode-config
   (setq basic-c-offset 8)
@@ -228,8 +230,10 @@
   (require 'helm)
   (require 'helm-config)
   (require 'helm-org-rifle)
+  (require 'helm-swoop)
 
   (global-set-key (kbd "C-c h") 'helm-command-prefix)
+  (global-set-key (kbd "C-s") 'helm-swoop)
 
   (setq
    helm-quick-update                     t
