@@ -22,7 +22,6 @@
 (load-config 'helm-config)
 (load-config 'plantuml-mode-config)   
 (load-config 'utf8-config)
-(load-config 'default-font-config)
 
 (load (expand-file-name "~/emacs/my-emacs-config/my-key-bindings.el"))
 (global-set-key (kbd "M-RET") 'ns-toggle-fullscreen)
