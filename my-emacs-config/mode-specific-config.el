@@ -227,6 +227,7 @@
   (check-and-install-if-absent 'helm-core)
   (check-and-install-if-absent 'helm)
   (check-and-install-if-absent 'helm-org-rifle)
+  (check-and-install-if-absent 'helm-swoop)
   (require 'helm)
   (require 'helm-config)
   (require 'helm-org-rifle)
