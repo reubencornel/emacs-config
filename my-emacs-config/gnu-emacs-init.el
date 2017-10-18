@@ -14,7 +14,6 @@
 (load-config 'diary-config)
 (load-config 'org-mode-config)
 (load-config 'c-mode-config)
-(load-config 'ido-mode)
 (load-config 'org-mode-config)
 (load-config 'article-file-support)
 (load-config 'magit)
@@ -22,6 +21,7 @@
 (load-config 'helm-config)
 (load-config 'plantuml-mode-config)   
 (load-config 'utf8-config)
+(load-config 'nov-mode-config)
 
 (load (expand-file-name "~/emacs/my-emacs-config/my-key-bindings.el"))
 (global-set-key (kbd "M-RET") 'ns-toggle-fullscreen)

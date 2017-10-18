@@ -158,12 +158,6 @@
   (setq basic-c-offset 8)
   (add-hook 'c-mode-hook 'my-c-mode-hook))
 
-
-(defconfig ido-mode
-  (ido-mode 1)
-  (ido-everywhere t)
-  (setq ido-enable-flex-matching t))
-
 ;; Article file support
 (defconfig article-file-support
   (setq auto-mode-alist (cons '("\\.article$" . html-mode) auto-mode-alist)))
@@ -278,3 +272,12 @@
       (setq buffer-file-coding-system 'utf-8)
     (setq default-buffer-file-coding-system 'utf-8)))
 
+(defconfig nov-mode-config
+  (check-and-install-if-absent 'nov)
+  (require 'nov)
+  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+
+  (defun my-nov-font-setup ()
+    (face-remap-add-relative 'variable-pitch :family "Liberation Serif"
+			     :height 1.0))
+  (add-hook 'nov-mode-hook 'my-nov-font-setup))
