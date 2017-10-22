@@ -221,15 +221,17 @@
   (check-and-install-if-absent 'helm-core)
   (check-and-install-if-absent 'helm)
   (check-and-install-if-absent 'helm-org-rifle)
-  (check-and-install-if-absent 'helm-swoop)
+  (check-and-install-if-absent 'swiper-helm)
+
   (require 'helm)
   (require 'helm-config)
   (require 'helm-org-rifle)
-  (require 'helm-swoop)
-
+  (require 'swiper-helm)
+ 
   (global-set-key (kbd "C-c h") 'helm-command-prefix)
-  (global-set-key (kbd "C-s") 'helm-swoop)
-
+  (global-set-key (kbd "C-s") 'swiper-helm)
+  (global-set-key (kbd "C-r") 'swiper-helm)
+  
   (setq
    helm-quick-update                     t
    helm-split-window-in-side-p           t
