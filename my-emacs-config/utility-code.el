@@ -267,3 +267,21 @@ It requires the standard emacs package manager to be working."
 (defun font-exists-p(name)
   "Checks if the font exists. This function expects name to be a string"
   (find-font (font-spec :name name)))
+
+(defun org-buffer-p(buffer)
+  (string-suffix-p ".org" (buffer-name buffer)))
+
+(defun refresh-org-buffers-helper(buffer-list)
+  (when (not (null buffer-list))
+    (save-excursion
+      (switch-to-buffer (car buffer-list))
+      (revert-buffer t (not (buffer-modified-p)) t)
+      (refresh-org-buffers-helper (cdr buffer-list)))))
+
+(defun refresh-org-buffers ()
+    "Reloads all open org buffers from disk if they have not been changed"
+    (interactive)
+    (let ((current-buffer (current-buffer)))
+      (save-excursion
+	(refresh-org-buffers-helper (remove-if-not #'org-buffer-p (buffer-list)))
+	(switch-to-buffer current-buffer))))
