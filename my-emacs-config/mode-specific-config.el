@@ -283,3 +283,20 @@
     (face-remap-add-relative 'variable-pitch :family "Liberation Serif"
 			     :height 1.0))
   (add-hook 'nov-mode-hook 'my-nov-font-setup))
+
+(defconfig eshell-config
+  (setq eshell-buffer-maximum-lines 20000)
+  (defun my/truncate-eshell-buffers ()
+    "Truncates all eshell buffers"
+    (interactive)
+  (save-current-buffer
+    (dolist (buffer (buffer-list t))
+      (set-buffer buffer)
+      (when (eq major-mode 'eshell-mode)
+        (eshell-truncate-buffer)))))
+  
+  ;; After being idle for 5 seconds, truncate all the eshell-buffers if
+  ;; needed. If this needs to be canceled, you can run `(cancel-timer
+  ;; my/eshell-truncate-timer)'
+  (setq my/eshell-truncate-timer
+	(run-with-idle-timer 5 t #'my/truncate-eshell-buffers)))
