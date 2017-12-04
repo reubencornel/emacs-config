@@ -118,7 +118,7 @@
 								 (org-agenda-sorting-strategy '(time-down ts-down tsia-down))))))))
 
   (setq org-stuck-projects
-	'("+PROJECT-DONE-TEMPLATE-TODO=\"DONE\"" ("NEXT") ()
+	'("+PROJECT-DONE-TEMPLATE-TODO=\"DONE\"" ("NEXT" "WAITING") ()
 	  "\\<IGNORE\\>"))
 
   (setq org-directory (expand-file-name "~/Dropbox"))
