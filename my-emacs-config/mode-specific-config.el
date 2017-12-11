@@ -123,7 +123,7 @@
 
   (setq org-directory (expand-file-name "~/Dropbox"))
   (setq org-default-notes-file (concat org-directory "/notes.org"))
-  (setq org-default-journal-file (concat org-directory "/notes.org"))
+  (setq org-default-journal-file (concat org-directory "/log.org"))
 
   (setq org-directory "~/Dropbox")
   (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
@@ -142,6 +142,8 @@
   ;; include emacs diary entries in agenda view
   (setq org-agenda-include-diary t)
 
+  (setq org-journal-template-entry (concat "* %T [" (system-name)  "]| %^{title} %^G"))
+
   (setq org-capture-templates
 	'(("t" "Todo" entry (file+headline org-default-notes-file "Tasks")
 	   "* TODO %^{entry}\n:PROPERTIES:\n:ENTRYDATE:%U\n:END:\n %?\n")
@@ -149,10 +151,10 @@
 	   "* %i :LOOKUP:\n")
 	  ("l" "Lookup Entry" entry (file+headline org-default-notes-file "Lookup")
 	   "* %?  :LOOKUP:\n %i \n")
-	  ("q" "Question" entry (file+datetree org-default-journal-file)
+	  ("q" "Question" entry (file+datetree org-default-notes-file)
 	   "* QUESTION %^{question} \n%?\n\nEntered on %U\n %i\n")
-	  ("j" "Journal" entry (file+datetree org-default-journal-file)
-	   "* %^{title} %^G \n\n%?\n\nEntered on %U\n %i\n")
+	  ("j" "Journal" entry (file org-default-journal-file)
+	   "* %T [%((lambda() (system-name)))]| %^{title} %^G")
 	  ("s" "Standup" entry (file+datetree org-default-notes-file)
 	   "*   %^{title} :STANDUP:\n:PROPERTIES:\n:COLUMNS: %50ITEM %ENTRYDATE\n:ENTRYDATE: %u\n:END:\n%?\n\nEntered on %U\n %i\n"))))
 
