@@ -7,6 +7,7 @@
   (require 'org-install)
   (check-and-install-if-absent 'org-bullets)
   (require 'org-bullets)
+  (require 'org-habit)
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
   (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
   (setq org-hide-leading-stars 't)
@@ -25,6 +26,14 @@
   (setq org-enforce-todo-dependencies t)
   (setq org-hide-leading-stars t)
 
+  ;; org-habit 
+  (add-to-list 'org-modules 'org-habit)
+  (setq org-habit-preceding-days 15
+	org-habit-following-days 1
+	org-habit-graph-column 65
+	org-habit-show-habits-only-for-today t
+	org-habit-show-all-today t)
+  
   (add-hook 'after-save-hook 'sync-index-org)
   ;; search 5 levels deep in org files.
   (setq org-refile-targets '((org-agenda-files :maxlevel . 5)))
