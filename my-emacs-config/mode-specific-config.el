@@ -124,6 +124,7 @@
   (setq org-directory (expand-file-name "~/Dropbox"))
   (setq org-default-notes-file (concat org-directory "/notes.org"))
   (setq org-default-journal-file (concat org-directory "/notes.org"))
+  (setq org-default-log-file   "/Users/rcornel/Dropbox/log.org")
 
   (setq org-directory "~/Dropbox")
   (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
@@ -153,6 +154,8 @@
 	   "* QUESTION %^{question} \n%?\n\nEntered on %U\n %i\n")
 	  ("j" "Journal" entry (file+datetree org-default-journal-file)
 	   "* %^{title} %^G \n\n%?\n\nEntered on %U\n %i\n")
+	  ("g" "log" entry (file org-default-log-file)
+	   "* %T [%(system-name)]| %^{title} %^G ")
 	  ("s" "Standup" entry (file+datetree org-default-notes-file)
 	   "*   %^{title} :STANDUP:\n:PROPERTIES:\n:COLUMNS: %50ITEM %ENTRYDATE\n:ENTRYDATE: %u\n:END:\n%?\n\nEntered on %U\n %i\n"))))
 
