@@ -133,7 +133,7 @@
   (setq org-directory (expand-file-name "~/Dropbox"))
   (setq org-default-notes-file (concat org-directory "/notes.org"))
   (setq org-default-journal-file (concat org-directory "/notes.org"))
-  (setq org-default-log-file   "/Users/rcornel/Dropbox/log.org")
+  (setq org-default-log-file   "~/Dropbox/log.org")
 
   (setq org-directory "~/Dropbox")
   (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
