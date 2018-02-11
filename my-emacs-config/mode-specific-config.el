@@ -138,6 +138,26 @@
   (setq org-directory "~/Dropbox")
   (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
   (setq org-mobile-inbox-for-pull "~/Dropbox/inbox.org")
+  
+  (defun custom-log-finder()
+    "Custom function for log entries. If we are clocking an entry the log record is appended under that headline, else 
+     its added to the default log file."
+    (if (org-clocking-p)
+	(org-clock-goto)
+      (let ()
+	(find-file org-default-log-file)
+	(goto-char (point-max)))))
+
+  (defun goto-last-heading ()
+    (interactive)
+    (org-end-of-subtree))
+  
+  (defun add-tag()
+    "This function adds a tag to the log entry if the entry is not going to be appended to an entry that is clocked in."
+    (if (org-clocking-p)
+	""
+      "%^G"))
+
 
   (defun org-summary-todo (n-done n-not-done)
     "Switch entry to DONE when all subentries are done, to TODO otherwise."
@@ -165,8 +185,8 @@
 	   "* QUESTION %^{question} \n%?\n\nEntered on %U\n %i\n")
 	  ("j" "Journal" entry (file+datetree org-default-journal-file)
 	   "* %^{title} %^G \n\n%?\n\nEntered on %U\n %i\n")
-	  ("g" "log" entry (file org-default-log-file)
-	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| %^{title} %^G " :immediate-finish t)
+	  ("g" "log" entry (function custom-log-finder)
+	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| %^{title}  %(add-tag) " :immediate-finish t)
 	  ("s" "Standup" entry (file+datetree org-default-notes-file)
 	   "*   %^{title} :STANDUP:\n:PROPERTIES:\n:COLUMNS: %50ITEM %ENTRYDATE\n:ENTRYDATE: %u\n:END:\n%?\n\nEntered on %U\n %i\n"))))
 
