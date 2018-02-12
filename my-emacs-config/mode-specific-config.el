@@ -139,15 +139,57 @@
   (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
   (setq org-mobile-inbox-for-pull "~/Dropbox/inbox.org")
   
+  (require 'seq)
+
+  (defun find-list-of-points-with-log-entry-headings()
+    (org-map-entries (lambda ()
+		       (let ((current-headline (buffer-substring-no-properties
+						(line-beginning-position)
+						(line-end-position))))
+			 (if (string-match-p " Log Entries" current-headline)
+			     (line-beginning-position)
+			   nil)))
+		     nil
+		     'tree))
+  
+  (defun find-log-header()
+    (interactive)
+    (let ((filtered-list  (seq-filter (lambda(x)
+					(not (null x)))
+				      (find-list-of-points-with-log-entry-headings))))
+      (if (null filtered-list)
+	  nil
+	(car filtered-list))))
+  
+  (defun insert-log-entry-heading()
+    (interactive)
+    (outline-show-children)
+    (outline-next-heading)
+    (end-of-line)
+    (let ((heading-string (concat "\n"
+				  (make-string (org-current-level) ?*)
+				  " Log Entries")))
+      (insert heading-string)
+      (goto-char (line-beginning-position))))
+  
+
+  (defun find-or-insert-entry()
+    (interactive)
+    (let ((log-header-point (find-log-header)))
+      (if (null log-header-point)
+	  (insert-log-entry-heading)
+	(goto-char log-header-point))))
+  
+
   (defun custom-log-finder()
-    "Custom function for log entries. If we are clocking an entry the log record is appended under that headline, else 
-     its added to the default log file."
     (if (org-clocking-p)
-	(org-clock-goto)
+	(let ()
+	  (org-clock-goto)
+	  (find-or-insert-entry))
       (let ()
 	(find-file org-default-log-file)
 	(goto-char (point-max)))))
-
+  
   (defun goto-last-heading ()
     (interactive)
     (org-end-of-subtree))
