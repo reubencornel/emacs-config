@@ -39,7 +39,7 @@
   (setq org-refile-targets '((org-agenda-files :maxlevel . 5)))
 
   (setq org-todo-keywords
-	(quote ((sequence "TODO(t)" "NEXT(n)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELLED(c@)")
+	(quote ((sequence "TODO(t)" "NEXT(n)" "WAITING(w@/!)" "DEFERRED(e)" "|" "DONE(d!)" "CANCELLED(c@)")
 		(sequence "TOBUY(b)" "TOPACK(p)" "|" "BOUGHT(g)" "PACKED")
 		(sequence "TOREAD(r)" "|" "READ")
 		(sequence "QUESTION(q)" "|" "ANSWERED(a@)"))))
@@ -49,6 +49,7 @@
 		("NEXT" :foreground "turquoise" :weight bold)
 		("DONE" :foreground "light green" :weight bold)
 		("WAITING" :foreground "DarkOrange2" :weight bold)
+		("DEFERRED" :foreground "DarkOrange2" :weight bold)
 		("TOREAD" :foreground "DarkOrange2" :weight bold)
 		("HOLD" :foreground "magenta" :weight bold)
 		("CANCELLED" :foreground "light green" :weight bold)
@@ -60,6 +61,7 @@
 	(quote (("CANCELLED" ("CANCELLED" . t))
 		("WAITING" ("WAITING" . t))
 		(done ("WAITING"))
+		("DEFERRED" ("DEFERRED"))
 		("TODO" ("WAITING") ("CANCELLED") )
 		("NEXT" ("WAITING") ("CANCELLED") )
 		("DONE" ("WAITING") ("CANCELLED") ))))
@@ -127,7 +129,7 @@
 								 (org-agenda-sorting-strategy '(time-down ts-down tsia-down))))))))
 
   (setq org-stuck-projects
-	'("+PROJECT-DONE-TEMPLATE-TODO=\"DONE\"" ("NEXT" "WAITING") ()
+	'("+PROJECT-DONE-TEMPLATE-DEFERRED-CANCELLED-TODO=\"DONE\"" ("NEXT" "WAITING") ()
 	  "\\<IGNORE\\>"))
 
   (setq org-directory (expand-file-name "~/Dropbox"))
