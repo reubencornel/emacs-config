@@ -297,35 +297,35 @@
   (check-and-install-if-absent 'solarized-theme)
   (require 'color-theme))
 
-(defconfig helm-config
-  (check-and-install-if-absent 'helm-core)
-  (check-and-install-if-absent 'helm)
-  (check-and-install-if-absent 'helm-org-rifle)
-  (check-and-install-if-absent 'swiper-helm)
+;; (defconfig helm-config
+;;   (check-and-install-if-absent 'helm-core)
+;;   (check-and-install-if-absent 'helm)
+;;   (check-and-install-if-absent 'helm-org-rifle)
+;;   (check-and-install-if-absent 'swiper-helm)
 
-  (require 'helm)
-  (require 'helm-config)
-  (require 'helm-org-rifle)
-  (require 'swiper-helm)
+;;   (require 'helm)
+;;   (require 'helm-config)
+;;   (require 'helm-org-rifle)
+;;   (require 'swiper-helm)
  
-  (global-set-key (kbd "C-c h") 'helm-command-prefix)
+;;   (global-set-key (kbd "C-c h") 'helm-command-prefix)
   
-  (setq
-   helm-quick-update                     t
-   helm-split-window-in-side-p           t
-   helm-buffers-fuzzy-matching           t
-   helm-move-to-line-cycle-in-source     t
-   helm-ff-search-library-in-sexp        t
-   helm-scroll-amount                    8
-   helm-ff-file-name-history-use-recentf t
-   helm-semantic-fuzzy-match t
-   helm-imenu-fuzzy-match    t)
+;;   (setq
+;;    helm-quick-update                     t
+;;    helm-split-window-in-side-p           t
+;;    helm-buffers-fuzzy-matching           t
+;;    helm-move-to-line-cycle-in-source     t
+;;    helm-ff-search-library-in-sexp        t
+;;    helm-scroll-amount                    8
+;;    helm-ff-file-name-history-use-recentf t
+;;    helm-semantic-fuzzy-match t
+;;    helm-imenu-fuzzy-match    t)
 
-  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-  (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
-  (define-key helm-map (kbd "C-z")  'helm-select-action)
+;;   (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+;;   (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
+;;   (define-key helm-map (kbd "C-z")  'helm-select-action)
 
-  (helm-mode 1))
+;;   (helm-mode 1))
 
 (defconfig plantuml-mode-config
   (check-and-install-if-absent 'plantuml-mode)
