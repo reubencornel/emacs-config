@@ -38,3 +38,35 @@
   :ensure t
   :after (helm))
 
+(use-package plantuml-mode
+  :ensure t
+  :mode ("\\.uml$" . plantuml-mode)
+  :config
+  (progn
+    (setq plantuml-jar-path "~/bin/plantuml.jar")))
+
+(use-package color-theme)
+
+(use-package magit
+  :ensure t)
+
+(use-package markdown-mode
+  :ensure t
+  :mode ("\\.md" . markdown-mode))
+
+(use-package eshell
+  :preface
+  (defun my/truncate-eshell-buffers ()
+    "Truncates all eshell buffers"
+    (interactive)
+    (save-current-buffer
+      (dolist (buffer (buffer-list t))
+	(set-buffer buffer)
+	(when (eq major-mode 'eshell-mode)
+	  (eshell-truncate-buffer)))))
+  
+  :config
+  (progn
+    (setq eshell-buffer-maximum-lines 20000)
+    (setq my/eshell-truncate-timer
+	  (run-with-idle-timer 5 t #'my/truncate-eshell-buffers))))

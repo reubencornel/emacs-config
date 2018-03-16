@@ -71,6 +71,7 @@
   (defun skip-done-functions-or-projects()
     (org-agenda-skip-entry-if 'todo '("DONE" "WAITING" "NEXT")))
 
+
   (defun org-checkbox-todo ()
     "Switch header TODO state to either DONE, NEXT, or TODO depending on the number of check boxes ticked"
     (let ((todo-state (org-get-todo-state)) beg end)
@@ -103,7 +104,6 @@
 	(org-todo "NEXT"))))
 
   (add-hook 'org-checkbox-statistics-hook 'org-checkbox-todo)
-
 
   (setq org-agenda-custom-commands
 	'(
@@ -249,15 +249,15 @@
 (defconfig text-mode-config
   (fringe-mode -1))
 
-(defconfig magit
-  (check-and-install-if-absent 'magit)
-  (require 'magit))
+;; (defconfig magit
+;;   (check-and-install-if-absent 'magit)
+;;   (require 'magit))
 
-(defconfig markdown-mode
-  (check-and-install-if-absent 'markdown-mode)
-  (require 'markdown-mode)
-  (setq auto-mode-alist
-        (cons '("\\.md" . markdown-mode) auto-mode-alist)))
+;; (defconfig markdown-mode
+;;   (check-and-install-if-absent 'markdown-mode)
+;;   (require 'markdown-mode)
+;;   (setq auto-mode-alist
+;;         (cons '("\\.md" . markdown-mode) auto-mode-alist)))
 
 (defconfig firacode-config
   ;; ;; Fira code specific settings.
@@ -291,11 +291,11 @@
       (set-char-table-range composition-function-table (car char-regexp)
 			    `([,(cdr char-regexp) 0 font-shape-gstring])))))
 
-(defconfig color-theme
-  (check-and-install-if-absent 'color-theme)
-  (check-and-install-if-absent 'zenburn-theme)
-  (check-and-install-if-absent 'solarized-theme)
-  (require 'color-theme))
+;; (defconfig color-theme
+;;   (check-and-install-if-absent 'color-theme)
+;;   (check-and-install-if-absent 'zenburn-theme)
+;;   (check-and-install-if-absent 'solarized-theme)
+;;   (require 'color-theme))
 
 ;; (defconfig helm-config
 ;;   (check-and-install-if-absent 'helm-core)
@@ -327,10 +327,10 @@
 
 ;;   (helm-mode 1))
 
-(defconfig plantuml-mode-config
-  (check-and-install-if-absent 'plantuml-mode)
-  (require 'plantuml-mode)
-  (add-to-list 'auto-mode-alist '("\\.uml\\'" . plantuml-mode)))
+;; (defconfig plantuml-mode-config
+;;   (check-and-install-if-absent 'plantuml-mode)
+;;   (require 'plantuml-mode)
+;;   (add-to-list 'auto-mode-alist '("\\.uml\\'" . plantuml-mode)))
 
 (defconfig diary-config
   (setq diary-file "~/Dropbox/emacsdiary.txt")
@@ -362,19 +362,19 @@
 			     :height 1.0))
   (add-hook 'nov-mode-hook 'my-nov-font-setup))
 
-(defconfig eshell-config
-  (setq eshell-buffer-maximum-lines 20000)
-  (defun my/truncate-eshell-buffers ()
-    "Truncates all eshell buffers"
-    (interactive)
-  (save-current-buffer
-    (dolist (buffer (buffer-list t))
-      (set-buffer buffer)
-      (when (eq major-mode 'eshell-mode)
-        (eshell-truncate-buffer)))))
+;; (defconfig eshell-config
+;;   (setq eshell-buffer-maximum-lines 20000)
+;;   (defun my/truncate-eshell-buffers ()
+;;     "Truncates all eshell buffers"
+;;     (interactive)
+;;   (save-current-buffer
+;;     (dolist (buffer (buffer-list t))
+;;       (set-buffer buffer)
+;;       (when (eq major-mode 'eshell-mode)
+;;         (eshell-truncate-buffer)))))
   
-  ;; After being idle for 5 seconds, truncate all the eshell-buffers if
-  ;; needed. If this needs to be canceled, you can run `(cancel-timer
-  ;; my/eshell-truncate-timer)'
-  (setq my/eshell-truncate-timer
-	(run-with-idle-timer 5 t #'my/truncate-eshell-buffers)))
+;;   ;; After being idle for 5 seconds, truncate all the eshell-buffers if
+;;   ;; needed. If this needs to be canceled, you can run `(cancel-timer
+;;   ;; my/eshell-truncate-timer)'
+;;   (setq my/eshell-truncate-timer
+;; 	(run-with-idle-timer 5 t #'my/truncate-eshell-buffers)))
