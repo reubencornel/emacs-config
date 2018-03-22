@@ -285,3 +285,17 @@ It requires the standard emacs package manager to be working."
       (save-excursion
 	(refresh-org-buffers-helper (remove-if-not #'org-buffer-p (buffer-list)))
 	(switch-to-buffer current-buffer))))
+
+ (defvar saved-window-configuration nil)
+(defun push-window-configuration ()
+  (interactive)
+  (push (current-window-configuration) saved-window-configuration))
+
+(defun pop-window-configuration ()
+  (interactive)
+  (let ((config (pop saved-window-configuration)))
+    (if config
+	(set-window-configuration config)
+      (if (> (length (window-list)) 1)
+	  (delete-window)
+	(bury-buffer)))))

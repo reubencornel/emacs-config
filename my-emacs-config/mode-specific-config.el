@@ -232,7 +232,30 @@
 	  ("g" "log" entry (function custom-log-finder)
 	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| %^{title}  %(add-tag) " :immediate-finish t)
 	  ("s" "Standup" entry (file+datetree org-default-notes-file)
-	   "*   %^{title} :STANDUP:\n:PROPERTIES:\n:COLUMNS: %50ITEM %ENTRYDATE\n:ENTRYDATE: %u\n:END:\n%?\n\nEntered on %U\n %i\n"))))
+	   "*   %^{title} :STANDUP:\n:PROPERTIES:\n:COLUMNS: %50ITEM %ENTRYDATE\n:ENTRYDATE: %u\n:END:\n%?\n\nEntered on %U\n %i\n")))
+  
+  (defun jump-to-org-agenda ()
+    (interactive)
+    (push-window-configuration)
+    (let ((recordings-dir "~/Dropbox/Apps/Dropvox"))
+      (ignore-errors
+	(if (directory-files recordings-dir nil "\\`[^.]")
+	    (find-file recordings-dir))))
+    (let ((buf (get-buffer "*Org Agenda*"))
+	  wind)
+      (if buf
+	  (if (setq wind (get-buffer-window buf))
+	      (when (called-interactively-p 'any)
+		(select-window wind)
+		(org-fit-window-to-buffer))
+	    (if (called-interactively-p 'any)
+		(progn
+		  (select-window (display-buffer buf t t))
+		  (org-fit-window-to-buffer))
+	      (with-selected-window (display-buffer buf)
+		(org-fit-window-to-buffer))))
+	(org-agenda "a" "d"))))
+  (run-with-idle-timer 300 t 'jump-to-org-agenda))
 
 (defconfig c-mode-config
   (setq basic-c-offset 8)
