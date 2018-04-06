@@ -45,7 +45,8 @@
   (progn
     (setq plantuml-jar-path "~/bin/plantuml.jar")))
 
-(use-package color-theme)
+(use-package color-theme-modern
+  :ensure t)
 
 (use-package magit
   :ensure t)
