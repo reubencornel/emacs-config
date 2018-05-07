@@ -254,8 +254,7 @@
 		  (org-fit-window-to-buffer))
 	      (with-selected-window (display-buffer buf)
 		(org-fit-window-to-buffer))))
-	(org-agenda "a" "d"))))
-  (run-with-idle-timer 300 t 'jump-to-org-agenda))
+	(org-agenda "a" "d")))))
 
 (defconfig c-mode-config
   (setq basic-c-offset 8)
