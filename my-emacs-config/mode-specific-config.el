@@ -165,14 +165,13 @@
   
   (defun insert-log-entry-heading()
     (interactive)
-    (outline-show-children)
-    (outline-next-heading)
-    (end-of-line)
-    (let ((heading-string (concat "\n"
-				  (make-string (org-current-level) ?*)
-				  " Log Entries")))
-      (insert heading-string)
-      (goto-char (line-beginning-position))))
+    (let ((depth (org-current-level)))
+      (outline-next-heading)
+      (let ((heading-string (concat 
+				    (make-string (+ depth 1) ?*)
+				    " Log Entries\n")))
+	(insert heading-string)
+	(goto-char (- (line-beginning-position) 1)))))
   
 
   (defun find-or-insert-entry()
