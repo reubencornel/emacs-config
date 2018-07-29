@@ -71,3 +71,8 @@
     (setq eshell-buffer-maximum-lines 20000)
     (setq my/eshell-truncate-timer
 	  (run-with-idle-timer 5 t #'my/truncate-eshell-buffers))))
+
+(use-package eshell-git-prompt
+  :ensure t
+  :init
+  (eshell-git-prompt-use-theme 'robbyrussell))
