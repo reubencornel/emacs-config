@@ -1,5 +1,11 @@
 (require 'use-package)
 
+(use-package swiper-helm
+  :ensure t
+  :after (helm)
+  :config
+  (global-set-key (kbd "C-s") 'swiper-helm))
+
 (use-package helm
   :ensure t
   :bind    (("C-c h" .  'helm-command-prefix)
@@ -26,17 +32,12 @@
     (global-set-key (kbd "C-c h") 'helm-command-prefix)
     (global-set-key (kbd "M-x") 'helm-M-x)
     (global-set-key (kbd "M-s o") 'helm-occur)
-    (global-set-key (kbd "C-s") 'swiper-helm)
     (global-set-key (kbd "C-x C-f") 'helm-find-files)
     (global-set-key (kbd "C-x b") 'helm-mini)
     (global-unset-key (kbd "C-x c"))   
     (helm-mode 1)))
 
 (use-package helm-org-rifle
-  :ensure t
-  :after (helm))
-
-(use-package swiper-helm
   :ensure t
   :after (helm))
 
