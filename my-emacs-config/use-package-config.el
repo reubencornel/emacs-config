@@ -26,6 +26,7 @@
     (global-set-key (kbd "C-c h") 'helm-command-prefix)
     (global-set-key (kbd "M-x") 'helm-M-x)
     (global-set-key (kbd "M-s o") 'helm-occur)
+    (global-set-key (kbd "C-s") 'swiper-helm)
     (global-set-key (kbd "C-x C-f") 'helm-find-files)
     (global-set-key (kbd "C-x b") 'helm-mini)
     (global-unset-key (kbd "C-x c"))   
