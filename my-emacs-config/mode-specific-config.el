@@ -183,7 +183,7 @@
   
 
   (defun custom-log-finder()
-    (if (org-clocking-p)
+    (if (and (fboundp 'org-clocking-p) (org-clocking-p))
 	(let ()
 	  (org-clock-goto)
 	  (find-or-insert-entry))
@@ -197,9 +197,9 @@
   
   (defun add-tag()
     "This function adds a tag to the log entry if the entry is not going to be appended to an entry that is clocked in."
-    (if (org-clocking-p)
+    (if (fboundp 'org-clocking-p) (org-clocking-p))
 	""
-      "%^G"))
+      "%^G")
 
 
   (defun org-summary-todo (n-done n-not-done)
