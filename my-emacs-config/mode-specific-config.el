@@ -312,47 +312,6 @@
       (set-char-table-range composition-function-table (car char-regexp)
 			    `([,(cdr char-regexp) 0 font-shape-gstring])))))
 
-;; (defconfig color-theme
-;;   (check-and-install-if-absent 'color-theme)
-;;   (check-and-install-if-absent 'zenburn-theme)
-;;   (check-and-install-if-absent 'solarized-theme)
-;;   (require 'color-theme))
-
-;; (defconfig helm-config
-;;   (check-and-install-if-absent 'helm-core)
-;;   (check-and-install-if-absent 'helm)
-;;   (check-and-install-if-absent 'helm-org-rifle)
-;;   (check-and-install-if-absent 'swiper-helm)
-
-;;   (require 'helm)
-;;   (require 'helm-config)
-;;   (require 'helm-org-rifle)
-;;   (require 'swiper-helm)
- 
-;;   (global-set-key (kbd "C-c h") 'helm-command-prefix)
-  
-;;   (setq
-;;    helm-quick-update                     t
-;;    helm-split-window-in-side-p           t
-;;    helm-buffers-fuzzy-matching           t
-;;    helm-move-to-line-cycle-in-source     t
-;;    helm-ff-search-library-in-sexp        t
-;;    helm-scroll-amount                    8
-;;    helm-ff-file-name-history-use-recentf t
-;;    helm-semantic-fuzzy-match t
-;;    helm-imenu-fuzzy-match    t)
-
-;;   (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-;;   (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
-;;   (define-key helm-map (kbd "C-z")  'helm-select-action)
-
-;;   (helm-mode 1))
-
-;; (defconfig plantuml-mode-config
-;;   (check-and-install-if-absent 'plantuml-mode)
-;;   (require 'plantuml-mode)
-;;   (add-to-list 'auto-mode-alist '("\\.uml\\'" . plantuml-mode)))
-
 (defconfig diary-config
   (setq diary-file "~/Dropbox/emacsdiary.txt")
   (add-hook 'diary-list-entries-hook 'diary-include-other-diary-files)
@@ -382,20 +341,3 @@
     (face-remap-add-relative 'variable-pitch :family "Liberation Serif"
 			     :height 1.0))
   (add-hook 'nov-mode-hook 'my-nov-font-setup))
-
-;; (defconfig eshell-config
-;;   (setq eshell-buffer-maximum-lines 20000)
-;;   (defun my/truncate-eshell-buffers ()
-;;     "Truncates all eshell buffers"
-;;     (interactive)
-;;   (save-current-buffer
-;;     (dolist (buffer (buffer-list t))
-;;       (set-buffer buffer)
-;;       (when (eq major-mode 'eshell-mode)
-;;         (eshell-truncate-buffer)))))
-  
-;;   ;; After being idle for 5 seconds, truncate all the eshell-buffers if
-;;   ;; needed. If this needs to be canceled, you can run `(cancel-timer
-;;   ;; my/eshell-truncate-timer)'
-;;   (setq my/eshell-truncate-timer
-;; 	(run-with-idle-timer 5 t #'my/truncate-eshell-buffers)))

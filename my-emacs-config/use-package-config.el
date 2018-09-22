@@ -79,3 +79,6 @@
   :ensure t
   :init
   (eshell-git-prompt-use-theme 'robbyrussell))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; RUST CONFIG ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
