@@ -42,7 +42,9 @@
 	(quote ((sequence "TODO(t)" "NEXT(n)" "WAITING(w@/!)" "DEFERRED(e)" "|" "DONE(d!)" "CANCELLED(c@)")
 		(sequence "TOBUY(b)" "TOPACK(p)" "|" "BOUGHT(g)" "PACKED")
 		(sequence "TOREAD(r)" "|" "READ")
-		(sequence "QUESTION(q)" "|" "ANSWERED(a@)"))))
+		(sequence "QUESTION(q)" "|" "ANSWERED(a@)")
+		(sequence "TOREVIEW" "INREVIEW" "REWORK" "|" "APPROVED")
+		)))
 
   (setq org-todo-keyword-faces
 	(quote (("TODO" :foreground "red1" :weight bold)
@@ -55,7 +57,12 @@
 		("CANCELLED" :foreground "light green" :weight bold)
 		("READ"  :foreground "light green" :weight bold)
 		("QUESTION" :foreground "DarkOrange2" :weight bold)
-		("ANSWERED" :foreground "light green" :weight bold))))
+		("ANSWERED" :foreground "light green" :weight bold)
+		("TOREVIEW" :foreground "red1" :weight bold)
+		("INREVIEW" :foreground "DarkOrange2" :weight bold)
+		("REWORK"  :foreground "magenta" :weight bold)
+		("APPROVED" :foreground "light green" :weight bold)
+		)))
 
   (setq org-todo-state-tags-triggers
 	(quote (("CANCELLED" ("CANCELLED" . t))
@@ -112,6 +119,7 @@
 						       (org-agenda-skip-function 'skip-done-functions-or-projects)
 						       (org-agenda-overriding-header "Daily Agenda")))
 			       (tags-todo "TODO=\"NEXT\"&SCHEDULED<\"<+1w>\"|TODO=\"NEXT\"-SCHEDULED={.+}-DEADLINE={.+}|TODO=\"NEXT\"&DEADLINE<\"<+1w>\"" ((org-agenda-overriding-header "Next Items")))
+			       (tags-todo "TODO=\"TOREVIEW\"-TEMPLATE|TODO=\"INREVIEW\"-TEMPLATE|TODO=\"REWORK\"-TEMPLATE" ((org-agenda-overriding-header "Pending Code Reviews")))
 			       (todo "QUESTION" ((org-agenda-overriding-header "Open Questions")))
 			       (todo "WAITING" ((org-agenda-overriding-header "Waiting tasks")))
 			       (tags-todo  unscheduled-tasks-search-string ((org-agenda-overriding-header "Unscheduled Tasks")))
