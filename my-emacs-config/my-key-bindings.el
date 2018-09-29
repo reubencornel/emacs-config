@@ -41,7 +41,6 @@
 ;; org-mode key  bindings
 ;;;;;;;;;;;;;;;
 (global-set-key (kbd "C-c a") 'org-agenda)           ;; (5)
-(global-set-key "\C-cb" 'org-iswitchb)
 (global-set-key (kbd "C-c r") 'org-capture)
 (global-set-key "\C-cl" 'org-store-link)
 

@@ -3,6 +3,7 @@
 (use-package swiper-helm
   :ensure t
   :after (helm)
+  :defer t
   :config
   (global-set-key (kbd "C-s") 'swiper-helm))
 
@@ -39,6 +40,7 @@
 
 (use-package helm-org-rifle
   :ensure t
+  :defer t
   :after (helm))
 
 (use-package plantuml-mode
@@ -49,9 +51,11 @@
     (setq plantuml-jar-path "~/bin/plantuml.jar")))
 
 (use-package color-theme-modern
+  :defer t
   :ensure t)
 
 (use-package magit
+  :defer t
   :ensure t)
 
 (use-package markdown-mode
@@ -59,6 +63,7 @@
   :mode ("\\.md" . markdown-mode))
 
 (use-package eshell
+  :defer t
   :preface
   (defun my/truncate-eshell-buffers ()
     "Truncates all eshell buffers"
@@ -85,9 +90,11 @@
 
 (use-package ensime
   :ensure t
+  :defer t
   :pin melpa)
 
 (use-package sbt-mode
+  :defer t
   :pin melpa)
 
 (use-package scala-mode
@@ -99,6 +106,7 @@
 
 (use-package org
   :ensure t
+  :defer t
   :custom 
   (org-hide-leading-stars 't)
   (org-log-done 'time)
@@ -343,6 +351,7 @@ p  			   nil)))
 (use-package org-bullets
   :ensure t
   :requires org
+  :defer t
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
@@ -362,6 +371,7 @@ p  			   nil)))
 ;;;;;;;;;;;;;;; Auto update emacs package ;;;;;;;;;;;;;;;
 (use-package auto-package-update
   :ensure t
+  :defer 5
   :config
   (setq auto-package-update-delete-old-versions t)
   (setq auto-package-update-hide-results t)

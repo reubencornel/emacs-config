@@ -9,8 +9,8 @@
   (save-window-excursion
     (shell-command (concat my-notifier-path " -m " msg " -t " title " -w &"))) )
 
-(package-initialize)
-;; modes
+
+
 (load-config 'diary-config)
 (load-config 'c-mode-config)
 (load-config 'article-file-support)
