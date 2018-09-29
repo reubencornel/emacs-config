@@ -99,7 +99,6 @@
 
 (use-package org
   :ensure t
-  
   :custom 
   (org-hide-leading-stars 't)
   (org-log-done 'time)
@@ -359,4 +358,11 @@ p  			   nil)))
   
   ;; (add-hook 'after-save-hook 'sync-index-org)
   ;; ;; search 5 levels deep in org files.
-  
+
+;;;;;;;;;;;;;;; Auto update emacs package ;;;;;;;;;;;;;;;
+(use-package auto-package-update
+  :ensure t
+  :config
+  (setq auto-package-update-delete-old-versions t)
+  (setq auto-package-update-hide-results t)
+  (auto-package-update-maybe))
