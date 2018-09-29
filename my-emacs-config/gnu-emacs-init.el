@@ -13,7 +13,6 @@
 ;; modes
 (load-config 'diary-config)
 (load-config 'c-mode-config)
-(load-config 'org-mode-config)
 (load-config 'article-file-support)
 (load-config 'utf8-config)
 (load-config 'nov-mode-config)
