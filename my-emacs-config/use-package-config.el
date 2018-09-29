@@ -339,13 +339,13 @@ p  			   nil)))
   
   (require 'seq)
   (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
-  (use-package org-bullets)
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
   )
 
 (use-package org-bullets
   :ensure t
-  :after org)
+  :requires org
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
   ;; (check-and-install-if-absent 'org-bullets)
   ;; (require 'org-habit)
