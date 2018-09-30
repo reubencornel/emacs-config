@@ -262,7 +262,9 @@ being the working directory of the buffer"
 
 It requires the standard emacs package manager to be working."
   (if (not (package-installed-p package-name))
-      (package-install package-name)))
+      (progn (package-install package-name)
+	     t)
+    nil))
 
 (defun font-exists-p(name)
   "Checks if the font exists. This function expects name to be a string"
@@ -299,3 +301,7 @@ It requires the standard emacs package manager to be working."
       (if (> (length (window-list)) 1)
 	  (delete-window)
 	(bury-buffer)))))
+
+(defun disable-all-themes()
+  (interactive)
+  (mapc #'disable-theme custom-enabled-themes))

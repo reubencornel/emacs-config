@@ -399,3 +399,14 @@ p  			   nil)))
   (add-hook 'ibuffer-mode-hook
 	    (lambda ()
 	      (ibuffer-switch-to-saved-filter-groups "default"))))
+
+;; --------------- Spacemacs theming ---------------
+
+(use-package spaceline
+  :ensure t)
+
+(use-package spaceline-all-the-icons
+  :ensure t
+  :after spaceline
+  :config
+  (setq spaceline-all-the-icons-separator-type 'arrow))

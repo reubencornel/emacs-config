@@ -89,3 +89,20 @@
     (face-remap-add-relative 'variable-pitch :family "Liberation Serif"
 			     :height 1.0))
   (add-hook 'nov-mode-hook 'my-nov-font-setup))
+
+;; --------------- Spacemacs themeing ---------------
+(defconfig spacemacs-theme
+  (check-and-install-if-absent 'spacemacs-theme)
+
+  (if (check-and-install-if-absent 'all-the-icons)
+      (all-the-icons-install-fonts))
+  
+  (require 'spaceline)
+  (require 'spaceline-config)
+  (require 'spaceline-all-the-icons)
+  
+  (setq spacemacs-theme-org-height nil)
+  (setq spacemacs-theme-org-agenda-height nil)
+  (load-theme 'spacemacs-dark)
+ 
+  (spaceline-all-the-icons-theme))

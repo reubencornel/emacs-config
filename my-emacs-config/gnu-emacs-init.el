@@ -17,5 +17,8 @@
 (load-config 'utf8-config)
 (load-config 'nov-mode-config)
 
+;(load-config 'spacemacs-theme)
+
+
 (load (expand-file-name "~/emacs/my-emacs-config/my-key-bindings.el"))
 (global-set-key (kbd "M-RET") 'ns-toggle-fullscreen)
