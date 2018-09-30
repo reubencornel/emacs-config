@@ -35,7 +35,7 @@
     (global-set-key (kbd "M-s o") 'helm-occur)
     (global-set-key (kbd "C-x C-f") 'helm-find-files)
 ;    (global-set-key (kbd "C-x b") 'helm-mini)
-    (global-unset-key (kbd "C-x c"))   
+    (global-unset-key (kbd "C-x c"))
     (helm-mode 1)))
 
 (use-package helm-org-rifle
@@ -73,7 +73,7 @@
 	(set-buffer buffer)
 	(when (eq major-mode 'eshell-mode)
 	  (eshell-truncate-buffer)))))
-  
+
   :config
   (progn
     (setq eshell-buffer-maximum-lines 10000)
@@ -107,7 +107,7 @@
 (use-package org
   :ensure t
   :defer t
-  :custom 
+  :custom
   (org-hide-leading-stars 't)
   (org-log-done 'time)
   (org-export-with-section-numbers nil)
@@ -220,6 +220,11 @@
   	   "*   %^{title} :STANDUP:\n:PROPERTIES:\n:COLUMNS: %50ITEM %ENTRYDATE\n:ENTRYDATE: %u\n:END:\n%?\n\nEntered on %U\n %i\n")))
 
   :config
+
+  (require 'org-crypt)
+  (add-to-list 'org-modules 'org-crypt)
+  (setq org-crypt-disable-auto-save t)
+
   (defun skip-done-functions-or-projects()
     (org-agenda-skip-entry-if 'todo '("DONE" "WAITING" "NEXT")))
 
@@ -264,7 +269,7 @@
 p  			   nil)))
   		     nil
   		     'tree))
-  
+
   (defun find-log-header()
     (interactive)
     (let ((filtered-list  (seq-filter (lambda(x)
@@ -273,17 +278,17 @@ p  			   nil)))
       (if (null filtered-list)
   	  nil
   	(car filtered-list))))
-  
+
   (defun insert-log-entry-heading()
     (interactive)
     (let ((depth (org-current-level)))
       (outline-next-heading)
-      (let ((heading-string (concat 
+      (let ((heading-string (concat
   				    (make-string (+ depth 1) ?*)
   				    " Log Entries\n")))
   	(insert heading-string)
   	(goto-char (- (line-beginning-position) 1)))))
-  
+
 
   (defun find-or-insert-entry()
     (interactive)
@@ -291,7 +296,7 @@ p  			   nil)))
       (if (null log-header-point)
   	  (insert-log-entry-heading)
   	(goto-char log-header-point))))
-  
+
 
   (defun custom-log-finder()
     (if (and (fboundp 'org-clocking-p) (org-clocking-p))
@@ -301,11 +306,11 @@ p  			   nil)))
       (let ()
   	(find-file org-default-log-file)
   	(goto-char (point-max)))))
-  
+
   (defun goto-last-heading ()
     (interactive)
     (org-end-of-subtree))
-  
+
   (defun add-tag()
     "This function adds a tag to the log entry if the entry is not going to be appended to an entry that is clocked in."
     (if (fboundp 'org-clocking-p) (org-clocking-p))
@@ -343,7 +348,7 @@ p  			   nil)))
   		(org-fit-window-to-buffer))))
   	(org-agenda "a" "d"))))
   (add-hook 'org-checkbox-statistics-hook 'org-checkbox-todo)
-  
+
   (require 'seq)
   (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
   )
@@ -357,14 +362,14 @@ p  			   nil)))
 
   ;; (check-and-install-if-absent 'org-bullets)
   ;; (require 'org-habit)
-  ;; ;; org-habit 
+  ;; ;; org-habit
   ;; (add-to-list 'org-modules 'org-habit)
   ;; (setq org-habit-preceding-days 15
   ;; 	org-habit-following-days 1
   ;; 	org-habit-graph-column 65
   ;; 	org-habit-show-habits-only-for-today t
   ;; 	org-habit-show-all-today t)
-  
+
   ;; (add-hook 'after-save-hook 'sync-index-org)
   ;; ;; search 5 levels deep in org files.
 
@@ -410,3 +415,20 @@ p  			   nil)))
   :after spaceline
   :config
   (setq spaceline-all-the-icons-separator-type 'arrow))
+
+;; --------------- fly check mode ---------------
+
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
+
+;; --------------- company mode ---------------
+(use-package company
+  :ensure t
+  :init (global-company-mode))
+
+(provide 'use-package-config)
+;;; use-package-config.el
+
+
+
