@@ -408,10 +408,12 @@ p  			   nil)))
 ;; --------------- Spacemacs theming ---------------
 
 (use-package spaceline
+  :defer t
   :ensure t)
 
 (use-package spaceline-all-the-icons
   :ensure t
+  :defer t
   :after spaceline
   :config
   (setq spaceline-all-the-icons-separator-type 'arrow))
@@ -420,11 +422,13 @@ p  			   nil)))
 
 (use-package flycheck
   :ensure t
+  :defer t
   :init (global-flycheck-mode))
 
 ;; --------------- company mode ---------------
 (use-package company
   :ensure t
+  :defer t
   :init (global-company-mode))
 
 (provide 'use-package-config)
