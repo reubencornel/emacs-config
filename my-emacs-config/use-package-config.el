@@ -34,7 +34,7 @@
     (global-set-key (kbd "M-x") 'helm-M-x)
     (global-set-key (kbd "M-s o") 'helm-occur)
     (global-set-key (kbd "C-x C-f") 'helm-find-files)
-    (global-set-key (kbd "C-x b") 'helm-mini)
+;    (global-set-key (kbd "C-x b") 'helm-mini)
     (global-unset-key (kbd "C-x c"))   
     (helm-mode 1)))
 
@@ -376,3 +376,26 @@ p  			   nil)))
   (setq auto-package-update-delete-old-versions t)
   (setq auto-package-update-hide-results t)
   (auto-package-update-maybe))
+
+(use-package ibuffer
+  :custom
+  (ibuffer-saved-filter-groups
+   (quote (("default"
+	    ("org" (mode . org-mode))
+	    ("dired" (mode . dired-mode))
+	    ("emacs" (or
+		      (name . "^\\*scratch\\*$")
+		      (name . "^\\*Messages\\*$")))
+	    ("gnus" (or
+		     (mode . message-mode)
+		     (mode . bbdb-mode)
+		     (mode . mail-mode)
+		     (mode . gnus-group-mode)
+		     (mode . gnus-summary-mode)
+		     (mode . gnus-article-mode)
+		     (name . "^\\.bbdb$")
+		     (name . "^\\.newsrc-dribble")))))))
+  :config
+  (add-hook 'ibuffer-mode-hook
+	    (lambda ()
+	      (ibuffer-switch-to-saved-filter-groups "default"))))
