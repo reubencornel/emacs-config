@@ -101,8 +101,18 @@
   (require 'spaceline-config)
   (require 'spaceline-all-the-icons)
   
-  (setq spacemacs-theme-org-height nil)
-  (setq spacemacs-theme-org-agenda-height nil)
+  (setq spacemacs-theme-org-height t)
+  (setq spacemacs-theme-org-agenda-height t)
   (load-theme 'spacemacs-dark)
  
-  (spaceline-all-the-icons-theme))
+  (spaceline-all-the-icons-theme)
+  
+  (defun load-spacemacs-dark-theme()
+    (interactive)
+    (disable-all-themes)
+    (load-theme 'spacemacs-dark))
+    
+  (defun load-spacemacs-light-theme()
+    (interactive)
+    (disable-all-themes)
+    (load-theme 'spacemacs-light)))
