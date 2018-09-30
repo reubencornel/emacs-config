@@ -175,6 +175,7 @@ being the working directory of the buffer"
 	      ,@body) *config-table*))
 
 (defun load-config(config-name)
+  (interactive)
   (let ((config-value (gethash config-name *config-table* nil)))
     (if config-value
 	(funcall config-value)
