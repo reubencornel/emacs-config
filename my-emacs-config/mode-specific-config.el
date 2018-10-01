@@ -103,7 +103,6 @@
   
   (setq spacemacs-theme-org-height t)
   (setq spacemacs-theme-org-agenda-height t)
-  (load-theme 'spacemacs-dark)
  
   (spaceline-all-the-icons-theme)
   
