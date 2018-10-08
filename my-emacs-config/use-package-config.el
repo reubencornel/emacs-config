@@ -76,7 +76,7 @@
 
   :config
   (progn
-    (setq eshell-buffer-maximum-lines 10000)
+    (setq eshell-buffer-maximum-lines 2000)
     (setq my/eshell-truncate-timer
 	  (run-with-idle-timer 5 t #'my/truncate-eshell-buffers))))
 
