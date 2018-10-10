@@ -76,6 +76,7 @@
 
   :config
   (progn
+    (setq eshell-scroll-to-bottom-on-input 'all)
     (setq eshell-buffer-maximum-lines 2000)
     (setq my/eshell-truncate-timer
 	  (run-with-idle-timer 5 t #'my/truncate-eshell-buffers))))
@@ -461,5 +462,69 @@ p  			   nil)))
 (provide 'use-package-config)
 ;;; use-package-config.el
 
+
+
+;; --------------- Hydra mode ---------------
+(use-package hydra
+  :ensure t
+  :config
+  (defhydra jethro/hydra-draw-box (:color pink)
+    "Draw box with IBM single line box characters (ESC to Quit)."
+    ("ESC" nil :color blue) ;; Esc to exit.
+    ("'" (lambda () (interactive) (insert "┌")) "top left ┌")
+    ("," (lambda () (interactive) (insert "┬")) "top ┬")
+    ("." (lambda () (interactive) (insert "┐")) "top right ┐")
+    ("a" (lambda () (interactive) (insert "├")) "left ├")
+    ("o" (lambda () (interactive) (insert "┼")) "center ┼")
+    ("e" (lambda () (interactive) (insert "┤")) "right ┤")
+    (";" (lambda () (interactive) (insert "└")) "bottom left └")
+    ("q" (lambda () (interactive) (insert "┴")) "bottom ┴")
+    ("j" (lambda () (interactive) (insert "┘")) "bottom right ┘")
+    ("k" (lambda () (interactive) (insert "─")) "horizontal ─")
+    ("x" (lambda () (interactive) (insert "│")) "vertical │"))
+
+  (bind-key "C-c h d" 'jethro/hydra-draw-box/body)
+
+  (defhydra jethro/hydra-smerge (:color pink
+                                        :hint nil
+                                        :pre (smerge-mode 1)
+                                        ;; Disable `smerge-mode' when quitting hydra if
+                                        ;; no merge conflicts remain.
+                                        :post (smerge-auto-leave))
+    "
+   ^Move^       ^Keep^               ^Diff^                 ^Other^
+   ^^-----------^^-------------------^^---------------------^^-------
+   _n_ext       _b_ase               _<_: upper/base        _C_ombine
+   _p_rev       _u_pper              _=_: upper/lower       _r_esolve
+   ^^           _l_ower              _>_: base/lower        _k_ill current
+   ^^           _a_ll                _R_efine
+   ^^           _RET_: current       _E_diff
+   "
+    ("n" smerge-next)
+    ("p" smerge-prev)
+    ("b" smerge-keep-base)
+    ("u" smerge-keep-mine)
+    ("l" smerge-keep-other)
+    ("a" smerge-keep-all)
+    ("RET" smerge-keep-current)
+    ("\C-m" smerge-keep-current)
+    ("<" smerge-diff-base-mine)
+    ("=" smerge-diff-mine-other)
+    (">" smerge-diff-base-other)
+    ("R" smerge-refine)
+    ("E" smerge-ediff)
+    ("C" smerge-combine-with-next)
+    ("r" smerge-resolve)
+    ("k" smerge-kill-current)
+    ("q" nil "cancel" :color blue))
+
+  (bind-key "C-c h s" 'jethro/hydra-smerge/body)
+
+  (defhydra jethro/hydra-zoom ()
+    "zoom"
+    ("i" text-scale-increase "in")
+    ("o" text-scale-decrease "out"))
+
+  (bind-key "C-c h z" 'jethro/hydra-zoom/body))
 
 
