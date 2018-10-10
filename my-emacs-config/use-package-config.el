@@ -528,3 +528,7 @@ p  			   nil)))
   (bind-key "C-c h z" 'jethro/hydra-zoom/body))
 
 
+(use-package bury-successful-compilation
+  :ensure t
+  :hook
+  (prog-mode . bury-successful-compilation))
