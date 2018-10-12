@@ -277,7 +277,7 @@
   						(line-end-position))))
   			 (if (string-match-p " Log Entries" current-headline)
   			     (line-beginning-position)
-p  			   nil)))
+  			   nil)))
   		     nil
   		     'tree))
 
