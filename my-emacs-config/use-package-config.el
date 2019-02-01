@@ -532,3 +532,6 @@
   :ensure t
   :hook
   (prog-mode . bury-successful-compilation))
+
+(use-package restclient
+  :ensure t)
