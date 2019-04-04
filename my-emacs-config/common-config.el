@@ -36,3 +36,5 @@
 
 ;; Make delete work as it work on windows o
 (delete-selection-mode 1)
+
+(setq eshell-aliases-file "~/Dropbox/emacs.alias")

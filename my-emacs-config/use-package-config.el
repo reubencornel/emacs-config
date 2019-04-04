@@ -108,15 +108,15 @@
 (use-package org
   :ensure t
   :defer t
-  :custom-face
-  (variable-pitch ((t (:family "ETBembo"))))
-  (org-document-title ((t (:foreground "#171717" :weight bold :height 1.5))))
-  (org-done ((t (:background "#E8E8E8" :foreground "#0E0E0E" :strike-through t :weight bold))))
-  (org-headline-done ((t (:foreground "#171717" :strike-through t))))
-  (org-level-1 ((t (:foreground "#090909" :weight bold :height 1.3))))
-  (org-level-2 ((t (:foreground "#090909" :weight normal :height 1.2))))
-  (org-level-3 ((t (:foreground "#090909" :weight normal :height 1.1))))
-  (org-image-actual-width '(600))
+  ;; :custom-face
+  ;; (variable-pitch ((t (:family "ETBembo"))))
+  ;; (org-document-title ((t (:foreground "#171717" :weight bold :height 1.5))))
+  ;; (org-done ((t (:background "#E8E8E8" :foreground "#0E0E0E" :strike-through t :weight bold))))
+  ;; (org-headline-done ((t (:foreground "#171717" :strike-through t))))
+  ;; (org-level-1 ((t (:foreground "#090909" :weight bold :height 1.3))))
+  ;; (org-level-2 ((t (:foreground "#090909" :weight normal :height 1.2))))
+  ;; (org-level-3 ((t (:foreground "#090909" :weight normal :height 1.1))))
+  ;; (org-image-actual-width '(600))
   :custom
   (org-hide-leading-stars 't)
   (org-log-done 'time)
@@ -394,7 +394,7 @@
 ;; (add-hook 'org-mode-hook
 ;;           '(lambda ()
 ;;              (setq line-spacing 0.2) ;; Add more line padding for readability
-;;              (variable-pitch-mode 1) ;; All fonts with variable pitch.
+;; ;             (variable-pitch-mode 1) ;; All fonts with variable pitch.
 ;;              (mapc
 ;;               (lambda (face) ;; Other fonts with fixed-pitch.
 ;;                 (set-face-attribute face nil :inherit 'fixed-pitch))
@@ -560,10 +560,7 @@
   :hook
   (prog-mode . bury-successful-compilation))
 
-
 ;; --------------- Rust Config ---------------
-
-
 (use-package rust-mode
   :ensure t
   :mode "\\.rs"
@@ -593,3 +590,5 @@
          (typescript-mode . tide-hl-identifier-mode)
          (before-save . tide-format-before-save)))
 
+(use-package restclient
+  :ensure t)
