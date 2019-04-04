@@ -362,24 +362,51 @@
 
   (require 'seq)
   (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+
+  (defun org-count-todos-in-state (state)
+  (let ((count 0))
+    (org-scan-tags (lambda ()
+                     (when (string= (org-get-todo-state) state)
+                       (setq count (1+ count))))
+                   t t)
+     count))
+
+
+  (defvar org-wip-limit 3 "Work-in-progress limit")
+  (defvar org-wip-state "NEXT")
+  
+  (defun org-block-wip-limit (change-plist)
+    (catch 'dont-block
+      (when (or (not (eq (plist-get change-plist :type) 'todo-state-change))
+		(not (string= (plist-get change-plist :to) org-wip-state)))
+	(throw 'dont-block t))
+      
+      (when (>= (org-count-todos-in-state org-wip-state) org-wip-limit )
+	(setq org-block-entry-blocking (format "Number of items in NEXT limit(org-wip-limit): %s" org-wip-state))
+	(throw 'dont-block nil))
+      
+      t)) ; do not block
+  
+  (add-hook 'org-blocker-hook #'org-block-wip-limit)
+
   )
 
-(add-hook 'org-mode-hook
-          '(lambda ()
-             (setq line-spacing 0.2) ;; Add more line padding for readability
-             (variable-pitch-mode 1) ;; All fonts with variable pitch.
-             (mapc
-              (lambda (face) ;; Other fonts with fixed-pitch.
-                (set-face-attribute face nil :inherit 'fixed-pitch))
-              (list 'org-code
-                    'org-link
-                    'org-block
-                    'org-table
-                    'org-verbatim
-                    'org-block-begin-line
-                    'org-block-end-line
-                    'org-meta-line
-                    'org-document-info-keyword))))
+;; (add-hook 'org-mode-hook
+;;           '(lambda ()
+;;              (setq line-spacing 0.2) ;; Add more line padding for readability
+;;              (variable-pitch-mode 1) ;; All fonts with variable pitch.
+;;              (mapc
+;;               (lambda (face) ;; Other fonts with fixed-pitch.
+;;                 (set-face-attribute face nil :inherit 'fixed-pitch))
+;;               (list 'org-code
+;;                     'org-link
+;;                     'org-block
+;;                     'org-table
+;;                     'org-verbatim
+;;                     'org-block-begin-line
+;;                     'org-block-end-line
+;;                     'org-meta-line
+;;                     'org-document-info-keyword))))
 
 (use-package org-bullets
   :ensure t
@@ -532,3 +559,37 @@
   :ensure t
   :hook
   (prog-mode . bury-successful-compilation))
+
+
+;; --------------- Rust Config ---------------
+
+
+(use-package rust-mode
+  :ensure t
+  :mode "\\.rs"
+  :config
+  (use-package racer
+  :ensure t)
+
+
+  
+  (add-hook 'rust-mode-hook #'racer-mode)
+  (add-hook 'racer-mode-hook #'eldoc-mode))
+
+(use-package company-racer
+  :ensure t
+  :after (company)
+  :config
+  (add-to-list 'company-backends 'company-racer))
+
+(use-package flycheck-rust
+  :ensure t
+  :after (rust-mode))
+
+(use-package tide
+  :ensure t
+  :after (typescript-mode company flycheck)
+  :hook ((typescript-mode . tide-setup)
+         (typescript-mode . tide-hl-identifier-mode)
+         (before-save . tide-format-before-save)))
+
