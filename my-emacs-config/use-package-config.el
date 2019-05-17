@@ -592,3 +592,6 @@
 
 (use-package restclient
   :ensure t)
+
+(use-package ledger-mode
+  :ensure t)
