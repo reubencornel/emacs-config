@@ -324,9 +324,10 @@
 
   (defun add-tag()
     "This function adds a tag to the log entry if the entry is not going to be appended to an entry that is clocked in."
-    (if (fboundp 'org-clocking-p) (org-clocking-p))
+    (if (and (fboundp 'org-clocking-p)
+	     (org-clocking-p))
   	""
-      "%^G")
+      "%^G"))
 
 
   (defun org-summary-todo (n-done n-not-done)
@@ -581,7 +582,9 @@
 
 (use-package flycheck-rust
   :ensure t
-  :after (rust-mode))
+  :after (rust-mode)
+  :config
+  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
 (use-package tide
   :ensure t
