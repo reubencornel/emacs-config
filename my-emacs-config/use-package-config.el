@@ -119,7 +119,7 @@
   ;; (org-image-actual-width '(600))
   :custom
   (org-hide-leading-stars 't)
-  (org-log-done 'time)
+  ;(org-log-done 'time)
   (org-export-with-section-numbers nil)
   (org-export-with-toc nil)
   (org-pretty-entities t)
@@ -135,6 +135,22 @@
   (org-hide-leading-stars t)
   (org-refile-targets '((org-agenda-files :maxlevel . 5)))
   (org-image-toggle-inline  t)
+  (org-catch-invisible-edits 'show-and-error)
+   (org-log-done 'note)
+   (org-log-reschedule 'note)
+   (org-log-redeadline 'note)
+   (org-log-delschedule 'note)
+   (org-log-deldeadline 'note)
+   ;; Setup log note templates. Add "to [new date]" in reschedule and redeadline
+   (org-log-note-headings '((done        . "CLOSING NOTE %t")
+                           (state       . "State %-12s from %-12S %t")
+                           (note        . "Note taken on %t")
+                           (reschedule  . "Schedule changed on %t: %S -> %s")
+                           (delschedule . "Not scheduled, was %S on %t")
+                           (redeadline  . "Deadline changed on %t: %S -> %s")
+                           (deldeadline . "Removed deadline, was %S on %t")
+                           (refile      . "Refiled on %t")
+			   (clock-out . "")))
 
   (org-todo-keywords
    (quote ((sequence "TODO(t)" "NEXT(n)" "WAITING(w@/!)" "DEFERRED(e)" "|" "DONE(d!)" "CANCELLED(c@)")
@@ -231,11 +247,14 @@
   	   "*   %^{title} :STANDUP:\n:PROPERTIES:\n:COLUMNS: %50ITEM %ENTRYDATE\n:ENTRYDATE: %u\n:END:\n%?\n\nEntered on %U\n %i\n")))
 
   :config
-
+  (add-to-list 'org-modules 'org-id)
+  
   (require 'org-crypt)
   (add-to-list 'org-modules 'org-crypt)
   (setq org-crypt-disable-auto-save t)
-
+  (org-crypt-use-before-save-magic)
+  (setq org-crypt-key nil)
+    
   (defun skip-done-functions-or-projects()
     (org-agenda-skip-entry-if 'todo '("DONE" "WAITING" "NEXT")))
 
