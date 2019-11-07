@@ -617,3 +617,16 @@
 
 (use-package ledger-mode
   :ensure t)
+
+(use-package exec-path-from-shell
+  :ensure t
+  :defer t
+  :config
+  (exec-path-from-shell-initialize))
+
+(use-package slime
+  :ensure t
+  :config
+  (progn
+    (setq inferior-lisp-program "sbcl"
+	  slime-contribs '(slime-fancy))))
