@@ -241,6 +241,12 @@
   	   "* QUESTION %^{question} \n%?\n\nEntered on %U\n %i\n")
   	  ("j" "Journal" entry (file+datetree org-default-journal-file)
   	   "* %^{title} %^G \n\n%?\n\nEntered on %U\n %i\n")
+	  ("c" "Time check in" entry (file org-default-log-file)
+	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| [ check in ] | %^{title}"
+	   :immediate-finish t)
+	  ("o" "Time check out" entry (file org-default-log-file)
+	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| [ check out ] | %^{title}"
+	   :immediate-finish t)
   	  ("g" "log" entry (function custom-log-finder)
   	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| %^{title}  %(add-tag) " :immediate-finish t)
   	  ("s" "Standup" entry (file+datetree org-default-notes-file)
