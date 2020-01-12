@@ -107,16 +107,6 @@
 
 (use-package org
   :ensure t
-  :defer t
-  ;; :custom-face
-  ;; (variable-pitch ((t (:family "ETBembo"))))
-  ;; (org-document-title ((t (:foreground "#171717" :weight bold :height 1.5))))
-  ;; (org-done ((t (:background "#E8E8E8" :foreground "#0E0E0E" :strike-through t :weight bold))))
-  ;; (org-headline-done ((t (:foreground "#171717" :strike-through t))))
-  ;; (org-level-1 ((t (:foreground "#090909" :weight bold :height 1.3))))
-  ;; (org-level-2 ((t (:foreground "#090909" :weight normal :height 1.2))))
-  ;; (org-level-3 ((t (:foreground "#090909" :weight normal :height 1.1))))
-  ;; (org-image-actual-width '(600))
   :custom
   (org-hide-leading-stars 't)
   ;(org-log-done 'time)
@@ -241,11 +231,11 @@
   	   "* QUESTION %^{question} \n%?\n\nEntered on %U\n %i\n")
   	  ("j" "Journal" entry (file+datetree org-default-journal-file)
   	   "* %^{title} %^G \n\n%?\n\nEntered on %U\n %i\n")
-	  ("c" "Time check in" entry (file org-default-log-file)
-	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| [ check in ] | %^{title}"
+	  ("i" "Time checkin" entry (file org-default-log-file)
+	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| [ check in ] |%^{title}"
 	   :immediate-finish t)
-	  ("o" "Time check out" entry (file org-default-log-file)
-	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| [ check out ] | %^{title}"
+	  ("o" "Time checkout" entry (file org-default-log-file)
+	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| [ check out ] |%^{title}"
 	   :immediate-finish t)
   	  ("g" "log" entry (function custom-log-finder)
   	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| %^{title}  %(add-tag) " :immediate-finish t)
