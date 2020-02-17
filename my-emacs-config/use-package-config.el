@@ -89,20 +89,16 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; SCALA CONFIG ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package ensime
-  :ensure t
-  :defer t
-  :pin melpa)
 
-(use-package sbt-mode
-  :defer t
-  :pin melpa)
+;; (use-package sbt-mode
+;;   :defer t
+;;   :pin melpa)
 
-(use-package scala-mode
-  :pin melpa
-  :interpreter
-  ("scala" . scala-mode)
-  ("sc" . scala-mode))
+;; (use-package scala-mode
+;;   :pin melpa
+;;   :interpreter
+;;   ("scala" . scala-mode)
+;;   ("sc" . scala-mode))
 
 
 (use-package org
