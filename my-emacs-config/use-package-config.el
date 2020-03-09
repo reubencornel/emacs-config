@@ -403,39 +403,12 @@
 
   )
 
-;; (add-hook 'org-mode-hook
-;;           '(lambda ()
-;;              (setq line-spacing 0.2) ;; Add more line padding for readability
-;; ;             (variable-pitch-mode 1) ;; All fonts with variable pitch.
-;;              (mapc
-;;               (lambda (face) ;; Other fonts with fixed-pitch.
-;;                 (set-face-attribute face nil :inherit 'fixed-pitch))
-;;               (list 'org-code
-;;                     'org-link
-;;                     'org-block
-;;                     'org-table
-;;                     'org-verbatim
-;;                     'org-block-begin-line
-;;                     'org-block-end-line
-;;                     'org-meta-line
-;;                     'org-document-info-keyword))))
-
 (use-package org-bullets
   :ensure t
   :requires org
-  :defer t
+  :hook org-mode
   :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-
-  ;; (check-and-install-if-absent 'org-bullets)
-  ;; (require 'org-habit)
-  ;; ;; org-habit
-  ;; (add-to-list 'org-modules 'org-habit)
-  ;; (setq org-habit-preceding-days 15
-  ;; 	org-habit-following-days 1
-  ;; 	org-habit-graph-column 65
-  ;; 	org-habit-show-habits-only-for-today t
-  ;; 	org-habit-show-all-today t)
+  (org-bullets-mode 1))
 
   ;; (add-hook 'after-save-hook 'sync-index-org)
   ;; ;; search 5 levels deep in org files.

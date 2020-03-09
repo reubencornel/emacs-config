@@ -371,7 +371,7 @@ It requires the standard emacs package manager to be working."
   (interactive)
   (insert (uuid-create)))
 
-(defun add-zk-entry()
+(defun insert-zk-entry()
   (interactive)
   (let ((id (uuid-create)))
     (goto-char (point-max))
