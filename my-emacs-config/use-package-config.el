@@ -403,13 +403,6 @@
 
   )
 
-(use-package org-bullets
-  :ensure t
-  :requires org
-  :hook org-mode
-  :config
-  (org-bullets-mode 1))
-
   ;; (add-hook 'after-save-hook 'sync-index-org)
   ;; ;; search 5 levels deep in org files.
 
