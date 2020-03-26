@@ -590,6 +590,7 @@
   (exec-path-from-shell-initialize))
 
 (use-package slime
+  :defer t
   :ensure t
   :config
   (progn
