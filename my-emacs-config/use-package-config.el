@@ -45,6 +45,7 @@
 
 (use-package plantuml-mode
   :ensure t
+  :defer t
   :mode ("\\.uml$" . plantuml-mode)
   :config
   (progn
@@ -60,6 +61,7 @@
 
 (use-package markdown-mode
   :ensure t
+  :defer t
   :mode ("\\.md" . markdown-mode))
 
 (use-package eshell
@@ -102,7 +104,8 @@
 
 
 (use-package org
-  :ensure t
+  :defer t
+  :ensure org-plus-contrib
   :custom
   (org-hide-leading-stars 't)
   ;(org-log-done 'time)
@@ -112,6 +115,7 @@
   (org-reverse-note-order t)
   (org-log-into-drawer "LOGBOOK")
   (org-clock-persist t)
+  (org-use-speed-commands t)
   (org-clock-idle-time 60)
   (org-clock-history-length 35)
   (org-clock-in-resume t)
@@ -242,6 +246,7 @@
   (add-to-list 'org-modules 'org-id)
   
   (require 'org-crypt)
+  (require 'org-depend)
   (add-to-list 'org-modules 'org-crypt)
   (setq org-crypt-disable-auto-save t)
   (org-crypt-use-before-save-magic)
@@ -403,6 +408,24 @@
 
   )
 
+(use-package org-ref
+  :defer t
+  :ensure t
+  :after org
+  :custom
+  (reftex-default-bibliography '("~/Dropbox/bibliography/references.bib"))
+  (org-ref-bibliography-notes "~/Dropbox/bibliography/notes.org")
+  (org-ref-default-bibliography '("~/Dropbox/bibliography/references.bib"))
+  (org-ref-pdf-directory "~/Dropbox/bibliography/bibtex-pdfs/")
+  :config
+  (require 'org-ref))
+
+  (use-package org-bullets
+    :ensure t
+    :config ;; executed after loading package
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  )
+
   ;; (add-hook 'after-save-hook 'sync-index-org)
   ;; ;; search 5 levels deep in org files.
 
@@ -416,6 +439,7 @@
   (auto-package-update-maybe))
 
 (use-package ibuffer
+  :defer t
   :custom
   (ibuffer-saved-filter-groups
    (quote (("default"
@@ -541,6 +565,7 @@
 ;; --------------- Rust Config ---------------
 (use-package rust-mode
   :ensure t
+  :defer t
   :mode "\\.rs"
   :config
   (use-package racer
@@ -553,27 +578,32 @@
 
 (use-package company-racer
   :ensure t
+  :defer t
   :after (company)
   :config
   (add-to-list 'company-backends 'company-racer))
 
 (use-package flycheck-rust
   :ensure t
+  :defer t
   :after (rust-mode)
   :config
   (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
 (use-package tide
   :ensure t
+  :defer t
   :after (typescript-mode company flycheck)
   :hook ((typescript-mode . tide-setup)
          (typescript-mode . tide-hl-identifier-mode)
          (before-save . tide-format-before-save)))
 
 (use-package restclient
+  :defer t
   :ensure t)
 
 (use-package ledger-mode
+  :defer t
   :ensure t)
 
 (use-package exec-path-from-shell
@@ -583,6 +613,7 @@
   (exec-path-from-shell-initialize))
 
 (use-package slime
+  :defer t
   :ensure t
   :config
   (progn
