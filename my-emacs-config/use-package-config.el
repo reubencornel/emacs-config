@@ -108,7 +108,9 @@
   :ensure org-plus-contrib
   :custom
   (org-hide-leading-stars 't)
-  ;(org-log-done 'time)
+					;(org-log-done 'time)
+  (org-agenda-files
+   '("~/Dropbox/log.org" "~/Dropbox/notes.org" "~/Dropbox/inbox.org" "~/Dropbox/work.org" "~/Dropbox/main.org" "~/Dropbox/someday.org"))
   (org-export-with-section-numbers nil)
   (org-export-with-toc nil)
   (org-pretty-entities t)
@@ -126,13 +128,13 @@
   (org-refile-targets '((org-agenda-files :maxlevel . 5)))
   (org-image-toggle-inline  t)
   (org-catch-invisible-edits 'show-and-error)
-   (org-log-done 'note)
-   (org-log-reschedule 'note)
-   (org-log-redeadline 'note)
-   (org-log-delschedule 'note)
-   (org-log-deldeadline 'note)
-   ;; Setup log note templates. Add "to [new date]" in reschedule and redeadline
-   (org-log-note-headings '((done        . "CLOSING NOTE %t")
+  (org-log-done 'note)
+  (org-log-reschedule 'note)
+  (org-log-redeadline 'note)
+  (org-log-delschedule 'note)
+  (org-log-deldeadline 'note)
+  ;; Setup log note templates. Add "to [new date]" in reschedule and redeadline
+  (org-log-note-headings '((done        . "CLOSING NOTE %t")
                            (state       . "State %-12s from %-12S %t")
                            (note        . "Note taken on %t")
                            (reschedule  . "Schedule changed on %t: %S -> %s")
@@ -141,14 +143,14 @@
                            (deldeadline . "Removed deadline, was %S on %t")
                            (refile      . "Refiled on %t")
 			   (clock-out . "")))
-
+  
   (org-todo-keywords
    (quote ((sequence "TODO(t)" "NEXT(n)" "WAITING(w@/!)" "DEFERRED(e)" "|" "DONE(d!)" "CANCELLED(c@)")
 	   (sequence "TOBUY(b)" "TOPACK(p)" "|" "BOUGHT(g)" "PACKED")
 	   (sequence "TOREAD(r)" "|" "READ")
 	   (sequence "QUESTION(q)" "|" "ANSWERED(a@)")
 	   (sequence "TOREVIEW" "INREVIEW" "REWORK" "|" "APPROVED"))))
-
+  
   (org-todo-keyword-faces
    (quote (("TODO" :foreground "red1" :weight bold)
 	   ("NEXT" :foreground "turquoise" :weight bold)
