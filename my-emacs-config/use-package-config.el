@@ -207,6 +207,7 @@
      "\\<IGNORE\\>"))
 
   (org-directory (expand-file-name "~/Dropbox"))
+  (org-default-inbox-file (concat org-directory "/inbox.org"))
   (org-default-notes-file (concat org-directory "/notes.org"))
   (org-default-journal-file (concat org-directory "/notes.org"))
   (org-default-log-file   "~/Dropbox/log.org")
@@ -214,22 +215,19 @@
   (org-directory "~/Dropbox")
   (org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
   (org-mobile-inbox-for-pull "~/Dropbox/inbox.org")
-
-
   (org-agenda-include-diary t)
-
   (org-journal-template-entry (concat "* %T [" (system-name)  "]| %^{title} %^G"))
 
   (org-capture-templates
-  	'(("t" "Todo" entry (file+headline org-default-notes-file "Tasks")
+  	'(("t" "Todo" entry (file org-default-inbox-file)
   	   "* TODO %^{entry}\n:PROPERTIES:\n:ENTRYDATE:%U\n:END:\n %?\n")
-  	  ("r" "Lookup Entry in region" entry (file+headline org-default-notes-file "Lookup")
+  	  ("r" "Lookup Entry in region" entry (file org-default-inbox-file)
   	   "* %i :LOOKUP:\n")
-  	  ("l" "Lookup Entry" entry (file+headline org-default-notes-file "Lookup")
+  	  ("l" "Lookup Entry" entry (file org-default-inbox-file)
   	   "* %?  :LOOKUP:\n %i \n")
-  	  ("q" "Question" entry (file+datetree org-default-notes-file)
+  	  ("q" "Question" entry (file org-default-inbox-file)
   	   "* QUESTION %^{question} \n%?\n\nEntered on %U\n %i\n")
-  	  ("j" "Journal" entry (file+datetree org-default-journal-file)
+  	  ("j" "Journal" entry (file org-default-inbox-file)
   	   "* %^{title} %^G \n\n%?\n\nEntered on %U\n %i\n")
 	  ("i" "Time checkin" entry (file org-default-log-file)
 	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| [ check in ] |%^{title}"
@@ -238,20 +236,18 @@
 	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| [ check out ] |%^{title}"
 	   :immediate-finish t)
   	  ("g" "log" entry (function custom-log-finder)
-  	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| %^{title}  %(add-tag) " :immediate-finish t)
-  	  ("s" "Standup" entry (file+datetree org-default-notes-file)
-  	   "*   %^{title} :STANDUP:\n:PROPERTIES:\n:COLUMNS: %50ITEM %ENTRYDATE\n:ENTRYDATE: %u\n:END:\n%?\n\nEntered on %U\n %i\n")))
+  	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| %^{title}  %(add-tag) " :immediate-finish t)))
 
   :config
   (add-to-list 'org-modules 'org-id)
-  
+
   (require 'org-crypt)
   (require 'org-depend)
   (add-to-list 'org-modules 'org-crypt)
   (setq org-crypt-disable-auto-save t)
   (org-crypt-use-before-save-magic)
   (setq org-crypt-key nil)
-    
+
   (defun skip-done-functions-or-projects()
     (org-agenda-skip-entry-if 'todo '("DONE" "WAITING" "NEXT")))
 
@@ -391,19 +387,19 @@
 
   (defvar org-wip-limit 3 "Work-in-progress limit")
   (defvar org-wip-state "NEXT")
-  
+
   (defun org-block-wip-limit (change-plist)
     (catch 'dont-block
       (when (or (not (eq (plist-get change-plist :type) 'todo-state-change))
 		(not (string= (plist-get change-plist :to) org-wip-state)))
 	(throw 'dont-block t))
-      
+
       (when (>= (org-count-todos-in-state org-wip-state) org-wip-limit )
 	(setq org-block-entry-blocking (format "Number of items in NEXT limit(org-wip-limit): %s" org-wip-state))
 	(throw 'dont-block nil))
-      
+
       t)) ; do not block
-  
+
   (add-hook 'org-blocker-hook #'org-block-wip-limit)
 
   )
@@ -420,11 +416,10 @@
   :config
   (require 'org-ref))
 
-  (use-package org-bullets
-    :ensure t
-    :config ;; executed after loading package
-    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-  )
+(use-package org-bullets
+  :ensure t
+  :config ;; executed after loading package
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
   ;; (add-hook 'after-save-hook 'sync-index-org)
   ;; ;; search 5 levels deep in org files.
@@ -572,7 +567,7 @@
   :ensure t)
 
 
-  
+
   (add-hook 'rust-mode-hook #'racer-mode)
   (add-hook 'racer-mode-hook #'eldoc-mode))
 
