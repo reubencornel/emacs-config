@@ -38,3 +38,12 @@
 (delete-selection-mode 1)
 
 (setq eshell-aliases-file "~/Dropbox/emacs.alias")
+
+
+(add-hook 'text-mode-hook
+	  (lambda ()
+	    (variable-pitch-mode 1)))
+
+(set-face-attribute 'default nil :family "Fira Mono")
+(set-face-attribute 'variable-pitch nil :family "Libre Baskerville")
+(set-face-attribute 'fixed-pitch nil :family "Fira Mono")

@@ -109,6 +109,9 @@
   :custom
   (org-hide-leading-stars 't)
 					;(org-log-done 'time)
+  (org-agenda-text-search-extra-files ;; This variable instructs org agenda to search through the archives
+   '(agenda-archives "~/Dropbox/work.org_archive" "~/Dropbox/main.org_archive"))
+  (org-refile-use-outline-path 3)
   (org-agenda-files
    '("~/Dropbox/log.org" "~/Dropbox/notes.org" "~/Dropbox/inbox.org" "~/Dropbox/work.org" "~/Dropbox/main.org" "~/Dropbox/someday.org"))
   (org-export-with-section-numbers nil)
@@ -426,6 +429,11 @@
   :config ;; executed after loading package
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
+(use-package org-ql
+  :ensure t
+  :defer t
+  :after org)
+
   ;; (add-hook 'after-save-hook 'sync-index-org)
   ;; ;; search 5 levels deep in org files.
 
@@ -554,7 +562,8 @@
     ("i" text-scale-increase "in")
     ("o" text-scale-decrease "out"))
 
-  (bind-key "C-c h z" 'jethro/hydra-zoom/body))
+  (bind-key "C-c h z" 'jethro/hydra-zoom/body)
+  )
 
 
 (use-package bury-successful-compilation
@@ -619,3 +628,26 @@
   (progn
     (setq inferior-lisp-program "sbcl"
 	  slime-contribs '(slime-fancy))))
+
+;; --------------- Writing ---------------
+(use-package olivetti
+  :ensure t
+  :after wc-goal-mode
+  :config
+  (defun writing-mode()
+    (interactive)
+    (set-background-color "#FCFCFC")
+    (set-foreground-color "#1A1A1A")
+    (set-cursor-color "#07BBF2")
+    (set-frame-font "Helvetica 55 Roman 12")
+    (setq-default line-spacing 6)
+    (set-face-attribute 'mode-line (selected-frame) :background "#FFFFFF" :overline "#FCFCFC" :foreground "grey")
+    (set-fringe-mode 0)
+    (require 'wc-goal-mode)
+    (olivetti-mode 1)))
+
+(use-package visual-fill-column
+  :ensure t)
+
+(use-package wc-goal-mode
+  :ensure t)
