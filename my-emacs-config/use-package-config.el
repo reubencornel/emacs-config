@@ -227,7 +227,7 @@
 
   (org-capture-templates
   	'(("t" "Todo" entry (file org-default-inbox-file)
-  	   "* TODO %^{entry}\n:PROPERTIES:\n:ENTRYDATE:%U\n:END:\n %?\n")
+  	   "* TODO %^{entry}\n:PROPERTIES:\n:ENTRYDATE:   %U\n:END:\n %?\n")
   	  ("r" "Lookup Entry in region" entry (file org-default-inbox-file)
   	   "* %i :LOOKUP:\n")
 	  ("l" "Link" entry (file org-default-inbox-file)
@@ -247,7 +247,6 @@
 
   :config
   (add-to-list 'org-modules 'org-id)
-
   (require 'org-crypt)
   (require 'org-depend)
   (require 'org-protocol)
@@ -409,6 +408,40 @@
       t)) ; do not block
 
   (add-hook 'org-blocker-hook #'org-block-wip-limit)
+  (with-eval-after-load 'org
+    (set-face-attribute 'org-table nil :inherit 'fixed-pitch))
+  
+  ;; (let* ((variable-tuple '(:family "Source San Pro"))
+  ;; 	 (base-font-color     (face-foreground 'default nil 'default))
+  ;; 	 (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
+    
+  ;;   (custom-theme-set-faces
+  ;;    'user
+  ;;    `(org-level-8 ((t (,@headline ,@variable-tuple))))
+  ;;    `(org-level-7 ((t (,@headline ,@variable-tuple))))
+  ;;    `(org-level-6 ((t (,@headline ,@variable-tuple))))
+  ;;    `(org-level-5 ((t (,@headline ,@variable-tuple))))
+  ;;    `(org-level-4 ((t (,@headline ,@variable-tuple ))))
+  ;;    `(org-level-3 ((t (,@headline ,@variable-tuple ))))
+  ;;    `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.1))))
+  ;;    `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.2))))
+  ;;    `(org-document-title ((t (,@headline ,@variable-tuple :height 1.3 :underline nil))))))
+  
+  
+  ;; (custom-theme-set-faces
+  ;;  'user
+  ;;  '(org-block ((t (:inherit fixed-pitch))))
+  ;;  '(org-code ((t (:inherit (shadow fixed-pitch)))))
+  ;;  '(org-document-info ((t (:foreground "dark orange"))))
+  ;;  '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+  ;;  '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+  ;;  '(org-link ((t (:foreground "royal blue" :underline t))))
+  ;;  '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+  ;;  '(org-property-value ((t (:inherit fixed-pitch))) t)
+  ;;  '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+  ;;  '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
+  ;;  '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+  ;;  '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
 
   )
 
@@ -636,18 +669,26 @@
   :config
   (defun writing-mode()
     (interactive)
+    (olivetti-mode 1)
     (set-background-color "#FCFCFC")
     (set-foreground-color "#1A1A1A")
     (set-cursor-color "#07BBF2")
-    (set-frame-font "Helvetica 55 Roman 12")
+    (set-face-attribute 'default nil :family "Fira Mono" :width 'normal)
+    (set-face-attribute 'variable-pitch nil :family "Helvetica Neue")
+    (set-face-attribute 'fixed-pitch nil :family "Fira Mono")
     (setq-default line-spacing 6)
     (set-face-attribute 'mode-line (selected-frame) :background "#FFFFFF" :overline "#FCFCFC" :foreground "grey")
     (set-fringe-mode 0)
-    (require 'wc-goal-mode)
-    (olivetti-mode 1)))
+    (require 'wc-goal-mode)))
 
 (use-package visual-fill-column
   :ensure t)
 
 (use-package wc-goal-mode
   :ensure t)
+
+(use-package pdf-tools
+  :ensure t
+  :config
+  (pdf-tools-install))
+

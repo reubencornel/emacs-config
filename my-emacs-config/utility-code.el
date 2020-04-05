@@ -395,3 +395,17 @@ It requires the standard emacs package manager to be working."
               (widen)
               (org-end-of-subtree t t)
               (org-paste-subtree level tree-text))))))))
+
+(defun reuben/set-ids()
+  (interactive)
+  (save-excursion
+    (goto-char (point-max))
+    (setq org-id-prefix "r-")
+    (while (outline-previous-heading)
+      (let* ((id (org-id-get))
+	     (custom-id (org-entry-get (point) "CUSTOM_ID")))
+	(if (null id)
+	    (let ((new-id (org-id-new)))
+	      (org-set-property  "ID" new-id)
+	      (if (null custom-id)
+		  (org-set-property  "CUSTOM_ID" new-id))))))))
