@@ -44,6 +44,9 @@
 	  (lambda ()
 	    (variable-pitch-mode 1)))
 
+(add-hook 'after-save-hook
+	  'reuben/set-ids)
+
 (set-face-attribute 'default nil :family "Fira Mono")
 (set-face-attribute 'variable-pitch nil :family "Source Sans Pro")
 (set-face-attribute 'fixed-pitch nil :family "Fira Mono")

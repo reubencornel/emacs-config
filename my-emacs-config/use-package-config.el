@@ -674,7 +674,7 @@
     (set-foreground-color "#1A1A1A")
     (set-cursor-color "#07BBF2")
     (set-face-attribute 'default nil :family "Fira Mono" :width 'normal)
-    (set-face-attribute 'variable-pitch nil :family "Helvetica Neue")
+    (set-face-attribute 'variable-pitch nil :family "Source Sans Pro")
     (set-face-attribute 'fixed-pitch nil :family "Fira Mono")
     (setq-default line-spacing 6)
     (set-face-attribute 'mode-line (selected-frame) :background "#FFFFFF" :overline "#FCFCFC" :foreground "grey")
