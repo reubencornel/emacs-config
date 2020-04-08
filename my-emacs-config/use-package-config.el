@@ -231,11 +231,11 @@
   	  ("r" "Lookup Entry in region" entry (file org-default-inbox-file)
   	   "* %i :LOOKUP:\n")
 	  ("l" "Link" entry (file org-default-inbox-file)
-	   "* %a %^g\n %?\n %T\n %i")
+	   "* %a\n:PROPERTIES:\n:ENTRYDATE:   %U\n:END:\n %i" :immediate-finish t)
   	  ("q" "Question" entry (file org-default-inbox-file)
   	   "* QUESTION %^{question} \n%?\n\nEntered on %U\n %i\n")
   	  ("j" "Journal" entry (file org-default-inbox-file)
-  	   "* %^{title} %^G \n\n%?\n\nEntered on %U\n %i\n")
+  	   "* %^{title} %^G \n:PROPERTIES:\n:ENTRYDATE:   %U\n:END:\n\n%?\n\nEntered on %U\n %i\n")
 	  ("i" "Time checkin" entry (file org-default-log-file)
 	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| [ check in ] |%^{title}"
 	   :immediate-finish t)
