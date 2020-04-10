@@ -46,6 +46,8 @@
 
 (add-hook 'after-save-hook
 	  'reuben/set-ids)
+(add-hook 'after-save-hook
+ 	  'reuben/update-areas-string)
 
 (set-face-attribute 'default nil :family "Fira Mono")
 (set-face-attribute 'variable-pitch nil :family "Source Sans Pro")

@@ -91,8 +91,8 @@
   (interactive "*")
   (let* ((cur-time (current-time))
          (day (format-time-string "%d" cur-time))
-         (date (format-time-string (concat "[%B %d"                                            
-					   (get-number-str day) 
+         (date (format-time-string (concat "[%B %d"
+					   (get-number-str day)
 					   " %Y, %A]") cur-time)))
     date))
 
@@ -101,8 +101,8 @@
   (interactive "*")
   (let* ((cur-time (current-time))
          (day (format-time-string "%d" cur-time))
-         (date (format-time-string (concat "[%B %d" 
-                                           (get-number-str day) 
+         (date (format-time-string (concat "[%B %d"
+                                           (get-number-str day)
                                            " %Y, %A %R %p %Z]") cur-time)))
       date))
 
@@ -410,3 +410,90 @@ It requires the standard emacs package manager to be working."
 		  (org-set-property  "ID" new-id)
 		  (if (null custom-id)
 		      (org-set-property  "CUSTOM_ID" new-id)))))))))
+
+(defun reuben/remove-text-properties(text)
+  (if (zerop (length text))
+      ""
+    (let* ((start 0)
+	   (end (length text))
+	   (str (substring text start end)))
+      (set-text-properties start end nil str)
+      str)))
+
+(defun reuben/get-heading-text(point)
+  (let* ((heading (org-get-heading))
+	 (start 0)
+	 (end (length heading)))
+    (set-text-properties start end nil heading)
+    heading))
+
+(defun reuben/org-has-child-p ()
+  (interactive)
+  (save-excursion
+    (org-goto-first-child)))
+
+;; -- used to set areas for PARA
+(defun reuben/get-areas()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (let ((areas '())
+	  (areas-heading-location (search-forward-regexp "^* Areas" nil t)))
+      (if (not (null areas-heading-location))
+	  (progn
+	    (if (reuben/org-has-child-p)
+		(progn
+		  (org-goto-first-child)
+		  (setq areas (append areas (list (reuben/get-heading-text (point)))))
+		  (cl-assert (org-at-heading-p) t "We should be at a heading")
+		  (let ((previous-point (point)))
+		    (org-forward-heading-same-level 1 t)
+		    (append areas (list (reuben/get-heading-text (point))))
+		    (while (not (equalp previous-point (point)))
+		      (setq areas (append areas (list (reuben/get-heading-text (point)))))
+		      (setq previous-point (point))
+		      (org-forward-heading-same-level 1 t))
+		     areas))
+	      '()))
+	'()))))
+
+
+(defun reuben/update-areas-string()
+  (interactive)
+  (if (not (null (string-match "\.org$"
+			       (buffer-name))))
+    (save-excursion
+      (goto-char (point-min))
+      (let* ((areas (reuben/get-areas))
+	     (areas-string (apply 'concat (mapcar (lambda(g)
+						    (concat "\"" g "\" "))
+						  areas)))
+	     (location-of-property  (search-forward "#+PROPERTY: Area_ALL " nil t)))
+	(if (and (null location-of-property)
+		 (not (null areas)))
+	    (progn
+	      (print "progn 1")
+	      (goto-char (point-min))
+	      (insert "#+PROPERTY: Area_ALL ")
+	      (insert areas-string)
+	      (newline)))
+	(if (and (null areas)
+		 (not (null location-of-property)))
+	    (progn
+	      (goto-char location-of-property)
+	      (let* ((a	      (beginning-of-line))
+		     (beginning-of-line  (point))
+		     (p (end-of-line))
+		     (end-of-line (point)))
+		(delete-region beginning-of-line end-of-line))))
+	(if (and (not (null location-of-property))
+		 (not (null areas)))
+	    (let* ((point-start (point))
+		   (p (end-of-line))
+		   (point-end (point))
+		   (existing-areas-string (reuben/remove-text-properties (buffer-substring point-start point-end))))
+	      (if (not (equalp existing-areas-string
+			       areas-string))
+		  (progn
+		    (delete-region point-start point-end)
+		    (insert areas-string)))))))))
