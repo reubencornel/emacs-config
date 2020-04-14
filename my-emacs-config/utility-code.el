@@ -437,8 +437,9 @@ It requires the standard emacs package manager to be working."
   (interactive)
   (save-excursion
     (goto-char (point-min))
-    (let ((areas '())
-	  (areas-heading-location (search-forward-regexp "^* Areas" nil t)))
+    (let* ((areas '())
+	   (areas-search-string (if (equalp (buffer-name) "work.org") "^* Work Areas" "^* Home Areas"))
+	   (areas-heading-location (search-forward-regexp areas-search-string nil t)))
       (if (not (null areas-heading-location))
 	  (progn
 	    (if (reuben/org-has-child-p)
@@ -472,7 +473,6 @@ It requires the standard emacs package manager to be working."
 	(if (and (null location-of-property)
 		 (not (null areas)))
 	    (progn
-	      (print "progn 1")
 	      (goto-char (point-min))
 	      (insert "#+PROPERTY: Area_ALL ")
 	      (insert areas-string)

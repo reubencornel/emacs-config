@@ -113,7 +113,7 @@
    '(agenda-archives "~/Dropbox/work.org_archive" "~/Dropbox/main.org_archive"))
   (org-refile-use-outline-path 3)
   (org-agenda-files
-   '("~/Dropbox/log.org" "~/Dropbox/notes.org" "~/Dropbox/inbox.org" "~/Dropbox/work.org" "~/Dropbox/main.org" "~/Dropbox/someday.org"))
+   '("~/Dropbox/log.org" "~/Dropbox/notes.org" "~/Dropbox/inbox.org" "~/Dropbox/work.org" "~/Dropbox/main.org"))
   (org-export-with-section-numbers nil)
   (org-export-with-toc nil)
   (org-pretty-entities t)
@@ -392,7 +392,7 @@
      count))
 
 
-  (defvar org-wip-limit 3 "Work-in-progress limit")
+  (defvar org-wip-limit 20 "Work-in-progress limit")
   (defvar org-wip-state "NEXT")
 
   (defun org-block-wip-limit (change-plist)
