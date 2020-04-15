@@ -438,7 +438,7 @@ It requires the standard emacs package manager to be working."
   (save-excursion
     (goto-char (point-min))
     (let* ((areas '())
-	   (areas-search-string (if (equalp (buffer-name) "work.org") "^* Work Areas" "^* Home Areas"))
+	   (areas-search-string (if (equalp (buffer-name) "work.org") "^* Areas Work" "^* Areas Home"))
 	   (areas-heading-location (search-forward-regexp areas-search-string nil t)))
       (if (not (null areas-heading-location))
 	  (progn
