@@ -384,12 +384,12 @@
   (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 
   (defun org-count-todos-in-state (state)
-  (let ((count 0))
-    (org-scan-tags (lambda ()
-                     (when (string= (org-get-todo-state) state)
-                       (setq count (1+ count))))
-                   t t)
-     count))
+    (let ((count 0))
+      (org-scan-tags (lambda ()
+		       (when (string= (org-get-todo-state) state)
+			 (setq count (1+ count))))
+		     t t)
+      count))
 
 
   (defvar org-wip-limit 20 "Work-in-progress limit")
@@ -408,15 +408,36 @@
       t)) ; do not block
 
   (add-hook 'org-blocker-hook #'org-block-wip-limit)
-  ;; (with-eval-after-load 'org
-  ;;   (set-face-attribute 'org-table nil :inherit 'fixed-pitch))
+
+  (let* ((variable-tuple
+	  (cond ((x-list-fonts "Playfair Display") '(:font "Playfair Display"))
+		((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
+		((x-list-fonts "Verdana")         '(:font "Verdana"))
+		((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
+		(nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+	 (base-font-color     (face-foreground 'default nil 'default))
+	 (headline           `(:inherit default )))
+
+
     
-   (custom-theme-set-faces
-    'user
-    '(org-block ((t (:inherit fixed-pitch))))
-    '(org-code ((t (:inherit (shadow fixed-pitch)))))
+    (custom-theme-set-faces
+     'user
+     `(org-level-8 ((t (,@headline ,@variable-tuple))))
+     `(org-level-7 ((t (,@headline ,@variable-tuple))))
+     `(org-level-6 ((t (,@headline ,@variable-tuple))))
+     `(org-level-5 ((t (,@headline ,@variable-tuple))))
+     `(org-level-4 ((t (,@headline ,@variable-tuple))))
+     `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.05))))
+     `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.1))))
+     `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.25))))
+     `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
+  
+  (custom-theme-set-faces
+   'user
+   '(org-block ((t (:inherit fixed-pitch))))
+   '(org-code ((t (:inherit (shadow fixed-pitch)))))
   ;;  '(org-document-info ((t (:foreground "dark orange"))))
-    '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+   '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
     '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
     '(org-link ((t (:foreground "royal blue" :underline t))))
     '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
