@@ -675,3 +675,7 @@
   :config
   (pdf-tools-install))
 
+(use-package doom-themes
+  :ensure t)
+(use-package doom-modeline
+  :ensure t)
