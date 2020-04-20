@@ -409,7 +409,8 @@ It requires the standard emacs package manager to be working."
 		(let ((new-id (org-id-new)))
 		  (org-set-property  "ID" new-id)
 		  (if (null custom-id)
-		      (org-set-property  "CUSTOM_ID" new-id)))))))))
+		      (org-set-property  "CUSTOM_ID" new-id))))))
+	(save-buffer))))
 
 (defun reuben/remove-text-properties(text)
   (if (zerop (length text))
@@ -496,4 +497,5 @@ It requires the standard emacs package manager to be working."
 			       areas-string))
 		  (progn
 		    (delete-region point-start point-end)
-		    (insert areas-string)))))))))
+		    (insert areas-string))))))
+      (save-buffer))))
