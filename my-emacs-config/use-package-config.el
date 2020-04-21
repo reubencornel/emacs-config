@@ -117,6 +117,7 @@
   (org-export-with-section-numbers nil)
   (org-export-with-toc nil)
   (org-pretty-entities t)
+  (org-hide-emphasis-markers t)
   (org-reverse-note-order t)
   (org-log-into-drawer "LOGBOOK")
   (org-clock-persist t)

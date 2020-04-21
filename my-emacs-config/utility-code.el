@@ -401,7 +401,6 @@ It requires the standard emacs package manager to be working."
   (if (equalp (buffer-name) "inbox.org")
       (save-excursion
 	(goto-char (point-max))
-	(setq org-id-prefix "r-")
 	(while (outline-previous-heading)
 	  (let* ((id (org-id-get))
 		 (custom-id (org-entry-get (point) "CUSTOM_ID")))
