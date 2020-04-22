@@ -123,6 +123,7 @@
   (org-clock-persist t)
   (org-use-speed-commands t)
   (org-clock-idle-time 60)
+  (org-emphasis-regexp-components '("-[:space:]('\"{" "-[:space:].,:!?;'\")}\\[" "\x200B" "." 1))
   (org-clock-history-length 35)
   (org-clock-in-resume t)
   (org-completion-use-ido nil)
