@@ -201,12 +201,55 @@
 			  (tags "TODO=\"DONE\"&CLOSED>\"<-1d>\"" ((org-agenda-overriding-header "Closed today")))
 			  (stuck "" ((org-use-tag-inheritance nil)
 				     (org-agenda-overriding-header "Stuck Projects")))))
-     ("w" "Weekly Review" ((stuck "" ((org-use-tag-inheritance nil)
-				      (org-agenda-overriding-header "Stuck Projects")))
-			   (tags-todo unscheduled-tasks-search-string  ((org-agenda-overriding-header "Unscheduled Tasks")))
-			   (tags-todo "+TODO=\"WAITING\"+TIMESTAMP_IA<\"<-1w>\"" ((org-agenda-overriding-header "Tasks waiting for more than a week")))
-			   (tags-todo "+TODO=\"NEXT\"+TIMESTAMP_IA<\"<-1w>\""  ((org-agenda-overriding-header "Tasks in progress for more than a week")))
-			   (tags "TODO=\"DONE\"&CLOSED>\"<-1w>\"" ((org-agenda-overriding-header "Closed in the last week")))))
+     ("we" "Execution Agenda" ((tags-todo "TODO=\"NEXT\"&SCHEDULED<\"<+1w>\"|TODO=\"NEXT\"-SCHEDULED={.+}-DEADLINE={.+}|TODO=\"NEXT\"&DEADLINE<\"<+1w>\""
+					    ((org-agenda-overriding-header "Next Items")
+					     (org-agenda-files '("~/Dropbox/work.org"))
+					     (org-super-agenda-groups '((:auto-parent t)
+									))))
+				 (org-ql-block '(and (parent (tags-local "PROJECT"))
+						     (descendants (todo "NEXT"))
+						     (not (or (tags-all "TEMPLATE")
+							      (tags-all "DEPRIORITIZED_PROJECT")
+							      (tags-all "DONE")
+							      (todo "DONE"))))
+					       ((org-ql-block-header "Active Projects")
+						(org-agenda-files '("~/Dropbox/work.org"))))
+				 (org-ql-block '(and (parent (tags-local "PROJECT"))
+						     (not (descendants (todo "NEXT")))
+						     (not (or (tags-all "TEMPLATE")
+							      (tags-all "DEPRIORITIZED_PROJECT")
+							      (tags-all "DONE")
+							      (todo "DONE"))))
+					       ((org-ql-block-header "Stuck Projects")
+						(org-agenda-files '("~/Dropbox/work.org"))))))
+	("wr" "Work Review" (
+			     (org-ql-block '(and (parent (tags-local "PROJECT"))
+						 (descendants (todo "NEXT"))
+						 (not (or (tags-all "TEMPLATE")
+							  (tags-all "DEPRIORITIZED_PROJECT")
+							  (tags-all "DONE")
+							  (todo "DONE"))))
+					   ((org-ql-block-header "Active Projects")))
+			     (org-ql-block '(and (parent (tags-local "PROJECT"))
+						 (not (descendants (todo "NEXT")))
+						 (not (or (tags-all "TEMPLATE")
+							  (tags-all "DEPRIORITIZED_PROJECT")
+							  (tags-all "DONE")
+							  (todo "DONE"))))
+					   ((org-ql-block-header "Stuck Projects")))
+      			     (todo "WAITING" ((org-agenda-overriding-header "Waiting tasks")
+					      (org-super-agenda-groups '((:auto-parent t)))))
+			     (tags-todo "TODO=\"TODO\"-DEPRIORITIZED_PROJECTS-DEPRIORITIZED_PROJECT-TEMPLATE&DEADLINE<\"<+2w>\""
+					((org-agenda-overriding-header "Tasks in the next 2 weeks")
+					 (org-agenda-files '("~/Dropbox/work.org"))))
+			     (tags-todo "TODO=\"TODO\"-TEMPLATE-PROJECT-SCHEDULED={.+}-DEADLINE={.+}"
+					((org-agenda-overriding-header "Unplanned Todos")
+					 (org-agenda-files '("~/Dropbox/work.org"))
+					 (org-super-agenda-groups '((:auto-parent t)))))
+			     (tags "TODO=\"DONE\"&CLOSED>\"<-1d>\""
+				   ((org-agenda-overriding-header "Closed today")
+				    (org-super-agenda-groups '((:auto-parent t)))
+				    (org-agenda-files '("~/Dropbox/work.org"))))))
      ("u" "Standup" ((tags "+STANDUP+ENTRYDATE>=\"<-3d>\"" ((org-agenda-overriding-header "Standup updates")
 							    (org-agenda-overriding-columns-format )
 							    (org-agenda-sorting-strategy '(time-down ts-down tsia-down))))))))
@@ -252,7 +295,9 @@
   (require 'org-crypt)
   (require 'org-depend)
   (require 'org-protocol)
+  (require 'org-checklist)
   (add-to-list 'org-modules 'org-crypt)
+  (add-to-list 'org-modules 'org-checklist)
   (setq org-crypt-disable-auto-save t)
   (org-crypt-use-before-save-magic)
   (setq org-crypt-key nil)
@@ -473,8 +518,11 @@
   :defer t
   :after org)
 
-  ;; (add-hook 'after-save-hook 'sync-index-org)
-  ;; ;; search 5 levels deep in org files.
+(use-package org-super-agenda
+  :after org
+  :ensure t
+  :config
+  (org-super-agenda-mode))
 
 ;;;;;;;;;;;;;;; Auto update emacs package ;;;;;;;;;;;;;;;
 (use-package auto-package-update
@@ -702,3 +750,5 @@
   :ensure t)
 (use-package doom-modeline
   :ensure t)
+
+
