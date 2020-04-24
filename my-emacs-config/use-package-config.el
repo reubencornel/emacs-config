@@ -140,6 +140,7 @@
   (org-log-redeadline 'note)
   (org-log-delschedule 'note)
   (org-log-deldeadline 'note)
+  (org-emphasis-alist '(("*" bold) ("/" italic) ("_" underline) ("=" org-verbatim verbatim) ("~" (:background "yellow1" :weight bold)) ("+" (:strike-through t))))
   ;; Setup log note templates. Add "to [new date]" in reschedule and redeadline
   (org-log-note-headings '((done        . "CLOSING NOTE %t")
                            (state       . "State %-12s from %-12S %t")
