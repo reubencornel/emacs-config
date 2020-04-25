@@ -499,3 +499,73 @@ It requires the standard emacs package manager to be working."
 		    (insert areas-string))))))
       (save-buffer))))
 
+
+(defun reuben/number-projects-hook()
+  (reuben/number-projects)
+  (save-buffer))
+
+(defun reuben/number-projects()
+  (if (or (equalp (buffer-name) "main.org")
+	  (equalp (buffer-name) "work.org"))
+      ;; Find the Projects Home or Projects Work
+      (save-excursion
+	(goto-char (point-min))
+	(let* ((projects-search-string (if (equalp (buffer-name) "work.org") "^* Projects Work" "^* Projects Home"))
+	       (projects-heading-location (search-forward-regexp projects-search-string nil t))
+	       (count ?A))
+	  (if (reuben/org-has-child-p)
+	      (progn
+		(org-goto-first-child)
+		(cl-assert (org-at-heading-p) t "We should be at a heading")
+		(if  (reuben/is-number-present-and-has-changed count)
+		    (reuben/update-heading-text count))
+		(setq count (+ count  1))
+		(let ((previous-point (point)))
+		  (org-forward-heading-same-level 1 t)
+		  (while (not (equalp previous-point (point)))
+		    (if (reuben/is-number-present-and-has-changed count)
+			(reuben/update-heading-text count))
+		    (setq count (+ count  1))
+		    ;; -- Loop code --
+		    (setq previous-point (point))
+		    (org-forward-heading-same-level 1 t))
+		  )))))))
+
+(defun reuben/is-number-present-and-has-changed(new-count)
+  (save-excursion
+    (beginning-of-line)
+    (let* ((line-end    (line-end-position))
+	   (point-start (search-forward "<" line-end t))
+	   (point-end   (search-forward ">" line-end t))
+	   (str         (if (and (not (null point-start)) (> point-start 0)
+			     (not (null point-end)) (> point-end 0))
+			    (buffer-substring point-start (- point-end 1))
+			  nil)))
+      (if (null str)
+	  t
+	(not (equal (string-to-char str) new-count))))))
+
+(defun reuben/update-heading-text(count)
+  (save-excursion
+    (beginning-of-line)
+    (let* ((line-end (line-end-position))
+	   (point-start (search-forward "<" line-end t))
+	   (point-end (search-forward ">" line-end t)))
+      (if (and (not (null point-start)) (> point-start 0)
+	       (not (null point-end)) (> point-end 0))
+	  (progn
+	    (delete-region (- point-start 1)  (+ point-end 1) ))))
+    (let* ((contains-todo (third (org-heading-components)))
+	   (num (char-to-string count)))
+      (beginning-of-line)
+      (if contains-todo
+	  (progn
+	    (forward-word)
+	    (forward-word)
+	    (backward-word))
+	(progn
+	  (forward-word)
+	  (backward-word)))
+      (insert "<")
+      (insert num)
+      (insert "> "))))
