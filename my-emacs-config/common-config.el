@@ -34,6 +34,12 @@
 (setq inhibit-startup-message t)
 (setq inhibit-startup-screen t)
 
+(setq-default line-spacing 5)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(setq-default cursor-type 'bar)
+
+
 ;; Make delete work as it work on windows o
 (delete-selection-mode 1)
 
@@ -54,3 +60,4 @@
 (set-face-attribute 'default nil :family "Fira Mono")
 (set-face-attribute 'variable-pitch nil :family "Source Sans Pro")
 (set-face-attribute 'fixed-pitch nil :family "Fira Mono")
+
