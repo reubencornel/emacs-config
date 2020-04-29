@@ -752,3 +752,19 @@
   :ensure t)
 
 
+(use-package elfeed
+  :ensure t)
+(use-package elfeed-org
+  :ensure t
+  :config
+  (require 'elfeed-org)
+  (elfeed-org)
+  (setq rmh-elfeed-org-files (list "~/Dropbox/feeds.org")))
+(use-package elfeed-goodies
+  :ensure t
+  :config
+  (elfeed-goodies/setup))
+(use-package elfeed-protocol
+  :ensure t  )
+(use-package elfeed-score
+  :ensure t)
