@@ -106,6 +106,8 @@
 (use-package org
   :defer t
   :ensure org-plus-contrib
+  :bind    (("C-c n" .  'org-narrow-to-subtree)
+	    ("C-c w" .  'widen))
   :custom
   (org-hide-leading-stars 't)
 					;(org-log-done 'time)
@@ -456,7 +458,22 @@
       t)) ; do not block
 
   (add-hook 'org-blocker-hook #'org-block-wip-limit)
-
+  
+  (custom-theme-set-faces
+   'user
+   '(org-block ((t (:inherit fixed-pitch))))
+   '(org-code ((t (:inherit (shadow fixed-pitch)))))
+  ;;  '(org-document-info ((t (:foreground "dark orange"))))
+   '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+    '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+    '(org-link ((t (:foreground "royal blue" :underline t))))
+    '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+    '(org-property-value ((t (:inherit fixed-pitch))) t)
+    '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+    '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
+    '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+    '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
+  
   (let* ((variable-tuple
 	  (cond
 	   ((x-list-fonts "Fira Mono") '(:font "Fira Mono"))
@@ -474,25 +491,11 @@
      `(org-level-6 ((t (,@headline ,@variable-tuple))))
      `(org-level-5 ((t (,@headline ,@variable-tuple))))
      `(org-level-4 ((t (,@headline ,@variable-tuple))))
-     `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.2))))
-     `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.3))))
-     `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.5))))
+     `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.2 :foreground "Green"))))
+     `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.3 :foreground "Yellow"))))
+     `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.5 :foreground "Red"))))
      `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
-  
-  (custom-theme-set-faces
-   'user
-   '(org-block ((t (:inherit fixed-pitch))))
-   '(org-code ((t (:inherit (shadow fixed-pitch)))))
-  ;;  '(org-document-info ((t (:foreground "dark orange"))))
-   '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
-    '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
-    '(org-link ((t (:foreground "royal blue" :underline t))))
-    '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-    '(org-property-value ((t (:inherit fixed-pitch))) t)
-    '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-    '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
-    '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
-    '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
+
 
   )
 
