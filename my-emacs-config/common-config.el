@@ -58,6 +58,6 @@
  	  'reuben/number-projects-hook)
 
 (set-face-attribute 'default nil :family "Fira Mono")
-(set-face-attribute 'variable-pitch nil :family "Source Sans Pro")
+(set-face-attribute 'variable-pitch nil :family "DejaVu Sans Mono")
 (set-face-attribute 'fixed-pitch nil :family "Fira Mono")
 
