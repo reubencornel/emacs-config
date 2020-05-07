@@ -128,6 +128,7 @@
   (org-emphasis-regexp-components '("-[:space:]('\"{" "-[:space:].,:!?;'\")}\\[" "\x200B" "." 1))
   (org-clock-history-length 35)
   (org-clock-in-resume t)
+  (org-image-actual-width '(500))
   (org-completion-use-ido nil)
   (org-outline-path-complete-in-steps nil)
   (org-clock-out-remove-zero-time-clocks t)
