@@ -192,18 +192,18 @@
 
   (org-agenda-custom-commands
    '(("q" tags-todo "TODO=\"QUESTION\"")
-     ("d" "Daily Agenda" ((agenda "Daily Agenda" ((org-agenda-span 1)
-						  (org-agenda-skip-function 'skip-done-functions-or-projects)
-						  (org-agenda-overriding-header "Daily Agenda")))
-			  (tags-todo "TODO=\"NEXT\"&SCHEDULED<\"<+1w>\"|TODO=\"NEXT\"-SCHEDULED={.+}-DEADLINE={.+}|TODO=\"NEXT\"&DEADLINE<\"<+1w>\""
-				     ((org-agenda-overriding-header "Next Items")))
-			  (tags-todo "TODO=\"TOREVIEW\"-TEMPLATE|TODO=\"INREVIEW\"-TEMPLATE|TODO=\"REWORK\"-TEMPLATE" ((org-agenda-overriding-header "Pending Code Reviews")))
-			  (todo "QUESTION" ((org-agenda-overriding-header "Open Questions")))
-			  (todo "WAITING" ((org-agenda-overriding-header "Waiting tasks")))
-			  (tags-todo  unscheduled-tasks-search-string ((org-agenda-overriding-header "Unscheduled Tasks")))
-			  (tags "TODO=\"DONE\"&CLOSED>\"<-1d>\"" ((org-agenda-overriding-header "Closed today")))
-			  (stuck "" ((org-use-tag-inheritance nil)
-				     (org-agenda-overriding-header "Stuck Projects")))))
+     ;; ("d" "Daily Agenda" ((agenda "Daily Agenda" ((org-agenda-span 1)
+     ;; 						  (org-agenda-skip-function 'skip-done-functions-or-projects)
+     ;; 						  (org-agenda-overriding-header "Daily Agenda")))
+     ;; 			  (tags-todo "TODO=\"NEXT\"&SCHEDULED<\"<+1w>\"|TODO=\"NEXT\"-SCHEDULED={.+}-DEADLINE={.+}|TODO=\"NEXT\"&DEADLINE<\"<+1w>\""
+     ;; 				     ((org-agenda-overriding-header "Next Items")))
+     ;; 			  (tags-todo "TODO=\"TOREVIEW\"-TEMPLATE|TODO=\"INREVIEW\"-TEMPLATE|TODO=\"REWORK\"-TEMPLATE" ((org-agenda-overriding-header "Pending Code Reviews")))
+     ;; 			  (todo "QUESTION" ((org-agenda-overriding-header "Open Questions")))
+     ;; 			  (todo "WAITING" ((org-agenda-overriding-header "Waiting tasks")))
+     ;; 			  (tags-todo  unscheduled-tasks-search-string ((org-agenda-overriding-header "Unscheduled Tasks")))
+     ;; 			  (tags "TODO=\"DONE\"&CLOSED>\"<-1d>\"" ((org-agenda-overriding-header "Closed today")))
+     ;; 			  (stuck "" ((org-use-tag-inheritance nil)
+     ;; 				     (org-agenda-overriding-header "Stuck Projects")))))
      ("we" "Execution Agenda" ((tags-todo "TODO=\"NEXT\"&SCHEDULED<\"<+1w>\"|TODO=\"NEXT\"-SCHEDULED={.+}-DEADLINE={.+}|TODO=\"NEXT\"&DEADLINE<\"<+1w>\""
 					    ((org-agenda-overriding-header "Next Items")
 					     (org-agenda-files '("~/Dropbox/work.org"))
@@ -491,9 +491,9 @@
      `(org-level-6 ((t (,@headline ,@variable-tuple))))
      `(org-level-5 ((t (,@headline ,@variable-tuple))))
      `(org-level-4 ((t (,@headline ,@variable-tuple))))
-     `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.2 :foreground "Green"))))
-     `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.3 :foreground "Yellow"))))
-     `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.5 :foreground "Red"))))
+     `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.2 :foreground "DarkTurquoise"))))
+     `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.3 :foreground "LimeGreen"))))
+     `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.5 :foreground "Violetred1"))))
      `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
 
 
