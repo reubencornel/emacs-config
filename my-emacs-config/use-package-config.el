@@ -280,7 +280,7 @@
   	'(("t" "Todo" entry (file org-default-inbox-file)
   	   "* TODO %^{entry}\n:PROPERTIES:\n:ENTRYDATE:   %U\n:END:\n %?\n")
 	  ("n" "Note" entry (file org-default-inbox-file)
-	   "* %^{title}\n:PROPERTIES:\n:ENTRYDATE:   %U\n:ID: %(uuid-create)\n:END:\n\n%?\n"))
+	   "* %^{title}\n:PROPERTIES:\n:ENTRYDATE:   %U\n:ID: %(uuid-create)\n:END:\n\n%?\n")
   	  ("r" "Lookup Entry in region" entry (file org-default-inbox-file)
   	   "* %i :LOOKUP:\n")
 	  ("l" "Link" entry (file org-default-inbox-file)
@@ -296,7 +296,7 @@
 	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| [ check out ] |%^{title}"
 	   :immediate-finish t)
   	  ("g" "log" entry (function custom-log-finder)
-  	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| %^{title}  %(add-tag) " :immediate-finish t))
+  	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| %^{title}  %(add-tag) " :immediate-finish t)))
 
   :config
   (add-to-list 'org-modules 'org-id)
