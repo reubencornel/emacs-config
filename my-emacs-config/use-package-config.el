@@ -266,17 +266,21 @@
   (org-default-inbox-file (concat org-directory "/inbox.org"))
   (org-default-notes-file (concat org-directory "/notes.org"))
   (org-default-journal-file (concat org-directory "/notes.org"))
+  (org-default-slipbox-file (concat org-directory "/slipbox.org"))
   (org-default-log-file   "~/Dropbox/log.org")
 
   (org-directory "~/Dropbox")
   (org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
   (org-mobile-inbox-for-pull "~/Dropbox/inbox.org")
+
   (org-agenda-include-diary t)
   (org-journal-template-entry (concat "* %T [" (system-name)  "]| %^{title} %^G"))
 
   (org-capture-templates
   	'(("t" "Todo" entry (file org-default-inbox-file)
   	   "* TODO %^{entry}\n:PROPERTIES:\n:ENTRYDATE:   %U\n:END:\n %?\n")
+	  ("n" "Note" entry (file org-default-inbox-file)
+	   "* %^{title}\n:PROPERTIES:\n:ENTRYDATE:   %U\n:ID: %(uuid-create)\n:END:\n\n%?\n"))
   	  ("r" "Lookup Entry in region" entry (file org-default-inbox-file)
   	   "* %i :LOOKUP:\n")
 	  ("l" "Link" entry (file org-default-inbox-file)
@@ -292,7 +296,7 @@
 	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| [ check out ] |%^{title}"
 	   :immediate-finish t)
   	  ("g" "log" entry (function custom-log-finder)
-  	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| %^{title}  %(add-tag) " :immediate-finish t)))
+  	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| %^{title}  %(add-tag) " :immediate-finish t))
 
   :config
   (add-to-list 'org-modules 'org-id)

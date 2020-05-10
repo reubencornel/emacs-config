@@ -334,28 +334,6 @@ It requires the standard emacs package manager to be working."
   (interactive)
   (insert (uuid-create)))
 
-(defun insert-zk-entry()
-  (interactive)
-  (let ((id (uuid-create)))
-    (goto-char (point-max))
-    (insert "\n")
-    (insert "* <TITLE>\n")
-    (delete-trailing-whitespace)
-    (delete-blank-lines)
-    (insert ":PROPERTIES:\n")
-    (insert ":CUSTOM_ID: " id "\n")
-    (insert ":DATE: ")
-    (insert-date-time)
-    (insert "\n")
-    (insert ":END:\n")))
-
-
-(defun open-slip-box-and-add-note()
-  (interactive)
-  (save-excursion
-    (find-file "~/Dropbox/slipbox.org")
-    (add-zk-entry)))
-
 (defadvice org-archive-subtree (around fix-hierarchy activate)
   (let* ((fix-archive-p (and (not current-prefix-arg)
                              (not (use-region-p))))

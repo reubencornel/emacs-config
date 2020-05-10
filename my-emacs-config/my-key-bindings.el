@@ -22,9 +22,6 @@
 (global-unset-key [(f6)])
 (global-set-key [(f6)] 'helm-locate)
 
-(global-unset-key [(f7)])
-(global-set-key [(f7)] 'open-slip-box-and-add-note)
-
 (global-unset-key [(f10)])
 (global-set-key [(f10)] 'kmacro-start-macro)
 
