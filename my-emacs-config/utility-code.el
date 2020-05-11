@@ -1,3 +1,4 @@
+
 (require 'cl)
 
 (defun aquamacs-p()
@@ -547,3 +548,4 @@ It requires the standard emacs package manager to be working."
       (insert "<")
       (insert num)
       (insert "> "))))
+
