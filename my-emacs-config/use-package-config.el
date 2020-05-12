@@ -115,7 +115,7 @@
    '(agenda-archives "~/Dropbox/work.org_archive" "~/Dropbox/main.org_archive"))
   (org-refile-use-outline-path 3)
   (org-agenda-files
-   '("~/Dropbox/log.org" "~/Dropbox/notes.org" "~/Dropbox/inbox.org" "~/Dropbox/work.org" "~/Dropbox/main.org" "~/Dropbox/slipbox.org"))
+   '("~/Dropbox/log.org" "~/Dropbox/notes.org" "~/Dropbox/inbox.org" "~/Dropbox/work.org" "~/Dropbox/main.org" "~/Dropbox/slipbox.org" "~/Dropbox/slipbox_raw.org"))
   (org-export-with-section-numbers nil)
   (org-export-with-toc nil)
   (org-pretty-entities t)
