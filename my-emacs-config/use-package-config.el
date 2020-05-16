@@ -194,18 +194,14 @@
 
   (org-agenda-custom-commands
    '(("q" tags-todo "TODO=\"QUESTION\"")
-     ;; ("d" "Daily Agenda" ((agenda "Daily Agenda" ((org-agenda-span 1)
-     ;; 						  (org-agenda-skip-function 'skip-done-functions-or-projects)
-     ;; 						  (org-agenda-overriding-header "Daily Agenda")))
-     ;; 			  (tags-todo "TODO=\"NEXT\"&SCHEDULED<\"<+1w>\"|TODO=\"NEXT\"-SCHEDULED={.+}-DEADLINE={.+}|TODO=\"NEXT\"&DEADLINE<\"<+1w>\""
-     ;; 				     ((org-agenda-overriding-header "Next Items")))
-     ;; 			  (tags-todo "TODO=\"TOREVIEW\"-TEMPLATE|TODO=\"INREVIEW\"-TEMPLATE|TODO=\"REWORK\"-TEMPLATE" ((org-agenda-overriding-header "Pending Code Reviews")))
-     ;; 			  (todo "QUESTION" ((org-agenda-overriding-header "Open Questions")))
-     ;; 			  (todo "WAITING" ((org-agenda-overriding-header "Waiting tasks")))
-     ;; 			  (tags-todo  unscheduled-tasks-search-string ((org-agenda-overriding-header "Unscheduled Tasks")))
-     ;; 			  (tags "TODO=\"DONE\"&CLOSED>\"<-1d>\"" ((org-agenda-overriding-header "Closed today")))
-     ;; 			  (stuck "" ((org-use-tag-inheritance nil)
-     ;; 				     (org-agenda-overriding-header "Stuck Projects")))))
+     ("i" "Inbox Review" ((tags-todo "TODO=\"TODO\"|TODO=\"NEXT\""
+					    ((org-agenda-overriding-header "Inbox Tasks")
+					     (org-agenda-files '("~/Dropbox/inbox.org"))))
+			   (org-ql-block '(and (not (todo "TODO"))
+			   		     (not (todo "DONE")))
+			   		 ((org-ql-block-header "Notes")
+					  (org-agenda-overriding-header "Other Items")
+			   		 (org-agenda-files '("~/Dropbox/inbox.org"))))))
      ("we" "Execution Agenda" ((tags-todo "TODO=\"NEXT\"&SCHEDULED<\"<+1w>\"|TODO=\"NEXT\"-SCHEDULED={.+}-DEADLINE={.+}|TODO=\"NEXT\"&DEADLINE<\"<+1w>\""
 					    ((org-agenda-overriding-header "Next Items")
 					     (org-agenda-files '("~/Dropbox/work.org"))
@@ -255,6 +251,13 @@
 				   ((org-agenda-overriding-header "Closed today")
 				    (org-super-agenda-groups '((:auto-parent t)))
 				    (org-agenda-files '("~/Dropbox/work.org"))))))
+	("r" "Retrospective" ((tags "TODO=\"DONE\"&CLOSED>\"<-1w>\"" ((org-agenda-overriding-header "Closed this week")
+								      (org-agenda-files '("~/Dropbox/inbox.org"
+											  "~/Dropbox/inbox.org_archive"
+											  "~/Dropbox/work.org"
+											  "~/Dropbox/work.org_archive"
+											  "~/Dropbox/main.org_archive"
+											  "~/Dropbox/main.org"))))))
      ("u" "Standup" ((tags "+STANDUP+ENTRYDATE>=\"<-3d>\"" ((org-agenda-overriding-header "Standup updates")
 							    (org-agenda-overriding-columns-format )
 							    (org-agenda-sorting-strategy '(time-down ts-down tsia-down))))))))
