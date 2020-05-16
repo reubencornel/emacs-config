@@ -482,8 +482,9 @@
   
   (let* ((variable-tuple
 	  (cond
-	   ((x-list-fonts "Fira Mono") '(:font "Fira Mono"))
-	   ((x-list-fonts "Playfair Display") '(:font "Playfair Display"))
+					;	   ((x-list-fonts "Fira Mono") '(:font "Fira Mono"))
+					;	   ((x-list-fonts "Playfair Display") '(:font "Playfair Display"))
+	   ((x-list-fonts "DejaVu Sans Mono")   '(:font "DejaVu Sans Mono"))
 	   ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
 	   ((x-list-fonts "Verdana")         '(:font "Verdana"))
 	   ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
@@ -495,14 +496,12 @@
      `(org-level-8 ((t (,@headline ,@variable-tuple))))
      `(org-level-7 ((t (,@headline ,@variable-tuple))))
      `(org-level-6 ((t (,@headline ,@variable-tuple))))
-     `(org-level-5 ((t (,@headline ,@variable-tuple))))
-     `(org-level-4 ((t (,@headline ,@variable-tuple))))
+     `(org-level-5 ((t (,@headline ,@variable-tuple :height 1.0))))
+     `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.0))))
      `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.2 :foreground "DarkTurquoise"))))
      `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.3 :foreground "LimeGreen"))))
      `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.5 :foreground "Violetred1"))))
      `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
-
-
   )
 
 (use-package org-ref
@@ -777,3 +776,16 @@
   :ensure t  )
 (use-package elfeed-score
   :ensure t)
+
+
+(use-package deft
+  :ensure t
+  :bind ("<f8>" . deft)
+  :commands (deft)
+  
+  :config (setq deft-directory "~/Dropbox/notes"
+                deft-extensions '("md" "org")
+		deft-use-filename-as-title t
+		deft-file-naming-rules   '((noslash . "-")
+					   (nospace . "-")
+					   (case-fn . downcase))))
