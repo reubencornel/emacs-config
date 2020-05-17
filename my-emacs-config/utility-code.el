@@ -496,16 +496,13 @@ It requires the standard emacs package manager to be working."
 	      (progn
 		(org-goto-first-child)
 		(cl-assert (org-at-heading-p) t "We should be at a heading")
-		(if  (reuben/is-number-present-and-has-changed count)
-		    (reuben/update-heading-text count))
-		(setq count (+ count  1))
-		(let ((previous-point (point)))
-		  (org-forward-heading-same-level 1 t)
+		(let ((previous-point -1))
 		  (while (not (equalp previous-point (point)))
+		    ;; -- Code for number and update
 		    (if (reuben/is-number-present-and-has-changed count)
 			(reuben/update-heading-text count))
 		    (setq count (+ count  1))
-		    ;; -- Loop code --
+		    ;; -- Loop code
 		    (setq previous-point (point))
 		    (org-forward-heading-same-level 1 t))
 		  )))))))
