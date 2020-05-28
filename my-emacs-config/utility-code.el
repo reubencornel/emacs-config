@@ -479,11 +479,11 @@ It requires the standard emacs package manager to be working."
       (save-buffer))))
 
 
-(defun reuben/number-projects-hook()
-  (reuben/number-projects)
+(defun reuben/update-projects-hook()
+  (reuben/update-projects)
   (save-buffer))
 
-(defun reuben/number-projects()
+(defun reuben/update-projects()
   (if (or (equalp (buffer-name) "main.org")
 	  (equalp (buffer-name) "work.org"))
       ;; Find the Projects Home or Projects Work
@@ -502,6 +502,9 @@ It requires the standard emacs package manager to be working."
 		    (if (reuben/is-number-present-and-has-changed count)
 			(reuben/update-heading-text count))
 		    (setq count (+ count  1))
+
+		    (if (null (org-entry-get (point) "ENTRY_TYPE"))
+			(org-entry-put (point) "ENTRY_TYPE" "PROJECT"))
 		    ;; -- Loop code
 		    (setq previous-point (point))
 		    (org-forward-heading-same-level 1 t))
