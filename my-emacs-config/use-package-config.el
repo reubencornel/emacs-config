@@ -110,6 +110,7 @@
 	    ("C-c w" .  'widen))
   :custom
   (org-hide-leading-stars 't)
+  (org-use-property-inheritance t)
 					;(org-log-done 'time)
   (org-agenda-text-search-extra-files ;; This variable instructs org agenda to search through the archives
    '(agenda-archives "~/Dropbox/work.org_archive" "~/Dropbox/main.org_archive"))
@@ -202,6 +203,24 @@
 			   		 ((org-ql-block-header "Notes")
 					  (org-agenda-overriding-header "Other Items")
 			   		 (org-agenda-files '("~/Dropbox/inbox.org"))))))
+     ("rp"  "Report" ((tags "ENTRY_TYPE=\"PROJECT\"&TODO=\"DONE\"&CLOSED>\"<-1m>\""
+			    ((org-super-agenda-groups '((:auto-parent t)))
+			     (org-agenda-files '("~/Dropbox/inbox.org"
+						 "~/Dropbox/inbox.org_archive"
+						 "~/Dropbox/work.org"
+						 "~/Dropbox/work.org_archive"
+						 "~/Dropbox/main.org_archive"
+						 "~/Dropbox/main.org"))
+			     (org-agenda-overriding-header "Projects completed in the last week")))
+		      (tags "TODO=\"DONE\"&CLOSED>\"<-1w>\"&ENTRY_TYPE=\"\""
+			    ((org-agenda-overriding-header "Items Closed in the last week")
+			     (org-agenda-files '("~/Dropbox/inbox.org"
+						 "~/Dropbox/inbox.org_archive"
+						 "~/Dropbox/work.org"
+						 "~/Dropbox/work.org_archive"
+						 "~/Dropbox/main.org_archive"
+						 "~/Dropbox/main.org"))
+			     (org-super-agenda-groups '((:auto-parent t)))))))
      ("we" "Execution Agenda" ((tags-todo "TODO=\"NEXT\"&SCHEDULED<\"<+1w>\"|TODO=\"NEXT\"-SCHEDULED={.+}-DEADLINE={.+}|TODO=\"NEXT\"&DEADLINE<\"<+1w>\""
 					    ((org-agenda-overriding-header "Next Items")
 					     (org-agenda-files '("~/Dropbox/work.org"))
@@ -243,13 +262,6 @@
 				   ((org-agenda-overriding-header "Closed today")
 				    (org-super-agenda-groups '((:auto-parent t)))
 				    (org-agenda-files '("~/Dropbox/work.org"))))))
-	("r" "Retrospective" ((tags "TODO=\"DONE\"&CLOSED>\"<-1w>\"" ((org-agenda-overriding-header "Closed this week")
-								      (org-agenda-files '("~/Dropbox/inbox.org"
-											  "~/Dropbox/inbox.org_archive"
-											  "~/Dropbox/work.org"
-											  "~/Dropbox/work.org_archive"
-											  "~/Dropbox/main.org_archive"
-											  "~/Dropbox/main.org"))))))
      ("u" "Standup" ((tags "+STANDUP+ENTRYDATE>=\"<-3d>\"" ((org-agenda-overriding-header "Standup updates")
 							    (org-agenda-overriding-columns-format )
 							    (org-agenda-sorting-strategy '(time-down ts-down tsia-down))))))))
@@ -268,7 +280,7 @@
   (org-directory "~/Dropbox")
   (org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
   (org-mobile-inbox-for-pull "~/Dropbox/inbox.org")
-
+  (org-columns-default-format "%50ITEM %TODO %CLOCKSUM %Area")
   (org-agenda-include-diary t)
   (org-journal-template-entry (concat "* %T [" (system-name)  "]| %^{title} %^G"))
 
