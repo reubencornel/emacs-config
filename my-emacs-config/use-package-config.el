@@ -490,7 +490,7 @@
 
    (custom-theme-set-faces
     'user
-    '(variable-pitch ((t (:family "Equity Text A" :height 140 :weight light))))
+    '(variable-pitch ((t (:family "Concourse T3" :height 140 :weight light))))
     '(fixed-pitch ((t ( :family "Fira Mono" :slant normal :weight normal :height 1.0 :width normal)))))
   
   
