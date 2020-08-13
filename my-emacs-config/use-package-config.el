@@ -194,81 +194,134 @@
   (unscheduled-tasks-search-string "+TODO=\"TODO\"-SCHEDULED={.+}-DEADLINE={.+}-TEMPLATE-IGNORE_UNSCHEDULED")
 
   (org-agenda-custom-commands
-   '(("q" tags-todo "TODO=\"QUESTION\"")
-     ("i" "Inbox Review" ((tags-todo "TODO=\"TODO\"|TODO=\"NEXT\""
-					    ((org-agenda-overriding-header "Inbox Tasks")
-					     (org-agenda-files '("~/Dropbox/inbox.org"))))
-			   (org-ql-block '(and (not (todo "TODO"))
-			   		     (not (todo "DONE")))
-			   		 ((org-ql-block-header "Notes")
-					  (org-agenda-overriding-header "Other Items")
-			   		 (org-agenda-files '("~/Dropbox/inbox.org"))))))
-     ("rp"  "Report" ((tags "ENTRY_TYPE=\"PROJECT\"&TODO=\"DONE\"&CLOSED>\"<-1m>\""
-			    ((org-super-agenda-groups '((:auto-parent t)))
-			     (org-agenda-files '("~/Dropbox/inbox.org"
-						 "~/Dropbox/inbox.org_archive"
-						 "~/Dropbox/work.org"
-						 "~/Dropbox/work.org_archive"
-						 "~/Dropbox/main.org_archive"
-						 "~/Dropbox/main.org"))
-			     (org-agenda-overriding-header "Projects completed in the last week")))
-		      (tags "TODO=\"DONE\"&CLOSED>\"<-1w>\"&ENTRY_TYPE=\"\""
-			    ((org-agenda-overriding-header "Items Closed in the last week")
-			     (org-agenda-files '("~/Dropbox/inbox.org"
-						 "~/Dropbox/inbox.org_archive"
-						 "~/Dropbox/work.org"
-						 "~/Dropbox/work.org_archive"
-						 "~/Dropbox/main.org_archive"
-						 "~/Dropbox/main.org"))
-			     (org-super-agenda-groups '((:auto-parent t)))))))
-     ("we" "Execution Agenda" ((tags-todo "TODO=\"NEXT\"&SCHEDULED<\"<+1w>\"|TODO=\"NEXT\"-SCHEDULED={.+}-DEADLINE={.+}|TODO=\"NEXT\"&DEADLINE<\"<+1w>\""
-					    ((org-agenda-overriding-header "Next Items")
-					     (org-agenda-files '("~/Dropbox/work.org"))
-					     (org-super-agenda-groups '((:auto-parent t)
-									))))
-				 (org-ql-block '(and (parent (tags-local "PROJECT"))
-						     (not (descendants (todo "NEXT")))
-						     (not (or (tags-all "TEMPLATE")
-							      (tags-all "DEPRIORITIZED_PROJECT")
-							      (tags-all "DONE")
-							      (todo "DONE"))))
-					       ((org-ql-block-header "Stuck Projects")
-						(org-agenda-files '("~/Dropbox/work.org"))))))
-	("wr" "Work Review" (
+   '(
+	("a" "All Agenda" ((agenda "plain" ((org-agenda-span 1)
+                                            (org-deadline-warning-days 3)))
+					    ;; (org-super-agenda-groups
+					    ;;  '((:name "Schedule"
+					    ;;           :time-grid t)
+					    ;;    (:name "Today"
+					    ;;           :scheduled today)
+					    ;;    (:habit t)
+					    ;;    (:name "Due today"
+					    ;;           :deadline today)
+					    ;;    (:name "Overdue"
+					    ;;           :deadline past)
+					    ;;    (:name "Due soon"
+					    ;;           :deadline future))
+			   (tags-todo "TODO=\"NEXT\"&SCHEDULED<\"<+1w>\"|TODO=\"NEXT\"-SCHEDULED={.+}-DEADLINE={.+}|TODO=\"NEXT\"&DEADLINE<\"<+1w>\""
+				      ((org-agenda-overriding-header "Next Items")
+				       (org-super-agenda-groups '((:auto-parent t)
+								  (:auto-category t)
+								  ))))
+			   (org-ql-block '(and (parent (tags-local "PROJECT"))
+					       (not (descendants (todo "NEXT")))
+					       (not (or (tags-all "TEMPLATE")
+							(tags-all "DEPRIORITIZED_PROJECT")
+							(tags-all "DONE")
+							(todo "DONE"))))
+					 ((org-ql-block-header "Stuck Projects")
+					  (org-super-agenda-groups
+					   '((:auto-category t)))))
+			   (tags-todo "TODO=\"TODO\"-TEMPLATE-PROJECT-SCHEDULED={.+}-DEADLINE={.+}"
+				      ((org-agenda-overriding-header "Unplanned Todos")
+				       (org-agenda-files '("~/Dropbox/work.org"))
+				       (org-super-agenda-groups '((:auto-parent t))))))
+	 )
+
+	
+	("q" tags-todo "TODO=\"QUESTION\"")
+	("i" "Inbox Review" ((tags-todo "TODO=\"TODO\"|TODO=\"NEXT\""
+				        ((org-agenda-overriding-header "Inbox Tasks")
+					 (org-agenda-files '("~/Dropbox/inbox.org"))))
+			     (org-ql-block '(and (not (todo "TODO"))
+			   		         (not (todo "DONE")))
+			   		   ((org-ql-block-header "Notes")
+					    (org-agenda-overriding-header "Other Items")
+			   		    (org-agenda-files '("~/Dropbox/inbox.org"))))))
+        ("rp"  "Report" ((tags "ENTRY_TYPE=\"PROJECT\"&TODO=\"DONE\"&CLOSED>\"<-1m>\""
+			       ((org-super-agenda-groups '((:auto-parent t)))
+			        (org-agenda-files '("~/Dropbox/inbox.org"
+						    "~/Dropbox/inbox.org_archive"
+						    "~/Dropbox/work.org"
+						    "~/Dropbox/work.org_archive"
+						    "~/Dropbox/main.org_archive"
+						    "~/Dropbox/main.org"))
+			        (org-agenda-overriding-header "Projects completed in the last week")))
+		         (tags "TODO=\"DONE\"&CLOSED>\"<-1w>\"&ENTRY_TYPE=\"\""
+			       ((org-agenda-overriding-header "Items Closed in the last week")
+			        (org-agenda-files '("~/Dropbox/inbox.org"
+						    "~/Dropbox/inbox.org_archive"
+						    "~/Dropbox/work.org"
+						    "~/Dropbox/work.org_archive"
+						    "~/Dropbox/main.org_archive"
+						    "~/Dropbox/main.org"))
+			        (org-super-agenda-groups '((:auto-parent t)))))))
+        ("he" "Execution Agenda" ((tags-todo "TODO=\"NEXT\"&SCHEDULED<\"<+1w>\"|TODO=\"NEXT\"-SCHEDULED={.+}-DEADLINE={.+}|TODO=\"NEXT\"&DEADLINE<\"<+1w>\""
+					     ((org-agenda-overriding-header "Next Items")
+					      (org-agenda-files '("~/Dropbox/main.org"))
+					      (org-super-agenda-groups '((:auto-parent t)
+									 ))))
+                                  (stuck "" ((org-agenda-files '("~/Dropbox/main.org"))))))
+	("hr" "Work Review" (
 			     (org-ql-block '(and (parent (tags-local "PROJECT"))
 						 (descendants (todo "NEXT"))
 						 (not (or (tags-all "TEMPLATE")
 							  (tags-all "DEPRIORITIZED_PROJECT")
 							  (tags-all "DONE")
 							  (todo "DONE"))))
-					   ((org-ql-block-header "Active Projects")))
-			     (org-ql-block '(and (parent (tags-local "PROJECT"))
-						 (not (descendants (todo "NEXT")))
-						 (not (or (tags-all "TEMPLATE")
-							  (tags-all "DEPRIORITIZED_PROJECT")
-							  (tags-all "DONE")
-							  (todo "DONE"))))
-					   ((org-ql-block-header "Stuck Projects")))
-      			     (todo "WAITING" ((org-agenda-overriding-header "Waiting tasks")
-					      (org-super-agenda-groups '((:auto-parent t)))))
-			     (tags-todo "TODO=\"TODO\"-DEPRIORITIZED_PROJECTS-DEPRIORITIZED_PROJECT-TEMPLATE&DEADLINE<\"<+2w>\""
-					((org-agenda-overriding-header "Tasks in the next 2 weeks")
-					 (org-agenda-files '("~/Dropbox/work.org"))))
-			     (tags-todo "TODO=\"TODO\"-TEMPLATE-PROJECT-SCHEDULED={.+}-DEADLINE={.+}"
-					((org-agenda-overriding-header "Unplanned Todos")
-					 (org-agenda-files '("~/Dropbox/work.org"))
-					 (org-super-agenda-groups '((:auto-parent t)))))
-			     (tags "TODO=\"DONE\"&CLOSED>\"<-1d>\""
-				   ((org-agenda-overriding-header "Closed today")
-				    (org-super-agenda-groups '((:auto-parent t)))
-				    (org-agenda-files '("~/Dropbox/work.org"))))))
-     ("u" "Standup" ((tags "+STANDUP+ENTRYDATE>=\"<-3d>\"" ((org-agenda-overriding-header "Standup updates")
-							    (org-agenda-overriding-columns-format )
-							    (org-agenda-sorting-strategy '(time-down ts-down tsia-down))))))))
+					   ((org-agenda-files '("~/Dropbox/main.org"))
+                                            (org-ql-block-header "Active Projects")))
+                                           (stuck "" ((org-agenda-files '("~/Dropbox/main.org"))))
+      			                   (todo "WAITING" ((org-agenda-overriding-header "Waiting tasks")
+					                    (org-super-agenda-groups '((:auto-parent t)))))
+			                   (tags-todo "TODO=\"TODO\"-DEPRIORITIZED_PROJECTS-DEPRIORITIZED_PROJECT-TEMPLATE&DEADLINE<\"<+2w>\""
+					              ((org-agenda-overriding-header "Tasks in the next 2 weeks")
+					               (org-agenda-files '("~/Dropbox/main.org"))))
+			                   (tags-todo "TODO=\"TODO\"-TEMPLATE-PROJECT-SCHEDULED={.+}-DEADLINE={.+}"
+					              ((org-agenda-overriding-header "Unplanned Todos")
+					               (org-agenda-files '("~/Dropbox/main.org"))
+					               (org-super-agenda-groups '((:auto-parent t)))))
+			                   (tags "TODO=\"DONE\"&CLOSED>\"<-1d>\""
+				                 ((org-agenda-overriding-header "Closed today")
+				                  (org-super-agenda-groups '((:auto-parent t)))
+				                  (org-agenda-files '("~/Dropbox/main.org"))))))
+         ("we" "Execution Agenda" ((tags-todo "TODO=\"NEXT\"&SCHEDULED<\"<+1w>\"|TODO=\"NEXT\"-SCHEDULED={.+}-DEADLINE={.+}|TODO=\"NEXT\"&DEADLINE<\"<+1w>\""
+					      ((org-agenda-overriding-header "Next Items")
+					       (org-agenda-files '("~/Dropbox/work.org"))
+					       (org-super-agenda-groups '((:auto-parent t)
+									  ))))
+                                   (stuck "" ((org-agenda-files '("~/Dropbox/work.org"))))))
+	 ("wr" "Work Review" (
+			      (org-ql-block '(and (parent (tags-local "PROJECT"))
+						  (descendants (todo "NEXT"))
+						  (not (or (tags-all "TEMPLATE")
+							   (tags-all "DEPRIORITIZED_PROJECT")
+							   (tags-all "DONE")
+							   (todo "DONE"))))
+					    ((org-ql-block-header "Active Projects")
+                                             (org-agenda-files '("~/Dropbox/work.org"))))
+                              (stuck "" ((org-agenda-files '("~/Dropbox/work.org"))))
+      			      (todo "WAITING" ((org-agenda-overriding-header "Waiting tasks")
+					       (org-super-agenda-groups '((:auto-parent t)))))
+			      (tags-todo "TODO=\"TODO\"-DEPRIORITIZED_PROJECTS-DEPRIORITIZED_PROJECT-TEMPLATE&DEADLINE<\"<+2w>\""
+					 ((org-agenda-overriding-header "Tasks in the next 2 weeks")
+					  (org-agenda-files '("~/Dropbox/work.org"))))
+			      (tags-todo "TODO=\"TODO\"-TEMPLATE-PROJECT-SCHEDULED={.+}-DEADLINE={.+}"
+					 ((org-agenda-overriding-header "Unplanned Todos")
+					  (org-agenda-files '("~/Dropbox/work.org"))
+					  (org-super-agenda-groups '((:auto-parent t)))))
+			      (tags "TODO=\"DONE\"&CLOSED>\"<-1d>\""
+				    ((org-agenda-overriding-header "Closed today")
+				     (org-super-agenda-groups '((:auto-parent t)))
+				     (org-agenda-files '("~/Dropbox/work.org"))))))
+         ("u" "Standup" ((tags "+STANDUP+ENTRYDATE>=\"<-3d>\"" ((org-agenda-overriding-header "Standup updates")
+							        (org-agenda-overriding-columns-format )
+							        (org-agenda-sorting-strategy '(time-down ts-down tsia-down))))))))
 
   (org-stuck-projects
-   '("+PROJECT-DONE-TEMPLATE-DEFERRED-CANCELLED-TODO=\"DONE\"" ("NEXT" "WAITING") ()
-     "\\<IGNORE\\>"))
+   '("+ENTRY_TYPE=\"PROJECT\"-DONE-TEMPLATE-DEFERRED-CANCELLED-TODO=\"DONE\"" ("NEXT") ()
+        "\\<IGNORE\\>"))
 
   (org-directory (expand-file-name "~/Dropbox"))
   (org-default-inbox-file (concat org-directory "/inbox.org"))
@@ -490,7 +543,7 @@
 
    (custom-theme-set-faces
     'user
-    '(variable-pitch ((t (:family "Concourse T3" :height 140 :weight light))))
+    '(variable-pitch ((t (:family "Equity Text A" :height 140 :weight light))))
     '(fixed-pitch ((t ( :family "Fira Mono" :slant normal :weight normal :height 1.0 :width normal)))))
   
   
@@ -506,14 +559,14 @@
 	 (headline           `(:inherit default )))
     (custom-theme-set-faces
      'user
-     `(org-level-8 ((t (,@headline ,@variable-tuple))))
-     `(org-level-7 ((t (,@headline ,@variable-tuple))))
-     `(org-level-6 ((t (,@headline ,@variable-tuple))))
-     `(org-level-5 ((t (,@headline ,@variable-tuple :height 1.0))))
-     `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.2))))
+     `(org-level-8 ((t (,@headline ,@variable-tuple :height 1.1))))
+     `(org-level-7 ((t (,@headline ,@variable-tuple :height 1.1))))
+     `(org-level-6 ((t (,@headline ,@variable-tuple :height 1.1))))
+     `(org-level-5 ((t (,@headline ,@variable-tuple :height 1.1))))
+     `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
      `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.2 ))))
-     `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.2 ))))
-     `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.3 ))))
+     `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.3 ))))
+     `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.4 ))))
      `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
   )
 
