@@ -31,6 +31,15 @@
 (global-unset-key [(f12)])
 (global-set-key [(f12)] 'apply-macro-to-region-lines)
 
+
+(defun capture-log()
+  (interactive)
+  (org-capture nil "g"))
+
+(global-unset-key [(f7)])
+(global-set-key [(f7)] 'capture-log)
+
+
 ;; (global-unset-key [(control f2)])
 ;; (global-set-key [(control f2)] 'twit-post)
 
