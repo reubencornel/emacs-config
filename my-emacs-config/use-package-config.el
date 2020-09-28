@@ -541,14 +541,15 @@
    '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
    '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
 
-   (custom-theme-set-faces
-    'user
-    '(variable-pitch ((t (:family "Equity Text A" :height 140 :weight light))))
-    '(fixed-pitch ((t ( :family "Fira Mono" :slant normal :weight normal :height 1.0 :width normal)))))
+  (custom-theme-set-faces
+     'user
+     '(variable-pitch ((t (:family "Source Sans Pro" :height 140 :weight normal))))
+     '(fixed-pitch ((t ( :family "Fira Mono" :slant normal :weight normal :height 1.0 :width normal)))))
   
   
   (let* ((variable-tuple
 	  (cond
+           ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
 	   ((x-list-fonts "Concourse T3")         '(:font "Concourse T3"))
 	   ((x-list-fonts "DejaVu Sans Mono")   '(:font "DejaVu Sans Mono"))
 	   ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
@@ -855,3 +856,7 @@
 		deft-file-naming-rules   '((noslash . "-")
 					   (nospace . "-")
 					   (case-fn . downcase))))
+
+(use-package hyperbole
+  :ensure t)
+

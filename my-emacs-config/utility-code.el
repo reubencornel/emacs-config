@@ -377,7 +377,8 @@ It requires the standard emacs package manager to be working."
 
 (defun reuben/set-ids()
   (interactive)
-  (if (equalp (buffer-name) "inbox.org")
+  (if (or (equalp (buffer-name) "inbox.org" )
+          (equalp (buffer-name) "slipbox_raw.org"))
       (save-excursion
 	(goto-char (point-max))
 	(while (outline-previous-heading)
