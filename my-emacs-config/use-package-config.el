@@ -543,7 +543,7 @@
 
   (custom-theme-set-faces
      'user
-     '(variable-pitch ((t (:family "Source Sans Pro" :height 140 :weight normal))))
+     '(variable-pitch ((t (:family "Source Sans Pro" :height 150 :weight normal))))
      '(fixed-pitch ((t ( :family "Fira Mono" :slant normal :weight normal :height 1.0 :width normal)))))
   
   
@@ -860,3 +860,16 @@
 (use-package hyperbole
   :ensure t)
 
+(use-package org-roam
+      :ensure t
+      :hook
+      (after-init . org-roam-mode)
+      :custom
+      (org-roam-directory "~/Dropbox/org-roam/")
+      :bind (:map org-roam-mode-map
+              (("C-c n l" . org-roam)
+               ("C-c n f" . org-roam-find-file)
+               ("C-c n g" . org-roam-graph))
+              :map org-mode-map
+              (("C-c n i" . org-roam-insert))
+              (("C-c n I" . org-roam-insert-immediate))))
