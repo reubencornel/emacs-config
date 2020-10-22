@@ -377,6 +377,7 @@
   (add-hook 'org-mode-hook
             (lambda()
               (visual-line-mode t)
+              (setq line-spacing 10)
               (setq left-margin-width 10 right-margin-width 10)))
 
   (defun skip-done-functions-or-projects()
