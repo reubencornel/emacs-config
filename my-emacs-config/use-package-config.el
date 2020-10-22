@@ -117,6 +117,7 @@
   (org-refile-use-outline-path 3)
   (org-agenda-files
    '("~/Dropbox/log.org" "~/Dropbox/notes.org" "~/Dropbox/inbox.org" "~/Dropbox/work.org" "~/Dropbox/main.org" "~/Dropbox/slipbox.org" "~/Dropbox/slipbox_raw.org"))
+  (org-startup-folded t)
   (org-export-with-section-numbers nil)
   (org-export-with-toc nil)
   (org-pretty-entities t)
@@ -371,6 +372,12 @@
   (setq org-crypt-disable-auto-save t)
   (org-crypt-use-before-save-magic)
   (setq org-crypt-key nil)
+
+
+  (add-hook 'org-mode-hook
+            (lambda()
+              (visual-line-mode t)
+              (setq left-margin-width 10 right-margin-width 10)))
 
   (defun skip-done-functions-or-projects()
     (org-agenda-skip-entry-if 'todo '("DONE" "WAITING" "NEXT")))
@@ -850,7 +857,7 @@
   :bind ("<f8>" . deft)
   :commands (deft)
   
-  :config (setq deft-directory "~/Dropbox/notes"
+  :config (setq deft-directory "~/Dropbox/org-roam"
                 deft-extensions '("md" "org")
 		deft-use-filename-as-title t
 		deft-file-naming-rules   '((noslash . "-")
