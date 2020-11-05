@@ -142,6 +142,7 @@
   (org-image-toggle-inline  t)
   (org-catch-invisible-edits 'show-and-error)
   (org-log-done 'note)
+  (org-agenda-block-separator ? )
   (org-log-reschedule 'note)
   (org-log-redeadline 'note)
   (org-log-delschedule 'note)
@@ -197,40 +198,18 @@
   (org-agenda-custom-commands
    '(
 	("a" "All Agenda" ((agenda "plain" ((org-agenda-span 1)
-                                            (org-deadline-warning-days 3)))
-					    ;; (org-super-agenda-groups
-					    ;;  '((:name "Schedule"
-					    ;;           :time-grid t)
-					    ;;    (:name "Today"
-					    ;;           :scheduled today)
-					    ;;    (:habit t)
-					    ;;    (:name "Due today"
-					    ;;           :deadline today)
-					    ;;    (:name "Overdue"
-					    ;;           :deadline past)
-					    ;;    (:name "Due soon"
-					    ;;           :deadline future))
-			   (tags-todo "TODO=\"NEXT\"&SCHEDULED<\"<+1w>\"|TODO=\"NEXT\"-SCHEDULED={.+}-DEADLINE={.+}|TODO=\"NEXT\"&DEADLINE<\"<+1w>\""
-				      ((org-agenda-overriding-header "Next Items")
-				       (org-super-agenda-groups '((:auto-parent t)
-								  (:auto-category t)
-								  ))))
-			   (org-ql-block '(and (parent (tags-local "PROJECT"))
-					       (not (descendants (todo "NEXT")))
-					       (not (or (tags-all "TEMPLATE")
-							(tags-all "DEPRIORITIZED_PROJECT")
-							(tags-all "DONE")
-							(todo "DONE"))))
-					 ((org-ql-block-header "Stuck Projects")
-					  (org-super-agenda-groups
-					   '((:auto-category t)))))
-			   (tags-todo "TODO=\"TODO\"-TEMPLATE-PROJECT-SCHEDULED={.+}-DEADLINE={.+}"
-				      ((org-agenda-overriding-header "Unplanned Todos")
-				       (org-agenda-files '("~/Dropbox/work.org"))
-				       (org-super-agenda-groups '((:auto-parent t))))))
-	 )
-
-	
+					 (org-super-agenda-groups
+					  '((:name "Schedule"
+					           :time-grid t)
+					    (:name "Today"
+					           :scheduled today)
+					    (:habit t)
+					    (:name "Due today"
+					           :deadline today)
+					    (:name "Overdue"
+					           :deadline past)
+					    (:name "Due soon"
+					           :deadline future)))))))
 	("q" tags-todo "TODO=\"QUESTION\"")
 	("i" "Inbox Review" ((tags-todo "TODO=\"TODO\"|TODO=\"NEXT\""
 				        ((org-agenda-overriding-header "Inbox Tasks")
@@ -577,6 +556,12 @@
      `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.3 ))))
      `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.4 ))))
      `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
+  
+  (defun my-org-agenda-faces()
+    (face-remap-add-relative 'default :family "Source Sans Pro" :height 160)
+    (face-remap-add-relative 'org-agenda-structure :family "Source Sans Pro" :height 220)
+    (face-remap-add-relative 'org-super-agenda-header :family "Source Sans Pro" :height 180))
+  (add-hook 'org-agenda-mode-hook 'my-org-agenda-faces)
   )
 
 (use-package org-ref
