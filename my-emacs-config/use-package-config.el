@@ -559,6 +559,9 @@
   
   (defun my-org-agenda-faces()
     (face-remap-add-relative 'default :family "Source Sans Pro" :height 160)
+    (face-remap-add-relative 'org-time-grid :family "Fira Pro" :height 160)
+    (face-remap-add-relative 'org-agenda-calendar-event :family "Fira Pro" :height 160)
+    (face-remap-add-relative 'org-agenda-diary :family "Fira Pro" :height 160)
     (face-remap-add-relative 'org-agenda-structure :family "Source Sans Pro" :height 220)
     (face-remap-add-relative 'org-super-agenda-header :family "Source Sans Pro" :height 180))
   (add-hook 'org-agenda-mode-hook 'my-org-agenda-faces)
