@@ -61,3 +61,11 @@
 (set-face-attribute 'variable-pitch nil :family "DejaVu Sans Mono")
 (set-face-attribute 'fixed-pitch nil :family "Fira Mono")
 
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+
+(setq make-backup-files nil)
+(setq backup-directory-alist '(("" . "~/.emacs.d/backup")))
+(setq create-lockfiles nil)
