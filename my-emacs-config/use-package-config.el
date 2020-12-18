@@ -646,7 +646,13 @@
 (use-package flycheck
   :ensure t
   :defer t
-  :init (global-flycheck-mode))
+  :init (global-flycheck-mode)
+  :config
+  (setq-default flycheck-disabled-checkers
+                (append flycheck-disabled-checkers
+                        '(javascript-jshint json-jsonlist)))
+  (flycheck-add-mode 'javascript-eslint 'web-mode)
+  (add-hook 'after-init-hook #'global-flycheck-mode))
 
 ;; --------------- company mode ---------------
 (use-package company
@@ -869,3 +875,70 @@
               :map org-mode-map
               (("C-c n i" . org-roam-insert))
               (("C-c n I" . org-roam-insert-immediate))))
+
+;; --------------- Web Mode ---------------
+(use-package web-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.html?$" . web-mode))
+  (setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
+  
+  (defun web-mode-init-hook ()
+    "Hooks for Web mode.  Adjust indent."
+    (setq web-mode-markup-indent-offset 4))
+  
+  (add-hook 'web-mode-hook  'web-mode-init-hook))
+
+
+(use-package add-node-modules-path
+  :ensure t
+  :after flycheck
+  :config
+  (add-hook 'flycheck-mode-hook 'add-node-modules-path))
+
+(use-package prettier-js
+  :ensure t
+  :config
+  (defun web-mode-init-prettier-hook ()
+    (add-node-modules-path)
+    (prettier-js-mode))
+  
+  (add-hook 'web-mode-hook  'web-mode-init-prettier-hook))
+
+(use-package emmet-mode
+  :ensure t
+  :config
+  (add-hook 'web-mode-hook  'emmet-mode))
+
+(use-package typescript-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.ts$" . typescript-mode)))
+
+(use-package tide
+  :ensure t
+  :after (typescript-mode company flycheck)
+  :hook ((typescript-mode . tide-setup)
+         (typescript-mode . tide-hl-identifier-mode)
+         (before-save . tide-format-before-save)))
+
+;; --------------- Projectile ---------------
+
+(use-package projectile
+  :ensure t
+  :config
+  (projectile-mode +1)
+  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+
+;; --------------- Avy ---------------
+(use-package avy
+  :ensure t
+  :config
+  (global-set-key (kbd "C-:") 'avy-goto-char))
+
+;; --------------- Neotree ---------------
+(use-package neotree
+  :ensure t)
+
