@@ -219,7 +219,7 @@
 			   		   ((org-ql-block-header "Notes")
 					    (org-agenda-overriding-header "Other Items")
 			   		    (org-agenda-files '("~/Dropbox/inbox.org"))))))
-        ("rp"  "Report" ((tags "ENTRY_TYPE=\"PROJECT\"&TODO=\"DONE\"&CLOSED>\"<-1m>\""
+        ("r"  "Report" ((tags "ENTRY_TYPE=\"PROJECT\"&TODO=\"DONE\"&CLOSED>\"<-1m>\""
 			       ((org-super-agenda-groups '((:auto-parent t)))
 			        (org-agenda-files '("~/Dropbox/inbox.org"
 						    "~/Dropbox/inbox.org_archive"
