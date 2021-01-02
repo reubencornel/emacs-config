@@ -512,59 +512,63 @@
       t)) ; do not block
 
   (add-hook 'org-blocker-hook #'org-block-wip-limit)
-  
-  (custom-theme-set-faces
-   'user
-   '(org-block ((t (:inherit fixed-pitch))))
-   '(org-code ((t (:inherit (shadow fixed-pitch)))))
-  ;;  '(org-document-info ((t (:foreground "dark orange"))))
-   '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
-   '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
-   '(org-link ((t (:foreground "royal blue" :underline t))))
-   '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-   '(org-property-value ((t (:inherit fixed-pitch))) t)
-   '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-   '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
-   '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
-   '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
 
-  (custom-theme-set-faces
-     'user
-     '(variable-pitch ((t (:family "Source Sans Pro" :height 150 :weight normal))))
-     '(fixed-pitch ((t ( :family "Fira Mono" :slant normal :weight normal :height 1.0 :width normal)))))
+  ;; (global-unset-key [(f9)])
+  ;; (global-set-key [(f9)] 'org-mark-ring-goto)
+  (define-key org-mode-map [(f9)] 'org-mark-ring-goto)
+
+  ;; (custom-theme-set-faces
+  ;;  'user
+  ;;  '(org-block ((t (:inherit fixed-pitch))))
+  ;;  '(org-code ((t (:inherit (shadow fixed-pitch)))))
+  ;; ;;  '(org-document-info ((t (:foreground "dark orange"))))
+  ;;  '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+  ;;  '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+  ;;  '(org-link ((t (:foreground "royal blue" :underline t))))
+  ;;  '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+  ;;  '(org-property-value ((t (:inherit fixed-pitch))) t)
+  ;;  '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+  ;;  '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
+  ;;  '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+  ;;  '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
+
+  ;; (custom-theme-set-faces
+  ;;    'user
+  ;;    '(variable-pitch ((t (:family "Source Sans Pro" :height 150 :weight normal))))
+  ;;    '(fixed-pitch ((t ( :family "Fira Mono" :slant normal :weight normal :height 1.0 :width normal)))))
   
   
-  (let* ((variable-tuple
-	  (cond
-           ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
-	   ((x-list-fonts "Concourse T3")         '(:font "Concourse T3"))
-	   ((x-list-fonts "DejaVu Sans Mono")   '(:font "DejaVu Sans Mono"))
-	   ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
-	   ((x-list-fonts "Verdana")         '(:font "Verdana"))
-	   ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
-	   (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
-	 (base-font-color     (face-foreground 'default nil 'default))
-	 (headline           `(:inherit default )))
-    (custom-theme-set-faces
-     'user
-     `(org-level-8 ((t (,@headline ,@variable-tuple :height 1.1))))
-     `(org-level-7 ((t (,@headline ,@variable-tuple :height 1.1))))
-     `(org-level-6 ((t (,@headline ,@variable-tuple :height 1.1))))
-     `(org-level-5 ((t (,@headline ,@variable-tuple :height 1.1))))
-     `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
-     `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.2 ))))
-     `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.3 ))))
-     `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.4 ))))
-     `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
+  ;; (let* ((variable-tuple
+  ;;         (cond
+  ;;          ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
+  ;;          ((x-list-fonts "Concourse T3")         '(:font "Concourse T3"))
+  ;;          ((x-list-fonts "DejaVu Sans Mono")   '(:font "DejaVu Sans Mono"))
+  ;;          ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
+  ;;          ((x-list-fonts "Verdana")         '(:font "Verdana"))
+  ;;          ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
+  ;;          (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+  ;;        (base-font-color     (face-foreground 'default nil 'default))
+  ;;        (headline           `(:inherit default )))
+  ;;   (custom-theme-set-faces
+  ;;    'user
+  ;;    `(org-level-8 ((t (,@headline ,@variable-tuple :height 1.1))))
+  ;;    `(org-level-7 ((t (,@headline ,@variable-tuple :height 1.1))))
+  ;;    `(org-level-6 ((t (,@headline ,@variable-tuple :height 1.1))))
+  ;;    `(org-level-5 ((t (,@headline ,@variable-tuple :height 1.1))))
+  ;;    `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
+  ;;    `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.2 ))))
+  ;;    `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.3 ))))
+  ;;    `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.4 ))))
+  ;;    `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
   
-  (defun my-org-agenda-faces()
-    (face-remap-add-relative 'default :family "Source Sans Pro" :height 160)
-    (face-remap-add-relative 'org-time-grid :family "Fira Pro" :height 160)
-    (face-remap-add-relative 'org-agenda-calendar-event :family "Fira Pro" :height 160)
-    (face-remap-add-relative 'org-agenda-diary :family "Fira Pro" :height 160)
-    (face-remap-add-relative 'org-agenda-structure :family "Source Sans Pro" :height 220)
-    (face-remap-add-relative 'org-super-agenda-header :family "Source Sans Pro" :height 180))
-  (add-hook 'org-agenda-mode-hook 'my-org-agenda-faces)
+  ;; (defun my-org-agenda-faces()
+  ;;   (face-remap-add-relative 'default :family "Source Sans Pro" :height 160)
+  ;;   (face-remap-add-relative 'org-time-grid :family "Fira Pro" :height 160)
+  ;;   (face-remap-add-relative 'org-agenda-calendar-event :family "Fira Pro" :height 160)
+  ;;   (face-remap-add-relative 'org-agenda-diary :family "Fira Pro" :height 160)
+  ;;   (face-remap-add-relative 'org-agenda-structure :family "Source Sans Pro" :height 220)
+  ;;   (face-remap-add-relative 'org-super-agenda-header :family "Source Sans Pro" :height 180))
+  ;; (add-hook 'org-agenda-mode-hook 'my-org-agenda-faces)
   )
 
 (use-package org-ref
