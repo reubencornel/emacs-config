@@ -303,12 +303,6 @@
    '("+ENTRY_TYPE=\"PROJECT\"-DONE-TEMPLATE-DEFERRED-CANCELLED-TODO=\"DONE\"" ("NEXT") ()
         "\\<IGNORE\\>"))
 
-  (org-directory (expand-file-name "~/Dropbox"))
-  (org-default-inbox-file (concat org-directory "/inbox.org"))
-  (org-default-notes-file (concat org-directory "/notes.org"))
-  (org-default-journal-file (concat org-directory "/notes.org"))
-  (org-default-slipbox-file (concat org-directory "/slipbox.org"))
-  (org-default-log-file   "~/Dropbox/log.org")
 
   (org-directory "~/Dropbox")
   (org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
@@ -317,7 +311,28 @@
   (org-agenda-include-diary t)
   (org-journal-template-entry (concat "* %T [" (system-name)  "]| %^{title} %^G"))
 
-  (org-capture-templates
+  :config
+  (add-to-list 'org-modules 'org-id )
+  (add-to-list 'org-modules 'org-habit)
+  (require 'org-crypt)
+  (require 'org-depend)
+  (require 'org-protocol)
+  (require 'org-checklist)
+  (add-to-list 'org-modules 'org-crypt)
+  (add-to-list 'org-modules 'org-checklist)
+  (setq org-crypt-disable-auto-save t)
+  (org-crypt-use-before-save-magic)
+  (setq org-crypt-key nil)
+
+  (setq org-directory (expand-file-name "~/Dropbox"))
+  (setq org-default-inbox-file (concat org-directory "/inbox.org"))
+  (setq org-default-notes-file (concat org-directory "/notes.org"))
+  (setq org-default-journal-file (concat org-directory "/notes.org"))
+  (setq org-default-slipbox-file (concat org-directory "/slipbox.org"))
+  (setq org-default-log-file   "~/Dropbox/log.org")
+
+
+  (setq org-capture-templates
   	'(("t" "Todo" entry (file org-default-inbox-file)
   	   "* TODO %^{entry}\n:PROPERTIES:\n:ENTRYDATE:   %U\n:END:\n %?\n")
 	  ("n" "Note" entry (file org-default-inbox-file)
@@ -338,20 +353,6 @@
 	   :immediate-finish t)
   	  ("g" "log" entry (function custom-log-finder)
   	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| %^{title}  %(add-tag) " :immediate-finish t)))
-
-  :config
-  (add-to-list 'org-modules 'org-id )
-  (add-to-list 'org-modules 'org-habit)
-  (require 'org-crypt)
-  (require 'org-depend)
-  (require 'org-protocol)
-  (require 'org-checklist)
-  (add-to-list 'org-modules 'org-crypt)
-  (add-to-list 'org-modules 'org-checklist)
-  (setq org-crypt-disable-auto-save t)
-  (org-crypt-use-before-save-magic)
-  (setq org-crypt-key nil)
-
 
   (add-hook 'org-mode-hook
             (lambda()
