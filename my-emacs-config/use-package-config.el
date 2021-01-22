@@ -331,6 +331,9 @@
   (setq org-default-slipbox-file (concat org-directory "/slipbox.org"))
   (setq org-default-log-file   "~/Dropbox/log.org")
 
+  (setq org-show-context-detail (assq-delete-all 'agenda org-show-context-detail))
+  (add-to-list 'org-show-context-detail '(agenda . lineage))
+
 
   (setq org-capture-templates
   	'(("t" "Todo" entry (file org-default-inbox-file)
