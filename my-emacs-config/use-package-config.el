@@ -220,7 +220,8 @@
 					    (org-agenda-overriding-header "Other Items")
 			   		    (org-agenda-files '("~/Dropbox/inbox.org"))))))
         ("r"  "Report" ((tags "ENTRY_TYPE=\"PROJECT\"&TODO=\"DONE\"&CLOSED>\"<-1w>\""
-			       ((org-super-agenda-groups '((:auto-parent t)))
+			      ((org-super-agenda-groups '((:auto-parent t)))
+                               (org-agenda-span "-7d")
 			        (org-agenda-files '("~/Dropbox/inbox.org"
 						    "~/Dropbox/inbox.org_archive"
 						    "~/Dropbox/work.org"
@@ -230,6 +231,7 @@
 			        (org-agenda-overriding-header "Projects completed in the last week")))
 		         (tags "TODO=\"DONE\"&CLOSED>\"<-1w>\"&ENTRY_TYPE=\"\""
 			       ((org-agenda-overriding-header "Items Closed in the last week")
+                                (org-agenda-span "-7d")
 			        (org-agenda-files '("~/Dropbox/inbox.org"
 						    "~/Dropbox/inbox.org_archive"
 						    "~/Dropbox/work.org"
