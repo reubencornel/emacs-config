@@ -113,10 +113,10 @@
 ;  (setq org-use-property-inheritance nil)
 					;(org-log-done 'time)
   (org-agenda-text-search-extra-files ;; This variable instructs org agenda to search through the archives
-   '(agenda-archives "~/Dropbox/work.org_archive" "~/Dropbox/main.org_archive"))
+   '(agenda-archives "~/Dropbox/org/work.org_archive" "~/Dropbox/org/main.org_archive"))
   (org-refile-use-outline-path 3)
   (org-agenda-files
-   '("~/Dropbox/log.org" "~/Dropbox/notes.org" "~/Dropbox/inbox.org" "~/Dropbox/work.org" "~/Dropbox/main.org" "~/Dropbox/slipbox.org" "~/Dropbox/slipbox_raw.org" "~/Dropbox/someday.org"))
+   '("~/Dropbox/org/log.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/inbox.org" "~/Dropbox/org/work.org" "~/Dropbox/org/main.org" "~/Dropbox/org/slipbox.org" "~/Dropbox/org/slipbox_raw.org" "~/Dropbox/org/someday.org"))
   (org-startup-folded t)
   (org-export-with-section-numbers nil)
   (org-export-with-toc nil)
@@ -213,38 +213,38 @@
 	("q" tags-todo "TODO=\"QUESTION\"")
 	("i" "Inbox Review" ((tags-todo "TODO=\"TODO\"|TODO=\"NEXT\""
 				        ((org-agenda-overriding-header "Inbox Tasks")
-					 (org-agenda-files '("~/Dropbox/inbox.org"))))
+					 (org-agenda-files '("~/Dropbox/org/inbox.org"))))
 			     (org-ql-block '(and (not (todo "TODO"))
 			   		         (not (todo "DONE")))
 			   		   ((org-ql-block-header "Notes")
 					    (org-agenda-overriding-header "Other Items")
-			   		    (org-agenda-files '("~/Dropbox/inbox.org"))))))
+			   		    (org-agenda-files '("~/Dropbox/org/inbox.org"))))))
         ("r"  "Report" ((tags "ENTRY_TYPE=\"PROJECT\"&TODO=\"DONE\"&CLOSED>\"<-1w>\""
 			      ((org-super-agenda-groups '((:auto-parent t)))
                                (org-agenda-span "-7d")
-			        (org-agenda-files '("~/Dropbox/inbox.org"
-						    "~/Dropbox/inbox.org_archive"
-						    "~/Dropbox/work.org"
-						    "~/Dropbox/work.org_archive"
-						    "~/Dropbox/main.org_archive"
-						    "~/Dropbox/main.org"))
+			        (org-agenda-files '("~/Dropbox/org/inbox.org"
+						    "~/Dropbox/org/inbox.org_archive"
+						    "~/Dropbox/org/work.org"
+						    "~/Dropbox/org/work.org_archive"
+						    "~/Dropbox/org/main.org_archive"
+						    "~/Dropbox/org/main.org"))
 			        (org-agenda-overriding-header "Projects completed in the last week")))
 		         (tags "TODO=\"DONE\"&CLOSED>\"<-1w>\"&ENTRY_TYPE=\"\""
 			       ((org-agenda-overriding-header "Items Closed in the last week")
                                 (org-agenda-span "-7d")
-			        (org-agenda-files '("~/Dropbox/inbox.org"
-						    "~/Dropbox/inbox.org_archive"
-						    "~/Dropbox/work.org"
-						    "~/Dropbox/work.org_archive"
-						    "~/Dropbox/main.org_archive"
-						    "~/Dropbox/main.org"))
+			        (org-agenda-files '("~/Dropbox/org/inbox.org"
+						    "~/Dropbox/org/inbox.org_archive"
+						    "~/Dropbox/org/work.org"
+						    "~/Dropbox/org/work.org_archive"
+						    "~/Dropbox/org/main.org_archive"
+						    "~/Dropbox/org/main.org"))
 			        (org-super-agenda-groups '((:auto-parent t)))))))
         ("he" "Execution Agenda" ((tags-todo "TODO=\"NEXT\"&SCHEDULED<\"<+1w>\"|TODO=\"NEXT\"-SCHEDULED={.+}-DEADLINE={.+}|TODO=\"NEXT\"&DEADLINE<\"<+1w>\""
 					     ((org-agenda-overriding-header "Next Items")
-					      (org-agenda-files '("~/Dropbox/main.org"))
+					      (org-agenda-files '("~/Dropbox/org/main.org"))
 					      (org-super-agenda-groups '((:auto-parent t)
 									 ))))
-                                  (stuck "" ((org-agenda-files '("~/Dropbox/main.org"))))))
+                                  (stuck "" ((org-agenda-files '("~/Dropbox/org/org/main.org"))))))
 	("hr" "Work Review" (
 			     (org-ql-block '(and (parent (tags-local "PROJECT"))
 						 (descendants (todo "NEXT"))
@@ -252,28 +252,28 @@
 							  (tags-all "DEPRIORITIZED_PROJECT")
 							  (tags-all "DONE")
 							  (todo "DONE"))))
-					   ((org-agenda-files '("~/Dropbox/main.org"))
+					   ((org-agenda-files '("~/Dropbox/org/main.org"))
                                             (org-ql-block-header "Active Projects")))
-                                           (stuck "" ((org-agenda-files '("~/Dropbox/main.org"))))
+                                           (stuck "" ((org-agenda-files '("~/Dropbox/org/main.org"))))
       			                   (todo "WAITING" ((org-agenda-overriding-header "Waiting tasks")
 					                    (org-super-agenda-groups '((:auto-parent t)))))
 			                   (tags-todo "TODO=\"TODO\"-DEPRIORITIZED_PROJECTS-DEPRIORITIZED_PROJECT-TEMPLATE&DEADLINE<\"<+2w>\""
 					              ((org-agenda-overriding-header "Tasks in the next 2 weeks")
-					               (org-agenda-files '("~/Dropbox/main.org"))))
+					               (org-agenda-files '("~/Dropbox/org/main.org"))))
 			                   (tags-todo "TODO=\"TODO\"-TEMPLATE-PROJECT-SCHEDULED={.+}-DEADLINE={.+}"
 					              ((org-agenda-overriding-header "Unplanned Todos")
-					               (org-agenda-files '("~/Dropbox/main.org"))
+					               (org-agenda-files '("~/Dropbox/org/main.org"))
 					               (org-super-agenda-groups '((:auto-parent t)))))
 			                   (tags "TODO=\"DONE\"&CLOSED>\"<-1d>\""
 				                 ((org-agenda-overriding-header "Closed today")
 				                  (org-super-agenda-groups '((:auto-parent t)))
-				                  (org-agenda-files '("~/Dropbox/main.org"))))))
+				                  (org-agenda-files '("~/Dropbox/org/main.org"))))))
          ("we" "Execution Agenda" ((tags-todo "TODO=\"NEXT\"&SCHEDULED<\"<+1w>\"|TODO=\"NEXT\"-SCHEDULED={.+}-DEADLINE={.+}|TODO=\"NEXT\"&DEADLINE<\"<+1w>\""
 					      ((org-agenda-overriding-header "Next Items")
-					       (org-agenda-files '("~/Dropbox/work.org"))
+					       (org-agenda-files '("~/Dropbox/org/work.org"))
 					       (org-super-agenda-groups '((:auto-parent t)
 									  ))))
-                                   (stuck "" ((org-agenda-files '("~/Dropbox/work.org"))))))
+                                   (stuck "" ((org-agenda-files '("~/Dropbox/org/work.org"))))))
 	 ("wr" "Work Review" (
 			      (org-ql-block '(and (parent (tags-local "PROJECT"))
 						  (descendants (todo "NEXT"))
@@ -282,21 +282,21 @@
 							   (tags-all "DONE")
 							   (todo "DONE"))))
 					    ((org-ql-block-header "Active Projects")
-                                             (org-agenda-files '("~/Dropbox/work.org"))))
-                              (stuck "" ((org-agenda-files '("~/Dropbox/work.org"))))
+                                             (org-agenda-files '("~/Dropbox/org/work.org"))))
+                              (stuck "" ((org-agenda-files '("~/Dropbox/org/work.org"))))
       			      (todo "WAITING" ((org-agenda-overriding-header "Waiting tasks")
 					       (org-super-agenda-groups '((:auto-parent t)))))
 			      (tags-todo "TODO=\"TODO\"-DEPRIORITIZED_PROJECTS-DEPRIORITIZED_PROJECT-TEMPLATE&DEADLINE<\"<+2w>\""
 					 ((org-agenda-overriding-header "Tasks in the next 2 weeks")
-					  (org-agenda-files '("~/Dropbox/work.org"))))
+					  (org-agenda-files '("~/Dropbox/org/work.org"))))
 			      (tags-todo "TODO=\"TODO\"-TEMPLATE-PROJECT-SCHEDULED={.+}-DEADLINE={.+}"
 					 ((org-agenda-overriding-header "Unplanned Todos")
-					  (org-agenda-files '("~/Dropbox/work.org"))
+					  (org-agenda-files '("~/Dropbox/org/work.org"))
 					  (org-super-agenda-groups '((:auto-parent t)))))
 			      (tags "TODO=\"DONE\"&CLOSED>\"<-1d>\""
 				    ((org-agenda-overriding-header "Closed today")
 				     (org-super-agenda-groups '((:auto-parent t)))
-				     (org-agenda-files '("~/Dropbox/work.org"))))))
+				     (org-agenda-files '("~/Dropbox/org/work.org"))))))
          ("u" "Standup" ((tags "+STANDUP+ENTRYDATE>=\"<-3d>\"" ((org-agenda-overriding-header "Standup updates")
 							        (org-agenda-overriding-columns-format )
 							        (org-agenda-sorting-strategy '(time-down ts-down tsia-down))))))))
@@ -306,9 +306,9 @@
         "\\<IGNORE\\>"))
 
 
-  (org-directory "~/Dropbox")
-  (org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
-  (org-mobile-inbox-for-pull "~/Dropbox/inbox.org")
+  (org-directory "~/Dropbox/org")
+  ;; (org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
+  ;; (org-mobile-inbox-for-pull "~/Dropbox/inbox.org")
   (org-columns-default-format "%50ITEM %TODO %CLOCKSUM %Area")
   (org-agenda-include-diary t)
   (org-journal-template-entry (concat "* %T [" (system-name)  "]| %^{title} %^G"))
@@ -326,7 +326,7 @@
   (org-crypt-use-before-save-magic)
   (setq org-crypt-key nil)
 
-  (setq org-directory (expand-file-name "~/Dropbox"))
+  (setq org-directory (expand-file-name "~/Dropbox/org"))
   (setq org-default-inbox-file (concat org-directory "/inbox.org"))
   (setq org-default-notes-file (concat org-directory "/notes.org"))
   (setq org-default-journal-file (concat org-directory "/notes.org"))
@@ -668,12 +668,14 @@
 (use-package company
   :ensure t
   :defer t
-  :init (global-company-mode))
-
-(provide 'use-package-config)
-;;; use-package-config.el
-
-
+  :custom (company-idle-delay 0.5)
+  :init (global-company-mode)
+  :bind
+  (:map company-active-map
+	("C-n". company-select-next)
+	("C-p". company-select-previous)
+	("M-<". company-select-first)
+	("M->". company-select-last)))
 
 ;; --------------- Hydra mode ---------------
 (use-package hydra
@@ -746,32 +748,83 @@
   (prog-mode . bury-successful-compilation))
 
 ;; --------------- Rust Config ---------------
-(use-package rust-mode
-  :ensure t
-  :defer t
-  :mode "\\.rs"
+;; (use-package rust-mode
+;;   :ensure t
+;;   :defer t
+;;   :mode "\\.rs"
+;;   :config
+;;   (use-package racer
+;;   :ensure t)
+;;   (add-hook 'rust-mode-hook #'racer-mode)
+;;   (add-hook 'racer-mode-hook #'eldoc-mode))
+
+;; (use-package company-racer
+;;   :ensure t
+;;   :defer t
+;;   :after (company)
+;;   :config
+;;   (add-to-list 'company-backends 'company-racer))
+
+;; (use-package flycheck-rust
+;;   :ensure t
+;;   :defer t
+;;   :after (rust-mode)
+;;   :config
+;;   (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+
+(use-package rustic
+  :ensure
+  :bind (:map rustic-mode-map
+              ("M-j" . lsp-ui-imenu)
+              ("M-?" . lsp-find-references)
+              ("C-c C-c l" . flycheck-list-errors)
+              ("C-c C-c a" . lsp-execute-code-action)
+              ("C-c C-c r" . lsp-rename)
+              ("C-c C-c q" . lsp-workspace-restart)
+              ("C-c C-c Q" . lsp-workspace-shutdown)
+              ("C-c C-c s" . lsp-rust-analyzer-status))
   :config
-  (use-package racer
-  :ensure t)
+  ;; uncomment for less flashiness
+  ;; (setq lsp-eldoc-hook nil)
+  ;; (setq lsp-enable-symbol-highlighting nil)
+  ;; (setq lsp-signature-auto-activate nil)
+
+  ;; comment to disable rustfmt on save
+  (setq rustic-format-on-save t)
+  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
+
+(defun rk/rustic-mode-hook ()
+  ;; so that run C-c C-c C-r works without having to confirm
+  (setq-local buffer-save-without-query t))
 
 
-
-  (add-hook 'rust-mode-hook #'racer-mode)
-  (add-hook 'racer-mode-hook #'eldoc-mode))
-
-(use-package company-racer
-  :ensure t
-  :defer t
-  :after (company)
+(use-package lsp-mode
+  :ensure
+  :commands lsp
+  :custom
+  ;; what to use when checking on-save. "check" is default, I prefer clippy
+  (lsp-rust-analyzer-cargo-watch-command "clippy")
+  (lsp-eldoc-render-all t)
+  (lsp-idle-delay 0.6)
   :config
-  (add-to-list 'company-backends 'company-racer))
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
-(use-package flycheck-rust
-  :ensure t
-  :defer t
-  :after (rust-mode)
+(use-package lsp-ui
+  :ensure
+  :commands lsp-ui-mode
+  :custom
+  (lsp-ui-peek-always-show t)
+  (lsp-ui-sideline-show-hover t)
+  (lsp-ui-doc-enable nil))
+
+
+(use-package yasnippet
+  :ensure
   :config
-  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+  (yas-reload-all)
+  (add-hook 'prog-mode-hook 'yas-minor-mode)
+  (add-hook 'text-mode-hook 'yas-minor-mode))
+
 
 (use-package tide
   :ensure t
@@ -952,3 +1005,6 @@
 (use-package neotree
   :ensure t)
 
+
+(provide 'use-package-config)
+;;; use-package-config.el
