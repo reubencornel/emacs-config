@@ -375,6 +375,11 @@ It requires the standard emacs package manager to be working."
               (org-end-of-subtree t t)
               (org-paste-subtree level tree-text))))))))
 
+(defun rfc-2822-time-format()
+  (let ((cur-time (current-time)))
+    (format-time-string "%Y-%m-%d %a %H:%M" cur-time)))
+
+
 (defun reuben/set-ids()
   (interactive)
   (if (or (equalp (buffer-name) "inbox.org" )
@@ -383,13 +388,16 @@ It requires the standard emacs package manager to be working."
 	(goto-char (point-max))
 	(while (outline-previous-heading)
 	  (let* ((id (org-id-get))
-		 (custom-id (org-entry-get (point) "CUSTOM_ID")))
+		 (custom-id (org-entry-get (point) "CUSTOM_ID"))
+                 (date-entry (org-entry-get (point) "ENTRYDATE")))
 	    (if (null id)
 		(let ((new-id (org-id-new)))
 		  (org-set-property  "ID" new-id)
 		  (if (null custom-id)
-		      (org-set-property  "CUSTOM_ID" new-id))))))
-	(save-buffer))))
+		      (org-set-property  "CUSTOM_ID" new-id))
+                  (if (null date-entry)
+                      (org-set-property "ENTRYDATE"  (concat "[" (rfc-2822-time-format) "]")))))))))
+	(save-buffer))
 
 (defun reuben/remove-text-properties(text)
   (if (zerop (length text))

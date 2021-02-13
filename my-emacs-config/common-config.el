@@ -37,7 +37,7 @@
 (setq-default line-spacing 5)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
-(setq-default cursor-type 'bar)
+(setq-default cursor-type 'box)
 
 
 ;; Make delete work as it work on windows o
