@@ -107,6 +107,21 @@
                                            " %Y, %A %R %p %Z]") cur-time)))
       date))
 
+
+
+(defun reuben/get-org-date-time()
+  "Return date time in a format that org mode understands."
+  (let* ((cur-time (current-time)))
+    (format-time-string "%Y-%m-%d %a %H:%M:%S %z" cur-time)))
+
+(defun reuben/get-active-org-date-time()
+  "Return an active timestamp for org mode."
+  (concat "<" (reuben/get-org-date-time) ">"))
+
+(defun reuben/get-inactive-org-date-time()
+  "Return an inactive time stamp string for org mode."
+  (concat "[" (reuben/get-org-date-time) "]"))
+
 (defun insert-date()
   (interactive)
   (insert (get-date)))
@@ -396,7 +411,7 @@ It requires the standard emacs package manager to be working."
 		  (if (null custom-id)
 		      (org-set-property  "CUSTOM_ID" new-id))
                   (if (null date-entry)
-                      (org-set-property "ENTRYDATE"  (rfc-2822-time-format)))))))))
+                      (org-set-property "ENTRYDATE"  (reuben/get-inactive-org-date-time)))))))))
 	(save-buffer))
 
 (defun reuben/remove-text-properties(text)
