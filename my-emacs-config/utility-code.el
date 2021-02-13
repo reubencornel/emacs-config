@@ -377,7 +377,7 @@ It requires the standard emacs package manager to be working."
 
 (defun rfc-2822-time-format()
   (let ((cur-time (current-time)))
-    (format-time-string "%Y-%m-%d %a %H:%M" cur-time)))
+    (format-time-string "%a, %d %b %Y %H:%M:%S %z" cur-time)))
 
 
 (defun reuben/set-ids()
@@ -396,7 +396,7 @@ It requires the standard emacs package manager to be working."
 		  (if (null custom-id)
 		      (org-set-property  "CUSTOM_ID" new-id))
                   (if (null date-entry)
-                      (org-set-property "ENTRYDATE"  (concat "[" (rfc-2822-time-format) "]")))))))))
+                      (org-set-property "ENTRYDATE"  (rfc-2822-time-format)))))))))
 	(save-buffer))
 
 (defun reuben/remove-text-properties(text)
