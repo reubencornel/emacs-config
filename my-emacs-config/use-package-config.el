@@ -106,8 +106,10 @@
 (use-package org
   :defer t
   :ensure org-plus-contrib
-  :bind    (("C-c n" .  'org-narrow-to-subtree)
-	    ("C-c w" .  'widen))
+  :bind  (:map org-mode-map
+               ([f3] . org-narrow-to-subtree)
+               ([f4] . widen)
+          )
   :custom
   (org-hide-leading-stars 't)
 ;  (setq org-use-property-inheritance nil)
@@ -116,7 +118,7 @@
    '(agenda-archives "~/Dropbox/org/work.org_archive" "~/Dropbox/org/main.org_archive"))
   (org-refile-use-outline-path 3)
   (org-agenda-files
-   '("~/Dropbox/org/log.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/inbox.org" "~/Dropbox/org/work.org" "~/Dropbox/org/main.org" "~/Dropbox/org/slipbox.org" "~/Dropbox/org/slipbox_raw.org" "~/Dropbox/org/someday.org"))
+   '("~/Dropbox/org/log.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/inbox.org" "~/Dropbox/org/work.org" "~/Dropbox/org/main.org" "~/Dropbox/org/slipbox.org" "~/Dropbox/org/slipbox_raw.org" "~/Dropbox/org/someday.org" "~/Dropbox/org/daily.org"))
   (org-startup-folded t)
   (org-export-with-section-numbers nil)
   (org-export-with-toc nil)
