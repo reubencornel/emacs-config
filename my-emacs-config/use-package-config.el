@@ -465,10 +465,15 @@
     "Switch entry to DONE when all subentries are done, to TODO otherwise."
     (let ((todo-state (org-get-todo-state)) beg end)
       (unless (not todo-state)
-  	(let (org-log-done org-log-states)   ; turn off logging
-  	  (org-todo (if (= n-not-done 0) "DONE"
-  		      (if (> n-done 0) "NEXT" "TODO")))))))
-
+        (let (org-log-done org-log-states)   ; turn off logging
+          (if (= n-not-done 0)
+              (progn
+                (save-excursion
+                  (end-of-line)
+                  (insert "\n   CLOSED:")
+                  (insert (reuben/get-inactive-org-date-time))))
+              (org-todo (if (> n-done 0) "NEXT" "TODO")))))))
+  
   (defun jump-to-org-agenda ()
     (interactive)
     (push-window-configuration)
