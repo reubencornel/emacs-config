@@ -468,6 +468,7 @@
         (let (org-log-done org-log-states)   ; turn off logging
           (if (= n-not-done 0)
               (progn
+                (org-todo "DONE")
                 (save-excursion
                   (end-of-line)
                   (insert "\n   CLOSED:")
