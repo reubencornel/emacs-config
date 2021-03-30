@@ -246,7 +246,7 @@
 					      (org-agenda-files '("~/Dropbox/org/main.org"))
 					      (org-super-agenda-groups '((:auto-parent t)
 									 ))))
-                                  (stuck "" ((org-agenda-files '("~/Dropbox/org/org/main.org"))))))
+                                  (stuck "" ((org-agenda-files '("~/Dropbox/org/main.org"))))))
 	("hr" "Work Review" (
 			     (org-ql-block '(and (parent (tags-local "PROJECT"))
 						 (descendants (todo "NEXT"))
