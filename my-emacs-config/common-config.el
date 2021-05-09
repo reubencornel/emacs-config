@@ -92,5 +92,4 @@
 
 (add-hook 'prog-mode-hook 'linum-mode)
 
-(electric-pair-mode)
 (show-paren-mode)

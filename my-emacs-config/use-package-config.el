@@ -533,11 +533,14 @@
 
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((emacs-lisp . nil)
+   '((emacs-lisp . t)
      (scheme . t)
      (python . t)
      (lisp . t)
-     (R . t))))
+     (R . t)))
+
+  (setq org-babel-python-command "python3")
+  )
 
 (use-package org-ref
   :defer t
@@ -975,6 +978,11 @@
   :after geiser
   :config
   (setq geiser-active-implementations '(mit)))
+
+(use-package smartparens
+  :ensure t
+  :config
+  (smartparens-global-mode t))
 
 
 (provide 'use-package-config)
