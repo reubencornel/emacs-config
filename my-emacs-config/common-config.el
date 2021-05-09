@@ -91,3 +91,6 @@
   (propertize (format my-linum-format-string line-number) 'face 'linum))
 
 (add-hook 'prog-mode-hook 'linum-mode)
+
+(electric-pair-mode)
+(show-paren-mode)
