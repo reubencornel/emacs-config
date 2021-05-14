@@ -322,6 +322,7 @@
   (require 'org-depend)
   (require 'org-protocol)
   (require 'org-checklist)
+  (require 'gus-links)
   (add-to-list 'org-modules 'org-crypt)
   (add-to-list 'org-modules 'org-checklist)
   (setq org-crypt-disable-auto-save t)
