@@ -889,7 +889,36 @@
 					   (case-fn . downcase))))
 
 (use-package hyperbole
-  :ensure t)
+  :ensure t
+  :config
+  
+  (defun looking-at-work-item()
+    (or
+     (looking-at "W-[0-9]+")
+     (save-excursion
+       (backward-word-strictly 2)
+       (looking-at "W-[0-9]+"))
+     (looking-at "a07.*")
+     (save-excursion
+       (backward-word-strictly 1)
+       (looking-at "a07.*"))))
+
+  (defun get-work-item-text()
+    (interactive)
+    (let* ((match-data (match-data))
+           (start (first match-data))
+           (end (second match-data)))
+      (buffer-substring-no-properties start end)
+      ))
+  (defun gus-links-function()
+    (interactive)
+    (if (looking-at-work-item)
+	(let ((work-item (get-work-item-text)))
+          (hact 'www-url (concat "https://gus.my.salesforce.com/apex/ADM_WorkLocator?bugorworknumber=" work-item)))
+      nil))
+  (defib gus()
+    "Gus links"
+    (gus-links-function)))
 
 (use-package org-roam
       :ensure t
