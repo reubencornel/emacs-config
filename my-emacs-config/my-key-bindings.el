@@ -19,8 +19,8 @@
 (global-unset-key [(f5)])
 (global-set-key [(f5)] 'enlarge-window)
 
-(global-unset-key [(f6)])
-(global-set-key [(f6)] 'helm-locate)
+;; (global-unset-key [(f6)])
+;; (global-set-key [(f6)] 'helm-locate)
 
 (global-unset-key [(f10)])
 (global-set-key [(f10)] 'kmacro-start-macro)
@@ -60,14 +60,14 @@
 (global-set-key [(control x) (control o)] 'grep-ffap)
 ;;* end
 
-(if (package-installed-p 'helm)
-    (let ()
-      (global-set-key (kbd "M-x") 'helm-M-x)
-      (global-set-key (kbd "C-x C-f") 'helm-find-files)
-      (global-set-key (kbd "C-x b") 'helm-mini)
-      (global-unset-key (kbd "C-x c"))   
-      t)
-  nil)
+;; (if (package-installed-p 'helm)
+;;     (let ()
+;;       (global-set-key (kbd "M-x") 'helm-M-x)
+;;       (global-set-key (kbd "C-x C-f") 'helm-find-files)
+;;       (global-set-key (kbd "C-x b") 'helm-mini)
+;;       (global-unset-key (kbd "C-x c"))   
+;;       t)
+;;   nil)
       
 (global-unset-key (kbd "C-x C-b"))
 (global-set-key (kbd "C-x C-b") 'ibuffer)

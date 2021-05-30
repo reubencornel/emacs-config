@@ -12,5 +12,9 @@
 (org-link-set-parameters gus-work-number-protocol
                          :follow #'org-gus-number-follow)
 
+(if (null org-link-abbrev-alist)
+    (setq org-link-abbrev-alist
+          '(("gus" . "https://gus.my.salesforce.com/apex/ADM_WorkLocator?bugorworknumber=%s"))))
+
 (provide 'gus-links)
 
