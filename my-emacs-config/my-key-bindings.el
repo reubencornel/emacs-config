@@ -19,9 +19,6 @@
 (global-unset-key [(f5)])
 (global-set-key [(f5)] 'enlarge-window)
 
-(global-unset-key [(f6)])
-(global-set-key [(f6)] 'helm-locate)
-
 (global-unset-key [(f10)])
 (global-set-key [(f10)] 'kmacro-start-macro)
 
