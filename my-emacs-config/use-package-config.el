@@ -1,22 +1,15 @@
 (require 'use-package)
 
-(use-package swiper-helm
-  :ensure t
-  :after (helm)
-  :defer t
-  :config
-  (global-set-key (kbd "C-s") 'swiper-helm))
-
 (use-package helm
   :ensure t
   :bind    (("C-c h" .  'helm-command-prefix)
 	    ("M-x" .  'helm-M-x)
 	    ("C-x C-f" . 'helm-find-files)
 	    ( "C-x b" . 'helm-mini)
-	 :map helm-command-map
-	      (("TAB" . 'helm-execute-persistent-action)
-	       ("C-i" . 'helm-execute-persistent-action)
-	       ("C-z" . 'helm-select-action)))
+	    :map helm-command-map
+	    (("TAB" . 'helm-execute-persistent-action)
+	     ("C-i" . 'helm-execute-persistent-action)
+	     ("C-z" . 'helm-select-action)))
   :config
   (progn
     (require 'helm-config)
@@ -34,14 +27,35 @@
     (global-set-key (kbd "M-x") 'helm-M-x)
     (global-set-key (kbd "M-s o") 'helm-occur)
     (global-set-key (kbd "C-x C-f") 'helm-find-files)
-;    (global-set-key (kbd "C-x b") 'helm-mini)
+    (global-set-key (kbd "C-x b") 'helm-mini)
     (global-unset-key (kbd "C-x c"))
+    (global-unset-key (kbd "M-s l"))
+    (global-set-key (kbd "M-s l") 'helm-locate)
     (helm-mode 1)))
+
+(use-package swiper-helm
+  :ensure t
+  :after (helm)
+  :defer t
+  :bind (("M-s s" . 'swiper-helm)))
+
+
+(use-package helm-rg
+  :ensure t
+  :after (helm)
+  :bind (("M-s g" . 'helm-rg)))
+
+(use-package helm-flx
+  :ensure t
+  :after (helm)
+  :config
+  (helm-flx-mode +1))
 
 (use-package helm-org-rifle
   :ensure t
   :defer t
-  :after (helm))
+  :after (helm)
+  :bind (("M-s r" . 'helm-org-rifle)))
 
 (use-package plantuml-mode
   :ensure t
