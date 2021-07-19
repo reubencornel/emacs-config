@@ -1,24 +1,30 @@
-;;; Gnu Emacs init
-
-;;(add-to-list 'load-path (expand-file-name "~/emacs"))
-;;(load (expand-file-name "~/my-key-bindings.el"))
-
-
-;; Custom os code
-(defun my-appt-send-notification (title msg)
-  (save-window-excursion
-    (shell-command (concat my-notifier-path " -m " msg " -t " title " -w &"))) )
+(package-initialize)
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("melpa" . "http://melpa.org/packages/")
+			 ("org" . "http://orgmode.org/elpa/")))
+(add-to-list 'load-path "/home/rcornel/emacs/my-emacs-config")
 
 
+(when (not package-archive-contents)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(require 'use-package)
 
-(load-config 'diary-config)
-(load-config 'c-mode-config)
-(load-config 'article-file-support)
-(load-config 'utf8-config)
+ (load "common-config.el")
+ (load "utility-code.el")
+ (load "mode-specific-config.el")
+ (load "use-package-config.el")
+ (load "my-key-bindings.el")
 
+(setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+(setq exec-path (append exec-path '("/usr/local/bin" "~/bin")))
 
-;(load-config 'spacemacs-theme)
+(put 'narrow-to-region 'disabled nil)
 
+(setq inhibit-splash-screen t)
+(setq package-check-signature nil)
 
-(load (expand-file-name "~/emacs/my-emacs-config/my-key-bindings.el"))
-(global-set-key (kbd "M-RET") 'ns-toggle-fullscreen)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(blink-cursor-mode t)
+(setq-default cursor-type 'box)
