@@ -119,7 +119,7 @@
 
 (use-package org
   :defer t
-  :ensure org-plus-contrib
+  :ensure org-contrib
   :bind  (:map org-mode-map
                ([f3] . org-narrow-to-subtree)
                ([f4] . widen)
