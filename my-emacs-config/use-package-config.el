@@ -544,7 +544,7 @@
 
   ;; (global-unset-key [(f9)])
   ;; (global-set-key [(f9)] 'org-mark-ring-goto)
-  (define-key org-mode-map [(f9)] 'org-mark-ring-goto)
+  (define-key org-mode-map [(f10)] 'org-mark-ring-goto)
 
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -939,15 +939,14 @@
       :ensure t
       :custom
       (org-roam-directory "~/Dropbox/org-roam/")
-      :bind (:map org-roam-mode-map
-              (("C-c n l" . org-roam-buffer-toggle)
-               ("C-c n f" . org-roam-node-fine)
-               ("C-c n g" . org-roam-graph))
-              :map org-mode-map
-              (("C-c n i" . org-roam-node-insert))
-              (("C-c n I" . org-roam-capture))
-              (("C-c n j" . org-roam-dailies-capture-today))
-              )
+      :bind (:map org-mode-map
+                  (("<f9>" . org-roam-buffer-toggle)
+                   ("C-c n f" . org-roam-node-fine)
+                   ("C-c n g" . org-roam-graph)
+                   ("C-c n i" . org-roam-node-insert)
+                   ("C-c n I" . org-roam-capture)
+                   ("C-c n j" . org-roam-dailies-capture-today)
+                   ))
       :config
       (org-roam-setup)
       )
