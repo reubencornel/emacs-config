@@ -905,6 +905,9 @@
 (use-package hyperbole
   :ensure t
   :config
+
+  (global-unset-key  [(f6)])
+  (global-set-key  [(f6)] 'gbut:act)
   
   (defun looking-at-work-item()
     (or
