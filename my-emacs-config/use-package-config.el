@@ -328,7 +328,7 @@
   (org-columns-default-format "%50ITEM %TODO %CLOCKSUM %Area")
   (org-agenda-include-diary t)
   (org-journal-template-entry (concat "* %T [" (system-name)  "]| %^{title} %^G"))
-
+  (org-agenda-window-setup 'only-window)
   :config
   (add-to-list 'org-modules 'org-id )
   (add-to-list 'org-modules 'org-habit)
@@ -944,7 +944,7 @@
       (org-roam-directory "~/Dropbox/org-roam/")
       :bind (:map org-mode-map
                   (("<f9>" . org-roam-buffer-toggle)
-                   ("C-c n f" . org-roam-node-fine)
+                   ("C-c n f" . org-roam-node-find)
                    ("C-c n g" . org-roam-graph)
                    ("C-c n i" . org-roam-node-insert)
                    ("C-c n I" . org-roam-capture)

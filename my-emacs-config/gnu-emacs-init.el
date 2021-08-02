@@ -1,7 +1,7 @@
 (package-initialize)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("melpa" . "http://melpa.org/packages/")
-			 ("org" . "http://orgmode.org/elpa/")))
+			 ("non-gnu-elpa" . "https://elpa.nongnu.org/nongnu/")))
 (add-to-list 'load-path "/home/rcornel/emacs/my-emacs-config")
 
 
