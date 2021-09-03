@@ -19,6 +19,7 @@
 
 ;;Toggle off scroll bar
 (toggle-scroll-bar -1)
+(scroll-bar-mode 0)
 
 ;;Toggle off the tool bar
 (tool-bar-mode -1)
