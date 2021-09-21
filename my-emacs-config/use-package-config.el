@@ -348,7 +348,7 @@
   (setq org-default-notes-file (concat org-directory "/notes.org"))
   (setq org-default-journal-file (concat org-directory "/notes.org"))
   (setq org-default-slipbox-file (concat org-directory "/slipbox.org"))
-  (setq org-default-log-file   "~/Dropbox/log.org")
+  (setq org-default-log-file (concat org-directory "/log.org"))
 
   (setq org-show-context-detail (assq-delete-all 'agenda org-show-context-detail))
   (add-to-list 'org-show-context-detail '(agenda . lineage))
