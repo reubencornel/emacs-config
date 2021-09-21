@@ -638,6 +638,7 @@
   :defer t
   :init (global-flycheck-mode)
   :config
+  (setq flycheck-check-syntax-automatically '(save mode-enable))
   (setq-default flycheck-disabled-checkers
                 (append flycheck-disabled-checkers
                         '(javascript-jshint json-jsonlist)))
@@ -776,19 +777,6 @@
 (defun rk/rustic-mode-hook ()
   ;; so that run C-c C-c C-r works without having to confirm
   (setq-local buffer-save-without-query t))
-
-
-(use-package lsp-mode
-  :ensure
-  :commands lsp
-  :custom
-  ;; what to use when checking on-save. "check" is default, I prefer clippy
-  (lsp-rust-analyzer-cargo-watch-command "clippy")
-  (lsp-eldoc-render-all t)
-  (lsp-idle-delay 0.6)
-  (lsp-rust-analyzer-server-display-inlay-hints t)  
-  :config
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
 (use-package lsp-ui
   :ensure
@@ -1031,6 +1019,26 @@
 
 (use-package smartparens
   :ensure t
+  :bind (:map smartparens-mode-map
+              ("C-<down>" . sp-down-sexp)
+              ("C-<up>"   . sp-up-sexp)
+              ("M-<down>" . sp-backward-down-sexp)
+              ("M-<up>"   . sp-backward-up-sexp)
+
+              
+              ("C-M-f" . sp-forward-sexp)
+              ("C-M-b" . sp-backward-sexp)
+
+              ("C-<right>" . sp-forward-slurp-sexp)
+              ("M-<right>" . sp-forward-barf-sexp)
+              ("C-<left>"  . sp-backward-slurp-sexp)
+              ("M-<left>"  . sp-backward-barf-sexp)
+
+              ("C-M-k" . sp-kill-sexp)
+              ("M-k"   . sp-backward-kill-sexp)
+              
+              ("M-[" . sp-backward-unwrap-sexp)
+              ("M-]" . sp-unwrap-sexp))
   :config
   (smartparens-global-mode t))
 
@@ -1039,6 +1047,54 @@
   :config
   (which-key-mode))
 
+;; Haskell Setup
+
+(use-package flycheck-haskell
+  :ensure t)
+
+(use-package haskell-mode
+  :ensure t
+  :config
+  (add-hook 'haskell-mode-hook #'lsp)
+  (add-hook 'haskell-mode-hook #'lsp-ui-mode)
+  (add-hook 'haskell-mode-hook #'interactive-haskell-mode))
+
+(use-package hindent
+  :ensure t
+  :after haskell-mode
+  :init
+  (add-hook 'haskell-mode-hook #'hindent-mode))
+ 
+(use-package yasnippet
+  :ensure t)
+
+(use-package lsp-mode
+  :ensure
+  :commands lsp
+  :hook (lsp-mode . (lambda ()
+                      (let ((lsp-keymap-prefix "C-x l"))
+                        (lsp-enable-which-key-integration))))
+  :custom
+  ;; what to use when checking on-save. "check" is default, I prefer clippy
+  (lsp-rust-analyzer-cargo-watch-command "clippy")
+  (lsp-eldoc-render-all t)
+  (lsp-idle-delay 0.6)
+  (lsp-rust-analyzer-server-display-inlay-hints t)
+  :config
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+  (define-key lsp-mode-map (kbd "C-x l") lsp-command-map))
+(global-unset-key (kbd "C-x l"))
+
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode)
+
+(use-package lsp-haskell
+ :ensure t
+ :config
+ (setq lsp-haskell-server-path "~/.ghcup/bin/haskell-language-server-wrapper")
+ (setq lsp-haskell-process-path-hie "~/.ghcup/bin/haskell-language-server-wrapper")
+ (setq lsp-haskell-process-args-hie '()) )
+
 (provide 'use-package-config)
 ;;; use-package-config.el
-
