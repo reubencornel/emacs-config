@@ -376,11 +376,11 @@
   	  ("g" "log" entry (function custom-log-finder)
   	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| %^{title}  %(add-tag) " :immediate-finish t)))
 
-  (add-hook 'org-mode-hook
-            (lambda()
-              (visual-line-mode t)
-              (setq line-spacing 10)
-              (setq left-margin-width 10 right-margin-width 10)))
+  ;; (add-hook 'org-mode-hook
+  ;;           (lambda()
+  ;;             (visual-line-mode t)
+  ;;             (setq line-spacing 10)
+  ;;             (setq left-margin-width 10 right-margin-width 10)))
 
   (defun skip-done-functions-or-projects()
     (org-agenda-skip-entry-if 'todo '("DONE" "WAITING" "NEXT")))
@@ -555,6 +555,59 @@
      (R . t)))
 
   (setq org-babel-python-command "python3")
+
+  (defun setup-org-fonts()
+    (interactive)
+    (let* ((variable-tuple
+            (cond ((x-list-fonts "Inter")         '(:font "Inter"))
+                  ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
+                  ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
+                  ((x-list-fonts "Verdana")         '(:font "Verdana"))
+                  ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
+                  (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+           (base-font-color     (face-foreground 'default nil 'default))
+           (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
+      
+      (custom-theme-set-faces
+       'user
+       `(org-level-8 ((t (,@headline ,@variable-tuple))))
+       `(org-level-7 ((t (,@headline ,@variable-tuple))))
+       `(org-level-6 ((t (,@headline ,@variable-tuple))))
+       `(org-level-5 ((t (,@headline ,@variable-tuple))))
+       `(org-level-4 ((t (,@headline ,@variable-tuple))))
+       `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.1))))
+       `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.1))))
+       `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.25))))
+       `(org-document-title ((t (,@headline ,@variable-tuple :height 1.75 :underline nil))))))
+    
+    (custom-theme-set-faces
+     'user
+     '(variable-pitch ((t (:family "Inter" :height 160 :weight light))))
+     '(fixed-pitch ((t ( :family "Fira Mono" :height 160)))))
+    
+
+  (custom-theme-set-faces
+   'user
+   '(org-block ((t (:inherit fixed-pitch))))
+   '(org-code ((t (:inherit (shadow fixed-pitch)))))
+   '(org-document-info ((t (:foreground "dark orange"))))
+   '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+   '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+   '(org-link ((t (:foreground "royal blue" :underline t))))
+   '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+   '(org-property-value ((t (:inherit fixed-pitch))) t)
+   '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+   '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
+   '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+   '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
+
+  (setq cursor-type '(bar . 5)))
+
+
+  (add-hook 'org-mode-hook 'visual-line-mode)
+  (add-hook 'org-mode-hook 'variable-pitch-mode)
+  (add-hook 'org-mode-hook 'setup-org-fonts)
+
   )
 
 (use-package org-ref
