@@ -123,6 +123,7 @@
   :bind  (:map org-mode-map
                ([f3] . org-narrow-to-subtree)
                ([f4] . widen)
+               ([M-return] . org-meta-return)
           )
   :custom
   (org-hide-leading-stars 't)
@@ -950,6 +951,11 @@
 
   (global-unset-key  [(f6)])
   (global-set-key  [(f6)] 'gbut:act)
+  (global-unset-key (kbd "M-<return>"))
+  (global-unset-key (kbd "C-<return>"))
+  (global-set-key (kbd "C-<return>") 'action-key)
+;;  (global-unset-key (kbd "C-u C-<return>")  )
+;;  (global-set-key (kbd "C-u C-<return>") 'assist-key)
   
   (defun looking-at-work-item()
     (or
