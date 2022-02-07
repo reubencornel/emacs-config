@@ -583,7 +583,7 @@
     
     (custom-theme-set-faces
      'user
-     '(variable-pitch ((t (:family "Inter" :height 160 :weight light))))
+     '(variable-pitch ((t (:family "Inter" :height 160 :weight medium))))
      '(fixed-pitch ((t ( :family "Fira Mono" :height 160)))))
     
 
