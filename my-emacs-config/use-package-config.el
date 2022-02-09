@@ -560,8 +560,7 @@
   (defun setup-org-fonts()
     (interactive)
     (let* ((variable-tuple
-            (cond ((x-list-fonts "Inter")         '(:font "Inter"))
-                  ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
+            (cond ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
                   ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
                   ((x-list-fonts "Verdana")         '(:font "Verdana"))
                   ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
@@ -583,7 +582,7 @@
     
     (custom-theme-set-faces
      'user
-     '(variable-pitch ((t (:family "Inter" :height 160 :weight medium))))
+     '(variable-pitch ((t (:family "Fira Mono" :height 160 :weight medium))))
      '(fixed-pitch ((t ( :family "Fira Mono" :height 160)))))
     
 
