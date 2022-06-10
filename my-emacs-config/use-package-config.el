@@ -228,6 +228,14 @@
 					    (:name "Due soon"
 					           :deadline future)))))))
 	("q" tags-todo "TODO=\"QUESTION\"")
+        ("d" "Daily Tasks" (
+                            (org-ql-block '(and (tags-local "daily")
+                                                (todo "TODO"))
+                                          ((org-ql-block-header "Tasks to get done Today")))
+			    ((org-agenda-overriding-header "Tasks today")
+                             (org-agenda-files  '("~/Dropbox/org/inbox.org"
+						  "~/Dropbox/org/work.org"
+						  "~/Dropbox/org/main.org")))) )
 	("i" "Inbox Review" ((tags-todo "TODO=\"TODO\"|TODO=\"NEXT\""
 				        ((org-agenda-overriding-header "Inbox Tasks")
 					 (org-agenda-files '("~/Dropbox/org/inbox.org"))))
@@ -560,7 +568,8 @@
   (defun setup-org-fonts()
     (interactive)
     (let* ((variable-tuple
-            (cond ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
+            (cond
+             ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
                   ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
                   ((x-list-fonts "Verdana")         '(:font "Verdana"))
                   ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
@@ -582,8 +591,8 @@
     
     (custom-theme-set-faces
      'user
-     '(variable-pitch ((t (:family "Fira Mono" :height 160 :weight medium))))
-     '(fixed-pitch ((t ( :family "Fira Mono" :height 160)))))
+     '(variable-pitch ((t (:family "Pragmata Pro" :height 160 :weight medium))))
+     '(fixed-pitch ((t ( :family "Pragmata Pro" :height 160)))))
     
 
   (custom-theme-set-faces
