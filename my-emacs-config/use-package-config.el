@@ -228,14 +228,11 @@
 					    (:name "Due soon"
 					           :deadline future)))))))
 	("q" tags-todo "TODO=\"QUESTION\"")
-        ("d" "Daily Tasks" (
-                            (org-ql-block '(and (tags-local "daily")
-                                                (todo "TODO"))
-                                          ((org-ql-block-header "Tasks to get done Today")))
-			    ((org-agenda-overriding-header "Tasks today")
-                             (org-agenda-files  '("~/Dropbox/org/inbox.org"
-						  "~/Dropbox/org/work.org"
-						  "~/Dropbox/org/main.org")))) )
+        ("d" "Daily Tasks" ((tags-todo "daily"
+                                       ((org-agenda-overriding-header "Daily Tasks")
+                                        (org-agenda-files  '("~/Dropbox/org/inbox.org"
+						             "~/Dropbox/org/work.org"
+						             "~/Dropbox/org/main.org"))))))
 	("i" "Inbox Review" ((tags-todo "TODO=\"TODO\"|TODO=\"NEXT\""
 				        ((org-agenda-overriding-header "Inbox Tasks")
 					 (org-agenda-files '("~/Dropbox/org/inbox.org"))))
