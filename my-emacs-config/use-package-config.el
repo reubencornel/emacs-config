@@ -210,38 +210,32 @@
 	   ("NEXT" ("WAITING") ("CANCELLED") )
 	   ("DONE" ("WAITING") ("CANCELLED") ))))
 
-  (unscheduled-tasks-search-string "+TODO=\"TODO\"-SCHEDULED={.+}-DEADLINE={.+}-TEMPLATE-IGNORE_UNSCHEDULED")
-
   (org-agenda-custom-commands
-   '(
-	("a" "All Agenda" ((agenda "plain" ((org-agenda-span 1)
-					 (org-super-agenda-groups
-					  '((:name "Schedule"
-					           :time-grid t)
-					    (:name "Today"
-					           :scheduled today)
-					    (:habit t)
-					    (:name "Due today"
-					           :deadline today)
-					    (:name "Overdue"
-					           :deadline past)
-					    (:name "Due soon"
-					           :deadline future)))))))
-	("q" tags-todo "TODO=\"QUESTION\"")
-        ("d" "Daily Tasks" ((tags-todo "daily"
+      '(("d" "Daily Tasks" ((tags-todo "daily"
                                        ((org-agenda-overriding-header "Daily Tasks")
                                         (org-agenda-files  '("~/Dropbox/org/inbox.org"
 						             "~/Dropbox/org/work.org"
 						             "~/Dropbox/org/main.org"))))))
-	("i" "Inbox Review" ((tags-todo "TODO=\"TODO\"|TODO=\"NEXT\""
-				        ((org-agenda-overriding-header "Inbox Tasks")
-					 (org-agenda-files '("~/Dropbox/org/inbox.org"))))
-			     (org-ql-block '(and (not (todo "TODO"))
-			   		         (not (todo "DONE")))
-			   		   ((org-ql-block-header "Notes")
-					    (org-agenda-overriding-header "Other Items")
-			   		    (org-agenda-files '("~/Dropbox/org/inbox.org"))))))
-        ("r"  "Report" ((tags "ENTRY_TYPE=\"PROJECT\"&TODO=\"DONE\"&CLOSED>\"<-1w>\""
+     	("i" "Inbox Review" ((tags-todo "TODO=\"TODO\"|TODO=\"NEXT\""
+        			        ((org-agenda-overriding-header "Inbox Tasks")
+                                         (org-agenda-files '("~/Dropbox/org/inbox.org"))))
+        		     (org-ql-block '(and (not (todo "TODO"))
+         		   		         (not (todo "DONE"))
+                                                 (not (todo "CANCELLED")))
+        		   	           ((org-ql-block-header "Notes")
+                                            (org-agenda-overriding-header "Other Items")
+                                            (org-agenda-files '("~/Dropbox/org/inbox.org"))
+                                            ))
+                             ))
+	("r" "Review" ((stuck "" ((org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))))
+		       (tags-todo "TODO=\"TODO\"-TEMPLATE-PROJECT-SCHEDULED={.+}-DEADLINE={.+}"
+				  ((org-agenda-overriding-header "Unplanned Todos")
+				   (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
+				   (org-super-agenda-groups '((:auto-parent t)))))
+		       (tags-todo "TODO=\"TODO\"-DEPRIORITIZED_PROJECTS-DEPRIORITIZED_PROJECT-TEMPLATE&DEADLINE<\"<+2w>\""
+				  ((org-agenda-overriding-header "Tasks in the next 2 weeks")
+				   (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))))))
+        ("p"  "Report" ((tags "ENTRY_TYPE=\"PROJECT\"&TODO=\"DONE\"&CLOSED>\"<-1w>\""
 			      ((org-super-agenda-groups '((:auto-parent t)))
                                (org-agenda-span "-7d")
 			        (org-agenda-files '("~/Dropbox/org/inbox.org"
@@ -261,70 +255,10 @@
 						    "~/Dropbox/org/main.org_archive"
 						    "~/Dropbox/org/main.org"))
 			        (org-super-agenda-groups '((:auto-parent t)))))))
-        ("he" "Execution Agenda" ((tags-todo "TODO=\"NEXT\"&SCHEDULED<\"<+1w>\"|TODO=\"NEXT\"-SCHEDULED={.+}-DEADLINE={.+}|TODO=\"NEXT\"&DEADLINE<\"<+1w>\""
-					     ((org-agenda-overriding-header "Next Items")
-					      (org-agenda-files '("~/Dropbox/org/main.org"))
-					      (org-super-agenda-groups '((:auto-parent t)
-									 ))))
-                                  (stuck "" ((org-agenda-files '("~/Dropbox/org/main.org"))))))
-	("hr" "Work Review" (
-			     (org-ql-block '(and (parent (tags-local "PROJECT"))
-						 (descendants (todo "NEXT"))
-						 (not (or (tags-all "TEMPLATE")
-							  (tags-all "DEPRIORITIZED_PROJECT")
-							  (tags-all "DONE")
-							  (todo "DONE"))))
-					   ((org-agenda-files '("~/Dropbox/org/main.org"))
-                                            (org-ql-block-header "Active Projects")))
-                                           (stuck "" ((org-agenda-files '("~/Dropbox/org/main.org"))))
-      			                   (todo "WAITING" ((org-agenda-overriding-header "Waiting tasks")
-					                    (org-super-agenda-groups '((:auto-parent t)))))
-			                   (tags-todo "TODO=\"TODO\"-DEPRIORITIZED_PROJECTS-DEPRIORITIZED_PROJECT-TEMPLATE&DEADLINE<\"<+2w>\""
-					              ((org-agenda-overriding-header "Tasks in the next 2 weeks")
-					               (org-agenda-files '("~/Dropbox/org/main.org"))))
-			                   (tags-todo "TODO=\"TODO\"-TEMPLATE-PROJECT-SCHEDULED={.+}-DEADLINE={.+}"
-					              ((org-agenda-overriding-header "Unplanned Todos")
-					               (org-agenda-files '("~/Dropbox/org/main.org"))
-					               (org-super-agenda-groups '((:auto-parent t)))))
-			                   (tags "TODO=\"DONE\"&CLOSED>\"<-1d>\""
-				                 ((org-agenda-overriding-header "Closed today")
-				                  (org-super-agenda-groups '((:auto-parent t)))
-				                  (org-agenda-files '("~/Dropbox/org/main.org"))))))
-         ("we" "Execution Agenda" ((tags-todo "TODO=\"NEXT\"&SCHEDULED<\"<+1w>\"|TODO=\"NEXT\"-SCHEDULED={.+}-DEADLINE={.+}|TODO=\"NEXT\"&DEADLINE<\"<+1w>\""
-					      ((org-agenda-overriding-header "Next Items")
-					       (org-agenda-files '("~/Dropbox/org/work.org"))
-					       (org-super-agenda-groups '((:auto-parent t)
-									  ))))
-                                   (stuck "" ((org-agenda-files '("~/Dropbox/org/work.org"))))))
-	 ("wr" "Work Review" (
-			      (org-ql-block '(and (parent (tags-local "PROJECT"))
-						  (descendants (todo "NEXT"))
-						  (not (or (tags-all "TEMPLATE")
-							   (tags-all "DEPRIORITIZED_PROJECT")
-							   (tags-all "DONE")
-							   (todo "DONE"))))
-					    ((org-ql-block-header "Active Projects")
-                                             (org-agenda-files '("~/Dropbox/org/work.org"))))
-                              (stuck "" ((org-agenda-files '("~/Dropbox/org/work.org"))))
-      			      (todo "WAITING" ((org-agenda-overriding-header "Waiting tasks")
-					       (org-super-agenda-groups '((:auto-parent t)))))
-			      (tags-todo "TODO=\"TODO\"-DEPRIORITIZED_PROJECTS-DEPRIORITIZED_PROJECT-TEMPLATE&DEADLINE<\"<+2w>\""
-					 ((org-agenda-overriding-header "Tasks in the next 2 weeks")
-					  (org-agenda-files '("~/Dropbox/org/work.org"))))
-			      (tags-todo "TODO=\"TODO\"-TEMPLATE-PROJECT-SCHEDULED={.+}-DEADLINE={.+}"
-					 ((org-agenda-overriding-header "Unplanned Todos")
-					  (org-agenda-files '("~/Dropbox/org/work.org"))
-					  (org-super-agenda-groups '((:auto-parent t)))))
-			      (tags "TODO=\"DONE\"&CLOSED>\"<-1d>\""
-				    ((org-agenda-overriding-header "Closed today")
-				     (org-super-agenda-groups '((:auto-parent t)))
-				     (org-agenda-files '("~/Dropbox/org/work.org"))))))
-         ("u" "Standup" ((tags "+STANDUP+ENTRYDATE>=\"<-3d>\"" ((org-agenda-overriding-header "Standup updates")
-							        (org-agenda-overriding-columns-format )
-							        (org-agenda-sorting-strategy '(time-down ts-down tsia-down))))))))
+        ))
 
   (org-stuck-projects
-   '("+ENTRY_TYPE=\"PROJECT\"-DONE-TEMPLATE-DEFERRED-CANCELLED-TODO=\"DONE\"" ("NEXT") ()
+   '("+ENTRY_TYPE=\"PROJECT\"-DONE-TEMPLATE-DEFERRED-CANCELLED-TODO=\"DONE\"" () ("daily")
         "\\<IGNORE\\>"))
 
 
@@ -779,6 +713,32 @@
     ("o" text-scale-decrease "out"))
 
   (bind-key "C-c h z" 'jethro/hydra-zoom/body)
+
+  
+  (defhydra process-inbox(:exit nil :hint nil
+                                :pre (setq rfc/resume-hydra nil)
+                                :post (if rfc/resume-hydra
+                                          (progn
+                                            (print rfc/resume-hydra)
+                                            (process-inbox/body))
+                                        (print rfc/resume-hydra)))
+    "
+  _r_: Refile     _a_: Archive     _K_: Kill
+  _d_: Done       _c_: Cancel      _td_: Tag as Daily     _tr_: Remove Daily tag
+  _n_: Next Line  _p_: Prev Line
+  _q_: quit
+"
+    ("n" next-line nil :color pink)
+    ("p" previous-line nil :color pink)
+    ("a" org-agenda-archive nil :color red)
+    ("r" org-agenda-refile nil :color red)
+    ("td" (org-agenda-set-tags "daily" t) :color blue)
+    ("tr" (org-agenda-set-tags "daily" nil) :color blue :exit nil)
+    ("K" org-agenda-kill nil :color red :exit nil)
+    ("d" (org-agenda-todo "DONE") nil :color blue)
+    ("c" (org-agenda-todo "CANCELLED") nil :color blue)
+    ("q" nil nil :color red))
+  (define-key org-agenda-mode-map [(f9)] 'process-inbox/body)
   )
 
 
