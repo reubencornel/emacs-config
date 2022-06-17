@@ -210,12 +210,26 @@
 	   ("NEXT" ("WAITING") ("CANCELLED") )
 	   ("DONE" ("WAITING") ("CANCELLED") ))))
 
-  (org-agenda-custom-commands
-      '(("d" "Daily Tasks" ((tags-todo "daily"
-                                       ((org-agenda-overriding-header "Daily Tasks")
-                                        (org-agenda-files  '("~/Dropbox/org/inbox.org"
-						             "~/Dropbox/org/work.org"
-						             "~/Dropbox/org/main.org"))))))
+ (org-agenda-custom-commands
+      '(("d" "Daily Tasks" ((agenda ""
+                               ((org-agenda-overriding-header "Tasks in the next 2 weeks")
+                                (org-agenda-entry-types '(:scheduled :deadline))
+				(org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org" "~/Dropbox/org/inbox.org"))
+                                (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                                (org-agenda-span 1)
+                                (org-agenda-show-all-dates nil)
+                                (org-agenda-time-grid nil)
+                                (org-super-agenda-groups '((:name "Deadline past Tasks"
+                                                                  :deadline past)
+                                                           (:name "Today Tasks"
+                                                                  :scheduled today
+                                                                  :deadline today)
+                                                           (:name "Past Scheduled Tasks"
+                                                                  :scheduled past)
+                                                           (:name "Future Tasks"
+                                                                  :deadline future))
+                                                         )))
+                            ))
      	("i" "Inbox Review" ((tags-todo "TODO=\"TODO\"|TODO=\"NEXT\""
         			        ((org-agenda-overriding-header "Inbox Tasks")
                                          (org-agenda-files '("~/Dropbox/org/inbox.org"))))
@@ -227,15 +241,32 @@
                                             (org-agenda-files '("~/Dropbox/org/inbox.org"))
                                             ))
                              ))
-	("r" "Review" ((tags-todo "TODO=\"TODO\"-DEPRIORITIZED_PROJECTS-DEPRIORITIZED_PROJECT-TEMPLATE&DEADLINE<\"<+2w>\""
-				  ((org-super-agenda-groups '((:time-grid t)))
-                                   (org-agenda-overriding-header "Tasks in the next 2 weeks")
-				   (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))))
+	("r" "Review" ((agenda ""
+                               ((org-agenda-overriding-header "Tasks in the next 2 weeks")
+                                (org-agenda-entry-types '(:scheduled :deadline))
+				(org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org" "~/Dropbox/org/inbox.org"))
+                                (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                                (org-agenda-span 1)
+                                (org-agenda-show-all-dates nil)
+                                (org-agenda-time-grid nil)
+                                (org-super-agenda-groups '((:name "Deadline past Tasks"
+                                                                  :deadline past)
+                                                           (:name "Past Scheduled Tasks"
+                                                                  :scheduled past)
+                                                           (:name "Today Tasks"
+                                                                  :scheduled today
+                                                                  :deadline today)
+                                                           (:name "Future Tasks"
+                                                                  :deadline future))
+                                                         )))
                        (stuck "" ((org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))))
 		       (tags-todo "TODO=\"TODO\"-DEPRIORITIZED_PROJECTS-TEMPLATE-PROJECT-SCHEDULED={.+}-DEADLINE={.+}"
 				  ((org-agenda-overriding-header "Unplanned Todos")
 				   (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
-				   (org-super-agenda-groups '((:auto-parent t)))))))
+				   (org-super-agenda-groups '((:auto-parent t))))))
+         ((org-agenda-block-separator "===================================================================="))
+         )
+
         ("p"  "Report" ((tags "ENTRY_TYPE=\"PROJECT\"&TODO=\"DONE\"&CLOSED>\"<-1w>\""
 			      ((org-super-agenda-groups '((:auto-parent t)))
                                (org-agenda-span "-7d")
