@@ -227,14 +227,15 @@
                                             (org-agenda-files '("~/Dropbox/org/inbox.org"))
                                             ))
                              ))
-	("r" "Review" ((stuck "" ((org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))))
-		       (tags-todo "TODO=\"TODO\"-TEMPLATE-PROJECT-SCHEDULED={.+}-DEADLINE={.+}"
+	("r" "Review" ((tags-todo "TODO=\"TODO\"-DEPRIORITIZED_PROJECTS-DEPRIORITIZED_PROJECT-TEMPLATE&DEADLINE<\"<+2w>\""
+				  ((org-super-agenda-groups '((:time-grid t)))
+                                   (org-agenda-overriding-header "Tasks in the next 2 weeks")
+				   (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))))
+                       (stuck "" ((org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))))
+		       (tags-todo "TODO=\"TODO\"-DEPRIORITIZED_PROJECTS-TEMPLATE-PROJECT-SCHEDULED={.+}-DEADLINE={.+}"
 				  ((org-agenda-overriding-header "Unplanned Todos")
 				   (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
-				   (org-super-agenda-groups '((:auto-parent t)))))
-		       (tags-todo "TODO=\"TODO\"-DEPRIORITIZED_PROJECTS-DEPRIORITIZED_PROJECT-TEMPLATE&DEADLINE<\"<+2w>\""
-				  ((org-agenda-overriding-header "Tasks in the next 2 weeks")
-				   (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))))))
+				   (org-super-agenda-groups '((:auto-parent t)))))))
         ("p"  "Report" ((tags "ENTRY_TYPE=\"PROJECT\"&TODO=\"DONE\"&CLOSED>\"<-1w>\""
 			      ((org-super-agenda-groups '((:auto-parent t)))
                                (org-agenda-span "-7d")
