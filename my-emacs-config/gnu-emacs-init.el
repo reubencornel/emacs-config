@@ -17,7 +17,7 @@
  (load "my-key-bindings.el")
 
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
-(setq exec-path (append exec-path '("/usr/local/bin" "~/bin")))
+(setq exec-path (append exec-path '("/usr/local/bin" "~/bin" "/home/reuben/.cargo/bin")))
 
 (put 'narrow-to-region 'disabled nil)
 
