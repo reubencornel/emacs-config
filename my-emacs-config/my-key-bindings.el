@@ -4,14 +4,24 @@
 
 ;;; My Key bindings
 
+
 (global-unset-key [(f1)])
-(global-set-key [(f1)] 'next-multiframe-window)
+(defun open-daily-tasks()
+  (interactive)
+  (org-agenda "" "d"))
+(global-set-key [(f1)] 'open-daily-tasks)
 
 (global-unset-key [(f2)])
-(global-set-key [(f2)] 'previous-multiframe-window)
+(defun open-review()
+  (interactive)
+  (org-agenda "" "r"))
+(global-set-key [(f2)] 'open-review)
 
 (global-unset-key [(f3)])
-(global-set-key [(f3)] 'enlarge-window-horizontally)
+(defun open-inbox()
+  (interactive)
+  (org-agenda "" "i"))
+(global-set-key [(f3)] 'open-inbox)
 
 (global-unset-key [(f4)])
 (global-set-key [(f4)] 'shrink-window-horizontally)
