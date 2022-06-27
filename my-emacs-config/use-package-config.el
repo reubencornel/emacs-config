@@ -757,7 +757,7 @@
                                         (print rfc/resume-hydra)))
     "
   _r_: Refile     _a_: Archive     _K_: Kill
-  _d_: Done       _c_: Cancel      _td_: Tag as Daily     _tr_: Remove Daily tag
+  _d_: Done       _c_: Cancel      _td_: Schedule for today
   _n_: Next Line  _p_: Prev Line
   _q_: quit
 "
@@ -765,12 +765,13 @@
     ("p" previous-line nil :color pink)
     ("a" org-agenda-archive nil :color red)
     ("r" org-agenda-refile nil :color red)
-    ("td" (org-agenda-set-tags "daily" t) :color blue)
-    ("tr" (org-agenda-set-tags "daily" nil) :color blue :exit nil)
+    ("td" org-agenda-schedule :color blue)
     ("K" org-agenda-kill nil :color red :exit nil)
     ("d" (org-agenda-todo "DONE") nil :color blue)
     ("c" (org-agenda-todo "CANCELLED") nil :color blue)
     ("q" nil nil :color red))
+
+
   (define-key org-agenda-mode-map [(f9)] 'process-inbox/body)
   )
 
