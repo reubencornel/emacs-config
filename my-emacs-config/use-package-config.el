@@ -221,9 +221,10 @@
                                 (org-agenda-time-grid nil)
                                 (org-super-agenda-groups '((:name "Deadline past Tasks"
                                                                   :deadline past)
-                                                           (:name "Today Tasks"
-                                                                  :scheduled today
+                                                           (:name "Deadline today Tasks"
                                                                   :deadline today)
+                                                           (:name "Today Tasks"
+                                                                  :scheduled today)
                                                            (:name "Past Scheduled Tasks"
                                                                   :scheduled past)
                                                            (:name "Future Tasks"
