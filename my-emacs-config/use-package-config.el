@@ -228,7 +228,8 @@
                                                            (:name "Past Scheduled Tasks"
                                                                   :scheduled past)
                                                            (:name "Future Tasks"
-                                                                  :deadline future))
+                                                                  :deadline future)
+							   (:auto-parent))
                                                          )))
                             ))
      	("i" "Inbox Review" ((tags-todo "TODO=\"TODO\"|TODO=\"NEXT\""
@@ -291,8 +292,8 @@
         ))
 
   (org-stuck-projects
-   '("+ENTRY_TYPE=\"PROJECT\"-DONE-TEMPLATE-DEFERRED-CANCELLED-TODO=\"DONE\"" () ("daily")
-        "\\<IGNORE\\>"))
+   '("+ENTRY_TYPE=\"PROJECT\"-DONE-TEMPLATE-DEFERRED-CANCELLED-TODO=\"DONE\"" () ("")
+        "\\<IGNORE\\>\\|SCHEDULED:\\|DEADLINE:"))
 
 
   (org-directory "~/Dropbox/org")
@@ -746,6 +747,8 @@
     ("o" text-scale-decrease "out"))
 
   (bind-key "C-c h z" 'jethro/hydra-zoom/body)
+
+
 
   
   (defhydra process-inbox(:exit nil :hint nil
