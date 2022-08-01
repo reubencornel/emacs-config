@@ -906,11 +906,6 @@
 (use-package wc-goal-mode
   :ensure t)
 
-(use-package pdf-tools
-  :ensure t
-  :config
-  (pdf-tools-install))
-
 (use-package doom-themes
   :ensure t)
 (use-package doom-modeline
