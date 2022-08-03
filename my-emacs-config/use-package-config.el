@@ -292,7 +292,7 @@
         ))
 
   (org-stuck-projects
-   '("+ENTRY_TYPE=\"PROJECT\"-DONE-TEMPLATE-DEFERRED-CANCELLED-TODO=\"DONE\"" () ("")
+   '("+ENTRY_TYPE=\"PROJECT\"-DONE-TEMPLATE-DEFERRED-CANCELLED-TODO=\"DONE\"" ("") ("")
         "\\<IGNORE\\>\\|SCHEDULED:\\|DEADLINE:"))
 
 
@@ -489,6 +489,21 @@
 
   (require 'seq)
   (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+
+
+  (defun rasmus/remove-schedule ()
+    "Remove SCHEDULED-cookie is switching state to WAITING."
+    (save-excursion
+      (and (equal (org-get-todo-state) "DONE")
+	   (org-get-scheduled-time (point))
+	   (when (search-forward-regexp org-scheduled-time-regexp nil t)
+	     (or (delete-region (match-beginning 0) (match-end 0)) t))
+	   (get-buffer "*Org Agenda*")
+	   (with-current-buffer "*Org Agenda*"
+	     (org-agenda-redo)))))
+  
+  (add-hook 'org-after-todo-state-change-hook
+	  'rasmus/remove-schedule)  
 
   (defun org-count-todos-in-state (state)
     (let ((count 0))
