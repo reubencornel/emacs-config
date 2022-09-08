@@ -121,8 +121,8 @@
   :defer t
   :ensure org-contrib
   :bind  (:map org-mode-map
-               ([f3] . org-narrow-to-subtree)
-               ([f4] . widen)
+               ;; ([f3] . org-narrow-to-subtree)
+               ;; ([f4] . widen)
                ([M-return] . org-meta-return)
           )
   :custom
@@ -691,7 +691,10 @@
 (use-package company
   :ensure t
   :defer t
-  :custom (company-idle-delay 0.5)
+  :custom
+  (company-idle-delay 0.5)
+  (company-minimum-prefix-length 2)
+  (add-to-list 'company-backends 'company-capf)
   :init (global-company-mode)
   :bind
   (:map company-active-map
@@ -950,7 +953,7 @@
   :bind ("<f8>" . deft)
   :commands (deft)
   
-  :config (setq deft-directory "~/Dropbox/org-roam"
+  :config (setq deft-directory "~/Dropbox/org-roam/org-roam1"
                 deft-extensions '("md" "org")
 		deft-use-filename-as-title t
 		deft-file-naming-rules   '((noslash . "-")
@@ -960,7 +963,7 @@
 (use-package hyperbole
   :ensure t
   :config
-
+  
   (global-unset-key  [(f6)])
   (global-set-key  [(f6)] 'gbut:act)
   (global-unset-key (kbd "M-<return>"))
@@ -1000,7 +1003,8 @@
 (use-package org-roam
       :ensure t
       :custom
-      (org-roam-directory "~/Dropbox/org-roam/")
+      (org-roam-directory "~/Dropbox/org-roam/org-roam1")
+      (org-roam-complete-everywhere t)
       :bind (:map org-mode-map
                   (("<f9>" . org-roam-buffer-toggle)
                    ("C-c n f" . org-roam-node-find)
@@ -1011,6 +1015,7 @@
                    ))
       :config
       (org-roam-setup)
+      (org-roam-db-autosync-mode)      
       )
 
 ;; --------------- Web Mode ---------------
