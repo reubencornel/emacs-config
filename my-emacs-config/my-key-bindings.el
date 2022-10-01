@@ -24,10 +24,16 @@
 (global-set-key [(f3)] 'open-inbox)
 
 (global-unset-key [(f4)])
-(global-set-key [(f4)] 'shrink-window-horizontally)
-
-(global-unset-key [(f5)])
-(global-set-key [(f5)] 'enlarge-window)
+(defun open-working-memory()
+  (interactive)
+  (find-file "~/Dropbox/wm.txt")
+  (delete-blank-lines)
+  (goto-char (point-max))
+  (insert "\n")
+  (insert-date-time)
+  (insert "\n")
+  )
+(global-set-key [(f4)] 'open-working-memory)
 
 (global-unset-key [(f10)])
 (global-set-key [(f10)] 'kmacro-start-macro)
