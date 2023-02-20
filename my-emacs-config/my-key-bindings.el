@@ -15,16 +15,16 @@
 (global-set-key [(f2)] 'open-daily-tasks)
 
 (global-unset-key [(f3)])
-(defun open-review()
-  (interactive)
-  (org-agenda "" "r"))
-(global-set-key [(f3)] 'open-review)
-
-(global-unset-key [(f4)])
 (defun open-inbox()
   (interactive)
   (org-agenda "" "i"))
-(global-set-key [(f4)] 'open-inbox)
+(global-set-key [(f3)] 'open-inbox)
+
+(global-unset-key [(f4)])
+(defun open-review()
+  (interactive)
+  (org-agenda "" "r"))
+(global-set-key [(f4)] 'open-review)
 
 (global-unset-key [(f5)])
 (defun open-working-memory()
@@ -34,9 +34,15 @@
   (goto-char (point-max))
   (insert "\n")
   (insert-date-time)
-  (insert "\n")
-  )
+  (insert "\n"))
 (global-set-key [(f5)] 'open-working-memory)
+
+(defun capture-log()
+  (interactive)
+  (org-capture nil "g"))
+(global-unset-key [(f7)])
+(global-set-key [(f7)] 'capture-log)
+
 
 (global-unset-key [(f10)])
 (global-set-key [(f10)] 'kmacro-start-macro)
@@ -46,14 +52,6 @@
 
 (global-unset-key [(f12)])
 (global-set-key [(f12)] 'apply-macro-to-region-lines)
-
-
-(defun capture-log()
-  (interactive)
-  (org-capture nil "g"))
-
-(global-unset-key [(f7)])
-(global-set-key [(f7)] 'capture-log)
 
 (global-set-key (kbd "s-=")
                 (lambda ()
