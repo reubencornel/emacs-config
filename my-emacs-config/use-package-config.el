@@ -12,7 +12,7 @@
 	     ("C-z" . 'helm-select-action)))
   :config
   (progn
-    (require 'helm-config)
+    (require 'helm-autoloads)
     (setq
      helm-quick-update                     t
      helm-split-window-in-side-p           t
