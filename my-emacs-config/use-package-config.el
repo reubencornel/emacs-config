@@ -294,7 +294,12 @@
 						    "~/Dropbox/org/work.org_archive"
 						    "~/Dropbox/org/main.org_archive"
 						    "~/Dropbox/org/main.org"))
-			        (org-super-agenda-groups '((:auto-parent t)))))))
+			        (org-super-agenda-groups '((:auto-parent t)))))
+			 (tags "improvement&ENTRYDATE>\"<-1w>\""
+			       ((org-agenda-span "-7d")
+				(org-agenda-overriding-header "Improvements in the last week")
+				(org-agenda-files '("~/Dropbox/org/log.org"))))
+			 ))
         ))
 
   (org-stuck-projects
