@@ -19,8 +19,8 @@
 (use-package consult
   :ensure t
   ;; Replace bindings. Lazily loaded due by `use-package'.
-  :bind (;; C-c bindings (mode-specific-map)
-         ("C-c h" . consult-history)
+   :bind (
+          ("C-c h" . consult-history)
          ("C-c m" . consult-mode-command)
          ("C-c b" . consult-bookmark)
          ("C-c k" . consult-kmacro)
@@ -35,7 +35,8 @@
          ("C-M-#" . consult-register)
          ;; Other custom bindings
          ("M-y" . consult-yank-pop)                ;; orig. yank-pop
-         ("<help> a" . consult-apropos)            ;; orig. apropos-command
+         ("<help> a" . consult-apropos)            ;; or
+;;	 ig. apropos-command
          ;; M-g bindings (goto-map)
          ;; ("M-g e" . consult-compile-error)
          ;; ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
@@ -53,19 +54,12 @@
          ("M-s G" . consult-git-grep)
          ("M-s r" . consult-ripgrep)
          ("M-s l" . consult-line)
-         ("M-s m" . consult-multi-occur)
-         ("M-s k" . consult-keep-lines)
-         ("M-s u" . consult-focus-lines)
-         ;; Isearch integration
-         ("M-s e" . consult-isearch)
-         :map isearch-mode-map
-         ("M-e" . consult-isearch)                 ;; orig. isearch-edit-string
-         ("M-s e" . consult-isearch)               ;; orig. isearch-edit-string
-         ("M-s l" . consult-line))                 ;; required by consult-line to detect isearch
-
-
-  ;; The :init configuration is always executed (Not lazy)
+         ("M-s m" . consult-multi-occur))
   :init
+
+  ;; Optionally configure the narrowing key.
+  ;; Both < and C-+ work reasonably well.
+  (setq consult-narrow-key "<") ;; (kbd "C-+")
 
 
   ;; Use Consult to select xref locations with preview
