@@ -82,15 +82,7 @@
 (global-set-key [(control x) (control o)] 'grep-ffap)
 ;;* end
 
-(if (package-installed-p 'helm)
-    (let ()
-      (global-set-key (kbd "M-x") 'helm-M-x)
-      (global-set-key (kbd "C-x C-f") 'helm-find-files)
-      (global-set-key (kbd "C-x b") 'helm-mini)
-      (global-unset-key (kbd "C-x c"))   
-      t)
-  nil)
-      
+    
 (global-unset-key (kbd "C-x C-b"))
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
