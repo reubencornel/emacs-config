@@ -232,7 +232,7 @@
 							   (:auto-parent))
                                                          )))
                             ))
-     	("i" "Inbox Review" ((tags-todo "TODO=\"TODO\"|TODO=\"NEXT\""
+     	("i" "Inbox Review" ((tags-todo "TODO=\"TODO\"&SCHEDULED=\"\"|TODO=\"NEXT\"&SCHEDULED=\"\""
         			        ((org-agenda-overriding-header "Inbox Tasks")
                                          (org-agenda-files '("~/Dropbox/org/inbox.org"))))
         		     (org-ql-block '(and (not (todo "TODO"))
