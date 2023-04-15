@@ -1,61 +1,97 @@
 (require 'use-package)
 
-(use-package helm
+(use-package vertico
   :ensure t
-  :bind    (("C-c h" .  'helm-command-prefix)
-	    ("M-x" .  'helm-M-x)
-	    ("C-x C-f" . 'helm-find-files)
-	    ( "C-x b" . 'helm-mini)
-	    :map helm-command-map
-	    (("TAB" . 'helm-execute-persistent-action)
-	     ("C-i" . 'helm-execute-persistent-action)
-	     ("C-z" . 'helm-select-action)))
-  :config
-  (progn
-    (require 'helm-autoloads)
-    (setq
-     helm-quick-update                     t
-     helm-split-window-in-side-p           t
-     helm-buffers-fuzzy-matching           t
-     helm-move-to-line-cycle-in-source     t
-     helm-ff-search-library-in-sexp        t
-     helm-scroll-amount                    8
-     helm-ff-file-name-history-use-recentf t
-     helm-semantic-fuzzy-match t
-     helm-imenu-fuzzy-match    t)
-    (global-set-key (kbd "C-c h") 'helm-command-prefix)
-    (global-set-key (kbd "M-x") 'helm-M-x)
-    (global-set-key (kbd "M-s o") 'helm-occur)
-    (global-set-key (kbd "C-x C-f") 'helm-find-files)
-    (global-set-key (kbd "C-x b") 'helm-mini)
-    (global-unset-key (kbd "C-x c"))
-    (global-unset-key (kbd "M-s l"))
-    (global-set-key (kbd "M-s l") 'helm-locate)
-    (helm-mode 1)))
+   :init
+   (vertico-mode))
 
-(use-package swiper-helm
+(use-package orderless
   :ensure t
-  :after (helm)
-  :defer t
-  :bind (("M-s s" . 'swiper-helm)))
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
 
-
-(use-package helm-rg
+(use-package marginalia
   :ensure t
-  :after (helm)
-  :bind (("M-s g" . 'helm-rg)))
+  :init
+  (marginalia-mode))
 
-(use-package helm-flx
+(use-package consult
   :ensure t
-  :after (helm)
-  :config
-  (helm-flx-mode +1))
+  ;; Replace bindings. Lazily loaded due by `use-package'.
+   :bind (
+          ("C-c h" . consult-history)
+         ("C-c m" . consult-mode-command)
+         ("C-c b" . consult-bookmark)
+         ("C-c k" . consult-kmacro)
+         ;; C-x bindings (ctl-x-map)
+         ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
+         ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+         ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+         ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+         ;; Custom M-# bindings for fast register access
+         ("M-#" . consult-register-load)
+         ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
+         ("C-M-#" . consult-register)
+         ;; Other custom bindings
+         ("M-y" . consult-yank-pop)                ;; orig. yank-pop
+         ("<help> a" . consult-apropos)            ;; or
+;;	 ig. apropos-command
+         ;; M-g bindings (goto-map)
+         ;; ("M-g e" . consult-compile-error)
+         ;; ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+         ;; ("M-g g" . consult-goto-line)             ;; orig. goto-line
+         ;; ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+         ;; ("M-g o" . consult-outline)
+         ;; ("M-g m" . consult-mark)
+         ;; ("M-g k" . consult-global-mark)
+         ;; ("M-g i" . consult-imenu)
+         ;; ("M-g I" . consult-project-imenu)
+         ;; M-s bindings (search-map)
+         ("M-s f" . consult-find)
+         ("M-s L" . consult-locate)
+         ("M-s g" . consult-grep)
+         ("M-s G" . consult-git-grep)
+         ("M-s r" . consult-ripgrep)
+         ("M-s l" . consult-line)
+         ("M-s m" . consult-multi-occur))
+  :init
 
-(use-package helm-org-rifle
-  :ensure t
-  :defer t
-  :after (helm)
-  :bind (("M-s r" . 'helm-org-rifle)))
+  ;; Optionally configure the narrowing key.
+  ;; Both < and C-+ work reasonably well.
+  (setq consult-narrow-key "<") ;; (kbd "C-+")
+
+
+  ;; Use Consult to select xref locations with preview
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref)
+
+  (defun reuben/consult-search-org-helper (org-param keyword directory)
+    (let  ((consult-ripgrep-args
+	    (concat "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /\  --smart-case --no-heading --line-number --search-zip"
+		    " "
+		    org-param
+		    " "
+		    "."))
+	   (vertico-count 50))
+	   (consult-ripgrep directory keyword)))
+  
+  (defun reuben/consult-search-org ()
+    "Call `consult-ripgrep' for my org agenda files."
+    (interactive)
+    (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org"))
+
+  (defun reuben/consult-search-all-org ()
+    "Call `consult-ripgrep' for my org agenda files."
+    (interactive)
+    (reuben/consult-search-org-helper "-t org" "" "~/Dropbox/org"))
+
+  (defun reuben/consult-search-org-roam()
+    "Call `consult-ripgrep' for my org roam files."
+    (interactive)
+    (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org-roam/org-roam1"))
+)
+
 
 (use-package plantuml-mode
   :ensure t
@@ -662,22 +698,6 @@
 (use-package hydra
   :ensure t
   :config
-  (defhydra jethro/hydra-draw-box (:color pink)
-    "Draw box with IBM single line box characters (ESC to Quit)."
-    ("ESC" nil :color blue) ;; Esc to exit.
-    ("'" (lambda () (interactive) (insert "┌")) "top left ┌")
-    ("," (lambda () (interactive) (insert "┬")) "top ┬")
-    ("." (lambda () (interactive) (insert "┐")) "top right ┐")
-    ("a" (lambda () (interactive) (insert "├")) "left ├")
-    ("o" (lambda () (interactive) (insert "┼")) "center ┼")
-    ("e" (lambda () (interactive) (insert "┤")) "right ┤")
-    (";" (lambda () (interactive) (insert "└")) "bottom left └")
-    ("q" (lambda () (interactive) (insert "┴")) "bottom ┴")
-    ("j" (lambda () (interactive) (insert "┘")) "bottom right ┘")
-    ("k" (lambda () (interactive) (insert "─")) "horizontal ─")
-    ("x" (lambda () (interactive) (insert "│")) "vertical │"))
-
-  (bind-key "C-c h d" 'jethro/hydra-draw-box/body)
 
   (defhydra jethro/hydra-smerge (:color pink
                                         :hint nil
@@ -712,16 +732,7 @@
     ("k" smerge-kill-current)
     ("q" nil "cancel" :color blue))
 
-  (bind-key "C-c h s" 'jethro/hydra-smerge/body)
-
-  (defhydra jethro/hydra-zoom ()
-    "zoom"
-    ("i" text-scale-increase "in")
-    ("o" text-scale-decrease "out"))
-
-  (bind-key "C-c h z" 'jethro/hydra-zoom/body)
-
-
+;  (bind-key "C-c h s" 'jethro/hydra-smerge/body)
 
   
   (defhydra process-inbox(:exit nil :hint nil
@@ -1142,11 +1153,6 @@
   :hook ((dap-mode . dap-ui-mode)
     (dap-session-created . (lambda (&_rest) (dap-hydra)))
     (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
-(use-package helm-lsp
-:ensure t
-:after (lsp-mode)
-:commands (helm-lsp-workspace-symbol)
-:init (define-key lsp-mode-map [remap xref-find-apropos] #'helm-lsp-workspace-symbol))
 
 (provide 'use-package-config)
 ;;; use-package-config.el
