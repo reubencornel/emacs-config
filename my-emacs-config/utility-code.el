@@ -425,6 +425,7 @@ It requires the standard emacs package manager to be working."
 	  (outline-get-last-sibling))))
 	(save-buffer))
 
+
 (defun reuben/remove-text-properties(text)
   (if (zerop (length text))
       ""
