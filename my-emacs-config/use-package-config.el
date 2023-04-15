@@ -66,7 +66,7 @@
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
 
-  (defun reuben/consult-search-org-helper (org-param keyword)
+  (defun reuben/consult-search-org-helper (org-param keyword directory)
     (let  ((consult-ripgrep-args
 	    (concat "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /\  --smart-case --no-heading --line-number --search-zip"
 		    " "
@@ -74,17 +74,22 @@
 		    " "
 		    "."))
 	   (vertico-count 50))
-	   (consult-ripgrep "~/Dropbox/org" keyword)))
+	   (consult-ripgrep directory keyword)))
   
   (defun reuben/consult-search-org ()
     "Call `consult-ripgrep' for my org agenda files."
     (interactive)
-    (reuben/consult-search-org-helper "-g \"*.org\"" ""))
+    (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org"))
 
   (defun reuben/consult-search-all-org ()
     "Call `consult-ripgrep' for my org agenda files."
     (interactive)
-    (reuben/consult-search-org-helper "-t org" ""))
+    (reuben/consult-search-org-helper "-t org" "" "~/Dropbox/org"))
+
+  (defun reuben/consult-search-org-roam()
+    "Call `consult-ripgrep' for my org roam files."
+    (interactive)
+    (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org-roam/org-roam1"))
 )
 
 
