@@ -395,24 +395,36 @@ It requires the standard emacs package manager to be working."
     (format-time-string "%a, %d %b %Y %H:%M:%S %z" cur-time)))
 
 
+(defun reuben/goto-parent()
+  (outline-previous-heading)
+  (while (> (outline-level) 2)
+    (org-up-heading-all 1)))
+
+(defun reuben/set-id-property(id custom-id date-entry)
+  (if (null id)
+      (let ((new-id (org-id-new)))
+	(org-set-property  "ID" new-id)
+	(if (null custom-id)
+	    (org-set-property  "CUSTOM_ID" new-id))
+        (if (null date-entry)
+            (org-set-property "ENTRYDATE"  (reuben/get-inactive-org-date-time))))))
+
 (defun reuben/set-ids()
   (interactive)
   (if (or (equalp (buffer-name) "inbox.org" )
           (equalp (buffer-name) "slipbox_raw.org"))
       (save-excursion
 	(goto-char (point-max))
-	(while (outline-previous-heading)
+	;; Go up the tree
+	(reuben/goto-parent)
+	(while (> (point) 1)
 	  (let* ((id (org-id-get))
 		 (custom-id (org-entry-get (point) "CUSTOM_ID"))
                  (date-entry (org-entry-get (point) "ENTRYDATE")))
-	    (if (null id)
-		(let ((new-id (org-id-new)))
-		  (org-set-property  "ID" new-id)
-		  (if (null custom-id)
-		      (org-set-property  "CUSTOM_ID" new-id))
-                  (if (null date-entry)
-                      (org-set-property "ENTRYDATE"  (reuben/get-inactive-org-date-time)))))))))
+	    (reuben/set-id-property id custom-id date-entry))
+	  (outline-get-last-sibling))))
 	(save-buffer))
+
 
 (defun reuben/remove-text-properties(text)
   (if (zerop (length text))
