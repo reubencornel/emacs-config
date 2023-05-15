@@ -130,6 +130,17 @@
   (interactive)
   (insert (get-date-time)))
 
+(defun earliest-splunk-date()
+  (let* ((cur-time (current-time))
+         (date (format-time-string (concat "%m/%d/%Y:00:00:00") cur-time)))
+     date))
+
+(defun latest-splunk-date()
+  (let* ((cur-time (current-time))
+         (date (format-time-string (concat "%m/%d/%Y:23:59:59") cur-time)))
+     date))
+
+
 (defun init-c-file()
   (interactive)
   (when (= (point-max) 1) ;; Insert these lines if and only if we have
