@@ -35,7 +35,7 @@
 (global-unset-key [(f6)])
 (defun open-working-memory()
   (interactive)
-  (find-file "~/Dropbox/wm.txt")
+  (find-file "~/Dropbox/wm.md")
   (delete-blank-lines)
   (goto-char (point-max))
   (insert "\n")
