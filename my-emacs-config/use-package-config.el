@@ -279,6 +279,11 @@
                                             (org-agenda-files '("~/Dropbox/org/inbox.org"))
                                             ))
                              ))
+     	("t" "Inbox Entries TODAY" ((tags "ENTRYDATE>=\"<today>\""
+        			    ((org-agenda-overriding-header "Inbox Tasks")
+				     (org-agenda-time-grid nil)
+                                     (org-agenda-files '("~/Dropbox/org/inbox.org"))))
+                             ))
 	("r" "Review" ((agenda ""
                                ((org-agenda-overriding-header "Tasks in the next 2 weeks")
                                 (org-agenda-entry-types '(:scheduled :deadline))
@@ -956,15 +961,34 @@
            (end (second match-data)))
       (buffer-substring-no-properties start end)
       ))
+  
   (defun gus-links-function()
     (interactive)
     (if (looking-at-work-item)
 	(let ((work-item (get-work-item-text)))
           (hact 'www-url (concat "https://gus.my.salesforce.com/apex/ADM_WorkLocator?bugorworknumber=" work-item)))
       nil))
+
+  (defun in-org-property()
+    (and (hsys-org-mode-p)
+	 (org-at-property-p)))
+
+  (defun org-properties-search()
+    (interactive)
+    (if (in-org-property)
+	(let* ((property-name (org-read-property-name))
+	       (property-value (org-entry-get (point) property-name)))
+	  (hact 'org-tags-view nil (concat property-name "={" property-value "}")))))
+			      
+	
   (defib gus()
     "Gus links"
-    (gus-links-function)))
+    (gus-links-function))
+
+  (defib org-property-search()
+    "org property search"
+    (org-properties-search))
+  )
 
 (use-package org-roam
       :ensure t
@@ -1138,9 +1162,9 @@
  (setq lsp-haskell-process-path-hie "~/.ghcup/bin/haskell-language-server-wrapper")
  (setq lsp-haskell-process-args-hie '()) )
 
-(use-package lsp-java 
-  :ensure t
-  :config (add-hook 'java-mode-hook 'lsp))
+;; (use-package lsp-java 
+;;   :ensure t
+;;   :config (add-hook 'java-mode-hook 'lsp))
 (use-package dap-mode
   :ensure t
   :after (lsp-mode)
