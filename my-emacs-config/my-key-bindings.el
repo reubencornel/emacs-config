@@ -15,18 +15,24 @@
 (global-set-key [(f2)] 'open-daily-tasks)
 
 (global-unset-key [(f3)])
+(defun open-inbox-today-entries()
+  (interactive)
+  (org-agenda "" "t"))
+(global-set-key [(f3)] 'open-inbox-today-entries)
+
+(global-unset-key [(f4)])
 (defun open-inbox()
   (interactive)
   (org-agenda "" "i"))
-(global-set-key [(f3)] 'open-inbox)
+(global-set-key [(f4)] 'open-inbox)
 
-(global-unset-key [(f4)])
+(global-unset-key [(f5)])
 (defun open-review()
   (interactive)
   (org-agenda "" "r"))
-(global-set-key [(f4)] 'open-review)
+(global-set-key [(f5)] 'open-review)
 
-(global-unset-key [(f5)])
+(global-unset-key [(f6)])
 (defun open-working-memory()
   (interactive)
   (find-file "~/Dropbox/wm.txt")
@@ -35,7 +41,7 @@
   (insert "\n")
   (insert-date-time)
   (insert "\n"))
-(global-set-key [(f5)] 'open-working-memory)
+(global-set-key [(f6)] 'open-working-memory)
 
 (defun capture-log()
   (interactive)
