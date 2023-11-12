@@ -93,4 +93,12 @@
 
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
+(defun center-buffer-text()
+  "This function centers the text in a buffer. Use this for writing."
+  
+  (interactive)
+  (visual-fill-column-mode)
+  (auto-fill-mode)
+  (setq visual-fill-column-center-text t))
+
 (show-paren-mode)
