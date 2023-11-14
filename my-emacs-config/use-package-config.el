@@ -1212,5 +1212,7 @@
         (kill-local-variable `,local))
       (blink-cursor-mode -1))))
 
+
+
 (provide 'use-package-config)
 ;;; use-package-config.el
