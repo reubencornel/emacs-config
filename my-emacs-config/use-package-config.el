@@ -875,19 +875,25 @@
   :ensure t
   :after wc-goal-mode
   :config
-  (defun writing-mode()
-    (interactive)
-    (olivetti-mode 1)
-    (set-background-color "#FCFCFC")
-    (set-foreground-color "#1A1A1A")
-    (set-cursor-color "#07BBF2")
-    (set-face-attribute 'default nil :family "Fira Mono" :width 'normal)
-    (set-face-attribute 'variable-pitch nil :family "Source Sans Pro")
-    (set-face-attribute 'fixed-pitch nil :family "Fira Mono")
-    (setq-default line-spacing 6)
-    (set-face-attribute 'mode-line (selected-frame) :background "#FFFFFF" :overline "#FCFCFC" :foreground "grey")
-    (set-fringe-mode 0)
-    (require 'wc-goal-mode)))
+    (setq olivetti-body-width 0.65)
+  (setq olivetti-minimum-body-width 72)
+  (setq olivetti-recall-visual-line-mode-entry-state t)
+  ;;  :config
+  ;; (defun writing-mode()
+  ;;   (interactive)
+  ;;   (olivetti-mode 1)
+  ;;   (set-background-color "#FCFCFC")
+  ;;   (set-foreground-color "#1A1A1A")
+  ;;   (set-cursor-color "#07BBF2")
+  ;;   (set-face-attribute 'default nil :family "Fira Mono" :width 'normal)
+  ;;   (set-face-attribute 'variable-pitch nil :family "Source Sans Pro")
+  ;;   (set-face-attribute 'fixed-pitch nil :family "Fira Mono")
+  ;;   (setq-default line-spacing 6)
+  ;;   (set-face-attribute 'mode-line (selected-frame) :background "#FFFFFF" :overline "#FCFCFC" :foreground "grey")
+  ;;   (set-fringe-mode 0)
+  ;;   (require 'wc-goal-mode))
+
+  )
 
 (use-package visual-fill-column
   :ensure t)
@@ -1177,6 +1183,34 @@
   :hook ((dap-mode . dap-ui-mode)
     (dap-session-created . (lambda (&_rest) (dap-hydra)))
     (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
+
+
+(use-package frame
+  :commands prot/cursor-type-mode
+  :config
+  (setq-default cursor-type 'box)
+  (setq-default cursor-in-non-selected-windows '(bar . 2))
+  (setq-default blink-cursor-blinks 50)
+  (setq-default blink-cursor-interval nil) ; 0.75 would be my choice
+  (setq-default blink-cursor-delay 0.2)
+
+  (blink-cursor-mode -1)
+
+  (define-minor-mode prot/cursor-type-mode
+    "Toggle between static block and pulsing bar cursor."
+    :init-value nil
+    :global t
+    (if prot/cursor-type-mode
+        (progn
+          (setq-local blink-cursor-interval 0.75
+                      cursor-type '(bar . 2)
+                      cursor-in-non-selected-windows 'hollow)
+          (blink-cursor-mode 1))
+      (dolist (local '(blink-cursor-interval
+                       cursor-type
+                       cursor-in-non-selected-windows))
+        (kill-local-variable `,local))
+      (blink-cursor-mode -1))))
 
 (provide 'use-package-config)
 ;;; use-package-config.el
