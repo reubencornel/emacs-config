@@ -15,8 +15,8 @@
 (defconfig select-enable-clipboard
   (setq x-select-enable-clipboard t))
 
-(defconfig text-mode-config
-  (fringe-mode -1))
+;; (defconfig text-mode-config
+;;   (fringe-mode -1))
 
 ;; (defconfig magit
 ;;   (check-and-install-if-absent 'magit)

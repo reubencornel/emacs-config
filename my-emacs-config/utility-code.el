@@ -257,10 +257,10 @@ being the working directory of the buffer"
     (set-window-margins (car (get-buffer-window-list (current-buffer) nil t)) width width)
     (print width)))
 
-(defun reset-window-margin()
-  (interactive)
-  (set-window-margins (car (get-buffer-window-list (current-buffer) nil t)) 0 0)
-  (set-fringe-mode '(4 . 4)))
+;; (defun reset-window-margin()
+;;   (interactive)
+;;   (set-window-margins (car (get-buffer-window-list (current-buffer) nil t)) 0 0)
+;;   (set-fringe-mode '(4 . 4)))
 
 
 

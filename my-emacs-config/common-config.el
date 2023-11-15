@@ -28,7 +28,7 @@
 (add-to-list 'exec-path "/usr/local/bin")
 
 ;; Turn off fringe
-(fringe-mode -1)
+;;(fringe-mode -1)
 
 
 ;; Prevent the start screen from showing up

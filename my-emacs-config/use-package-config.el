@@ -935,9 +935,10 @@
   :ensure t
   :after wc-goal-mode
   :config
-    (setq olivetti-body-width 0.65)
+  (setq olivetti-body-width 0.65)
   (setq olivetti-minimum-body-width 72)
   (setq olivetti-recall-visual-line-mode-entry-state t)
+  (set-window-fringes (selected-window) 0 0)
   ;;  :config
   ;; (defun writing-mode()
   ;;   (interactive)
