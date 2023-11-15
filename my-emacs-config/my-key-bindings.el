@@ -59,17 +59,21 @@
 (global-unset-key [(f12)])
 (global-set-key [(f12)] 'apply-macro-to-region-lines)
 
+
 (global-set-key (kbd "s-=")
                 (lambda ()
                   (interactive)
-                  (let ((old-face-attribute (face-attribute 'default :height)))
-                    (set-face-attribute 'default nil :height (+ old-face-attribute 10)))))
+                  (set-face-attribute 'default nil :height (+ (face-attribute 'default :height) 10))
+		  (set-face-attribute 'variable-pitch nil :height (+ (face-attribute 'variable-pitch :height) 10))
+		  (set-face-attribute 'fixed-pitch nil :height (+ (face-attribute 'fixed-pitch :height) 10))))
+		    
 
 (global-set-key (kbd "s--")
                 (lambda ()
                   (interactive)
-                  (let ((old-face-attribute (face-attribute 'default :height)))
-                    (set-face-attribute 'default nil :height (- old-face-attribute 10)))))
+                  (set-face-attribute 'default nil :height (- (face-attribute 'default :height) 10))
+		  (set-face-attribute 'variable-pitch nil :height (- (face-attribute 'variable-pitch :height) 10))
+		  (set-face-attribute 'fixed-pitch nil :height (- (face-attribute 'fixed-pitch :height) 10))))
 
 
 (global-unset-key "\M-g")
