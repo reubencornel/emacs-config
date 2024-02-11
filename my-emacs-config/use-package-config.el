@@ -893,11 +893,13 @@
   (lsp-ui-doc-enable nil))
 
 
-(use-package yasnippet
-  :ensure
-  :config
-  (setq yas-snippet-dirs '("~/Dropbox/yassnippet"))
-  (yas-global-mode 1))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; (use-package yasnippet			       ;;
+;;   :ensure					       ;;
+;;   :config					       ;;
+;;   (setq yas-snippet-dirs '("~/Dropbox/yassnippet")) ;;
+;;   (yas-global-mode 1))			       ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 (use-package tide
@@ -1072,8 +1074,28 @@
                    ))
       :config
       (org-roam-setup)
-      (org-roam-db-autosync-mode)      
-      )
+      (org-roam-db-autosync-mode)
+      
+      (add-to-list 'display-buffer-alist
+		   '("\\*org-roam\\*"
+		     (display-buffer-in-side-window)
+		     (side . right)
+		     (slot . 0)
+		     (window-width . 0.33)
+		     (window-parameters . ((no-other-window . t)
+					   (no-delete-other-windows . t)))))
+      
+      (setq org-link-frame-setup
+	    (append (seq-filter #'(lambda(x) (not (equal (car x) 'file)))
+				org-link-frame-setup)
+		    '((file . find-file))))
+      
+      (setq org-roam-completion-everywhere t)
+      (setq org-roam-complete-link-at-point  t)
+      
+      (add-hook 'org-roam-mode-hook #'visual-line-mode)
+      
+      (add-to-list 'magit-section-initial-visibility-alist (cons 'org-roam-node-section 'hide)))
 
 ;; --------------- Web Mode ---------------
 (use-package web-mode
@@ -1329,7 +1351,16 @@
     (if prot/hidden-mode-line-mode
         (setq-local mode-line-format nil)
       (kill-local-variable 'mode-line-format)
-      (force-mode-line-update))))
+      (force-mode-line-update)))
+  
+  (defun setup-theme(frame)
+    (with-selected-frame frame
+      (load-theme 'modus-vivendi-tinted 'no-confirm))
+    (remove-hook 'after-make-frame-functions #'setup-theme)
+    (fmakunbound 'setup-theme))
+  
+  (if (daemonp)
+      (add-hook  'after-make-frame-functions #'setup-theme)))
 
 (use-package modus-themes
   :ensure t
