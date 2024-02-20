@@ -5,6 +5,10 @@
    :init
    (vertico-mode))
 
+(use-package savehist
+  :init
+  (savehist-mode))
+
 (use-package orderless
   :ensure t
   :custom
@@ -90,7 +94,42 @@
     "Call `consult-ripgrep' for my org roam files."
     (interactive)
     (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org-roam/org-roam1"))
-)
+
+    (defun reuben/consult-search-howm()
+      "Call `consult-ripgrep' for my howm files."
+      (interactive)
+      (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/howm")))
+
+ (use-package howm
+   :ensure t
+   :config
+   ;; Directory configuration
+   (setq howm-home-directory "~/Dropbox/howm/")
+   (setq howm-directory "~/Dropbox/howm/")
+   (setq howm-keyword-file (expand-file-name ".howm-keys" howm-home-directory))
+   (setq howm-history-file (expand-file-name ".howm-history" howm-home-directory))
+   (setq howm-file-name-format "%Y/%m/%Y-%m-%d-%H%M%S.org")
+   (setq howm-view-use-grep t)
+   (setq howm-view-grep-command "rg")
+   (setq howm-view-grep-option "-nH -i --no-heading --color never --line-buffered")
+   (setq howm-view-grep-extended-option nil)
+   (setq howm-view-grep-fixed-option "-F")
+   (setq howm-view-grep-expr-option nil)
+   (setq howm-view-grep-file-stdin-option nil)
+
+   (add-hook 'howm-mode-hook 'howm-mode-set-buffer-name)
+   (add-hook 'after-save-hook 'howm-mode-set-buffer-name)
+
+   (define-key howm-menu-mode-map "\C-h" nil)
+   (define-key riffle-summary-mode-map "\C-h" nil)
+   (define-key howm-view-contents-mode-map "\C-h" nil)
+
+    ;; Default recent to sorting by mtime
+   (advice-add 'howm-list-recent :after #'howm-view-sort-by-mtime)
+   ;; Default all to sorting by creation, newest first
+   (advice-add 'howm-list-all :after #'(lambda () (howm-view-sort-by-date t))))
+
+
 
 
 (use-package plantuml-mode
@@ -594,6 +633,7 @@
 
   (setq org-babel-python-command "python3")
   (add-hook 'org-mode-hook 'visual-line-mode)
+  (add-hook 'org-mode-hook 'reuben/org-fonts-mode)
 
   (defun get-variable-font()
     (cond ((x-list-fonts "Inter") '(:font "Inter"))
