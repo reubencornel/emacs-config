@@ -2,8 +2,8 @@
 
 (use-package vertico
   :ensure t
-   :init
-   (vertico-mode))
+  :init
+  (vertico-mode))
 
 (use-package savehist
   :init
@@ -23,8 +23,8 @@
 (use-package consult
   :ensure t
   ;; Replace bindings. Lazily loaded due by `use-package'.
-   :bind (
-          ("C-c h" . consult-history)
+  :bind (
+         ("C-c h" . consult-history)
          ("C-c m" . consult-mode-command)
          ("C-c b" . consult-bookmark)
          ("C-c k" . consult-kmacro)
@@ -40,7 +40,7 @@
          ;; Other custom bindings
          ("M-y" . consult-yank-pop)                ;; orig. yank-pop
          ("<help> a" . consult-apropos)            ;; or
-;;	 ig. apropos-command
+	 ;;	 ig. apropos-command
          ;; M-g bindings (goto-map)
          ;; ("M-g e" . consult-compile-error)
          ;; ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
@@ -78,7 +78,7 @@
 		    " "
 		    "."))
 	   (vertico-count 50))
-	   (consult-ripgrep directory keyword)))
+      (consult-ripgrep directory keyword)))
   
   (defun reuben/consult-search-org ()
     "Call `consult-ripgrep' for my org agenda files."
@@ -95,39 +95,39 @@
     (interactive)
     (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org-roam/org-roam1"))
 
-    (defun reuben/consult-search-howm()
-      "Call `consult-ripgrep' for my howm files."
-      (interactive)
-      (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/howm")))
+  (defun reuben/consult-search-howm()
+    "Call `consult-ripgrep' for my howm files."
+    (interactive)
+    (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/howm")))
 
- (use-package howm
-   :ensure t
-   :config
-   ;; Directory configuration
-   (setq howm-home-directory "~/Dropbox/howm/")
-   (setq howm-directory "~/Dropbox/howm/")
-   (setq howm-keyword-file (expand-file-name ".howm-keys" howm-home-directory))
-   (setq howm-history-file (expand-file-name ".howm-history" howm-home-directory))
-   (setq howm-file-name-format "%Y/%m/%Y-%m-%d-%H%M%S.org")
-   (setq howm-view-use-grep t)
-   (setq howm-view-grep-command "rg")
-   (setq howm-view-grep-option "-nH -i --no-heading --color never --line-buffered")
-   (setq howm-view-grep-extended-option nil)
-   (setq howm-view-grep-fixed-option "-F")
-   (setq howm-view-grep-expr-option nil)
-   (setq howm-view-grep-file-stdin-option nil)
+(use-package howm
+  :ensure t
+  :config
+  ;; Directory configuration
+  (setq howm-home-directory "~/Dropbox/howm/")
+  (setq howm-directory "~/Dropbox/howm/")
+  (setq howm-keyword-file (expand-file-name ".howm-keys" howm-home-directory))
+  (setq howm-history-file (expand-file-name ".howm-history" howm-home-directory))
+  (setq howm-file-name-format "%Y/%m/%Y-%m-%d-%H%M%S.org")
+  (setq howm-view-use-grep t)
+  (setq howm-view-grep-command "rg")
+  (setq howm-view-grep-option "-nH -i --no-heading --color never --line-buffered")
+  (setq howm-view-grep-extended-option nil)
+  (setq howm-view-grep-fixed-option "-F")
+  (setq howm-view-grep-expr-option nil)
+  (setq howm-view-grep-file-stdin-option nil)
 
-   (add-hook 'howm-mode-hook 'howm-mode-set-buffer-name)
-   (add-hook 'after-save-hook 'howm-mode-set-buffer-name)
+  (add-hook 'howm-mode-hook 'howm-mode-set-buffer-name)
+  (add-hook 'after-save-hook 'howm-mode-set-buffer-name)
 
-   (define-key howm-menu-mode-map "\C-h" nil)
-   (define-key riffle-summary-mode-map "\C-h" nil)
-   (define-key howm-view-contents-mode-map "\C-h" nil)
+  (define-key howm-menu-mode-map "\C-h" nil)
+  (define-key riffle-summary-mode-map "\C-h" nil)
+  (define-key howm-view-contents-mode-map "\C-h" nil)
 
-    ;; Default recent to sorting by mtime
-   (advice-add 'howm-list-recent :after #'howm-view-sort-by-mtime)
-   ;; Default all to sorting by creation, newest first
-   (advice-add 'howm-list-all :after #'(lambda () (howm-view-sort-by-date t))))
+  ;; Default recent to sorting by mtime
+  (advice-add 'howm-list-recent :after #'howm-view-sort-by-mtime)
+  ;; Default all to sorting by creation, newest first
+  (advice-add 'howm-list-all :after #'(lambda () (howm-view-sort-by-date t))))
 
 
 
@@ -199,10 +199,10 @@
                ;; ([f3] . org-narrow-to-subtree)
                ;; ([f4] . widen)
                ([M-return] . org-meta-return)
-          )
+               )
   :custom
   (org-hide-leading-stars 't)
-;  (setq org-use-property-inheritance nil)
+					;  (setq org-use-property-inheritance nil)
 					;(org-log-done 'time)
   (org-agenda-text-search-extra-files ;; This variable instructs org agenda to search through the archives
    '(agenda-archives "~/Dropbox/org/work.org_archive" "~/Dropbox/org/main.org_archive"))
@@ -285,106 +285,106 @@
 	   ("NEXT" ("WAITING") ("CANCELLED") )
 	   ("DONE" ("WAITING") ("CANCELLED") ))))
 
- (org-agenda-custom-commands
-      '(("d" "Daily Tasks" ((agenda ""
-                               ((org-agenda-overriding-header "Tasks in the next 2 weeks")
-                                (org-agenda-entry-types '(:scheduled :deadline))
-				(org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org" "~/Dropbox/org/inbox.org"))
-                                (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                                (org-agenda-span 1)
-                                (org-agenda-show-all-dates nil)
-                                (org-agenda-time-grid nil)
-                                (org-super-agenda-groups '((:name "Deadline past Tasks"
-                                                                  :deadline past)
-                                                           (:name "Deadline today Tasks"
-                                                                  :deadline today)
-                                                           (:name "Today Tasks"
-                                                                  :scheduled today)
-                                                           (:name "Past Scheduled Tasks"
-                                                                  :scheduled past)
-                                                           (:name "Future Tasks"
-                                                                  :deadline future)
-							   (:auto-parent))
-                                                         )))
-                            ))
-     	("i" "Inbox Review" ((tags-todo "TODO=\"TODO\"&SCHEDULED=\"\"|TODO=\"NEXT\"&SCHEDULED=\"\""
-        			        ((org-agenda-overriding-header "Inbox Tasks")
-                                         (org-agenda-files '("~/Dropbox/org/inbox.org"))))
-        		     (org-ql-block '(and (not (todo "TODO"))
-         		   		         (not (todo "DONE"))
-                                                 (not (todo "CANCELLED")))
-        		   	           ((org-ql-block-header "Notes")
-                                            (org-agenda-overriding-header "Other Items")
-                                            (org-agenda-files '("~/Dropbox/org/inbox.org"))
-                                            ))
-                             ))
-     	("t" "Inbox Entries TODAY" ((tags "ENTRYDATE>=\"<today>\""
-        			    ((org-agenda-overriding-header "Inbox Tasks")
-				     (org-agenda-time-grid nil)
-                                     (org-agenda-files '("~/Dropbox/org/inbox.org"))))
-                             ))
-	("r" "Review" ((agenda ""
-                               ((org-agenda-overriding-header "Tasks in the next 2 weeks")
-                                (org-agenda-entry-types '(:scheduled :deadline))
-				(org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org" "~/Dropbox/org/inbox.org"))
-                                (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                                (org-agenda-span 1)
-                                (org-agenda-show-all-dates nil)
-                                (org-agenda-time-grid nil)
-                                (org-super-agenda-groups '((:name "Deadline past Tasks"
-                                                                  :deadline past)
-                                                           (:name "Past Scheduled Tasks"
-                                                                  :scheduled past)
-                                                           (:name "Today Tasks"
-                                                                  :scheduled today
-                                                                  :deadline today)
-                                                           (:name "Future Tasks"
-                                                                  :deadline future))
-                                                         )))
-		       (org-ql-block '(and (property "ENTRY_TYPE" "PROJECT")
-						   (not (descendants (scheduled))))
-        		   	             ((org-ql-block-header "Stuck Projects")
-                                              (org-agenda-overriding-header "Other Items")
-                                              (org-agenda-files '("~/Dropbox/org/inbox.org" "~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
-					      (org-super-agenda-groups  '((:auto-category t)))
-                                              ))
-		       (tags-todo "TODO=\"TODO\"-DEPRIORITIZED_PROJECTS-TEMPLATE-PROJECT-SCHEDULED={.+}-DEADLINE={.+}"
-				  ((org-agenda-overriding-header "Unplanned Todos")
-				   (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
-				   (org-super-agenda-groups '((:auto-parent t))))))
-         ((org-agenda-block-separator "===================================================================="))
-         )
+  (org-agenda-custom-commands
+   '(("d" "Daily Tasks" ((agenda ""
+				 ((org-agenda-overriding-header "Tasks to work on today")
+                                  (org-agenda-entry-types '(:scheduled :deadline))
+				  (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org" "~/Dropbox/org/inbox.org"))
+                                  (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                                  (org-agenda-span 1)
+                                  (org-agenda-show-all-dates nil)
+                                  (org-agenda-time-grid nil)
+                                  (org-super-agenda-groups '((:name "Deadline past Tasks"
+                                                                    :deadline past)
+                                                             (:name "Deadline today Tasks"
+                                                                    :deadline today)
+                                                             (:name "Today Tasks"
+                                                                    :scheduled today)
+                                                             (:name "Past Scheduled Tasks"
+                                                                    :scheduled past)
+                                                             (:name "Future Tasks"
+                                                                    :deadline future)
+							     (:auto-parent))
+                                                           )))
+                         ))
+     ("i" "Inbox Review" ((tags-todo "TODO=\"TODO\"&SCHEDULED=\"\"|TODO=\"NEXT\"&SCHEDULED=\"\""
+        			     ((org-agenda-overriding-header "Inbox Tasks")
+                                      (org-agenda-files '("~/Dropbox/org/inbox.org"))))
+        		  (org-ql-block '(and (not (todo "TODO"))
+         		   		      (not (todo "DONE"))
+                                              (not (todo "CANCELLED")))
+        		   	        ((org-ql-block-header "Notes")
+                                         (org-agenda-overriding-header "Other Items")
+                                         (org-agenda-files '("~/Dropbox/org/inbox.org"))
+                                         ))
+                          ))
+     ("t" "Inbox Entries TODAY" ((tags "ENTRYDATE>=\"<today>\"&SCHEDULED=\"\""
+        			       ((org-agenda-overriding-header "Inbox Tasks")
+					(org-agenda-time-grid nil)
+					(org-agenda-files '("~/Dropbox/org/inbox.org"))))
+				 ))
+     ("r" "Review" ((agenda ""
+                            ((org-agenda-overriding-header "Tasks in the next 2 weeks")
+                             (org-agenda-entry-types '(:scheduled :deadline))
+			     (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org" "~/Dropbox/org/inbox.org"))
+                             (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                             (org-agenda-span 1)
+                             (org-agenda-show-all-dates nil)
+                             (org-agenda-time-grid nil)
+                             (org-super-agenda-groups '((:name "Deadline past Tasks"
+                                                               :deadline past)
+                                                        (:name "Past Scheduled Tasks"
+                                                               :scheduled past)
+                                                        (:name "Today Tasks"
+                                                               :scheduled today
+                                                               :deadline today)
+                                                        (:name "Future Tasks"
+                                                               :deadline future))
+                                                      )))
+		    (org-ql-block '(and (property "ENTRY_TYPE" "PROJECT")
+					(not (descendants (scheduled))))
+        		   	  ((org-ql-block-header "Stuck Projects")
+                                   (org-agenda-overriding-header "Other Items")
+                                   (org-agenda-files '("~/Dropbox/org/inbox.org" "~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
+				   (org-super-agenda-groups  '((:auto-category t)))
+                                   ))
+		    (tags-todo "TODO=\"TODO\"-DEPRIORITIZED_PROJECTS-TEMPLATE-PROJECT-SCHEDULED={.+}-DEADLINE={.+}"
+			       ((org-agenda-overriding-header "Unplanned Todos")
+				(org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
+				(org-super-agenda-groups '((:auto-parent t))))))
+      ((org-agenda-block-separator "===================================================================="))
+      )
 
-        ("p"  "Report" ((tags "ENTRY_TYPE=\"PROJECT\"&TODO=\"DONE\"&CLOSED>\"<-1w>\""
-			      ((org-super-agenda-groups '((:auto-parent t)))
-                               (org-agenda-span "-7d")
-			        (org-agenda-files '("~/Dropbox/org/inbox.org"
-						    "~/Dropbox/org/inbox.org_archive"
-						    "~/Dropbox/org/work.org"
-						    "~/Dropbox/org/work.org_archive"
-						    "~/Dropbox/org/main.org_archive"
-						    "~/Dropbox/org/main.org"))
-			        (org-agenda-overriding-header "Projects completed in the last week")))
-		         (tags "TODO=\"DONE\"&CLOSED>\"<-1w>\"&ENTRY_TYPE=\"\""
-			       ((org-agenda-overriding-header "Items Closed in the last week")
-                                (org-agenda-span "-7d")
-			        (org-agenda-files '("~/Dropbox/org/inbox.org"
-						    "~/Dropbox/org/inbox.org_archive"
-						    "~/Dropbox/org/work.org"
-						    "~/Dropbox/org/work.org_archive"
-						    "~/Dropbox/org/main.org_archive"
-						    "~/Dropbox/org/main.org"))
-			        (org-super-agenda-groups '((:auto-parent t)))))
-			 (tags "improvement&ENTRYDATE>\"<-1w>\""
-			       ((org-agenda-span "-7d")
-				(org-agenda-overriding-header "Improvements in the last week")
-				(org-agenda-files '("~/Dropbox/org/log.org"))))
-			 ))
-        ))
+     ("p"  "Report" ((tags "ENTRY_TYPE=\"PROJECT\"&TODO=\"DONE\"&CLOSED>\"<-1w>\""
+			   ((org-super-agenda-groups '((:auto-parent t)))
+                            (org-agenda-span "-7d")
+			    (org-agenda-files '("~/Dropbox/org/inbox.org"
+						"~/Dropbox/org/inbox.org_archive"
+						"~/Dropbox/org/work.org"
+						"~/Dropbox/org/work.org_archive"
+						"~/Dropbox/org/main.org_archive"
+						"~/Dropbox/org/main.org"))
+			    (org-agenda-overriding-header "Projects completed in the last week")))
+		     (tags "TODO=\"DONE\"&CLOSED>\"<-1w>\"&ENTRY_TYPE=\"\""
+			   ((org-agenda-overriding-header "Items Closed in the last week")
+                            (org-agenda-span "-7d")
+			    (org-agenda-files '("~/Dropbox/org/inbox.org"
+						"~/Dropbox/org/inbox.org_archive"
+						"~/Dropbox/org/work.org"
+						"~/Dropbox/org/work.org_archive"
+						"~/Dropbox/org/main.org_archive"
+						"~/Dropbox/org/main.org"))
+			    (org-super-agenda-groups '((:auto-parent t)))))
+		     (tags "improvement&ENTRYDATE>\"<-1w>\""
+			   ((org-agenda-span "-7d")
+			    (org-agenda-overriding-header "Improvements in the last week")
+			    (org-agenda-files '("~/Dropbox/org/log.org"))))
+		     ))
+     ))
 
   (org-stuck-projects
    '("+ENTRY_TYPE=\"PROJECT\"-DONE-TEMPLATE-DEFERRED-CANCELLED-TODO=\"DONE\"" ("") ("")
-        "\\<IGNORE\\>\\|SCHEDULED:\\|DEADLINE:"))
+     "\\<IGNORE\\>\\|SCHEDULED:\\|DEADLINE:"))
 
 
   (org-directory "~/Dropbox/org")
@@ -505,8 +505,8 @@
     (let ((depth (org-current-level)))
       (outline-next-heading)
       (let ((heading-string (concat
-  				    (make-string (+ depth 1) ?*)
-  				    " Log Entries\n")))
+  			     (make-string (+ depth 1) ?*)
+  			     " Log Entries\n")))
   	(insert heading-string)
   	(goto-char (- (line-beginning-position) 1)))))
 
@@ -552,7 +552,7 @@
                   (end-of-line)
                   (insert "\n   CLOSED:")
                   (insert (reuben/get-inactive-org-date-time))))
-              (org-todo (if (> n-done 0) "NEXT" "TODO")))))))
+            (org-todo (if (> n-done 0) "NEXT" "TODO")))))))
   
   (defun jump-to-org-agenda ()
     (interactive)
@@ -593,7 +593,7 @@
 	     (org-agenda-redo)))))
   
   (add-hook 'org-after-todo-state-change-hook
-	  'rasmus/remove-schedule)  
+	    'rasmus/remove-schedule)  
 
   (defun org-count-todos-in-state (state)
     (let ((count 0))
@@ -838,7 +838,7 @@
     ("k" smerge-kill-current)
     ("q" nil "cancel" :color blue))
 
-;  (bind-key "C-c h s" 'jethro/hydra-smerge/body)
+					;  (bind-key "C-c h s" 'jethro/hydra-smerge/body)
 
   
   (defhydra process-inbox(:exit nil :hint nil
@@ -1049,8 +1049,8 @@
   (global-unset-key (kbd "M-<return>"))
   (global-unset-key (kbd "C-<return>"))
   (global-set-key (kbd "C-<return>") 'action-key)
-;;  (global-unset-key (kbd "C-u C-<return>")  )
-;;  (global-set-key (kbd "C-u C-<return>") 'assist-key)
+  ;;  (global-unset-key (kbd "C-u C-<return>")  )
+  ;;  (global-set-key (kbd "C-u C-<return>") 'assist-key)
   
   (defun looking-at-work-item()
     (or
@@ -1088,8 +1088,8 @@
 	(let* ((property-name (org-read-property-name))
 	       (property-value (org-entry-get (point) property-name)))
 	  (hact 'org-tags-view nil (concat property-name "={" property-value "}")))))
-			      
-	
+  
+  
   (defib gus()
     "Gus links"
     (gus-links-function))
@@ -1100,42 +1100,42 @@
   )
 
 (use-package org-roam
-      :ensure t
-      :custom
-      (org-roam-directory "~/Dropbox/org-roam/org-roam1")
-      (org-roam-complete-everywhere t)
-      :bind (:map org-mode-map
-                  (("<f9>" . org-roam-buffer-toggle)
-                   ("C-c n f" . org-roam-node-find)
-                   ("C-c n g" . org-roam-graph)
-                   ("C-c n i" . org-roam-node-insert)
-                   ("C-c n I" . org-roam-capture)
-                   ("C-c n j" . org-roam-dailies-capture-today)
-                   ))
-      :config
-      (org-roam-setup)
-      (org-roam-db-autosync-mode)
-      
-      (add-to-list 'display-buffer-alist
-		   '("\\*org-roam\\*"
-		     (display-buffer-in-side-window)
-		     (side . right)
-		     (slot . 0)
-		     (window-width . 0.33)
-		     (window-parameters . ((no-other-window . t)
-					   (no-delete-other-windows . t)))))
-      
-      (setq org-link-frame-setup
-	    (append (seq-filter #'(lambda(x) (not (equal (car x) 'file)))
-				org-link-frame-setup)
-		    '((file . find-file))))
-      
-      (setq org-roam-completion-everywhere t)
-      (setq org-roam-complete-link-at-point  t)
-      
-      (add-hook 'org-roam-mode-hook #'visual-line-mode)
-      
-      (add-to-list 'magit-section-initial-visibility-alist (cons 'org-roam-node-section 'hide)))
+  :ensure t
+  :custom
+  (org-roam-directory "~/Dropbox/org-roam/org-roam1")
+  (org-roam-complete-everywhere t)
+  :bind (:map org-mode-map
+              (("<f9>" . org-roam-buffer-toggle)
+               ("C-c n f" . org-roam-node-find)
+               ("C-c n g" . org-roam-graph)
+               ("C-c n i" . org-roam-node-insert)
+               ("C-c n I" . org-roam-capture)
+               ("C-c n j" . org-roam-dailies-capture-today)
+               ))
+  :config
+  (org-roam-setup)
+  (org-roam-db-autosync-mode)
+  
+  (add-to-list 'display-buffer-alist
+	       '("\\*org-roam\\*"
+		 (display-buffer-in-side-window)
+		 (side . right)
+		 (slot . 0)
+		 (window-width . 0.33)
+		 (window-parameters . ((no-other-window . t)
+				       (no-delete-other-windows . t)))))
+  
+  (setq org-link-frame-setup
+	(append (seq-filter #'(lambda(x) (not (equal (car x) 'file)))
+			    org-link-frame-setup)
+		'((file . find-file))))
+  
+  (setq org-roam-completion-everywhere t)
+  (setq org-roam-complete-link-at-point  t)
+  
+  (add-hook 'org-roam-mode-hook #'visual-line-mode)
+  
+  (add-to-list 'magit-section-initial-visibility-alist (cons 'org-roam-node-section 'hide)))
 
 ;; --------------- Web Mode ---------------
 (use-package web-mode
@@ -1259,7 +1259,7 @@
   :after haskell-mode
   :init
   (add-hook 'haskell-mode-hook #'hindent-mode))
- 
+
 (use-package yasnippet
   :ensure t)
 
@@ -1285,11 +1285,11 @@
   :commands lsp-ui-mode)
 
 (use-package lsp-haskell
- :ensure t
- :config
- (setq lsp-haskell-server-path "~/.ghcup/bin/haskell-language-server-wrapper")
- (setq lsp-haskell-process-path-hie "~/.ghcup/bin/haskell-language-server-wrapper")
- (setq lsp-haskell-process-args-hie '()) )
+  :ensure t
+  :config
+  (setq lsp-haskell-server-path "~/.ghcup/bin/haskell-language-server-wrapper")
+  (setq lsp-haskell-process-path-hie "~/.ghcup/bin/haskell-language-server-wrapper")
+  (setq lsp-haskell-process-args-hie '()) )
 
 ;; (use-package lsp-java 
 ;;   :ensure t
@@ -1301,11 +1301,11 @@
   :config
   (require 'dap-java)
   :bind (:map lsp-mode-map
-         ("<f5>" . dap-debug)
-         ("M-<f5>" . dap-hydra))
+              ("<f5>" . dap-debug)
+              ("M-<f5>" . dap-hydra))
   :hook ((dap-mode . dap-ui-mode)
-    (dap-session-created . (lambda (&_rest) (dap-hydra)))
-    (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
+	 (dap-session-created . (lambda (&_rest) (dap-hydra)))
+	 (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
 
 
 (use-package frame
