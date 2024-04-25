@@ -632,69 +632,7 @@
      (R . t)))
 
   (setq org-babel-python-command "python3")
-  (add-hook 'org-mode-hook 'visual-line-mode)
-  (add-hook 'org-mode-hook 'reuben/org-fonts-mode)
-
-  (defun get-variable-font()
-    (cond ((x-list-fonts "Inter") '(:font "Inter"))
-	  ((x-list-fonts "Ubuntu") '(:font "Ubuntu"))
-	  ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
-	  ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
-	  ((x-list-fonts "DejaVu Sans") '(:font "DejaVu Sans"))
-          ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
-          ((x-list-fonts "Verdana")         '(:font "Verdana"))
-          (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
-
-  (defun get-headline-attributes(base-font-color)
-    (list :inherit 'default :foreground base-font-color :weight 'bold
-	  ))
-
-  (defun get-lower-headline-attributes(base-font-color)
-    (list :inherit 'default :foreground base-font-color))
-
-  (define-minor-mode reuben/org-fonts-mode()
-    :init-value nil
-    :global nil
-    :lighter "reuben/font-mode"
-    (let* ((variable-tuple (get-variable-font))
-           (base-font-color     (face-foreground 'default nil 'default))
-           (headline           (get-headline-attributes base-font-color))
-	   (lower-headline     (get-lower-headline-attributes base-font-color)))
-
-      (setq line-spacing .3)
-      (variable-pitch-mode 1)
-      
-      (custom-theme-set-faces
-       'user
-       `(variable-pitch ((t ,@(get-variable-font))))
-       '(fixed-pitch ((t ( :family "Fira Mono" ))))
-       '(default ((t ( :family "Fira Mono" )))))
-      
-      
-      (custom-theme-set-faces
-       'user
-       `(org-level-8 ((t (,@lower-headline ,@variable-tuple))))
-       `(org-level-7 ((t (,@lower-headline ,@variable-tuple))))
-       `(org-level-6 ((t (,@lower-headline ,@variable-tuple))))
-       `(org-level-5 ((t (,@lower-headline ,@variable-tuple))))
-       `(org-level-4 ((t (,@lower-headline ,@variable-tuple))))
-       `(org-level-3 ((t (,@lower-headline ,@variable-tuple :height 1.15))))
-       `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.25))))
-       `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.50))))
-       `(org-document-title ((t (,@headline ,@variable-tuple :height 2.25 :underline nil))))
-       '(org-block ((t (:inherit variable-pitch))))
-       '(org-code ((t (:inherit  fixed-pitch))))
-       '(org-document-info ((t (:foreground "dark orange"))))
-       '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
-       '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
-       '(org-link ((t (:foreground "royal blue" :underline t))))
-       '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-       '(org-property-value ((t (:inherit fixed-pitch))) t)
-       '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-       '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
-       '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
-       '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))))
-  )
+  (add-hook 'org-mode-hook 'visual-line-mode))
 
 (use-package org-ref
   :defer t
@@ -875,30 +813,6 @@
   (prog-mode . bury-successful-compilation))
 
 ;; --------------- Rust Config ---------------
-;; (use-package rust-mode
-;;   :ensure t
-;;   :defer t
-;;   :mode "\\.rs"
-;;   :config
-;;   (use-package racer
-;;   :ensure t)
-;;   (add-hook 'rust-mode-hook #'racer-mode)
-;;   (add-hook 'racer-mode-hook #'eldoc-mode))
-
-;; (use-package company-racer
-;;   :ensure t
-;;   :defer t
-;;   :after (company)
-;;   :config
-;;   (add-to-list 'company-backends 'company-racer))
-
-;; (use-package flycheck-rust
-;;   :ensure t
-;;   :defer t
-;;   :after (rust-mode)
-;;   :config
-;;   (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
-
 (use-package rustic
   :ensure
   :bind (:map rustic-mode-map
@@ -1407,7 +1321,6 @@
   :config
   (setq modus-themes-italic-constructs t
 	modus-themes-bold-constructs nil
-	modus-themes-mixed-fonts t
 	modus-themes-variable-pitch-ui nil
 	modus-themes-custom-auto-reload t
 	modus-themes-disable-other-themes t
@@ -1430,17 +1343,7 @@
 
 	modus-themes-org-blocks 'gray-background ; {nil,'gray-background,'tinted-background}
 
-	;; The `modus-themes-headings' is an alist: read the manual's
-	;; node about it or its doc string.  Basically, it supports
-	;; per-level configurations for the optional use of
-	;; `variable-pitch' typography, a height value as a multiple of
-	;; the base font size (e.g. 1.5), and a `WEIGHT'.
-	modus-themes-headings
-	'((1 . (variable-pitch 1.5))
-          (2 . (1.3))
-          (agenda-date . (1.3))
-          (agenda-structure . (variable-pitch light 1.8))
-          (t . (1.1)))))
+  ))
 
 (provide 'use-package-config)
 ;;; use-package-config.el
