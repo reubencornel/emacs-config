@@ -662,15 +662,6 @@
   :config
   (org-super-agenda-mode))
 
-;;;;;;;;;;;;;;; Auto update emacs package ;;;;;;;;;;;;;;;
-(use-package auto-package-update
-  :ensure t
-  :defer 5
-  :config
-  (setq auto-package-update-delete-old-versions t)
-  (setq auto-package-update-hide-results t)
-  (auto-package-update-maybe))
-
 (use-package ibuffer
   :defer t
   :custom
