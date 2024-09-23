@@ -129,9 +129,6 @@
   ;; Default all to sorting by creation, newest first
   (advice-add 'howm-list-all :after #'(lambda () (howm-view-sort-by-date t))))
 
-
-
-
 (use-package plantuml-mode
   :ensure t
   :defer t
@@ -1334,7 +1331,13 @@
 
 	modus-themes-org-blocks 'gray-background ; {nil,'gray-background,'tinted-background}
 
-  ))
+	))
+
+(use-package rainbow-delimiters
+  :ensure t
+  :config
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
 
 (provide 'use-package-config)
 ;;; use-package-config.el
