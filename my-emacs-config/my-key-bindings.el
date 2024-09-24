@@ -12,7 +12,7 @@
 (defun open-daily-tasks()
   (interactive)
   (org-agenda "" "d"))
-(global-set-key [(f2)] 'open-daily-tasks)
+(global-set-key [(f2)] 'org-agenda-list)
 
 (global-unset-key [(f3)])
 (defun open-inbox-today-entries()

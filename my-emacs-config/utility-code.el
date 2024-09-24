@@ -7,10 +7,6 @@
 (defun gnu-emacs-p()
   (string-match "GNU Emacs" (version)))
 
-(defun carbon-emacs-p()
-  (and (string-match "GNU Emacs" (version))
-       (string-match "Carbon Version" (version))))
-
 (defun linux-p()
   (string= system-type "gnu/linux"))
 

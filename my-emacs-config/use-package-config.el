@@ -42,10 +42,10 @@
          ("<help> a" . consult-apropos)            ;; or
 	 ;;	 ig. apropos-command
          ;; M-g bindings (goto-map)
-         ;; ("M-g e" . consult-compile-error)
-         ;; ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
-         ;; ("M-g g" . consult-goto-line)             ;; orig. goto-line
-         ;; ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+          ("M-g e" . consult-compile-error)
+          ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+          ("M-g g" . consult-goto-line)             ;; orig. goto-line
+          ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
          ;; ("M-g o" . consult-outline)
          ;; ("M-g m" . consult-mark)
          ;; ("M-g k" . consult-global-mark)
@@ -1297,12 +1297,13 @@
   
   (defun setup-theme(frame)
     (with-selected-frame frame
-      (load-theme 'modus-vivendi-tinted 'no-confirm))
+      (load-theme 'spacemacs-dark 'no-confirm))
     (remove-hook 'after-make-frame-functions #'setup-theme)
     (fmakunbound 'setup-theme))
   
   (if (daemonp)
       (add-hook  'after-make-frame-functions #'setup-theme)))
+
 
 (use-package modus-themes
   :ensure t

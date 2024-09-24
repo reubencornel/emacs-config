@@ -92,7 +92,7 @@
   (propertize (format my-linum-format-string line-number) 'face 'linum))
 
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-(setq display-line-numbers 'relative)
+(setq-default display-line-numbers 'relative)
 
 (defun center-buffer-text()
   "This function centers the text in a buffer. Use this for writing."
