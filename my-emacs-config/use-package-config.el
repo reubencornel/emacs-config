@@ -196,6 +196,7 @@
                ;; ([f3] . org-narrow-to-subtree)
                ;; ([f4] . widen)
                ([M-return] . org-meta-return)
+	       ("C-c ," . howm-menu)
                )
   :custom
   (org-hide-leading-stars 't)
