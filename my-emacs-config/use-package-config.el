@@ -5,6 +5,12 @@
   :init
   (vertico-mode))
 
+(use-package vertico-reverse
+  :after vertico
+  :ensure nil
+  :config
+  (vertico-reverse-mode 1))
+
 (use-package savehist
   :init
   (savehist-mode))
