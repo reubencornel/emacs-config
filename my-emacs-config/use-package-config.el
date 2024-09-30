@@ -1220,12 +1220,14 @@
 (use-package frame
   :commands prot/cursor-type-mode
   :config
-  (setq-default cursor-type 'box)
-  (setq-default cursor-in-non-selected-windows '(bar . 2))
-  (setq-default blink-cursor-blinks 50)
-  (setq-default blink-cursor-interval nil) ; 0.75 would be my choice
-  (setq-default blink-cursor-delay 0.2)
 
+  (setq-default blink-cursor-blinks -1)
+  (setq-default blink-cursor-interval .6)
+  (setq-default blink-cursor-delay .6)
+  (setq-default cursor-type '(bar . 3))
+  (setq-default cursor-in-non-selected-windows 'box)
+
+  (setq default-frame-alist '((font . "Jetbrains Mono 15")))
   (blink-cursor-mode -1)
 
   (define-minor-mode prot/cursor-type-mode
