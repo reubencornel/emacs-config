@@ -921,10 +921,12 @@
   (require 'elfeed-org)
   (elfeed-org)
   (setq rmh-elfeed-org-files (list "~/Dropbox/feeds.org")))
+
 (use-package elfeed-goodies
   :ensure t
   :config
   (elfeed-goodies/setup))
+
 (use-package elfeed-protocol
   :ensure t  )
 (use-package elfeed-score
@@ -961,25 +963,19 @@
      (save-excursion
        (backward-word-strictly 2)
        (looking-at "W-[0-9]+"))
+     (save-excursion
+       (backward-word-strictly 1)
+       (looking-at "W-[0-9]+"))     
      (looking-at "a07.*")
      (save-excursion
        (backward-word-strictly 1)
        (looking-at "a07.*"))))
 
   (defun get-work-item-text()
-    (interactive)
     (let* ((match-data (match-data))
            (start (first match-data))
            (end (second match-data)))
-      (buffer-substring-no-properties start end)
-      ))
-  
-  (defun gus-links-function()
-    (interactive)
-    (if (looking-at-work-item)
-	(let ((work-item (get-work-item-text)))
-          (hact 'www-url (concat "https://gus.my.salesforce.com/apex/ADM_WorkLocator?bugorworknumber=" work-item)))
-      nil))
+      (list (buffer-substring-no-properties start end) start end)))
 
   (defun in-org-property()
     (and (hsys-org-mode-p)
@@ -995,11 +991,15 @@
   
   (defib gus()
     "Gus links"
-    (gus-links-function))
+    (if (looking-at-work-item)
+	(cl-destructuring-bind (text start end) (get-work-item-text)
+          (ibut:label-set text start end)
+          (hact 'www-url (concat "https://gus.my.salesforce.com/apex/ADM_WorkLocator?bugorworknumber=" text)))
+      nil))
 
-  (defib org-property-search()
-    "org property search"
-    (org-properties-search))
+  ;; (defib org-property-search()
+  ;;   "org property search"
+  ;;   (org-properties-search))
   )
 
 (use-package org-roam

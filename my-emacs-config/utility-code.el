@@ -65,7 +65,7 @@
 
 (defun get-number-str(day)
   (interactive)
-  (destructuring-bind (first-char second-char)
+  (cl-destructuring-bind (first-char second-char)
       (butlast (rest (split-string day "")))
     (if (equal first-char "1")
 	"th"
