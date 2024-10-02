@@ -1,4 +1,4 @@
-;(require 'use-package)
+;; -*- lexical-binding: t -*-
 
 (straight-use-package 'use-package)
 
@@ -87,7 +87,7 @@
 		    "."))
 	   (vertico-count 50))
       (consult-ripgrep directory keyword)))
-  
+
   (defun reuben/consult-search-org ()
     "Call `consult-ripgrep' for my org agenda files."
     (interactive)
@@ -256,14 +256,14 @@
                            (deldeadline . "Removed deadline, was %S on %t")
                            (refile      . "Refiled on %t")
 			   (clock-out . "")))
-  
+
   (org-todo-keywords
    (quote ((sequence "TODO(t)" "NEXT(n)" "WAITING(w@/!)" "DEFERRED(e)" "|" "DONE(d!)" "CANCELLED(c@)")
 	   (sequence "TOBUY(b)" "TOPACK(p)" "|" "BOUGHT(g)" "PACKED")
 	   (sequence "TOREAD(r)" "|" "READ")
 	   (sequence "QUESTION(q)" "|" "ANSWERED(a@)")
 	   (sequence "TOREVIEW" "INREVIEW" "REWORK" "|" "APPROVED"))))
-  
+
   (org-todo-keyword-faces
    (quote (("TODO" :foreground "red1" :weight bold)
 	   ("NEXT" :foreground "turquoise" :weight bold)
@@ -559,7 +559,7 @@
                   (insert "\n   CLOSED:")
                   (insert (reuben/get-inactive-org-date-time))))
             (org-todo (if (> n-done 0) "NEXT" "TODO")))))))
-  
+
   (defun jump-to-org-agenda ()
     (interactive)
     (push-window-configuration)
@@ -597,9 +597,9 @@
 	   (get-buffer "*Org Agenda*")
 	   (with-current-buffer "*Org Agenda*"
 	     (org-agenda-redo)))))
-  
+
   (add-hook 'org-after-todo-state-change-hook
-	    'rasmus/remove-schedule)  
+	    'rasmus/remove-schedule)
 
   (defun org-count-todos-in-state (state)
     (let ((count 0))
@@ -775,7 +775,7 @@
 
 					;  (bind-key "C-c h s" 'jethro/hydra-smerge/body)
 
-  
+
   (defhydra process-inbox(:exit nil :hint nil
                                 :pre (setq rfc/resume-hydra nil)
                                 :post (if rfc/resume-hydra
@@ -945,7 +945,7 @@
   :straight t
   :bind ("<f8>" . deft)
   :commands (deft)
-  
+
   :config (setq deft-directory "~/Dropbox/org-roam/org-roam1"
                 deft-extensions '("md" "org")
 		deft-use-filename-as-title t
@@ -956,7 +956,7 @@
 (use-package hyperbole
   :straight t
   :config
-  
+
   (global-unset-key  [(f6)])
   (global-set-key  [(f6)] 'gbut:act)
   (global-unset-key (kbd "M-<return>"))
@@ -964,7 +964,7 @@
   (global-set-key (kbd "C-<return>") 'action-key)
   ;;  (global-unset-key (kbd "C-u C-<return>")  )
   ;;  (global-set-key (kbd "C-u C-<return>") 'assist-key)
-  
+
   (defun looking-at-work-item()
     (or
      (looking-at "W-[0-9]+")
@@ -973,7 +973,7 @@
        (looking-at "W-[0-9]+"))
      (save-excursion
        (backward-word-strictly 1)
-       (looking-at "W-[0-9]+"))     
+       (looking-at "W-[0-9]+"))
      (looking-at "a07.*")
      (save-excursion
        (backward-word-strictly 1)
@@ -995,8 +995,8 @@
 	(let* ((property-name (org-read-property-name))
 	       (property-value (org-entry-get (point) property-name)))
 	  (hact 'org-tags-view nil (concat property-name "={" property-value "}")))))
-  
-  
+
+
   (defib gus()
     "Gus links"
     (if (looking-at-work-item)
@@ -1026,7 +1026,7 @@
   :config
   (org-roam-setup)
   (org-roam-db-autosync-mode)
-  
+
   (add-to-list 'display-buffer-alist
 	       '("\\*org-roam\\*"
 		 (display-buffer-in-side-window)
@@ -1035,17 +1035,17 @@
 		 (window-width . 0.33)
 		 (window-parameters . ((no-other-window . t)
 				       (no-delete-other-windows . t)))))
-  
+
   (setq org-link-frame-setup
 	(append (seq-filter #'(lambda(x) (not (equal (car x) 'file)))
 			    org-link-frame-setup)
 		'((file . find-file))))
-  
+
   (setq org-roam-completion-everywhere t)
   (setq org-roam-complete-link-at-point  t)
-  
+
   (add-hook 'org-roam-mode-hook #'visual-line-mode)
-  
+
   (add-to-list 'magit-section-initial-visibility-alist (cons 'org-roam-node-section 'hide)))
 
 ;; --------------- Web Mode ---------------
@@ -1055,11 +1055,11 @@
   (add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.html?$" . web-mode))
   (setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
-  
+
   (defun web-mode-init-hook ()
     "Hooks for Web mode.  Adjust indent."
     (setq web-mode-markup-indent-offset 4))
-  
+
   (add-hook 'web-mode-hook  'web-mode-init-hook))
 
 
@@ -1075,7 +1075,7 @@
   (defun web-mode-init-prettier-hook ()
     (add-node-modules-path)
     (prettier-js-mode))
-  
+
   (add-hook 'web-mode-hook  'web-mode-init-prettier-hook))
 
 (use-package emmet-mode
@@ -1131,7 +1131,7 @@
               ("M-<down>" . sp-backward-down-sexp)
               ("M-<up>"   . sp-backward-up-sexp)
 
-              
+
               ("C-M-f" . sp-forward-sexp)
               ("C-M-b" . sp-backward-sexp)
 
@@ -1142,7 +1142,7 @@
 
               ("C-M-k" . sp-kill-sexp)
               ("M-k"   . sp-backward-kill-sexp)
-              
+
               ("M-[" . sp-backward-unwrap-sexp)
               ("M-]" . sp-unwrap-sexp))
   :config
@@ -1202,7 +1202,7 @@
   (setq lsp-haskell-process-path-hie "~/.ghcup/bin/haskell-language-server-wrapper")
   (setq lsp-haskell-process-args-hie '()) )
 
-;; (use-package lsp-java 
+;; (use-package lsp-java
 ;;   :straight t
 ;;   :config (add-hook 'java-mode-hook 'lsp))
 (use-package dap-mode
@@ -1223,13 +1223,6 @@
   :commands prot/cursor-type-mode
   :config
 
-  (setq-default blink-cursor-blinks -1)
-  (setq-default blink-cursor-interval .6)
-  (setq-default blink-cursor-delay .6)
-  (setq-default cursor-type '(bar . 3))
-  (setq-default cursor-in-non-selected-windows 'box)
-
-  (setq default-frame-alist '((font . "Jetbrains Mono 15")))
   (blink-cursor-mode -1)
 
   (define-minor-mode prot/cursor-type-mode
@@ -1297,6 +1290,7 @@
                   mode-line-misc-info
                   mode-line-end-spaces))
 
+
   (define-minor-mode prot/hidden-mode-line-mode
     "Toggle modeline visibility in the current buffer."
     :init-value nil
@@ -1305,16 +1299,18 @@
         (setq-local mode-line-format nil)
       (kill-local-variable 'mode-line-format)
       (force-mode-line-update)))
-  
+
   (defun setup-theme(frame)
     (with-selected-frame frame
-      (load-theme 'spacemacs-dark 'no-confirm))
+      (load-theme 'doom-shades-of-purple 'no-confirm))
     (remove-hook 'after-make-frame-functions #'setup-theme)
     (fmakunbound 'setup-theme))
-  
+
   (if (daemonp)
       (add-hook  'after-make-frame-functions #'setup-theme)))
 
+(use-package doom-themes
+  :straight t)
 
 (use-package modus-themes
   :straight t
@@ -1341,9 +1337,7 @@
 	'((matches . (extrabold))
           (selection . (semibold italic text-also)))
 
-	modus-themes-org-blocks 'gray-background ; {nil,'gray-background,'tinted-background}
-
-	))
+	modus-themes-org-blocks 'gray-background)) ; {nil,'gray-background,'tinted-background}
 
 (use-package rainbow-delimiters
   :straight t
@@ -1362,4 +1356,4 @@
 
 
 (provide 'use-package-config)
-;;use-package-config.el
+;;; use-package-config.el ends here

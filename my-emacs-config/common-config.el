@@ -128,3 +128,11 @@
                "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
 
 (show-paren-mode)
+
+(setq-default blink-cursor-blinks -1)
+(setq-default blink-cursor-interval .6)
+(setq-default blink-cursor-delay .6)
+(setq-default cursor-type '(bar . 3))
+(setq-default cursor-in-non-selected-windows 'box)
+(setq display-line-numbers 'relative)
+(setq default-frame-alist '((font . "Jetbrains Mono 15")))
