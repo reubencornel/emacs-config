@@ -1,13 +1,15 @@
-(require 'use-package)
+;(require 'use-package)
+
+(straight-use-package 'use-package)
 
 (use-package vertico
-  :ensure t
+  :straight t
   :init
   (vertico-mode))
 
 (use-package vertico-reverse
   :after vertico
-  :ensure nil
+  :straight nil
   :config
   (vertico-reverse-mode 1))
 
@@ -16,18 +18,18 @@
   (savehist-mode))
 
 (use-package orderless
-  :ensure t
+  :straight t
   :custom
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package marginalia
-  :ensure t
+  :straight t
   :init
   (marginalia-mode))
 
 (use-package consult
-  :ensure t
+  :straight t
   ;; Replace bindings. Lazily loaded due by `use-package'.
   :bind (
          ("C-c h" . consult-history)
@@ -107,7 +109,7 @@
     (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/howm")))
 
 (use-package howm
-  :ensure t
+  :straight t
   :config
   ;; Directory configuration
   (setq howm-home-directory "~/Dropbox/howm/")
@@ -136,7 +138,7 @@
   (advice-add 'howm-list-all :after #'(lambda () (howm-view-sort-by-date t))))
 
 (use-package plantuml-mode
-  :ensure t
+  :straight t
   :defer t
   :mode ("\\.uml$" . plantuml-mode)
   :config
@@ -145,14 +147,14 @@
 
 (use-package color-theme-modern
   :defer t
-  :ensure t)
+  :straight t)
 
 (use-package magit
   :defer t
-  :ensure t)
+  :straight t)
 
 (use-package markdown-mode
-  :ensure t
+  :straight t
   :defer t
   :mode ("\\.md" . markdown-mode))
 
@@ -176,7 +178,7 @@
 	  (run-with-idle-timer 5 t #'my/truncate-eshell-buffers))))
 
 (use-package eshell-git-prompt
-  :ensure t
+  :straight t
   :init
   (eshell-git-prompt-use-theme 'robbyrussell))
 
@@ -197,7 +199,7 @@
 
 (use-package org
   :defer t
-  :ensure org-contrib
+  :straight org-contrib
   :bind  (:map org-mode-map
                ;; ([f3] . org-narrow-to-subtree)
                ;; ([f4] . widen)
@@ -640,7 +642,7 @@
 
 (use-package org-ref
   :defer t
-  :ensure t
+  :straight t
   :after org
   :custom
   (reftex-default-bibliography '("~/Dropbox/bibliography/references.bib"))
@@ -651,18 +653,18 @@
   (require 'org-ref))
 
 (use-package org-bullets
-  :ensure t
+  :straight t
   :config ;; executed after loading package
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
 (use-package org-ql
-  :ensure t
+  :straight t
   :defer t
   :after org)
 
 (use-package org-super-agenda
   :after org
-  :ensure t
+  :straight t
   :config
   (org-super-agenda-mode))
 
@@ -694,10 +696,10 @@
 
 (use-package spaceline
   :defer t
-  :ensure t)
+  :straight t)
 
 (use-package spaceline-all-the-icons
-  :ensure t
+  :straight t
   :defer t
   :after spaceline
   :config
@@ -706,7 +708,7 @@
 ;; --------------- fly check mode ---------------
 
 (use-package flycheck
-  :ensure t
+  :straight t
   :defer t
   :init (global-flycheck-mode)
   :config
@@ -719,7 +721,7 @@
 
 ;; --------------- company mode ---------------
 (use-package company
-  :ensure t
+  :straight t
   :defer t
   :custom
   (company-idle-delay 0.5)
@@ -735,7 +737,7 @@
 
 ;; --------------- Hydra mode ---------------
 (use-package hydra
-  :ensure t
+  :straight t
   :config
 
   (defhydra jethro/hydra-smerge (:color pink
@@ -803,13 +805,13 @@
 
 
 (use-package bury-successful-compilation
-  :ensure t
+  :straight t
   :hook
   (prog-mode . bury-successful-compilation))
 
 ;; --------------- Rust Config ---------------
 (use-package rustic
-  :ensure
+  :straight
   :bind (:map rustic-mode-map
               ("M-j" . lsp-ui-imenu)
               ("M-?" . lsp-find-references)
@@ -834,7 +836,7 @@
   (setq-local buffer-save-without-query t))
 
 (use-package lsp-ui
-  :ensure
+  :straight
   :commands lsp-ui-mode
   :custom
   (lsp-ui-peek-always-show t)
@@ -844,7 +846,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; (use-package yasnippet			       ;;
-;;   :ensure					       ;;
+;;   :straight					       ;;
 ;;   :config					       ;;
 ;;   (setq yas-snippet-dirs '("~/Dropbox/yassnippet")) ;;
 ;;   (yas-global-mode 1))			       ;;
@@ -852,7 +854,7 @@
 
 
 (use-package tide
-  :ensure t
+  :straight t
   :defer t
   :after (typescript-mode company flycheck)
   :hook ((typescript-mode . tide-setup)
@@ -861,21 +863,21 @@
 
 (use-package restclient
   :defer t
-  :ensure t)
+  :straight t)
 
 (use-package ledger-mode
   :defer t
-  :ensure t)
+  :straight t)
 
 (use-package exec-path-from-shell
-  :ensure t
+  :straight t
   :defer t
   :config
   (exec-path-from-shell-initialize))
 
 (use-package slime
   :defer t
-  :ensure t
+  :straight t
   :config
   (progn
     (setq inferior-lisp-program "sbcl"
@@ -883,7 +885,7 @@
 
 ;; --------------- Writing ---------------
 (use-package olivetti
-  :ensure t
+  :straight t
   :after wc-goal-mode
   :config
   (setq olivetti-body-width 0.65)
@@ -908,39 +910,39 @@
   )
 
 (use-package visual-fill-column
-  :ensure t)
+  :straight t)
 
 (use-package wc-goal-mode
-  :ensure t)
+  :straight t)
 
 (use-package doom-themes
-  :ensure t)
+  :straight t)
 (use-package doom-modeline
-  :ensure t)
+  :straight t)
 
 
 (use-package elfeed
-  :ensure t)
+  :straight t)
 (use-package elfeed-org
-  :ensure t
+  :straight t
   :config
   (require 'elfeed-org)
   (elfeed-org)
   (setq rmh-elfeed-org-files (list "~/Dropbox/feeds.org")))
 
 (use-package elfeed-goodies
-  :ensure t
+  :straight t
   :config
   (elfeed-goodies/setup))
 
 (use-package elfeed-protocol
-  :ensure t  )
+  :straight t  )
 (use-package elfeed-score
-  :ensure t)
+  :straight t)
 
 
 (use-package deft
-  :ensure t
+  :straight t
   :bind ("<f8>" . deft)
   :commands (deft)
   
@@ -952,7 +954,7 @@
 					   (case-fn . downcase))))
 
 (use-package hyperbole
-  :ensure t
+  :straight t
   :config
   
   (global-unset-key  [(f6)])
@@ -1009,7 +1011,7 @@
   )
 
 (use-package org-roam
-  :ensure t
+  :straight t
   :custom
   (org-roam-directory "~/Dropbox/org-roam/org-roam1")
   (org-roam-complete-everywhere t)
@@ -1048,7 +1050,7 @@
 
 ;; --------------- Web Mode ---------------
 (use-package web-mode
-  :ensure t
+  :straight t
   :config
   (add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.html?$" . web-mode))
@@ -1062,13 +1064,13 @@
 
 
 (use-package add-node-modules-path
-  :ensure t
+  :straight t
   :after flycheck
   :config
   (add-hook 'flycheck-mode-hook 'add-node-modules-path))
 
 (use-package prettier-js
-  :ensure t
+  :straight t
   :config
   (defun web-mode-init-prettier-hook ()
     (add-node-modules-path)
@@ -1077,17 +1079,17 @@
   (add-hook 'web-mode-hook  'web-mode-init-prettier-hook))
 
 (use-package emmet-mode
-  :ensure t
+  :straight t
   :config
   (add-hook 'web-mode-hook  'emmet-mode))
 
 (use-package typescript-mode
-  :ensure t
+  :straight t
   :config
   (add-to-list 'auto-mode-alist '("\\.ts$" . typescript-mode)))
 
 (use-package tide
-  :ensure t
+  :straight t
   :after (typescript-mode company flycheck)
   :hook ((typescript-mode . tide-setup)
          (typescript-mode . tide-hl-identifier-mode)
@@ -1096,7 +1098,7 @@
 ;; --------------- Projectile ---------------
 
 (use-package projectile
-  :ensure t
+  :straight t
   :config
   (projectile-mode +1)
   (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
@@ -1104,25 +1106,25 @@
 
 ;; --------------- Avy ---------------
 (use-package avy
-  :ensure t
+  :straight t
   :config
   (global-set-key (kbd "C-:") 'avy-goto-char))
 
 ;; --------------- Neotree ---------------
 (use-package neotree
-  :ensure t)
+  :straight t)
 
 (use-package geiser
-  :ensure t)
+  :straight t)
 
 (use-package geiser-mit
-  :ensure t
+  :straight t
   :after geiser
   :config
   (setq geiser-active-implementations '(mit)))
 
 (use-package smartparens
-  :ensure t
+  :straight t
   :bind (:map smartparens-mode-map
               ("C-<down>" . sp-down-sexp)
               ("C-<up>"   . sp-up-sexp)
@@ -1147,33 +1149,33 @@
   (smartparens-global-mode t))
 
 (use-package which-key
-  :ensure t
+  :straight t
   :config
   (which-key-mode))
 
 ;; Haskell Setup
 
 (use-package flycheck-haskell
-  :ensure t)
+  :straight t)
 
 (use-package haskell-mode
-  :ensure t
+  :straight t
   :config
   (add-hook 'haskell-mode-hook #'lsp)
   (add-hook 'haskell-mode-hook #'lsp-ui-mode)
   (add-hook 'haskell-mode-hook #'interactive-haskell-mode))
 
 (use-package hindent
-  :ensure t
+  :straight t
   :after haskell-mode
   :init
   (add-hook 'haskell-mode-hook #'hindent-mode))
 
 (use-package yasnippet
-  :ensure t)
+  :straight t)
 
 (use-package lsp-mode
-  :ensure
+  :straight
   :commands lsp
   :hook (lsp-mode . (lambda ()
                       (let ((lsp-keymap-prefix "C-x l"))
@@ -1190,21 +1192,21 @@
 (global-unset-key (kbd "C-x l"))
 
 (use-package lsp-ui
-  :ensure t
+  :straight t
   :commands lsp-ui-mode)
 
 (use-package lsp-haskell
-  :ensure t
+  :straight t
   :config
   (setq lsp-haskell-server-path "~/.ghcup/bin/haskell-language-server-wrapper")
   (setq lsp-haskell-process-path-hie "~/.ghcup/bin/haskell-language-server-wrapper")
   (setq lsp-haskell-process-args-hie '()) )
 
 ;; (use-package lsp-java 
-;;   :ensure t
+;;   :straight t
 ;;   :config (add-hook 'java-mode-hook 'lsp))
 (use-package dap-mode
-  :ensure t
+  :straight t
   :after (lsp-mode)
   :functions dap-hydra/nil
   :config
@@ -1315,7 +1317,7 @@
 
 
 (use-package modus-themes
-  :ensure t
+  :straight t
   :config
   (setq modus-themes-italic-constructs t
 	modus-themes-bold-constructs nil
@@ -1344,10 +1346,10 @@
 	))
 
 (use-package rainbow-delimiters
-  :ensure t
+  :straight t
   :config
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
 
 (provide 'use-package-config)
-;;; use-package-config.el
+;;use-package-config.el
