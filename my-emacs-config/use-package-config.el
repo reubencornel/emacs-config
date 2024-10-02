@@ -1350,6 +1350,16 @@
   :config
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
+(use-package diminish
+  :straight t
+  :config
+  (diminish 'hyperbole-mode "")
+  (diminish 'yas-minor-mode "")
+  (diminish 'company-mode "")
+  (diminish 'org-roam-ui-mode "")
+  (diminish 'projectile-mode "")
+  (diminish 'eldoc-mode ""))
+
 
 (provide 'use-package-config)
 ;;use-package-config.el
