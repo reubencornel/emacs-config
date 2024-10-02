@@ -91,8 +91,9 @@
 (defun my-linum-format (line-number)
   (propertize (format my-linum-format-string line-number) 'face 'linum))
 
+(add-hook 'prog-mode-hook (lambda ()
+			    (setq display-line-numbers 'relative)))
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-(setq-default display-line-numbers 'relative)
 
 (defun center-buffer-text()
   "This function centers the text in a buffer. Use this for writing."
@@ -134,5 +135,4 @@
 (setq-default blink-cursor-delay .6)
 (setq-default cursor-type '(bar . 3))
 (setq-default cursor-in-non-selected-windows 'box)
-(setq display-line-numbers 'relative)
 (setq default-frame-alist '((font . "Jetbrains Mono 15")))
