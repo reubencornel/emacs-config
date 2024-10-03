@@ -1269,6 +1269,7 @@
 (use-package emacs
   :commands prot/hidden-mode-line-mode
   :config
+   
   (setq mode-line-percent-position '(-3 "%p"))
   (setq mode-line-defining-kbd-macro
         (propertize " Macro" 'face 'mode-line-emphasis))
@@ -1300,9 +1301,20 @@
       (kill-local-variable 'mode-line-format)
       (force-mode-line-update)))
 
+
+
   (defun setup-theme(frame)
     (with-selected-frame frame
-      (load-theme 'doom-shades-of-purple 'no-confirm))
+      (load-theme 'doom-shades-of-purple 'no-confirm)
+      (modify-all-frames-parameters
+       '((right-divider-width . 40)
+	 (internal-border-width . 40)))
+      (dolist (face '(window-divider
+                      window-divider-first-pixel
+                      window-divider-last-pixel))
+	(face-spec-reset-face face)
+	(set-face-foreground face (face-attribute 'default :background)))
+      (set-face-background 'fringe (face-attribute 'default :background)))
     (remove-hook 'after-make-frame-functions #'setup-theme)
     (fmakunbound 'setup-theme))
 
