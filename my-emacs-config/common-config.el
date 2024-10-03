@@ -58,9 +58,9 @@
 (add-hook 'after-save-hook
  	  'reuben/update-projects-hook)
 
-(set-face-attribute 'default nil :family "Fira Mono")
+(set-face-attribute 'default nil :family "Jetbrains Mono 15")
 (set-face-attribute 'variable-pitch nil :family "DejaVu Sans Mono")
-(set-face-attribute 'fixed-pitch nil :family "Fira Mono")
+(set-face-attribute 'fixed-pitch nil :family "Jetbrains Mono 15")
 
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
@@ -76,21 +76,6 @@
 (setq electric-pair-preserve-balance nil)
 (setq create-lockfiles nil)
 
-
-;; ----------------------- LINUM MODE ---------------------------
-(defvar my-linum-format-string " %-5d")
-(add-hook 'linum-before-numbering-hook 'my-linum-get-format-string)
-
-(defun my-linum-get-format-string ()
-  (let* ((width (+ 1 (length (number-to-string
-                         (count-lines (point-min) (point-max))))))
-         (format (concat " %-" (number-to-string width) "d")))
-    (setq my-linum-format-string format)))
-
-(setq linum-format 'my-linum-format)
-(defun my-linum-format (line-number)
-  (propertize (format my-linum-format-string line-number) 'face 'linum))
-
 (add-hook 'prog-mode-hook (lambda ()
 			    (setq display-line-numbers 'relative)))
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
@@ -104,8 +89,7 @@
   (setq visual-fill-column-center-text t))
 
 
-  (defvar-local hidden-mode-line-mode nil)
-
+(defvar-local hidden-mode-line-mode nil)
   (define-minor-mode hidden-mode-line-mode
     "Minor mode to hide the mode-line in the current buffer."
     :init-value nil
@@ -129,7 +113,6 @@
                "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
 
 (show-paren-mode)
-
 (setq-default blink-cursor-blinks -1)
 (setq-default blink-cursor-interval .6)
 (setq-default blink-cursor-delay .6)
