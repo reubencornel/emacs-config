@@ -1366,6 +1366,10 @@
   (diminish 'projectile-mode "")
   (diminish 'eldoc-mode ""))
 
+(use-package zig-mode
+  :straight t 
+  :custom (zig-format-on-save nil)
+  :mode "\\.zig\\'")
 
 (provide 'use-package-config)
 ;;; use-package-config.el ends here
