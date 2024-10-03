@@ -2,6 +2,9 @@
 
 (straight-use-package 'use-package)
 
+(use-package eglot
+  )
+
 (use-package vertico
   :straight t
   :init
