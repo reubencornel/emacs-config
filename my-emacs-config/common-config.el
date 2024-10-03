@@ -76,9 +76,19 @@
 (setq electric-pair-preserve-balance nil)
 (setq create-lockfiles nil)
 
+;;;---------- line number configuration --------------
 (add-hook 'prog-mode-hook (lambda ()
 			    (setq display-line-numbers 'relative)))
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+
+
+(defun disable-line-numbers()
+  (display-line-numbers-mode -1))
+(mapcar (lambda(mode)
+	  (add-hook mode 'disable-line-numbers))
+	'(org-mode-hook org-agenda-mode-hook markdown-mode-hook text-mode-hook))
+
+;;;---------- line number configuration --------------
 
 (defun center-buffer-text()
   "This function centers the text in a buffer. Use this for writing."
