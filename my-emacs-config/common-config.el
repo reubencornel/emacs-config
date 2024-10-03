@@ -86,7 +86,13 @@
   (display-line-numbers-mode -1))
 (mapcar (lambda(mode)
 	  (add-hook mode 'disable-line-numbers))
-	'(org-mode-hook org-agenda-mode-hook markdown-mode-hook text-mode-hook))
+	'(org-mode-hook
+	  org-agenda-mode-hook
+	  markdown-mode-hook
+	  text-mode-hook
+	  eshell-mode-hook
+	  shell-mode-hook
+	  compilation-mode-hook))
 
 ;;;---------- line number configuration --------------
 
