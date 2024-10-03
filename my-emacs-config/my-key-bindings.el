@@ -5,9 +5,8 @@
 ;;; My Key bindings
 
 
-(global-unset-key [(f1)])
-(global-set-key [(f1)] 'ace-window)
-
+(global-unset-key (kbd "M-o"))
+(global-set-key (kbd "M-o") 'ace-window)
 
 (defun capture-log()
   (interactive)
