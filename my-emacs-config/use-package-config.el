@@ -351,10 +351,31 @@
                                                                :deadline future))
                                                       )))
 		    (org-ql-block '(and (property "ENTRY_TYPE" "PROJECT")
+					(null (property "GOAL")))
+        		   	  ((org-ql-block-header "Projects With no Goal - Add a :goal: property in the drawer")
+                                   (org-agenda-overriding-header "Other Items")
+                                   (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
+				   (org-super-agenda-groups  '((:auto-category t)))
+                                   ))
+		    (org-ql-block '(and (property "ENTRY_TYPE" "PROJECT")
+					(null (property "AREA")))
+        		   	  ((org-ql-block-header "Projects With Area of responbility - Add a :area: property in the drawer")
+                                   (org-agenda-overriding-header "Other Items")
+                                   (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
+				   (org-super-agenda-groups  '((:auto-category t)))
+                                   ))		    
+		    (org-ql-block '(and (property "ENTRY_TYPE" "PROJECT")
+					(null (deadline)))
+        		   	  ((org-ql-block-header "Projects With no Deadline - Add a Deadline to make projects disappear")
+                                   (org-agenda-overriding-header "Other Items")
+                                   (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
+				   (org-super-agenda-groups  '((:auto-category t)))
+                                   ))
+		    (org-ql-block '(and (property "ENTRY_TYPE" "PROJECT")
 					(not (descendants (scheduled))))
         		   	  ((org-ql-block-header "Stuck Projects")
                                    (org-agenda-overriding-header "Other Items")
-                                   (org-agenda-files '("~/Dropbox/org/inbox.org" "~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
+                                   (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
 				   (org-super-agenda-groups  '((:auto-category t)))
                                    ))
 		    (tags-todo "TODO=\"TODO\"-DEPRIORITIZED_PROJECTS-TEMPLATE-PROJECT-SCHEDULED={.+}-DEADLINE={.+}"
@@ -399,7 +420,7 @@
   (org-directory "~/Dropbox/org")
   ;; (org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
   ;; (org-mobile-inbox-for-pull "~/Dropbox/inbox.org")
-  (org-columns-default-format "%50ITEM %TODO %CLOCKSUM %Area")
+  (org-columns-default-format "%50ITEM %TODO %CLOCKSUM %Area %Goal")
   (org-agenda-include-diary t)
   (org-journal-template-entry (concat "* %T [" (system-name)  "]| %^{title} %^G"))
   (org-agenda-window-setup 'only-window)
@@ -1272,7 +1293,7 @@
 (use-package emacs
   :commands prot/hidden-mode-line-mode
   :config
-   
+
   (setq mode-line-percent-position '(-3 "%p"))
   (setq mode-line-defining-kbd-macro
         (propertize " Macro" 'face 'mode-line-emphasis))
@@ -1370,7 +1391,7 @@
   (diminish 'eldoc-mode ""))
 
 (use-package zig-mode
-  :straight t 
+  :straight t
   :custom (zig-format-on-save nil)
   :mode "\\.zig\\'")
 
