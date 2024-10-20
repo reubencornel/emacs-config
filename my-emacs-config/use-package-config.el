@@ -31,6 +31,9 @@
   :init
   (marginalia-mode))
 
+(use-package swiper
+  :straight t)
+
 (use-package consult
   :straight t
   ;; Replace bindings. Lazily loaded due by `use-package'.
