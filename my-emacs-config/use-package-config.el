@@ -264,7 +264,7 @@
 			   (clock-out . "")))
 
   (org-todo-keywords
-   (quote ((sequence "TODO(t)" "NEXT(n)" "WAITING(w@/!)" "DEFERRED(e)" "|" "DONE(d!)" "CANCELLED(c@)")
+   (quote ((sequence "TODO(t)" "NEXT(n)" "WAITING(w@/!)" "DEFERRED(e)" "|" "DONE(d!)" "CANCELLED(c@)" "DELEGATED")
 	   (sequence "TOBUY(b)" "TOPACK(p)" "|" "BOUGHT(g)" "PACKED")
 	   (sequence "TOREAD(r)" "|" "READ")
 	   (sequence "QUESTION(q)" "|" "ANSWERED(a@)")
