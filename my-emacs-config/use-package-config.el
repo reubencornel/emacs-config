@@ -732,6 +732,10 @@
   :config
   (setq spaceline-all-the-icons-separator-type 'arrow))
 
+(use-package spacemacs-theme
+  :straight t
+  :defer t)
+
 ;; --------------- fly check mode ---------------
 
 (use-package flycheck
