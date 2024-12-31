@@ -134,4 +134,4 @@
 (setq-default blink-cursor-delay .6)
 (setq-default cursor-type '(bar . 3))
 (setq-default cursor-in-non-selected-windows 'box)
-(setq default-frame-alist '((font . "Jetbrains Mono 15")))
+(setq default-frame-alist '((font . "FiraCode Nerd Font 15")))
