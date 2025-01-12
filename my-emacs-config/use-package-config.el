@@ -1402,5 +1402,14 @@
   :custom (zig-format-on-save nil)
   :mode "\\.zig\\'")
 
+(use-package gptel
+  :straight t
+  :config
+  (if (fboundp 'my-anthropic-key)
+      (gptel-make-anthropic "Claude"
+	:stream t
+	:key 'my-anthropic-key)))
+
+
 (provide 'use-package-config)
 ;;; use-package-config.el ends here
