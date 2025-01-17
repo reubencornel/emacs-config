@@ -1398,10 +1398,11 @@
 (use-package gptel
   :straight t
   :config
+  (global-set-key (kbd "C-c g s") 'gptel-send)
   (if (fboundp 'my-anthropic-key)
-      (gptel-make-anthropic "Claude"
-	:stream t
-	:key 'my-anthropic-key)))
+      (setq gptel-backend (gptel-make-anthropic "Claude"
+			    :stream t
+			    :key 'my-anthropic-key))))
 
 (use-package ligature
   :straight t
