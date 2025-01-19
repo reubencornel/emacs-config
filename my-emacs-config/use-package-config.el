@@ -151,10 +151,6 @@
   (progn
     (setq plantuml-jar-path "~/bin/plantuml.jar")))
 
-(use-package color-theme-modern
-  :defer t
-  :straight t)
-
 (use-package magit
   :defer t
   :straight t)
@@ -188,19 +184,6 @@
   :init
   (eshell-git-prompt-use-theme 'robbyrussell))
 
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; SCALA CONFIG ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-;; (use-package sbt-mode
-;;   :defer t
-;;   :pin melpa)
-
-;; (use-package scala-mode
-;;   :pin melpa
-;;   :interpreter
-;;   ("scala" . scala-mode)
-;;   ("sc" . scala-mode))
 
 
 (use-package org
@@ -667,17 +650,6 @@
   (setq org-babel-python-command "python3")
   (add-hook 'org-mode-hook 'visual-line-mode))
 
-(use-package org-ref
-  :defer t
-  :straight t
-  :after org
-  :custom
-  (reftex-default-bibliography '("~/Dropbox/bibliography/references.bib"))
-  (org-ref-bibliography-notes "~/Dropbox/bibliography/notes.org")
-  (org-ref-default-bibliography '("~/Dropbox/bibliography/references.bib"))
-  (org-ref-pdf-directory "~/Dropbox/bibliography/bibtex-pdfs/")
-  :config
-  (require 'org-ref))
 
 (use-package org-bullets
   :straight t
@@ -719,7 +691,7 @@
 	    (lambda ()
 	      (ibuffer-switch-to-saved-filter-groups "default"))))
 
-;; --------------- Spacemacs theming ---------------
+;; --------------- Themeing ---------------
 
 (use-package spaceline
   :defer t
@@ -737,6 +709,46 @@
 (use-package spacemacs-theme
   :straight t
   :defer t)
+
+(use-package doom-themes
+  :straight t)
+(use-package doom-modeline
+  :straight t)
+
+(use-package color-theme-modern
+  :defer t
+  :straight t)
+
+(use-package doom-themes
+  :straight t)
+
+(use-package modus-themes
+  :straight t
+  :config
+  (setq modus-themes-italic-constructs t
+	modus-themes-bold-constructs nil
+	modus-themes-variable-pitch-ui nil
+	modus-themes-custom-auto-reload t
+	modus-themes-disable-other-themes t
+
+	;; Options for `modus-themes-prompts' are either nil (the
+	;; default), or a list of properties that may include any of those
+	;; symbols: `italic', `WEIGHT'
+	modus-themes-prompts '(italic bold)
+
+	;; The `modus-themes-completions' is an alist that reads two
+	;; keys: `matches', `selection'.  Each accepts a nil value (or
+	;; empty list) or a list of properties that can include any of
+	;; the following (for WEIGHT read further below):
+	;;
+	;; `matches'   :: `underline', `italic', `WEIGHT'
+	;; `selection' :: `underline', `italic', `WEIGHT'
+	modus-themes-completions
+	'((matches . (extrabold))
+          (selection . (semibold italic text-also)))
+
+	modus-themes-org-blocks 'gray-background)) ; {nil,'gray-background,'tinted-background}
+
 
 ;; --------------- fly check mode ---------------
 
@@ -948,11 +960,6 @@
 (use-package wc-goal-mode
   :straight t)
 
-(use-package doom-themes
-  :straight t)
-(use-package doom-modeline
-  :straight t)
-
 
 (use-package elfeed
   :straight t)
@@ -973,18 +980,6 @@
 (use-package elfeed-score
   :straight t)
 
-
-(use-package deft
-  :straight t
-  :bind ("<f8>" . deft)
-  :commands (deft)
-
-  :config (setq deft-directory "~/Dropbox/org-roam/org-roam1"
-                deft-extensions '("md" "org")
-		deft-use-filename-as-title t
-		deft-file-naming-rules   '((noslash . "-")
-					   (nospace . "-")
-					   (case-fn . downcase))))
 
 (use-package hyperbole
   :straight t
@@ -1345,35 +1340,6 @@
   (if (daemonp)
       (add-hook  'after-make-frame-functions #'setup-theme)))
 
-(use-package doom-themes
-  :straight t)
-
-(use-package modus-themes
-  :straight t
-  :config
-  (setq modus-themes-italic-constructs t
-	modus-themes-bold-constructs nil
-	modus-themes-variable-pitch-ui nil
-	modus-themes-custom-auto-reload t
-	modus-themes-disable-other-themes t
-
-	;; Options for `modus-themes-prompts' are either nil (the
-	;; default), or a list of properties that may include any of those
-	;; symbols: `italic', `WEIGHT'
-	modus-themes-prompts '(italic bold)
-
-	;; The `modus-themes-completions' is an alist that reads two
-	;; keys: `matches', `selection'.  Each accepts a nil value (or
-	;; empty list) or a list of properties that can include any of
-	;; the following (for WEIGHT read further below):
-	;;
-	;; `matches'   :: `underline', `italic', `WEIGHT'
-	;; `selection' :: `underline', `italic', `WEIGHT'
-	modus-themes-completions
-	'((matches . (extrabold))
-          (selection . (semibold italic text-also)))
-
-	modus-themes-org-blocks 'gray-background)) ; {nil,'gray-background,'tinted-background}
 
 (use-package rainbow-delimiters
   :straight t
@@ -1399,6 +1365,8 @@
   :straight t
   :config
   (global-set-key (kbd "C-c g s") 'gptel-send)
+  (global-set-key (kbd "C-c g m") 'gptel-menu)
+  (global-set-key (kbd "C-c g c") 'gptel)
   (if (fboundp 'my-anthropic-key)
       (setq gptel-backend (gptel-make-anthropic "Claude"
 			    :stream t
