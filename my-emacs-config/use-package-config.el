@@ -1298,6 +1298,8 @@
   :commands prot/hidden-mode-line-mode
   :config
 
+  (electric-pair-mode 1)
+
   (setq mode-line-percent-position '(-3 "%p"))
   (setq mode-line-defining-kbd-macro
         (propertize " Macro" 'face 'mode-line-emphasis))
