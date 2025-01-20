@@ -1435,8 +1435,7 @@
                           "Fl"  "Tl"  "fi"  "fj"  "fl"  "ft"
                           ;; The few not covered by the regexps.
                           "{|"  "[|"  "]#"  "(*"  "}#"  "$>"  "^="))
-    (add-hook 'haskell-mode-hook 'ligature-mode)
-    )
+    (add-hook 'haskell-mode-hook 'ligature-mode))
 
 (use-package drag-stuff
   :straight t
@@ -1444,9 +1443,12 @@
 	      ("M-<up>" . drag-stuff-up)
 	      ("M-<down>" . drag-stuff-down)
 	      ("M-<left>" . drag-stuff-left)
-	      ("M-<right>" . drag-stuff-right)
-	      )
-)
+	      ("M-<right>" . drag-stuff-right)))
+
+(use-package undo-tree
+  :straight t
+  :config
+  (global-undo-tree-mode))
 
 (provide 'use-package-config)
 ;;; use-package-config.el ends here
