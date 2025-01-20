@@ -23,21 +23,20 @@
 (global-unset-key [(f12)])
 (global-set-key [(f12)] 'apply-macro-to-region-lines)
 
+(defun increase-font-size ()
+  (interactive)
+  (set-face-attribute 'default nil :height (+ (face-attribute 'default :height) 10))
+  (set-face-attribute 'variable-pitch nil :height (+ (face-attribute 'variable-pitch :height) 10))
+  (set-face-attribute 'fixed-pitch nil :height (+ (face-attribute 'fixed-pitch :height) 10)))
 
-(global-set-key (kbd "s-=")
-                (lambda ()
-                  (interactive)
-                  (set-face-attribute 'default nil :height (+ (face-attribute 'default :height) 10))
-		  (set-face-attribute 'variable-pitch nil :height (+ (face-attribute 'variable-pitch :height) 10))
-		  (set-face-attribute 'fixed-pitch nil :height (+ (face-attribute 'fixed-pitch :height) 10))))
-		    
+(global-set-key (kbd "s-=") 'increase-font-size)
+(defun decrease-font-size ()
+  (interactive)
+  (set-face-attribute 'default nil :height (- (face-attribute 'default :height) 10))
+  (set-face-attribute 'variable-pitch nil :height (- (face-attribute 'variable-pitch :height) 10))
+  (set-face-attribute 'fixed-pitch nil :height (- (face-attribute 'fixed-pitch :height) 10)))
 
-(global-set-key (kbd "s--")
-                (lambda ()
-                  (interactive)
-                  (set-face-attribute 'default nil :height (- (face-attribute 'default :height) 10))
-		  (set-face-attribute 'variable-pitch nil :height (- (face-attribute 'variable-pitch :height) 10))
-		  (set-face-attribute 'fixed-pitch nil :height (- (face-attribute 'fixed-pitch :height) 10))))
+(global-set-key (kbd "s--") 'decrease-font-size)
 
 (global-unset-key "\M-g")
 (global-set-key "\M-g" 'goto-line)
