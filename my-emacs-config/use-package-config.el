@@ -349,7 +349,7 @@
                                    (org-agenda-overriding-header "Other Items")
                                    (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
 				   (org-super-agenda-groups  '((:auto-category t)))
-                                   ))		    
+                                   ))
 		    (org-ql-block '(and (property "ENTRY_TYPE" "PROJECT")
 					(null (deadline)))
         		   	  ((org-ql-block-header "Projects With no Deadline - Add a Deadline to make projects disappear")
@@ -1437,6 +1437,16 @@
                           "{|"  "[|"  "]#"  "(*"  "}#"  "$>"  "^="))
     (add-hook 'haskell-mode-hook 'ligature-mode)
     )
+
+(use-package drag-stuff
+  :straight t
+  :bind (:map prog-mode-map
+	      ("M-<up>" . drag-stuff-up)
+	      ("M-<down>" . drag-stuff-down)
+	      ("M-<left>" . drag-stuff-left)
+	      ("M-<right>" . drag-stuff-right)
+	      )
+)
 
 (provide 'use-package-config)
 ;;; use-package-config.el ends here
