@@ -53,3 +53,6 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (global-set-key "\C-x!" 'insert-uuid)
+
+(global-unset-key "\M-@")
+(global-set-key "\M-@"   'reuben/mark-word)

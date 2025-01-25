@@ -480,6 +480,11 @@ It requires the standard emacs package manager to be working."
 	      '()))
 	'()))))
 
+(defun reuben/mark-word()
+  (interactive)
+  (backward-word)
+  (set-mark (point))
+  (forward-word))
 
 (defun reuben/update-areas-string()
   (interactive)
