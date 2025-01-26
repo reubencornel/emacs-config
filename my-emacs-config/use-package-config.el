@@ -852,7 +852,7 @@
 (use-package bury-successful-compilation
   :straight t
   :hook
-  (prog-mode . bury-successful-compilation))
+  (c-mode . bury-successful-compilation))
 
 ;; --------------- Rust Config ---------------
 (use-package rustic
@@ -881,22 +881,19 @@
   (setq-local buffer-save-without-query t))
 
 (use-package lsp-ui
-  :straight
+  :straight t
   :commands lsp-ui-mode
   :custom
   (lsp-ui-peek-always-show t)
   (lsp-ui-sideline-show-hover t)
   (lsp-ui-doc-enable nil))
 
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (use-package yasnippet			       ;;
-;;   :straight					       ;;
-;;   :config					       ;;
-;;   (setq yas-snippet-dirs '("~/Dropbox/yassnippet")) ;;
-;;   (yas-global-mode 1))			       ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+(use-package yasnippet
+  :straight t
+  :config
+  (setq yas-indent-line nil)
+  (add-to-list 'yas-snippet-dirs '"~/Dropbox/yassnippet/")
+  (yas-global-mode 1))
 
 (use-package tide
   :straight t
@@ -1199,9 +1196,6 @@
   :init
   (add-hook 'haskell-mode-hook #'hindent-mode))
 
-(use-package yasnippet
-  :straight t)
-
 (use-package lsp-mode
   :straight
   :commands lsp
@@ -1452,6 +1446,10 @@
   (defadvice undo-tree-make-history-save-file-name
       (after undo-tree activate)
     (setq ad-return-value (concat ad-return-value ".gz"))))
+
+(use-package change-inner
+  :straight t
+  :bind ("C-c i" . change-inner))
 
 (provide 'use-package-config)
 ;;; use-package-config.el ends here
