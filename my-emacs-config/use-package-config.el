@@ -651,8 +651,13 @@
   (add-hook 'org-mode-hook 'visual-line-mode))
 
 
+(use-package org-anki
+  :straight t
+  :after org)
+
 (use-package org-bullets
   :straight t
+  :after org
   :config ;; executed after loading package
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
