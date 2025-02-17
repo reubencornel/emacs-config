@@ -1442,7 +1442,9 @@
 (use-package undo-tree
   :straight t
   :config
+  (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
   (global-undo-tree-mode)
+
   (defadvice undo-tree-make-history-save-file-name
       (after undo-tree activate)
     (setq ad-return-value (concat ad-return-value ".gz"))))
