@@ -2,8 +2,7 @@
 
 (straight-use-package 'use-package)
 
-(use-package eglot
-  )
+(use-package eglot )
 
 (use-package vertico
   :straight t
@@ -19,6 +18,17 @@
 (use-package savehist
   :init
   (savehist-mode))
+
+(use-package completion-preview
+  :config
+  (setf completion-styles '(basic flex)
+	completion-auto-select t ;; Show completion on first call
+	completion-auto-help 'visible ;; Display *Completions* upon first request
+	completions-format 'one-column ;; Use only one column
+	completions-sort 'historical ;; Order based on minibuffer history
+	completions-max-height 20 ;; Limit completions to 15 (completions start at line 5)
+	completion-ignore-case t)
+  (global-completion-preview-mode))
 
 (use-package orderless
   :straight t
@@ -777,6 +787,11 @@
   (company-idle-delay 0.5)
   (company-minimum-prefix-length 2)
   (add-to-list 'company-backends 'company-capf)
+  (add-to-list 'company-backends 'company-abbrev)
+  (add-to-list 'company-backends 'company-clang)
+  (add-to-list 'company-backends 'company-dabbrev)
+  (add-to-list 'company-backends 'company-files)
+ 
   :init (global-company-mode)
   :bind
   (:map company-active-map
@@ -788,6 +803,7 @@
 ;; --------------- Hydra mode ---------------
 (use-package hydra
   :straight t
+  :after org
   :config
 
   (defhydra jethro/hydra-smerge (:color pink
@@ -845,7 +861,7 @@
     ("r" org-agenda-refile nil :color red)
     ("td" org-agenda-schedule :color blue)
     ("K" org-agenda-kill nil :color red :exit nil)
-    ("d" (org-agenda-todo "DONE") nil :color blue)
+    ("d" (lambda () (org-agenda-todo "DONE")) nil :color blue)
     ("c" (org-agenda-todo "CANCELLED") nil :color blue)
     ("q" nil nil :color red))
 
@@ -903,7 +919,7 @@
 (use-package tide
   :straight t
   :defer t
-  :after (typescript-mode company flycheck)
+  :after (typescript-mode company-mode flycheck)
   :hook ((typescript-mode . tide-setup)
          (typescript-mode . tide-hl-identifier-mode)
          (before-save . tide-format-before-save)))
@@ -1120,7 +1136,7 @@
 
 (use-package tide
   :straight t
-  :after (typescript-mode company flycheck)
+  :after (typescript-mode flycheck)
   :hook ((typescript-mode . tide-setup)
          (typescript-mode . tide-hl-identifier-mode)
          (before-save . tide-format-before-save)))
@@ -1457,6 +1473,10 @@
 (use-package change-inner
   :straight t
   :bind ("C-c i" . change-inner))
+
+(use-package devdocs
+  :straight t
+  )
 
 (provide 'use-package-config)
 ;;; use-package-config.el ends here
