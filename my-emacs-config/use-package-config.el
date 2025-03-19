@@ -95,14 +95,23 @@
         xref-show-definitions-function #'consult-xref)
 
   (defun reuben/consult-search-org-helper (org-param keyword directory)
-    (let  ((consult-ripgrep-args
-	    (concat "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /\  --smart-case --no-heading --line-number --search-zip"
-		    " "
+    (let ((old-value consult-ripgrep-args))
+      (unwind-protect
+	  (progn
+	    (customize-set-variable
+	     'consult-ripgrep-args
+	     (concat "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /\  --smart-case --no-heading --line-number --search-zip"
+		     " "
 		    org-param
 		    " "
 		    "."))
-	   (vertico-count 50))
-      (consult-ripgrep directory keyword)))
+	    (let ((vertico-count 10))
+	      (consult-ripgrep directory keyword)))
+	(progn
+	  (customize-set-variable
+	   'consult-ripgrep-args
+	   old-value)))))
+
 
   (defun reuben/consult-search-org ()
     "Call `consult-ripgrep' for my org agenda files."
