@@ -752,24 +752,24 @@
 
 
 ;; ;; --------------- company mode ---------------
-;; (use-package company
-;;   :straight t
-;;   :defer t
-;;   :custom
-;;   (company-idle-delay 0.5)
-;;   (company-minimum-prefix-length 2)
-;;   (add-to-list 'company-backends 'company-capf)
-;;   (add-to-list 'company-backends 'company-abbrev)
-;;   (add-to-list 'company-backends 'company-clang)
-;;   (add-to-list 'company-backends 'company-dabbrev)
-;;   (add-to-list 'company-backends 'company-files)
-;;   :init (global-company-mode)
-;;   :bind
-;;   (:map company-active-map
-;; 	("C-n". company-select-next)
-;; 	("C-p". company-select-previous)
-;; 	("M-<". company-select-first)
-;; 	("M->". company-select-last)))
+(use-package company
+  :straight t
+  :defer t
+  :custom
+  (company-idle-delay 0.5)
+  (company-minimum-prefix-length 2)
+  (add-to-list 'company-backends 'company-capf)
+  (add-to-list 'company-backends 'company-abbrev)
+  (add-to-list 'company-backends 'company-clang)
+  (add-to-list 'company-backends 'company-dabbrev)
+  (add-to-list 'company-backends 'company-files)
+  :hook (after-init . (lambda() (global-company-mode)))
+  :bind
+  (:map company-active-map
+	("C-n". company-select-next)
+	("C-p". company-select-previous)
+	("M-<". company-select-first)
+	("M->". company-select-last)))
 
 ;; ;; --------------- Hydra mode ---------------
 ;; (use-package hydra
@@ -841,10 +841,10 @@
 ;;   )
 
 
-;; (use-package bury-successful-compilation
-;;   :straight t
-;;   :hook
-;;   (c-mode . bury-successful-compilation))
+(use-package bury-successful-compilation
+  :straight t
+  :hook
+  (c-mode . bury-successful-compilation))
 
 ;; ;; --------------- Rust Config ---------------
 ;; (use-package rustic
@@ -895,19 +895,19 @@
 ;;          (typescript-mode . tide-hl-identifier-mode)
 ;;          (before-save . tide-format-before-save)))
 
-;; (use-package restclient
-;;   :defer t
-;;   :straight t)
+(use-package restclient
+  :defer t
+  :straight t)
 
-;; (use-package ledger-mode
-;;   :defer t
-;;   :straight t)
+(use-package ledger-mode
+  :defer t
+  :straight t)
 
-;; (use-package exec-path-from-shell
-;;   :straight t
-;;   :defer t
-;;   :config
-;;   (exec-path-from-shell-initialize))
+(use-package exec-path-from-shell
+  :straight t
+  :defer t
+  :config
+  (exec-path-from-shell-initialize))
 
 ;; (use-package slime
 ;;   :defer t
@@ -943,11 +943,13 @@
 
 ;;   )
 
-;; (use-package visual-fill-column
-;;   :straight t)
+(use-package visual-fill-column
+  :defer t
+  :straight t)
 
-;; (use-package wc-goal-mode
-;;   :straight t)
+(use-package wc-goal-mode
+  :defer t
+  :straight t)
 
 
 ;; (use-package elfeed
@@ -1122,23 +1124,27 @@
 ;;   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 
 ;; ;; --------------- Avy ---------------
-;; (use-package avy
-;;   :straight t
-;;   :config
-;;   (global-set-key (kbd "C-:") 'avy-goto-char))
+(use-package avy
+  :defer t
+  :straight t
+  :config
+  (global-set-key (kbd "C-:") 'avy-goto-char))
 
 ;; ;; --------------- Neotree ---------------
-;; (use-package neotree
-;;   :straight t)
+(use-package neotree
+  :defer t
+  :straight t)
 
-;; (use-package geiser
-;;   :straight t)
+(use-package geiser
+  :defer t
+  :straight t)
 
-;; (use-package geiser-mit
-;;   :straight t
-;;   :after geiser
-;;   :config
-;;   (setq geiser-active-implementations '(mit)))
+(use-package geiser-mit
+  :defer t  
+  :straight t
+  :after geiser
+  :custom
+  (geiser-active-implementations '(mit)))
 
 ;; (use-package smartparens
 ;;   :straight t
