@@ -1232,56 +1232,9 @@
 ;; 	 (dap-session-created . (lambda (&_rest) (dap-hydra)))
 ;; 	 (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
 
-
-;; (use-package frame
-;;   :commands prot/cursor-type-mode
-;;   :config
-
-;;   (blink-cursor-mode -1)
-
-;;   (define-minor-mode prot/cursor-type-mode
-;;     "Toggle between static block and pulsing bar cursor."
-;;     :init-value nil
-;;     :global t
-;;     (if prot/cursor-type-mode
-;;         (progn
-;;           (setq-local blink-cursor-interval 0.75
-;;                       cursor-type '(bar . 2)
-;;                       cursor-in-non-selected-windows 'hollow)
-;;           (blink-cursor-mode 1))
-;;       (dolist (local '(blink-cursor-interval
-;;                        cursor-type
-;;                        cursor-in-non-selected-windows))
-;;         (kill-local-variable `,local))
-;;       (blink-cursor-mode -1))))
-
-;; (use-package emacs
-;;   :config
-;;   (setq-default scroll-preserve-screen-position t)
-;;   (setq-default scroll-conservatively 1) ; affects `scroll-step'
-;;   (setq-default scroll-margin 0)
-
-;;   (define-minor-mode prot/scroll-centre-cursor-mode
-;;     "Toggle centred cursor scrolling behaviour."
-;;     :init-value nil
-;;     :lighter " S="
-;;     :global nil
-;;     (if prot/scroll-centre-cursor-mode
-;;         (setq-local scroll-margin (* (frame-height) 2)
-;;                     scroll-conservatively 0
-;;                     maximum-scroll-margin 0.5)
-;;       (dolist (local '(scroll-preserve-screen-position
-;;                        scroll-conservatively
-;;                        maximum-scroll-margin
-;;                        scroll-margin))
-;;         (kill-local-variable `,local))))
-
-;;   ;; C-c l is used for `org-store-link'.  The mnemonic for this is to
-;;   ;; focus the Line and also works as a variant of C-l.
-;;   :bind ("C-c L" . prot/scroll-centre-cursor-mode))
-
 (use-package emacs
-  :commands prot/hidden-mode-line-mode
+  :commands (prot/hidden-mode-line-mode  prot/cursor-type-mode prot/scroll-centre-cursor-mode)
+  :bind ("C-c L" . prot/scroll-centre-cursor-mode)  
   :config
 
   (electric-pair-mode 1)
@@ -1306,7 +1259,24 @@
                   " "
                   mode-line-misc-info
                   mode-line-end-spaces))
+  (setq-default scroll-preserve-screen-position t)
+  (setq-default scroll-conservatively 1) ; affects `scroll-step'
+  (setq-default scroll-margin 0)
 
+  (define-minor-mode prot/scroll-centre-cursor-mode
+    "Toggle centred cursor scrolling behaviour."
+    :init-value nil
+    :lighter " S="
+    :global nil
+    (if prot/scroll-centre-cursor-mode
+        (setq-local scroll-margin (* (frame-height) 2)
+                    scroll-conservatively 0
+                    maximum-scroll-margin 0.5)
+      (dolist (local '(scroll-preserve-screen-position
+                       scroll-conservatively
+                       maximum-scroll-margin
+                       scroll-margin))
+        (kill-local-variable `,local))))
 
   (define-minor-mode prot/hidden-mode-line-mode
     "Toggle modeline visibility in the current buffer."
@@ -1316,6 +1286,22 @@
         (setq-local mode-line-format nil)
       (kill-local-variable 'mode-line-format)
       (force-mode-line-update)))
+
+  (define-minor-mode prot/cursor-type-mode
+    "Toggle between static block and pulsing bar cursor."
+    :init-value nil
+    :global t
+    (if prot/cursor-type-mode
+        (progn
+          (setq-local blink-cursor-interval 0.75
+                      cursor-type '(bar . 2)
+                      cursor-in-non-selected-windows 'hollow)
+          (blink-cursor-mode 1))
+      (dolist (local '(blink-cursor-interval
+                       cursor-type
+                       cursor-in-non-selected-windows))
+        (kill-local-variable `,local))
+      (blink-cursor-mode -1)))
 
   (defun setup-theme(frame)
     (with-selected-frame frame
@@ -1342,10 +1328,10 @@
 ;;   (diminish 'projectile-mode "")
 ;;   (diminish 'eldoc-mode ""))
 
-;; (use-package zig-mode
-;;   :straight t
-;;   :custom (zig-format-on-save nil)
-;;   :mode "\\.zig\\'")
+(use-package zig-mode
+  :straight t
+  :custom (zig-format-on-save nil)
+  :mode "\\.zig\\'")
 
 ;; (use-package gptel
 ;;   :straight t
