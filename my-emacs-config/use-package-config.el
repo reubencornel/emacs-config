@@ -5,20 +5,17 @@
 (use-package eglot
   :defer t)
 
-;; (use-package vertico
-;;   :straight t
-;;   :init
-;;   (vertico-mode))
+(use-package vertico
+  :straight t
+  :hook (after-init . (lambda() (vertico-mode))))
 
-;; (use-package vertico-reverse
-;;   :after vertico
-;;   :straight nil
-;;   :config
-;;   (vertico-reverse-mode 1))
+(use-package vertico-reverse
+  :after vertico
+  :straight nil
+  :hook (after-init . (lambda() (vertico-reverse-mode 1))))
 
-;; (use-package savehist
-;;   :init
-;;   (savehist-mode))
+(use-package savehist
+  :hook (after-init . (lambda() (savehist-mode))))
 
 (use-package completion-preview
   :config
@@ -31,125 +28,117 @@
 	completion-ignore-case t)
   :hook (after-init . global-completion-preview-mode))
 
-;; (use-package orderless
-;;   :straight t
-;;   :custom
-;;   (completion-styles '(orderless basic))
-;;   (completion-category-overrides '((file (styles basic partial-completion)))))
+(use-package orderless
+  :straight t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
 
-;; (use-package marginalia
-;;   :straight t
-;;   :init
-;;   (marginalia-mode))
+(use-package swiper
+  :straight t)
 
-;; (use-package swiper
-;;   :straight t)
-
-;; (use-package consult
-;;   :straight t
-;;   ;; Replace bindings. Lazily loaded due by `use-package'.
-;;   :bind (
-;;          ("C-c h" . consult-history)
-;;          ("C-c m" . consult-mode-command)
-;;          ("C-c b" . consult-bookmark)
-;;          ("C-c k" . consult-kmacro)
-;;          ;; C-x bindings (ctl-x-map)
-;;          ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
-;;          ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
-;;          ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
-;;          ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
-;;          ;; Custom M-# bindings for fast register access
-;;          ("M-#" . consult-register-load)
-;;          ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
-;;          ("C-M-#" . consult-register)
-;;          ;; Other custom bindings
-;;          ("M-y" . consult-yank-pop)                ;; orig. yank-pop
-;;          ("<help> a" . consult-apropos)            ;; or
-;; 	 ;;	 ig. apropos-command
-;;          ;; M-g bindings (goto-map)
-;;           ("M-g e" . consult-compile-error)
-;;           ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
-;;           ("M-g g" . consult-goto-line)             ;; orig. goto-line
-;;           ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
-;;          ;; ("M-g o" . consult-outline)
-;;          ;; ("M-g m" . consult-mark)
-;;          ;; ("M-g k" . consult-global-mark)
-;;          ;; ("M-g i" . consult-imenu)
-;;          ;; ("M-g I" . consult-project-imenu)
-;;          ;; M-s bindings (search-map)
-;;          ("M-s f" . consult-find)
-;;          ("M-s L" . consult-locate)
-;;          ("M-s g" . consult-grep)
-;;          ("M-s G" . consult-git-grep)
-;;          ("M-s r" . consult-ripgrep)
-;;          ("M-s l" . consult-line)
-;;          ("M-s m" . consult-multi-occur))
-;;   :init
-
-;;   ;; Optionally configure the narrowing key.
-;;   ;; Both < and C-+ work reasonably well.
-;;   (setq consult-narrow-key "<") ;; (kbd "C-+")
-
-
-;;   ;; Use Consult to select xref locations with preview
-;;   (setq xref-show-xrefs-function #'consult-xref
-;;         xref-show-definitions-function #'consult-xref)
-
-;;   (defun reuben/consult-search-org-helper (org-param keyword directory)
-;;     (let ((old-value consult-ripgrep-args))
-;;       (unwind-protect
-;; 	  (progn
-;; 	    (customize-set-variable
-;; 	     'consult-ripgrep-args
-;; 	     (concat "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /\  --smart-case --no-heading --line-number --search-zip"
-;; 		     " "
-;; 		    org-param
-;; 		    " "
-;; 		    "."))
-;; 	    (let ((vertico-count 10))
-;; 	      (consult-ripgrep directory keyword)))
-;; 	(progn
-;; 	  (customize-set-variable
-;; 	   'consult-ripgrep-args
-;; 	   old-value)))))
+(use-package consult
+  :straight t
+  ;; Replace bindings. Lazily loaded due by `use-package'.
+  :bind (
+         ("C-c h" . consult-history)
+         ("C-c m" . consult-mode-command)
+         ("C-c b" . consult-bookmark)
+         ("C-c k" . consult-kmacro)
+         ;; C-x bindings (ctl-x-map)
+         ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
+         ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+         ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+         ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+         ;; Custom M-# bindings for fast register access
+         ("M-#" . consult-register-load)
+         ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
+         ("C-M-#" . consult-register)
+         ;; Other custom bindings
+         ("M-y" . consult-yank-pop)                ;; orig. yank-pop
+         ("<help> a" . consult-apropos)            ;; or
+	 ;;	 ig. apropos-command
+         ;; M-g bindings (goto-map)
+          ("M-g e" . consult-compile-error)
+          ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+          ("M-g g" . consult-goto-line)             ;; orig. goto-line
+          ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+         ;; ("M-g o" . consult-outline)
+         ;; ("M-g m" . consult-mark)
+         ;; ("M-g k" . consult-global-mark)
+         ;; ("M-g i" . consult-imenu)
+         ;; ("M-g I" . consult-project-imenu)
+         ;; M-s bindings (search-map)
+         ("M-s f" . consult-find)
+         ("M-s L" . consult-locate)
+         ("M-s g" . consult-grep)
+         ("M-s G" . consult-git-grep)
+         ("M-s r" . consult-ripgrep)
+         ("M-s l" . consult-line)
+         ("M-s m" . consult-multi-occur))
+  :config
+  ;; Configure the narrowing key.
+  ;; Both < and C-+ work reasonably well.
+  ;; Use Consult to select xref locations with preview
+  (xref-show-xrefs-function #'consult-xref)
+  (xref-show-definitions-function #'consult-xref)  
+  :init
+  (setf consult-narrow-key "<")
+  (defun reuben/consult-search-org-helper (org-param keyword directory)
+    (let ((old-value consult-ripgrep-args))
+      (unwind-protect
+	  (progn
+	    (customize-set-variable
+	     'consult-ripgrep-args
+	     (concat "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /\  --smart-case --no-heading --line-number --search-zip"
+		     " "
+		    org-param
+		    " "
+		    "."))
+	    (let ((vertico-count 10))
+	      (consult-ripgrep directory keyword)))
+	(progn
+	  (customize-set-variable
+	   'consult-ripgrep-args
+	   old-value)))))
 
 
-;;   (defun reuben/consult-search-org ()
-;;     "Call `consult-ripgrep' for my org agenda files."
-;;     (interactive)
-;;     (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org"))
+  (defun reuben/consult-search-org ()
+    "Call `consult-ripgrep' for my org agenda files."
+    (interactive)
+    (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org"))
 
-;;   (defun reuben/consult-search-all-org ()
-;;     "Call `consult-ripgrep' for my org agenda files."
-;;     (interactive)
-;;     (reuben/consult-search-org-helper "-t org" "" "~/Dropbox/org"))
+  (defun reuben/consult-search-all-org ()
+    "Call `consult-ripgrep' for my org agenda files."
+    (interactive)
+    (reuben/consult-search-org-helper "-t org" "" "~/Dropbox/org"))
 
-;;   (defun reuben/consult-search-org-roam()
-;;     "Call `consult-ripgrep' for my org roam files."
-;;     (interactive)
-;;     (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org-roam/org-roam1"))
+  (defun reuben/consult-search-org-roam()
+    "Call `consult-ripgrep' for my org roam files."
+    (interactive)
+    (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org-roam/org-roam1"))
 
-;;   (defun reuben/consult-search-howm()
-;;     "Call `consult-ripgrep' for my howm files."
-;;     (interactive)
-;;     (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/howm")))
+  (defun reuben/consult-search-howm()
+    "Call `consult-ripgrep' for my howm files."
+    (interactive)
+    (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/howm")))
 
 (use-package howm
   :straight t
   :init 
   ;; Directory configuration
-  (setq howm-home-directory "~/Dropbox/howm/")
-  (setq howm-directory "~/Dropbox/howm/")
-  (setq howm-keyword-file (expand-file-name ".howm-keys" howm-home-directory))
-  (setq howm-history-file (expand-file-name ".howm-history" howm-home-directory))
-  (setq howm-file-name-format "%Y/%m/%Y-%m-%d-%H%M%S.org")
-  (setq howm-view-use-grep t)
-  (setq howm-view-grep-command "rg")
-  (setq howm-view-grep-option "-nH -i --no-heading --color never --line-buffered")
-  (setq howm-view-grep-extended-option nil)
-  (setq howm-view-grep-fixed-option "-F")
-  (setq howm-view-grep-expr-option nil)
-  (setq howm-view-grep-file-stdin-option nil)
+  (setf howm-home-directory "~/Dropbox/howm/")
+  (setf howm-directory "~/Dropbox/howm/")
+  (setf howm-keyword-file (expand-file-name ".howm-keys" howm-home-directory))
+  (setf howm-history-file (expand-file-name ".howm-history" howm-home-directory))
+  (setf howm-file-name-format "%Y/%m/%Y-%m-%d-%H%M%S.org")
+  (setf howm-view-use-grep t)
+  (setf howm-view-grep-command "rg")
+  (setf howm-view-grep-option "-nH -i --no-heading --color never --line-buffered")
+  (setf howm-view-grep-extended-option nil)
+  (setf howm-view-grep-fixed-option "-F")
+  (setf howm-view-grep-expr-option nil)
+  (setf howm-view-grep-file-stdin-option nil)
   :hook
     (howm-mode-hook . 'howm-mode-set-buffer-name)
     (after-save-hook . 'howm-mode-set-buffer-name)
@@ -166,531 +155,506 @@
 
 ;; (use-package plantuml-mode
 ;;   :straight t
-;;   :defer t
 ;;   :mode ("\\.uml$" . plantuml-mode)
-;;   :config
-;;   (progn
-;;     (setq plantuml-jar-path "~/bin/plantuml.jar")))
+;;   :config (plantuml-jar-path "~/bin/plantuml.jar"))
 
 (use-package magit
   :defer t
   :straight t)
 
-;; (use-package markdown-mode
-;;   :straight t
-;;   :defer t
-;;   :mode ("\\.md" . markdown-mode))
+(use-package markdown-mode
+  :straight t
+  :defer t
+  :mode ("\\.md" . markdown-mode))
 
 ;; (use-package eshell
-;;   :defer t
-;;   :preface
-;;   (defun my/truncate-eshell-buffers ()
-;;     "Truncates all eshell buffers"
-;;     (interactive)
-;;     (save-current-buffer
-;;       (dolist (buffer (buffer-list t))
-;; 	(set-buffer buffer)
-;; 	(when (eq major-mode 'eshell-mode)
-;; 	  (eshell-truncate-buffer)))))
-
 ;;   :config
-;;   (progn
-;;     (setq eshell-scroll-to-bottom-on-input 'all)
-;;     (setq eshell-buffer-maximum-lines 2000)
-;;     (setq my/eshell-truncate-timer
-;; 	  (run-with-idle-timer 5 t #'my/truncate-eshell-buffers))))
+;;     (eshell-scroll-to-bottom-on-input 'all))
+;    (eshell-buffer-maximum-lines 2000)
+;    (my/eshell-truncate-timer (run-with-idle-timer 5 t #'my/truncate-eshell-buffers)))
 
-;; (use-package eshell-git-prompt
-;;   :straight t
-;;   :init
-;;   (eshell-git-prompt-use-theme 'robbyrussell))
+(use-package org
+  :defer t
+  :straight org-contrib
+  :bind  (:map org-mode-map
+               ;; ([f3] . org-narrow-to-subtree)
+               ;; ([f4] . widen)
+               ([M-return] . org-meta-return)
+	       ("C-c ," . howm-menu)
+               )
+  :custom
+  (org-hide-leading-stars 't)
+					;  (setq org-use-property-inheritance nil)
+					;(org-log-done 'time)
+  (org-agenda-text-search-extra-files ;; This variable instructs org agenda to search through the archives
+   '(agenda-archives "~/Dropbox/org/work.org_archive" "~/Dropbox/org/main.org_archive"))
+  (org-refile-use-outline-path 3)
+  (org-agenda-files
+   '("~/Dropbox/org/log.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/inbox.org" "~/Dropbox/org/work.org" "~/Dropbox/org/main.org" "~/Dropbox/org/slipbox.org" "~/Dropbox/org/slipbox_raw.org" "~/Dropbox/org/someday.org" "~/Dropbox/org/daily.org"))
+  (org-startup-folded t)
+  (org-export-with-section-numbers nil)
+  (org-export-with-toc nil)
+  (org-pretty-entities t)
+  (org-id-link-to-org-use-id t)
+  (org-hide-emphasis-markers t)
+  (org-reverse-note-order t)
+  (org-log-into-drawer "LOGBOOK")
+  (org-clock-persist t)
+  (org-use-speed-commands t)
+  (org-clock-idle-time 60)
+  (org-emphasis-regexp-components '("-[:space:]('\"{" "-[:space:].,:!?;'\")}\\[" "\x200B" "." 1))
+  (org-clock-history-length 35)
+  (org-clock-in-resume t)
+  (org-image-actual-width '(500))
+  (org-completion-use-ido nil)
+  (org-outline-path-complete-in-steps nil)
+  (org-clock-out-remove-zero-time-clocks t)
+  (org-id-method 'uuidgen)
+  (org-enforce-todo-dependencies t)
+  (org-hide-leading-stars t)
+  (org-refile-targets '((org-agenda-files :maxlevel . 5)))
+  (org-image-toggle-inline  t)
+  (org-catch-invisible-edits 'show-and-error)
+  (org-log-done 'note)
+  (org-agenda-block-separator ? )
+  (org-log-reschedule 'note)
+  (org-log-redeadline 'note)
+  (org-log-delschedule 'note)
+  (org-log-deldeadline 'note)
+  (org-emphasis-alist '(("*" bold) ("/" italic) ("_" underline) ("=" org-verbatim verbatim) ("~" (:background "yellow1" :weight bold)) ("+" (:strike-through t))))
+  ;; Setup log note templates. Add "to [new date]" in reschedule and redeadline
+  (org-log-note-headings '((done        . "CLOSING NOTE %t")
+                           (state       . "State %-12s from %-12S %t")
+                           (note        . "Note taken on %t")
+                           (reschedule  . "Schedule changed on %t: %S -> %s")
+                           (delschedule . "Not scheduled, was %S on %t")
+                           (redeadline  . "Deadline changed on %t: %S -> %s")
+                           (deldeadline . "Removed deadline, was %S on %t")
+                           (refile      . "Refiled on %t")
+			   (clock-out . "")))
 
+  (org-todo-keywords
+   (quote ((sequence "TODO(t)" "NEXT(n)" "WAITING(w@/!)" "DEFERRED(e)" "|" "DONE(d!)" "CANCELLED(c@)" "DELEGATED")
+	   (sequence "TOBUY(b)" "TOPACK(p)" "|" "BOUGHT(g)" "PACKED")
+	   (sequence "TOREAD(r)" "|" "READ")
+	   (sequence "QUESTION(q)" "|" "ANSWERED(a@)")
+	   (sequence "TOREVIEW" "INREVIEW" "REWORK" "|" "APPROVED"))))
 
+  (org-todo-keyword-faces
+   (quote (("TODO" :foreground "red1" :weight bold)
+	   ("NEXT" :foreground "turquoise" :weight bold)
+	   ("DONE" :foreground "light green" :weight bold)
+	   ("WAITING" :foreground "DarkOrange2" :weight bold)
+	   ("DEFERRED" :foreground "DarkOrange2" :weight bold)
+	   ("TOREAD" :foreground "DarkOrange2" :weight bold)
+	   ("HOLD" :foreground "magenta" :weight bold)
+	   ("CANCELLED" :foreground "light green" :weight bold)
+	   ("READ"  :foreground "light green" :weight bold)
+	   ("QUESTION" :foreground "DarkOrange2" :weight bold)
+	   ("ANSWERED" :foreground "light green" :weight bold)
+	   ("TOREVIEW" :foreground "red1" :weight bold)
+	   ("INREVIEW" :foreground "DarkOrange2" :weight bold)
+	   ("REWORK"  :foreground "magenta" :weight bold)
+	   ("APPROVED" :foreground "light green" :weight bold)
+	   )))
 
-;; (use-package org
-;;   :defer t
-;;   :straight org-contrib
-;;   :bind  (:map org-mode-map
-;;                ;; ([f3] . org-narrow-to-subtree)
-;;                ;; ([f4] . widen)
-;;                ([M-return] . org-meta-return)
-;; 	       ("C-c ," . howm-menu)
-;;                )
-;;   :custom
-;;   (org-hide-leading-stars 't)
-;; 					;  (setq org-use-property-inheritance nil)
-;; 					;(org-log-done 'time)
-;;   (org-agenda-text-search-extra-files ;; This variable instructs org agenda to search through the archives
-;;    '(agenda-archives "~/Dropbox/org/work.org_archive" "~/Dropbox/org/main.org_archive"))
-;;   (org-refile-use-outline-path 3)
-;;   (org-agenda-files
-;;    '("~/Dropbox/org/log.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/inbox.org" "~/Dropbox/org/work.org" "~/Dropbox/org/main.org" "~/Dropbox/org/slipbox.org" "~/Dropbox/org/slipbox_raw.org" "~/Dropbox/org/someday.org" "~/Dropbox/org/daily.org"))
-;;   (org-startup-folded t)
-;;   (org-export-with-section-numbers nil)
-;;   (org-export-with-toc nil)
-;;   (org-pretty-entities t)
-;;   (org-id-link-to-org-use-id t)
-;;   (org-hide-emphasis-markers t)
-;;   (org-reverse-note-order t)
-;;   (org-log-into-drawer "LOGBOOK")
-;;   (org-clock-persist t)
-;;   (org-use-speed-commands t)
-;;   (org-clock-idle-time 60)
-;;   (org-emphasis-regexp-components '("-[:space:]('\"{" "-[:space:].,:!?;'\")}\\[" "\x200B" "." 1))
-;;   (org-clock-history-length 35)
-;;   (org-clock-in-resume t)
-;;   (org-image-actual-width '(500))
-;;   (org-completion-use-ido nil)
-;;   (org-outline-path-complete-in-steps nil)
-;;   (org-clock-out-remove-zero-time-clocks t)
-;;   (org-id-method 'uuidgen)
-;;   (org-enforce-todo-dependencies t)
-;;   (org-hide-leading-stars t)
-;;   (org-refile-targets '((org-agenda-files :maxlevel . 5)))
-;;   (org-image-toggle-inline  t)
-;;   (org-catch-invisible-edits 'show-and-error)
-;;   (org-log-done 'note)
-;;   (org-agenda-block-separator ? )
-;;   (org-log-reschedule 'note)
-;;   (org-log-redeadline 'note)
-;;   (org-log-delschedule 'note)
-;;   (org-log-deldeadline 'note)
-;;   (org-emphasis-alist '(("*" bold) ("/" italic) ("_" underline) ("=" org-verbatim verbatim) ("~" (:background "yellow1" :weight bold)) ("+" (:strike-through t))))
-;;   ;; Setup log note templates. Add "to [new date]" in reschedule and redeadline
-;;   (org-log-note-headings '((done        . "CLOSING NOTE %t")
-;;                            (state       . "State %-12s from %-12S %t")
-;;                            (note        . "Note taken on %t")
-;;                            (reschedule  . "Schedule changed on %t: %S -> %s")
-;;                            (delschedule . "Not scheduled, was %S on %t")
-;;                            (redeadline  . "Deadline changed on %t: %S -> %s")
-;;                            (deldeadline . "Removed deadline, was %S on %t")
-;;                            (refile      . "Refiled on %t")
-;; 			   (clock-out . "")))
+  (org-todo-state-tags-triggers
+   (quote (("CANCELLED" ("CANCELLED" . t))
+	   ("WAITING" ("WAITING" . t))
+	   (done ("WAITING"))
+	   ("DEFERRED" ("DEFERRED"))
+	   ("TODO" ("WAITING") ("CANCELLED") )
+	   ("NEXT" ("WAITING") ("CANCELLED") )
+	   ("DONE" ("WAITING") ("CANCELLED") ))))
 
-;;   (org-todo-keywords
-;;    (quote ((sequence "TODO(t)" "NEXT(n)" "WAITING(w@/!)" "DEFERRED(e)" "|" "DONE(d!)" "CANCELLED(c@)" "DELEGATED")
-;; 	   (sequence "TOBUY(b)" "TOPACK(p)" "|" "BOUGHT(g)" "PACKED")
-;; 	   (sequence "TOREAD(r)" "|" "READ")
-;; 	   (sequence "QUESTION(q)" "|" "ANSWERED(a@)")
-;; 	   (sequence "TOREVIEW" "INREVIEW" "REWORK" "|" "APPROVED"))))
+  (org-agenda-custom-commands
+   '(("d" "Daily Tasks" ((agenda ""
+				 ((org-agenda-overriding-header "Tasks to work on today")
+                                  (org-agenda-entry-types '(:scheduled :deadline))
+				  (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org" "~/Dropbox/org/inbox.org"))
+                                  (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                                  (org-agenda-span 1)
+                                  (org-agenda-show-all-dates nil)
+                                  (org-agenda-time-grid nil)
+                                  (org-super-agenda-groups '((:name "Deadline past Tasks"
+                                                                    :deadline past)
+                                                             (:name "Deadline today Tasks"
+                                                                    :deadline today)
+                                                             (:name "Today Tasks"
+                                                                    :scheduled today)
+                                                             (:name "Past Scheduled Tasks"
+                                                                    :scheduled past)
+                                                             (:name "Future Tasks"
+                                                                    :deadline future)
+							     (:auto-parent))
+                                                           )))
+                         ))
+     ("i" "Inbox Review" ((tags-todo "TODO=\"TODO\"&SCHEDULED=\"\"|TODO=\"NEXT\"&SCHEDULED=\"\""
+        			     ((org-agenda-overriding-header "Inbox Tasks")
+                                      (org-agenda-files '("~/Dropbox/org/inbox.org"))))
+        		  (org-ql-block '(and (not (todo "TODO"))
+         		   		      (not (todo "DONE"))
+                                              (not (todo "CANCELLED")))
+        		   	        ((org-ql-block-header "Notes")
+                                         (org-agenda-overriding-header "Other Items")
+                                         (org-agenda-files '("~/Dropbox/org/inbox.org"))
+                                         ))
+                          ))
+     ("t" "Inbox Entries TODAY" ((tags "ENTRYDATE>=\"<today>\"&SCHEDULED=\"\""
+        			       ((org-agenda-overriding-header "Inbox Tasks")
+					(org-agenda-time-grid nil)
+					(org-agenda-files '("~/Dropbox/org/inbox.org"))))
+				 ))
+     ("r" "Review" ((agenda ""
+                            ((org-agenda-overriding-header "Tasks in the next 2 weeks")
+                             (org-agenda-entry-types '(:scheduled :deadline))
+			     (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org" "~/Dropbox/org/inbox.org"))
+                             (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                             (org-agenda-span 1)
+                             (org-agenda-show-all-dates nil)
+                             (org-agenda-time-grid nil)
+                             (org-super-agenda-groups '((:name "Deadline past Tasks"
+                                                               :deadline past)
+                                                        (:name "Past Scheduled Tasks"
+                                                               :scheduled past)
+                                                        (:name "Today Tasks"
+                                                               :scheduled today
+                                                               :deadline today)
+                                                        (:name "Future Tasks"
+                                                               :deadline future))
+                                                      )))
+		    (org-ql-block '(and (property "ENTRY_TYPE" "PROJECT")
+					(null (property "GOAL")))
+        		   	  ((org-ql-block-header "Projects With no Goal - Add a :goal: property in the drawer")
+                                   (org-agenda-overriding-header "Other Items")
+                                   (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
+				   (org-super-agenda-groups  '((:auto-category t)))
+                                   ))
+		    (org-ql-block '(and (property "ENTRY_TYPE" "PROJECT")
+					(null (property "AREA")))
+        		   	  ((org-ql-block-header "Projects With Area of responbility - Add a :area: property in the drawer")
+                                   (org-agenda-overriding-header "Other Items")
+                                   (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
+				   (org-super-agenda-groups  '((:auto-category t)))
+                                   ))
+		    (org-ql-block '(and (property "ENTRY_TYPE" "PROJECT")
+					(null (deadline)))
+        		   	  ((org-ql-block-header "Projects With no Deadline - Add a Deadline to make projects disappear")
+                                   (org-agenda-overriding-header "Other Items")
+                                   (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
+				   (org-super-agenda-groups  '((:auto-category t)))
+                                   ))
+		    (org-ql-block '(and (property "ENTRY_TYPE" "PROJECT")
+					(not (descendants (scheduled))))
+        		   	  ((org-ql-block-header "Stuck Projects")
+                                   (org-agenda-overriding-header "Other Items")
+                                   (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
+				   (org-super-agenda-groups  '((:auto-category t)))
+                                   ))
+		    (tags-todo "TODO=\"TODO\"-DEPRIORITIZED_PROJECTS-TEMPLATE-PROJECT-SCHEDULED={.+}-DEADLINE={.+}"
+			       ((org-agenda-overriding-header "Unplanned Todos")
+				(org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
+				(org-super-agenda-groups '((:auto-parent t))))))
+      ((org-agenda-block-separator "===================================================================="))
+      )
 
-;;   (org-todo-keyword-faces
-;;    (quote (("TODO" :foreground "red1" :weight bold)
-;; 	   ("NEXT" :foreground "turquoise" :weight bold)
-;; 	   ("DONE" :foreground "light green" :weight bold)
-;; 	   ("WAITING" :foreground "DarkOrange2" :weight bold)
-;; 	   ("DEFERRED" :foreground "DarkOrange2" :weight bold)
-;; 	   ("TOREAD" :foreground "DarkOrange2" :weight bold)
-;; 	   ("HOLD" :foreground "magenta" :weight bold)
-;; 	   ("CANCELLED" :foreground "light green" :weight bold)
-;; 	   ("READ"  :foreground "light green" :weight bold)
-;; 	   ("QUESTION" :foreground "DarkOrange2" :weight bold)
-;; 	   ("ANSWERED" :foreground "light green" :weight bold)
-;; 	   ("TOREVIEW" :foreground "red1" :weight bold)
-;; 	   ("INREVIEW" :foreground "DarkOrange2" :weight bold)
-;; 	   ("REWORK"  :foreground "magenta" :weight bold)
-;; 	   ("APPROVED" :foreground "light green" :weight bold)
-;; 	   )))
+     ("p"  "Report" ((tags "ENTRY_TYPE=\"PROJECT\"&TODO=\"DONE\"&CLOSED>\"<-1w>\""
+			   ((org-super-agenda-groups '((:auto-parent t)))
+                            (org-agenda-span "-7d")
+			    (org-agenda-files '("~/Dropbox/org/inbox.org"
+						"~/Dropbox/org/inbox.org_archive"
+						"~/Dropbox/org/work.org"
+						"~/Dropbox/org/work.org_archive"
+						"~/Dropbox/org/main.org_archive"
+						"~/Dropbox/org/main.org"))
+			    (org-agenda-overriding-header "Projects completed in the last week")))
+		     (tags "TODO=\"DONE\"&CLOSED>\"<-1w>\"&ENTRY_TYPE=\"\""
+			   ((org-agenda-overriding-header "Items Closed in the last week")
+                            (org-agenda-span "-7d")
+			    (org-agenda-files '("~/Dropbox/org/inbox.org"
+						"~/Dropbox/org/inbox.org_archive"
+						"~/Dropbox/org/work.org"
+						"~/Dropbox/org/work.org_archive"
+						"~/Dropbox/org/main.org_archive"
+						"~/Dropbox/org/main.org"))
+			    (org-super-agenda-groups '((:auto-parent t)))))
+		     (tags "improvement&ENTRYDATE>\"<-1w>\""
+			   ((org-agenda-span "-7d")
+			    (org-agenda-overriding-header "Improvements in the last week")
+			    (org-agenda-files '("~/Dropbox/org/log.org"))))
+		     ))
+     ))
 
-;;   (org-todo-state-tags-triggers
-;;    (quote (("CANCELLED" ("CANCELLED" . t))
-;; 	   ("WAITING" ("WAITING" . t))
-;; 	   (done ("WAITING"))
-;; 	   ("DEFERRED" ("DEFERRED"))
-;; 	   ("TODO" ("WAITING") ("CANCELLED") )
-;; 	   ("NEXT" ("WAITING") ("CANCELLED") )
-;; 	   ("DONE" ("WAITING") ("CANCELLED") ))))
-
-;;   (org-agenda-custom-commands
-;;    '(("d" "Daily Tasks" ((agenda ""
-;; 				 ((org-agenda-overriding-header "Tasks to work on today")
-;;                                   (org-agenda-entry-types '(:scheduled :deadline))
-;; 				  (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org" "~/Dropbox/org/inbox.org"))
-;;                                   (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-;;                                   (org-agenda-span 1)
-;;                                   (org-agenda-show-all-dates nil)
-;;                                   (org-agenda-time-grid nil)
-;;                                   (org-super-agenda-groups '((:name "Deadline past Tasks"
-;;                                                                     :deadline past)
-;;                                                              (:name "Deadline today Tasks"
-;;                                                                     :deadline today)
-;;                                                              (:name "Today Tasks"
-;;                                                                     :scheduled today)
-;;                                                              (:name "Past Scheduled Tasks"
-;;                                                                     :scheduled past)
-;;                                                              (:name "Future Tasks"
-;;                                                                     :deadline future)
-;; 							     (:auto-parent))
-;;                                                            )))
-;;                          ))
-;;      ("i" "Inbox Review" ((tags-todo "TODO=\"TODO\"&SCHEDULED=\"\"|TODO=\"NEXT\"&SCHEDULED=\"\""
-;;         			     ((org-agenda-overriding-header "Inbox Tasks")
-;;                                       (org-agenda-files '("~/Dropbox/org/inbox.org"))))
-;;         		  (org-ql-block '(and (not (todo "TODO"))
-;;          		   		      (not (todo "DONE"))
-;;                                               (not (todo "CANCELLED")))
-;;         		   	        ((org-ql-block-header "Notes")
-;;                                          (org-agenda-overriding-header "Other Items")
-;;                                          (org-agenda-files '("~/Dropbox/org/inbox.org"))
-;;                                          ))
-;;                           ))
-;;      ("t" "Inbox Entries TODAY" ((tags "ENTRYDATE>=\"<today>\"&SCHEDULED=\"\""
-;;         			       ((org-agenda-overriding-header "Inbox Tasks")
-;; 					(org-agenda-time-grid nil)
-;; 					(org-agenda-files '("~/Dropbox/org/inbox.org"))))
-;; 				 ))
-;;      ("r" "Review" ((agenda ""
-;;                             ((org-agenda-overriding-header "Tasks in the next 2 weeks")
-;;                              (org-agenda-entry-types '(:scheduled :deadline))
-;; 			     (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org" "~/Dropbox/org/inbox.org"))
-;;                              (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-;;                              (org-agenda-span 1)
-;;                              (org-agenda-show-all-dates nil)
-;;                              (org-agenda-time-grid nil)
-;;                              (org-super-agenda-groups '((:name "Deadline past Tasks"
-;;                                                                :deadline past)
-;;                                                         (:name "Past Scheduled Tasks"
-;;                                                                :scheduled past)
-;;                                                         (:name "Today Tasks"
-;;                                                                :scheduled today
-;;                                                                :deadline today)
-;;                                                         (:name "Future Tasks"
-;;                                                                :deadline future))
-;;                                                       )))
-;; 		    (org-ql-block '(and (property "ENTRY_TYPE" "PROJECT")
-;; 					(null (property "GOAL")))
-;;         		   	  ((org-ql-block-header "Projects With no Goal - Add a :goal: property in the drawer")
-;;                                    (org-agenda-overriding-header "Other Items")
-;;                                    (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
-;; 				   (org-super-agenda-groups  '((:auto-category t)))
-;;                                    ))
-;; 		    (org-ql-block '(and (property "ENTRY_TYPE" "PROJECT")
-;; 					(null (property "AREA")))
-;;         		   	  ((org-ql-block-header "Projects With Area of responbility - Add a :area: property in the drawer")
-;;                                    (org-agenda-overriding-header "Other Items")
-;;                                    (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
-;; 				   (org-super-agenda-groups  '((:auto-category t)))
-;;                                    ))
-;; 		    (org-ql-block '(and (property "ENTRY_TYPE" "PROJECT")
-;; 					(null (deadline)))
-;;         		   	  ((org-ql-block-header "Projects With no Deadline - Add a Deadline to make projects disappear")
-;;                                    (org-agenda-overriding-header "Other Items")
-;;                                    (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
-;; 				   (org-super-agenda-groups  '((:auto-category t)))
-;;                                    ))
-;; 		    (org-ql-block '(and (property "ENTRY_TYPE" "PROJECT")
-;; 					(not (descendants (scheduled))))
-;;         		   	  ((org-ql-block-header "Stuck Projects")
-;;                                    (org-agenda-overriding-header "Other Items")
-;;                                    (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
-;; 				   (org-super-agenda-groups  '((:auto-category t)))
-;;                                    ))
-;; 		    (tags-todo "TODO=\"TODO\"-DEPRIORITIZED_PROJECTS-TEMPLATE-PROJECT-SCHEDULED={.+}-DEADLINE={.+}"
-;; 			       ((org-agenda-overriding-header "Unplanned Todos")
-;; 				(org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
-;; 				(org-super-agenda-groups '((:auto-parent t))))))
-;;       ((org-agenda-block-separator "===================================================================="))
-;;       )
-
-;;      ("p"  "Report" ((tags "ENTRY_TYPE=\"PROJECT\"&TODO=\"DONE\"&CLOSED>\"<-1w>\""
-;; 			   ((org-super-agenda-groups '((:auto-parent t)))
-;;                             (org-agenda-span "-7d")
-;; 			    (org-agenda-files '("~/Dropbox/org/inbox.org"
-;; 						"~/Dropbox/org/inbox.org_archive"
-;; 						"~/Dropbox/org/work.org"
-;; 						"~/Dropbox/org/work.org_archive"
-;; 						"~/Dropbox/org/main.org_archive"
-;; 						"~/Dropbox/org/main.org"))
-;; 			    (org-agenda-overriding-header "Projects completed in the last week")))
-;; 		     (tags "TODO=\"DONE\"&CLOSED>\"<-1w>\"&ENTRY_TYPE=\"\""
-;; 			   ((org-agenda-overriding-header "Items Closed in the last week")
-;;                             (org-agenda-span "-7d")
-;; 			    (org-agenda-files '("~/Dropbox/org/inbox.org"
-;; 						"~/Dropbox/org/inbox.org_archive"
-;; 						"~/Dropbox/org/work.org"
-;; 						"~/Dropbox/org/work.org_archive"
-;; 						"~/Dropbox/org/main.org_archive"
-;; 						"~/Dropbox/org/main.org"))
-;; 			    (org-super-agenda-groups '((:auto-parent t)))))
-;; 		     (tags "improvement&ENTRYDATE>\"<-1w>\""
-;; 			   ((org-agenda-span "-7d")
-;; 			    (org-agenda-overriding-header "Improvements in the last week")
-;; 			    (org-agenda-files '("~/Dropbox/org/log.org"))))
-;; 		     ))
-;;      ))
-
-;;   (org-stuck-projects
-;;    '("+ENTRY_TYPE=\"PROJECT\"-DONE-TEMPLATE-DEFERRED-CANCELLED-TODO=\"DONE\"" ("") ("")
-;;      "\\<IGNORE\\>\\|SCHEDULED:\\|DEADLINE:"))
+  (org-stuck-projects
+   '("+ENTRY_TYPE=\"PROJECT\"-DONE-TEMPLATE-DEFERRED-CANCELLED-TODO=\"DONE\"" ("") ("")
+     "\\<IGNORE\\>\\|SCHEDULED:\\|DEADLINE:"))
 
 
-;;   (org-directory "~/Dropbox/org")
-;;   ;; (org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
-;;   ;; (org-mobile-inbox-for-pull "~/Dropbox/inbox.org")
-;;   (org-columns-default-format "%50ITEM %TODO %CLOCKSUM %Area %Goal")
-;;   (org-agenda-include-diary t)
-;;   (org-journal-template-entry (concat "* %T [" (system-name)  "]| %^{title} %^G"))
-;;   (org-agenda-window-setup 'only-window)
-;;   :config
-;;   (add-to-list 'org-modules 'org-id )
-;;   (add-to-list 'org-modules 'org-habit)
-;;   (require 'org-crypt)
-;;   (require 'org-depend)
-;;   (require 'org-protocol)
-;;   (require 'org-checklist)
-;;   (require 'gus-links)
-;;   (add-to-list 'org-modules 'org-crypt)
-;;   (add-to-list 'org-modules 'org-checklist)
-;;   (setq org-crypt-disable-auto-save t)
-;;   (org-crypt-use-before-save-magic)
-;;   (setq org-crypt-key nil)
+  (org-directory "~/Dropbox/org")
+  ;; (org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
+  ;; (org-mobile-inbox-for-pull "~/Dropbox/inbox.org")
+  (org-columns-default-format "%50ITEM %TODO %CLOCKSUM %Area %Goal")
+  (org-agenda-include-diary t)
+  (org-journal-template-entry (concat "* %T [" (system-name)  "]| %^{title} %^G"))
+  (org-agenda-window-setup 'only-window)
+  :config
+  (add-to-list 'org-modules 'org-id )
+  (add-to-list 'org-modules 'org-habit)
+  (require 'org-crypt)
+  (require 'org-depend)
+  (require 'org-protocol)
+  (require 'org-checklist)
+  (require 'gus-links)
+  (add-to-list 'org-modules 'org-crypt)
+  (add-to-list 'org-modules 'org-checklist)
+  (setq org-crypt-disable-auto-save t)
+  (org-crypt-use-before-save-magic)
+  (setq org-crypt-key nil)
 
-;;   (setq org-directory (expand-file-name "~/Dropbox/org"))
-;;   (setq org-default-inbox-file (concat org-directory "/inbox.org"))
-;;   (setq org-default-notes-file (concat org-directory "/notes.org"))
-;;   (setq org-default-journal-file (concat org-directory "/notes.org"))
-;;   (setq org-default-slipbox-file (concat org-directory "/slipbox.org"))
-;;   (setq org-default-log-file (concat org-directory "/log.org"))
+  (setq org-directory (expand-file-name "~/Dropbox/org"))
+  (setq org-default-inbox-file (concat org-directory "/inbox.org"))
+  (setq org-default-notes-file (concat org-directory "/notes.org"))
+  (setq org-default-journal-file (concat org-directory "/notes.org"))
+  (setq org-default-slipbox-file (concat org-directory "/slipbox.org"))
+  (setq org-default-log-file (concat org-directory "/log.org"))
 
-;;   (setq org-show-context-detail (assq-delete-all 'agenda org-show-context-detail))
-;;   (add-to-list 'org-show-context-detail '(agenda . lineage))
+  (setq org-show-context-detail (assq-delete-all 'agenda org-show-context-detail))
+  (add-to-list 'org-show-context-detail '(agenda . lineage))
 
-;;   (setq org-capture-templates
-;;   	'(("t" "Todo" entry (file org-default-inbox-file)
-;;   	   "* TODO %^{entry}\n:PROPERTIES:\n:ENTRYDATE:   %U\n:END:\n %?\n")
-;; 	  ("n" "Note" entry (file org-default-inbox-file)
-;; 	   "* %^{title}\n:PROPERTIES:\n:ENTRYDATE:   %U\n:ID: %(uuid-create)\n:END:\n\n%?\n")
-;;   	  ("r" "Code Review" entry (file org-default-inbox-file) "* TOREVIEW Code Review %^{author} [[%^{link}][%^{description}]] [/]\n:PROPERTIES:\n:ENTRYDATE:   %U\n:ID: %(uuid-create)\n:END:\n\n** TODO Questions before the code review [/]\n    - [ ] Describe the problem the author is trying to solve\n    - [ ] Do I think its required\n    - [ ] Backward compatibility: Will this code execute against existing data?\n    - [ ] List the areas of the code the author has changed [0/0]\n** TODO Questions after a code review [/]\n    - [ ] Describe the code change in detail.\n    - [ ] Does the code satisfy the original intent?\n    - [ ] If the code will execute against older data, how does the author handle backward compatibility?\n    - [ ] Does the author have tests to show his method of handling backward compatibility works?\n    - [ ] Does the author have tests that cover all the areas of the code change?\n    - [ ] What are the error scenarios for the code in question?\n    - [ ] Does the author handle these scenarios well\n    - [ ] Are there variables names you don't understand?\n** Questions unrelated to the code review\n" :immediate-finish t)
-;; 	  ("l" "Link" entry (file org-default-inbox-file)
-;; 	   "* %a\n:PROPERTIES:\n:ENTRYDATE:   %U\n:END:\n %i" :immediate-finish t)
-;;   	  ("q" "Question" entry (file org-default-inbox-file)
-;;   	   "* QUESTION %^{question} \n%?\n\nEntered on %U\n %i\n")
-;;   	  ("j" "Journal" entry (file org-default-inbox-file)
-;;   	   "* %^{title} %^G \n:PROPERTIES:\n:ENTRYDATE:   %U\n:END:\n\n%?\n\nEntered on %U\n %i\n")
-;; 	  ("i" "Time checkin" entry (file org-default-log-file)
-;; 	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| [ check in ] |%^{title}"
-;; 	   :immediate-finish t)
-;; 	  ("o" "Time checkout" entry (file org-default-log-file)
-;; 	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| [ check out ] |%^{title}"
-;; 	   :immediate-finish t)
-;;   	  ("g" "log" entry (function custom-log-finder)
-;;   	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| %^{title}  %(add-tag) " :immediate-finish t)))
-
-
-;;   ;; (add-hook 'org-mode-hook
-;;   ;;           (lambda()
-;;   ;;             (visual-line-mode t)
-;;   ;;             (setq line-spacing 10)
-;;   ;;             (setq left-margin-width 10 right-margin-width 10)))
-
-;;   (defun skip-done-functions-or-projects()
-;;     (org-agenda-skip-entry-if 'todo '("DONE" "WAITING" "NEXT")))
-
-;;   (defun org-checkbox-todo ()
-;;     "Switch header TODO state to either DONE, NEXT, or TODO depending on the number of check boxes ticked"
-;;     (let ((todo-state (org-get-todo-state)) beg end)
-;;       (unless (not todo-state)
-;;   	(save-excursion
-;;   	  (org-back-to-heading t)
-;;   	  (let* ((line-start (point))
-;;   		 (line-end (line-end-position)))
-;;   	    (if (re-search-forward "\\[\\([0-9]*\\)%\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
-;;   				   end t)
-;;   		(if (match-end 1)
-;;   		    (let ((percent-done (string-to-number (match-string 1))))
-;;   		      (handle-percent-case percent-done))
-;;   		  (let ((tasks-done (string-to-number (match-string 2)))
-;;   			(tasks-remaining (string-to-number (match-string 3))))
-;;   		    (handle-task-number-case tasks-done tasks-remaining)))))))))
-
-;;   (defun handle-percent-case(percent-done)
-;;     (if (= percent-done 100)
-;;   	(org-todo "DONE")
-;;       (if (> percent-done 0)
-;;   	  (org-todo "NEXT")
-;;   	(org-todo "TODO"))))
-
-;;   (defun handle-task-number-case(tasks-done tasks-remaining)
-;;     (if (= tasks-done tasks-remaining)
-;;   	(org-todo "DONE")
-;;       (if (= tasks-done 0)
-;;   	  (org-todo "TODO")
-;;   	(org-todo "NEXT"))))
-
-;;   (defun find-list-of-points-with-log-entry-headings()
-;;     (org-map-entries (lambda ()
-;;   		       (let ((current-headline (buffer-substring-no-properties
-;;   						(line-beginning-position)
-;;   						(line-end-position))))
-;;   			 (if (string-match-p " Log Entries" current-headline)
-;;   			     (line-beginning-position)
-;;   			   nil)))
-;;   		     nil
-;;   		     'tree))
-
-;;   (defun find-log-header()
-;;     (interactive)
-;;     (let ((filtered-list  (seq-filter (lambda(x)
-;;   					(not (null x)))
-;;   				      (find-list-of-points-with-log-entry-headings))))
-;;       (if (null filtered-list)
-;;   	  nil
-;;   	(car filtered-list))))
-
-;;   (defun insert-log-entry-heading()
-;;     (interactive)
-;;     (let ((depth (org-current-level)))
-;;       (outline-next-heading)
-;;       (let ((heading-string (concat
-;;   			     (make-string (+ depth 1) ?*)
-;;   			     " Log Entries\n")))
-;;   	(insert heading-string)
-;;   	(goto-char (- (line-beginning-position) 1)))))
+  (setq org-capture-templates
+  	'(("t" "Todo" entry (file org-default-inbox-file)
+  	   "* TODO %^{entry}\n:PROPERTIES:\n:ENTRYDATE:   %U\n:END:\n %?\n")
+	  ("n" "Note" entry (file org-default-inbox-file)
+	   "* %^{title}\n:PROPERTIES:\n:ENTRYDATE:   %U\n:ID: %(uuid-create)\n:END:\n\n%?\n")
+  	  ("r" "Code Review" entry (file org-default-inbox-file) "* TOREVIEW Code Review %^{author} [[%^{link}][%^{description}]] [/]\n:PROPERTIES:\n:ENTRYDATE:   %U\n:ID: %(uuid-create)\n:END:\n\n** TODO Questions before the code review [/]\n    - [ ] Describe the problem the author is trying to solve\n    - [ ] Do I think its required\n    - [ ] Backward compatibility: Will this code execute against existing data?\n    - [ ] List the areas of the code the author has changed [0/0]\n** TODO Questions after a code review [/]\n    - [ ] Describe the code change in detail.\n    - [ ] Does the code satisfy the original intent?\n    - [ ] If the code will execute against older data, how does the author handle backward compatibility?\n    - [ ] Does the author have tests to show his method of handling backward compatibility works?\n    - [ ] Does the author have tests that cover all the areas of the code change?\n    - [ ] What are the error scenarios for the code in question?\n    - [ ] Does the author handle these scenarios well\n    - [ ] Are there variables names you don't understand?\n** Questions unrelated to the code review\n" :immediate-finish t)
+	  ("l" "Link" entry (file org-default-inbox-file)
+	   "* %a\n:PROPERTIES:\n:ENTRYDATE:   %U\n:END:\n %i" :immediate-finish t)
+  	  ("q" "Question" entry (file org-default-inbox-file)
+  	   "* QUESTION %^{question} \n%?\n\nEntered on %U\n %i\n")
+  	  ("j" "Journal" entry (file org-default-inbox-file)
+  	   "* %^{title} %^G \n:PROPERTIES:\n:ENTRYDATE:   %U\n:END:\n\n%?\n\nEntered on %U\n %i\n")
+	  ("i" "Time checkin" entry (file org-default-log-file)
+	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| [ check in ] |%^{title}"
+	   :immediate-finish t)
+	  ("o" "Time checkout" entry (file org-default-log-file)
+	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| [ check out ] |%^{title}"
+	   :immediate-finish t)
+  	  ("g" "log" entry (function custom-log-finder)
+  	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| %^{title}  %(add-tag) " :immediate-finish t)))
 
 
-;;   (defun find-or-insert-entry()
-;;     (interactive)
-;;     (let ((log-header-point (find-log-header)))
-;;       (if (null log-header-point)
-;;   	  (insert-log-entry-heading)
-;;   	(goto-char log-header-point))))
+  ;; (add-hook 'org-mode-hook
+  ;;           (lambda()
+  ;;             (visual-line-mode t)
+  ;;             (setq line-spacing 10)
+  ;;             (setq left-margin-width 10 right-margin-width 10)))
+
+  (defun skip-done-functions-or-projects()
+    (org-agenda-skip-entry-if 'todo '("DONE" "WAITING" "NEXT")))
+
+  (defun org-checkbox-todo ()
+    "Switch header TODO state to either DONE, NEXT, or TODO depending on the number of check boxes ticked"
+    (let ((todo-state (org-get-todo-state)) beg end)
+      (unless (not todo-state)
+  	(save-excursion
+  	  (org-back-to-heading t)
+  	  (let* ((line-start (point))
+  		 (line-end (line-end-position)))
+  	    (if (re-search-forward "\\[\\([0-9]*\\)%\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
+  				   end t)
+  		(if (match-end 1)
+  		    (let ((percent-done (string-to-number (match-string 1))))
+  		      (handle-percent-case percent-done))
+  		  (let ((tasks-done (string-to-number (match-string 2)))
+  			(tasks-remaining (string-to-number (match-string 3))))
+  		    (handle-task-number-case tasks-done tasks-remaining)))))))))
+
+  (defun handle-percent-case(percent-done)
+    (if (= percent-done 100)
+  	(org-todo "DONE")
+      (if (> percent-done 0)
+  	  (org-todo "NEXT")
+  	(org-todo "TODO"))))
+
+  (defun handle-task-number-case(tasks-done tasks-remaining)
+    (if (= tasks-done tasks-remaining)
+  	(org-todo "DONE")
+      (if (= tasks-done 0)
+  	  (org-todo "TODO")
+  	(org-todo "NEXT"))))
+
+  (defun find-list-of-points-with-log-entry-headings()
+    (org-map-entries (lambda ()
+  		       (let ((current-headline (buffer-substring-no-properties
+  						(line-beginning-position)
+  						(line-end-position))))
+  			 (if (string-match-p " Log Entries" current-headline)
+  			     (line-beginning-position)
+  			   nil)))
+  		     nil
+  		     'tree))
+
+  (defun find-log-header()
+    (interactive)
+    (let ((filtered-list  (seq-filter (lambda(x)
+  					(not (null x)))
+  				      (find-list-of-points-with-log-entry-headings))))
+      (if (null filtered-list)
+  	  nil
+  	(car filtered-list))))
+
+  (defun insert-log-entry-heading()
+    (interactive)
+    (let ((depth (org-current-level)))
+      (outline-next-heading)
+      (let ((heading-string (concat
+  			     (make-string (+ depth 1) ?*)
+  			     " Log Entries\n")))
+  	(insert heading-string)
+  	(goto-char (- (line-beginning-position) 1)))))
 
 
-;;   (defun custom-log-finder()
-;;     (if (and (fboundp 'org-clocking-p) (org-clocking-p))
-;;   	(let ()
-;;   	  (org-clock-goto)
-;;   	  (find-or-insert-entry))
-;;       (let ()
-;;   	(find-file org-default-log-file)
-;;   	(goto-char (point-max)))))
-
-;;   (defun goto-last-heading ()
-;;     (interactive)
-;;     (org-end-of-subtree))
-
-;;   (defun add-tag()
-;;     "This function adds a tag to the log entry if the entry is not going to be appended to an entry that is clocked in."
-;;     (if (and (fboundp 'org-clocking-p)
-;; 	     (org-clocking-p))
-;;   	""
-;;       "%^G"))
+  (defun find-or-insert-entry()
+    (interactive)
+    (let ((log-header-point (find-log-header)))
+      (if (null log-header-point)
+  	  (insert-log-entry-heading)
+  	(goto-char log-header-point))))
 
 
-;;   (defun org-summary-todo (n-done n-not-done)
-;;     "Switch entry to DONE when all subentries are done, to TODO otherwise."
-;;     (let ((todo-state (org-get-todo-state)) beg end)
-;;       (unless (not todo-state)
-;;         (let (org-log-done org-log-states)   ; turn off logging
-;;           (if (= n-not-done 0)
-;;               (progn
-;;                 (org-todo "DONE")
-;;                 (save-excursion
-;;                   (end-of-line)
-;;                   (insert "\n   CLOSED:")
-;;                   (insert (reuben/get-inactive-org-date-time))))
-;;             (org-todo (if (> n-done 0) "NEXT" "TODO")))))))
+  (defun custom-log-finder()
+    (if (and (fboundp 'org-clocking-p) (org-clocking-p))
+  	(let ()
+  	  (org-clock-goto)
+  	  (find-or-insert-entry))
+      (let ()
+  	(find-file org-default-log-file)
+  	(goto-char (point-max)))))
 
-;;   (defun jump-to-org-agenda ()
-;;     (interactive)
-;;     (push-window-configuration)
-;;     (let ((recordings-dir "~/Dropbox/Apps/Dropvox"))
-;;       (ignore-errors
-;;   	(if (directory-files recordings-dir nil "\\`[^.]")
-;;   	    (find-file recordings-dir))))
-;;     (let ((buf (get-buffer "*Org Agenda*"))
-;;   	  wind)
-;;       (if buf
-;;   	  (if (setq wind (get-buffer-window buf))
-;;   	      (when (called-interactively-p 'any)
-;;   		(select-window wind)
-;;   		(org-fit-window-to-buffer))
-;;   	    (if (called-interactively-p 'any)
-;;   		(progn
-;;   		  (select-window (display-buffer buf t t))
-;;   		  (org-fit-window-to-buffer))
-;;   	      (with-selected-window (display-buffer buf)
-;;   		(org-fit-window-to-buffer))))
-;;   	(org-agenda "a" "d"))))
-;;   (add-hook 'org-checkbox-statistics-hook 'org-checkbox-todo)
+  (defun goto-last-heading ()
+    (interactive)
+    (org-end-of-subtree))
 
-;;   (require 'seq)
-;;   (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+  (defun add-tag()
+    "This function adds a tag to the log entry if the entry is not going to be appended to an entry that is clocked in."
+    (if (and (fboundp 'org-clocking-p)
+	     (org-clocking-p))
+  	""
+      "%^G"))
 
 
-;;   (defun rasmus/remove-schedule ()
-;;     "Remove SCHEDULED-cookie is switching state to WAITING."
-;;     (save-excursion
-;;       (and (equal (org-get-todo-state) "DONE")
-;; 	   (org-get-scheduled-time (point))
-;; 	   (when (search-forward-regexp org-scheduled-time-regexp nil t)
-;; 	     (or (delete-region (match-beginning 0) (match-end 0)) t))
-;; 	   (get-buffer "*Org Agenda*")
-;; 	   (with-current-buffer "*Org Agenda*"
-;; 	     (org-agenda-redo)))))
+  (defun org-summary-todo (n-done n-not-done)
+    "Switch entry to DONE when all subentries are done, to TODO otherwise."
+    (let ((todo-state (org-get-todo-state)) beg end)
+      (unless (not todo-state)
+        (let (org-log-done org-log-states)   ; turn off logging
+          (if (= n-not-done 0)
+              (progn
+                (org-todo "DONE")
+                (save-excursion
+                  (end-of-line)
+                  (insert "\n   CLOSED:")
+                  (insert (reuben/get-inactive-org-date-time))))
+            (org-todo (if (> n-done 0) "NEXT" "TODO")))))))
 
-;;   (add-hook 'org-after-todo-state-change-hook
-;; 	    'rasmus/remove-schedule)
+  (defun jump-to-org-agenda ()
+    (interactive)
+    (push-window-configuration)
+    (let ((recordings-dir "~/Dropbox/Apps/Dropvox"))
+      (ignore-errors
+  	(if (directory-files recordings-dir nil "\\`[^.]")
+  	    (find-file recordings-dir))))
+    (let ((buf (get-buffer "*Org Agenda*"))
+  	  wind)
+      (if buf
+  	  (if (setq wind (get-buffer-window buf))
+  	      (when (called-interactively-p 'any)
+  		(select-window wind)
+  		(org-fit-window-to-buffer))
+  	    (if (called-interactively-p 'any)
+  		(progn
+  		  (select-window (display-buffer buf t t))
+  		  (org-fit-window-to-buffer))
+  	      (with-selected-window (display-buffer buf)
+  		(org-fit-window-to-buffer))))
+  	(org-agenda "a" "d"))))
+  (add-hook 'org-checkbox-statistics-hook 'org-checkbox-todo)
 
-;;   (defun org-count-todos-in-state (state)
-;;     (let ((count 0))
-;;       (org-scan-tags (lambda ()
-;; 		       (when (string= (org-get-todo-state) state)
-;; 			 (setq count (1+ count))))
-;; 		     t t)
-;;       count))
+  (require 'seq)
+  (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 
 
-;;   (defvar org-wip-limit 20 "Work-in-progress limit")
-;;   (defvar org-wip-state "NEXT")
+  (defun rasmus/remove-schedule ()
+    "Remove SCHEDULED-cookie is switching state to WAITING."
+    (save-excursion
+      (and (equal (org-get-todo-state) "DONE")
+	   (org-get-scheduled-time (point))
+	   (when (search-forward-regexp org-scheduled-time-regexp nil t)
+	     (or (delete-region (match-beginning 0) (match-end 0)) t))
+	   (get-buffer "*Org Agenda*")
+	   (with-current-buffer "*Org Agenda*"
+	     (org-agenda-redo)))))
 
-;;   (defun org-block-wip-limit (change-plist)
-;;     (catch 'dont-block
-;;       (when (or (not (eq (plist-get change-plist :type) 'todo-state-change))
-;; 		(not (string= (plist-get change-plist :to) org-wip-state)))
-;; 	(throw 'dont-block t))
+  (add-hook 'org-after-todo-state-change-hook
+	    'rasmus/remove-schedule)
 
-;;       (when (>= (org-count-todos-in-state org-wip-state) org-wip-limit )
-;; 	(setq org-block-entry-blocking (format "Number of items in NEXT limit(org-wip-limit): %s" org-wip-state))
-;; 	(throw 'dont-block nil))
+  (defun org-count-todos-in-state (state)
+    (let ((count 0))
+      (org-scan-tags (lambda ()
+		       (when (string= (org-get-todo-state) state)
+			 (setq count (1+ count))))
+		     t t)
+      count))
 
-;;       t)) ; do not block
 
-;;   (add-hook 'org-blocker-hook #'org-block-wip-limit)
+  (defvar org-wip-limit 20 "Work-in-progress limit")
+  (defvar org-wip-state "NEXT")
 
-;;   (define-key org-mode-map [(f10)] 'org-mark-ring-goto)
+  (defun org-block-wip-limit (change-plist)
+    (catch 'dont-block
+      (when (or (not (eq (plist-get change-plist :type) 'todo-state-change))
+		(not (string= (plist-get change-plist :to) org-wip-state)))
+	(throw 'dont-block t))
 
-;;   (org-babel-do-load-languages
-;;    'org-babel-load-languages
-;;    '((emacs-lisp . t)
-;;      (scheme . t)
-;;      (python . t)
-;;      (lisp . t)
-;;      (R . t)))
+      (when (>= (org-count-todos-in-state org-wip-state) org-wip-limit )
+	(setq org-block-entry-blocking (format "Number of items in NEXT limit(org-wip-limit): %s" org-wip-state))
+	(throw 'dont-block nil))
 
-;;   (setq org-babel-python-command "python3")
-;;   (add-hook 'org-mode-hook 'visual-line-mode)
-;;   (defun reuben/org-mode-hook ()
-;;     "Stop the org-level headers from increasing in height relative to the other text."
-;;     (dolist (face '(org-level-1
-;;                     org-level-2
-;;                     org-level-3
-;;                     org-level-4
-;;                     org-level-5))
-;;       (set-face-attribute face nil :weight 'semi-bold :height 1.0)))
+      t)) ; do not block
+
+  (add-hook 'org-blocker-hook #'org-block-wip-limit)
+
+  (define-key org-mode-map [(f10)] 'org-mark-ring-goto)
+
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (scheme . t)
+     (python . t)
+     (lisp . t)
+     (R . t)))
+
+  (setq org-babel-python-command "python3")
+  (add-hook 'org-mode-hook 'visual-line-mode)
+  (defun reuben/org-mode-hook ()
+    "Stop the org-level headers from increasing in height relative to the other text."
+    (dolist (face '(org-level-1
+                    org-level-2
+                    org-level-3
+                    org-level-4
+                    org-level-5))
+      (set-face-attribute face nil :weight 'semi-bold :height 1.0)))
   
-;;   (add-hook 'org-mode-hook #'reuben/org-mode-hook))
+  (add-hook 'org-mode-hook #'reuben/org-mode-hook))
 
+(use-package org-anki
+  :straight t
+  :after org)
 
-;; (use-package org-anki
-;;   :straight t
-;;   :after org)
-
-;; (use-package org-bullets
-;;   :straight t
-;;   :after org
-;;   :config ;; executed after loading package
-;;   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+(use-package org-bullets
+  :straight t
+  :hook (org-mode-hook . (lambda () (org-bullets-mode 1)))
+  :after org)
 
 ;; (use-package org-ql
 ;;   :straight t
