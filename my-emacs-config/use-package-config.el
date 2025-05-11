@@ -76,13 +76,9 @@
          ("M-s r" . consult-ripgrep)
          ("M-s l" . consult-line)
          ("M-s m" . consult-multi-occur))
-  :config
-  ;; Configure the narrowing key.
-  ;; Both < and C-+ work reasonably well.
-  ;; Use Consult to select xref locations with preview
-  (xref-show-xrefs-function #'consult-xref)
-  (xref-show-definitions-function #'consult-xref)  
   :init
+  (setf xref-show-xrefs-function #'consult-xref)
+  (setf xref-show-definitions-function #'consult-xref)    
   (setf consult-narrow-key "<")
   (defun reuben/consult-search-org-helper (org-param keyword directory)
     (let ((old-value consult-ripgrep-args))
@@ -167,11 +163,6 @@
   :defer t
   :mode ("\\.md" . markdown-mode))
 
-;; (use-package eshell
-;;   :config
-;;     (eshell-scroll-to-bottom-on-input 'all))
-;    (eshell-buffer-maximum-lines 2000)
-;    (my/eshell-truncate-timer (run-with-idle-timer 5 t #'my/truncate-eshell-buffers)))
 
 (use-package org
   :defer t
@@ -656,48 +647,47 @@
   :hook (org-mode-hook . (lambda () (org-bullets-mode 1)))
   :after org)
 
-;; (use-package org-ql
-;;   :straight t
-;;   :defer t
-;;   :after org)
+(use-package org-ql
+  :straight t
+  :defer t
+  :after org)
 
-;; (use-package org-super-agenda
-;;   :after org
-;;   :straight t
-;;   :config
-;;   (org-super-agenda-mode))
+(use-package org-super-agenda
+  :after org
+  :straight t
+  :hook (org-mode-hook . (lambda ()   (org-super-agenda-mode 1))))
 
-;; (use-package ibuffer
-;;   :defer t
-;;   :custom
-;;   (ibuffer-saved-filter-groups
-;;    (quote (("default"
-;; 	    ("org" (mode . org-mode))
-;; 	    ("dired" (mode . dired-mode))
-;; 	    ("emacs" (or
-;; 		      (name . "^\\*scratch\\*$")
-;; 		      (name . "^\\*Messages\\*$")))
-;; 	    ("gnus" (or
-;; 		     (mode . message-mode)
-;; 		     (mode . bbdb-mode)
-;; 		     (mode . mail-mode)
-;; 		     (mode . gnus-group-mode)
-;; 		     (mode . gnus-summary-mode)
-;; 		     (mode . gnus-article-mode)
-;; 		     (name . "^\\.bbdb$")
-;; 		     (name . "^\\.newsrc-dribble")))))))
-;;   :config
-;;   (add-hook 'ibuffer-mode-hook
-;; 	    (lambda ()
-;; 	      (ibuffer-switch-to-saved-filter-groups "default"))))
+(use-package ibuffer
+  :defer t
+  :custom
+  (ibuffer-saved-filter-groups
+   (quote (("default"
+	    ("org" (mode . org-mode))
+	    ("dired" (mode . dired-mode))
+	    ("emacs" (or
+		      (name . "^\\*scratch\\*$")
+		      (name . "^\\*Messages\\*$")))
+	    ("gnus" (or
+		     (mode . message-mode)
+		     (mode . bbdb-mode)
+		     (mode . mail-mode)
+		     (mode . gnus-group-mode)
+		     (mode . gnus-summary-mode)
+		     (mode . gnus-article-mode)
+		     (name . "^\\.bbdb$")
+		     (name . "^\\.newsrc-dribble")))))))
+  :hook
+  (ibuffer-mode .
+	    (lambda ()
+	      (ibuffer-switch-to-saved-filter-groups "default"))))
 
 ;; ;; --------------- Themeing ---------------
 
-(use-package spaceline
-  :defer t
-  :straight t
-  :config
-  (spaceline-compile))
+;; (use-package spaceline
+;;   :defer t
+;;   :straight t
+;;   :config
+;;   (spaceline-compile))
 
 ;; (use-package spaceline-all-the-icons
 ;;   :straight t
