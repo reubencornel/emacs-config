@@ -763,7 +763,6 @@
 ;;   (add-to-list 'company-backends 'company-clang)
 ;;   (add-to-list 'company-backends 'company-dabbrev)
 ;;   (add-to-list 'company-backends 'company-files)
- 
 ;;   :init (global-company-mode)
 ;;   :bind
 ;;   (:map company-active-map
@@ -1318,8 +1317,6 @@
       (kill-local-variable 'mode-line-format)
       (force-mode-line-update)))
 
-
-
   (defun setup-theme(frame)
     (with-selected-frame frame
       (load-theme 'spacemacs-dark 'no-confirm))
@@ -1330,10 +1327,10 @@
       (add-hook  'after-make-frame-functions #'setup-theme)))
 
 
-;; (use-package rainbow-delimiters
-;;   :straight t
-;;   :config
-;;   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+(use-package rainbow-delimiters
+  :straight t
+  :hook
+  (prog-mode-hook . rainbow-delimiters-mode))
 
 ;; (use-package diminish
 ;;   :straight t
@@ -1422,29 +1419,30 @@
 ;;                           "Fl"  "Tl"  "fi"  "fj"  "fl"  "ft"
 ;;                           ;; The few not covered by the regexps.
 ;;                           "{|"  "[|"  "]#"  "(*"  "}#"  "$>"  "^="))
-;;     (add-hook 'haskell-mode-hook 'ligature-mode))
+;;     :hook (haskell-mode-hook-hook . 'ligature-mode))
 
-;; (use-package drag-stuff
-;;   :straight t
-;;   :bind (:map prog-mode-map
-;; 	      ("M-<up>" . drag-stuff-up)
-;; 	      ("M-<down>" . drag-stuff-down)
-;; 	      ("M-<left>" . drag-stuff-left)
-;; 	      ("M-<right>" . drag-stuff-right)))
+(use-package drag-stuff
+  :straight t
+  :defer t
+  :bind (:map prog-mode-map
+	      ("M-<up>" . drag-stuff-up)
+	      ("M-<down>" . drag-stuff-down)
+	      ("M-<left>" . drag-stuff-left)
+	      ("M-<right>" . drag-stuff-right)))
 
 ;; (use-package undo-tree
 ;;   :straight t
 ;;   :config
 ;;   (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
 ;;   (global-undo-tree-mode)
-
 ;;   (defadvice undo-tree-make-history-save-file-name
 ;;       (after undo-tree activate)
 ;;     (setq ad-return-value (concat ad-return-value ".gz"))))
 
-;; (use-package change-inner
-;;   :straight t
-;;   :bind ("C-c i" . change-inner))
+(use-package change-inner
+  :straight t
+  :defer t
+  :bind ("C-c i" . change-inner))
 
 ;; (use-package devdocs
 ;;   :straight t
