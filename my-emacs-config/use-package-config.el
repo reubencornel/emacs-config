@@ -689,20 +689,15 @@
 ;;   :config
 ;;   (spaceline-compile))
 
-;; (use-package spaceline-all-the-icons
-;;   :straight t
-;;   :defer t
-;;   :after spaceline
-;;   :config
-;;   (setq spaceline-all-the-icons-separator-type 'arrow))
-
 (use-package spacemacs-theme
   :straight t
   :defer t)
 
 ;; (use-package doom-themes
+;;   :defer t  
 ;;   :straight t)
 ;; (use-package doom-modeline
+;;   :defer t
 ;;   :straight t)
 
 ;; (use-package color-theme-modern
@@ -710,6 +705,7 @@
 ;;   :straight t)
 
 ;; (use-package doom-themes
+;;   :defer t
 ;;   :straight t)
 
 ;; (use-package modus-themes
@@ -742,17 +738,18 @@
 
 ;; ;; --------------- fly check mode ---------------
 
-;; (use-package flycheck
-;;   :straight t
-;;   :defer t
-;;   :init (global-flycheck-mode)
-;;   :config
-;;   (setq flycheck-check-syntax-automatically '(save mode-enable))
-;;   (setq-default flycheck-disabled-checkers
-;;                 (append flycheck-disabled-checkers
-;;                         '(javascript-jshint json-jsonlist)))
-;;   (flycheck-add-mode 'javascript-eslint 'web-mode)
-;;   (add-hook 'after-init-hook #'global-flycheck-mode))
+(use-package flycheck
+  :straight t
+  :defer t
+  :init
+  (setf flycheck-check-syntax-automatically '(save mode-enable))  
+  (setq-default flycheck-disabled-checkers
+                (append flycheck-disabled-checkers
+                        '(javascript-jshint json-jsonlist)))
+  (flycheck-add-mode 'javascript-eslint 'web-mode)
+  :hook 
+  (after-init . 'global-flycheck-mode) )
+
 
 ;; ;; --------------- company mode ---------------
 ;; (use-package company
