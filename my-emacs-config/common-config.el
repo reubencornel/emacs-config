@@ -38,7 +38,7 @@
 (setq-default line-spacing 5)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
-(setq-default cursor-type 'box)
+;(setq-default cursor-type 'box)
 
 
 ;; Make delete work as it work on windows o
@@ -69,12 +69,12 @@
 
 (setq make-backup-files nil)
 (setq backup-directory-alist '(("" . "~/.emacs.d/backup")))
-(setq create-lockfiles nil)
+;(setq create-lockfiles nil)
 
 
 ;; --------------- electric pair mode ---------------
 (setq electric-pair-preserve-balance nil)
-(setq create-lockfiles nil)
+(setq create-lockfiles t)
 
 ;;;---------- line number configuration --------------
 (add-hook 'prog-mode-hook (lambda ()
@@ -104,34 +104,10 @@
   (auto-fill-mode)
   (setq visual-fill-column-center-text t))
 
-
-(defvar-local hidden-mode-line-mode nil)
-  (define-minor-mode hidden-mode-line-mode
-    "Minor mode to hide the mode-line in the current buffer."
-    :init-value nil
-    :global t
-    :variable hidden-mode-line-mode
-    :group 'editing-basics
-    (if hidden-mode-line-mode
-	(setq hide-mode-line mode-line-format
-              mode-line-format nil)
-      (setq mode-line-format hide-mode-line
-            hide-mode-line nil))
-    (force-mode-line-update)
-    ;; Apparently force-mode-line-update is not always enough to
-    ;; redisplay the mode-line
-    (redraw-display)
-    (when (and (called-interactively-p 'interactive)
-               hidden-mode-line-mode)
-      (run-with-idle-timer
-       0 nil 'message
-       (concat "Hidden Mode Line Mode enabled.  "
-               "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
-
 (show-paren-mode)
 (setq-default blink-cursor-blinks -1)
 (setq-default blink-cursor-interval .6)
 (setq-default blink-cursor-delay .6)
 (setq-default cursor-type '(bar . 3))
-(setq-default cursor-in-non-selected-windows 'box)
+;(setq-default cursor-in-non-selected-windows 'box)
 (setq default-frame-alist '((font . "FiraCode Nerd Font 15")))

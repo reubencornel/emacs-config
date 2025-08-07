@@ -4,20 +4,22 @@
 
 (use-package eglot )
 
-(use-package vertico
-  :straight t
-  :init
-  (vertico-mode))
+;; (use-package vertico
+;;   :straight t
+;;   :init
+;;   (vertico-mode))
 
-(use-package vertico-reverse
-  :after vertico
-  :straight nil
-  :config
-  (vertico-reverse-mode 1))
+;; (use-package vertico-reverse
+;;   :after vertico
+;;   :straight nil
+;;   :config
+;;   (vertico-reverse-mode 1))
 
-(use-package savehist
-  :init
-  (savehist-mode))
+;; (use-package savehist
+;;   :init
+;;   (savehist-mode))
+
+
 
 (use-package completion-preview
   :config
@@ -30,108 +32,108 @@
 	completion-ignore-case t)
   (global-completion-preview-mode))
 
-(use-package orderless
-  :straight t
-  :custom
-  (completion-styles '(orderless basic))
-  (completion-category-overrides '((file (styles basic partial-completion)))))
+;; (use-package orderless
+;;   :straight t
+;;   :custom
+;;   (completion-styles '(orderless basic))
+;;   (completion-category-overrides '((file (styles basic partial-completion)))))
 
-(use-package marginalia
-  :straight t
-  :init
-  (marginalia-mode))
+;; (use-package marginalia
+;;   :straight t
+;;   :init
+;;   (marginalia-mode))
 
-(use-package swiper
-  :straight t)
+;; (use-package swiper
+;;   :straight t)
 
-(use-package consult
-  :straight t
-  ;; Replace bindings. Lazily loaded due by `use-package'.
-  :bind (
-         ("C-c h" . consult-history)
-         ("C-c m" . consult-mode-command)
-         ("C-c b" . consult-bookmark)
-         ("C-c k" . consult-kmacro)
-         ;; C-x bindings (ctl-x-map)
-         ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
-         ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
-         ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
-         ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
-         ;; Custom M-# bindings for fast register access
-         ("M-#" . consult-register-load)
-         ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
-         ("C-M-#" . consult-register)
-         ;; Other custom bindings
-         ("M-y" . consult-yank-pop)                ;; orig. yank-pop
-         ("<help> a" . consult-apropos)            ;; or
-	 ;;	 ig. apropos-command
-         ;; M-g bindings (goto-map)
-          ("M-g e" . consult-compile-error)
-          ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
-          ("M-g g" . consult-goto-line)             ;; orig. goto-line
-          ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
-         ;; ("M-g o" . consult-outline)
-         ;; ("M-g m" . consult-mark)
-         ;; ("M-g k" . consult-global-mark)
-         ;; ("M-g i" . consult-imenu)
-         ;; ("M-g I" . consult-project-imenu)
-         ;; M-s bindings (search-map)
-         ("M-s f" . consult-find)
-         ("M-s L" . consult-locate)
-         ("M-s g" . consult-grep)
-         ("M-s G" . consult-git-grep)
-         ("M-s r" . consult-ripgrep)
-         ("M-s l" . consult-line)
-         ("M-s m" . consult-multi-occur))
-  :init
+;; (use-package consult
+;;   :straight t
+;;   ;; Replace bindings. Lazily loaded due by `use-package'.
+;;   :bind (
+;;          ("C-c h" . consult-history)
+;;          ("C-c m" . consult-mode-command)
+;;          ("C-c b" . consult-bookmark)
+;;          ("C-c k" . consult-kmacro)
+;;          ;; C-x bindings (ctl-x-map)
+;;          ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
+;;          ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+;;          ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+;;          ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+;;          ;; Custom M-# bindings for fast register access
+;;          ("M-#" . consult-register-load)
+;;          ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
+;;          ("C-M-#" . consult-register)
+;;          ;; Other custom bindings
+;;          ("M-y" . consult-yank-pop)                ;; orig. yank-pop
+;;          ("<help> a" . consult-apropos)            ;; or
+;; 	 ;;	 ig. apropos-command
+;;          ;; M-g bindings (goto-map)
+;;           ("M-g e" . consult-compile-error)
+;;           ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+;;           ("M-g g" . consult-goto-line)             ;; orig. goto-line
+;;           ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+;;          ;; ("M-g o" . consult-outline)
+;;          ;; ("M-g m" . consult-mark)
+;;          ;; ("M-g k" . consult-global-mark)
+;;          ;; ("M-g i" . consult-imenu)
+;;          ;; ("M-g I" . consult-project-imenu)
+;;          ;; M-s bindings (search-map)
+;;          ("M-s f" . consult-find)
+;;          ("M-s L" . consult-locate)
+;;          ("M-s g" . consult-grep)
+;;          ("M-s G" . consult-git-grep)
+;;          ("M-s r" . consult-ripgrep)
+;;          ("M-s l" . consult-line)
+;;          ("M-s m" . consult-multi-occur))
+;;   :init
 
-  ;; Optionally configure the narrowing key.
-  ;; Both < and C-+ work reasonably well.
-  (setq consult-narrow-key "<") ;; (kbd "C-+")
-
-
-  ;; Use Consult to select xref locations with preview
-  (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref)
-
-  (defun reuben/consult-search-org-helper (org-param keyword directory)
-    (let ((old-value consult-ripgrep-args))
-      (unwind-protect
-	  (progn
-	    (customize-set-variable
-	     'consult-ripgrep-args
-	     (concat "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /\  --smart-case --no-heading --line-number --search-zip"
-		     " "
-		    org-param
-		    " "
-		    "."))
-	    (let ((vertico-count 10))
-	      (consult-ripgrep directory keyword)))
-	(progn
-	  (customize-set-variable
-	   'consult-ripgrep-args
-	   old-value)))))
+;;   ;; Optionally configure the narrowing key.
+;;   ;; Both < and C-+ work reasonably well.
+;;   (setq consult-narrow-key "<") ;; (kbd "C-+")
 
 
-  (defun reuben/consult-search-org ()
-    "Call `consult-ripgrep' for my org agenda files."
-    (interactive)
-    (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org"))
+;;   ;; Use Consult to select xref locations with preview
+;;   (setq xref-show-xrefs-function #'consult-xref
+;;         xref-show-definitions-function #'consult-xref)
 
-  (defun reuben/consult-search-all-org ()
-    "Call `consult-ripgrep' for my org agenda files."
-    (interactive)
-    (reuben/consult-search-org-helper "-t org" "" "~/Dropbox/org"))
+;;   (defun reuben/consult-search-org-helper (org-param keyword directory)
+;;     (let ((old-value consult-ripgrep-args))
+;;       (unwind-protect
+;; 	  (progn
+;; 	    (customize-set-variable
+;; 	     'consult-ripgrep-args
+;; 	     (concat "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /\  --smart-case --no-heading --line-number --search-zip"
+;; 		     " "
+;; 		    org-param
+;; 		    " "
+;; 		    "."))
+;; 	    (let ((vertico-count 10))
+;; 	      (consult-ripgrep directory keyword)))
+;; 	(progn
+;; 	  (customize-set-variable
+;; 	   'consult-ripgrep-args
+;; 	   old-value)))))
 
-  (defun reuben/consult-search-org-roam()
-    "Call `consult-ripgrep' for my org roam files."
-    (interactive)
-    (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org-roam/org-roam1"))
 
-  (defun reuben/consult-search-howm()
-    "Call `consult-ripgrep' for my howm files."
-    (interactive)
-    (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/howm")))
+;;   (defun reuben/consult-search-org ()
+;;     "Call `consult-ripgrep' for my org agenda files."
+;;     (interactive)
+;;     (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org"))
+
+;;   (defun reuben/consult-search-all-org ()
+;;     "Call `consult-ripgrep' for my org agenda files."
+;;     (interactive)
+;;     (reuben/consult-search-org-helper "-t org" "" "~/Dropbox/org"))
+
+;;   (defun reuben/consult-search-org-roam()
+;;     "Call `consult-ripgrep' for my org roam files."
+;;     (interactive)
+;;     (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org-roam/org-roam1"))
+
+;;   (defun reuben/consult-search-howm()
+;;     "Call `consult-ripgrep' for my howm files."
+;;     (interactive)
+;;     (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/howm")))
 
 (use-package howm
   :straight t
@@ -198,11 +200,10 @@
     (setq my/eshell-truncate-timer
 	  (run-with-idle-timer 5 t #'my/truncate-eshell-buffers))))
 
-(use-package eshell-git-prompt
-  :straight t
-  :init
-  (eshell-git-prompt-use-theme 'robbyrussell))
-
+;; (use-package eshell-git-prompt
+;;   :straight t
+;;   :init
+;;   (eshell-git-prompt-use-theme 'robbyrussell))
 
 
 (use-package org
@@ -810,7 +811,7 @@
   (add-to-list 'company-backends 'company-clang)
   (add-to-list 'company-backends 'company-dabbrev)
   (add-to-list 'company-backends 'company-files)
- 
+  
   :init (global-company-mode)
   :bind
   (:map company-active-map
@@ -831,7 +832,7 @@
                                         ;; Disable `smerge-mode' when quitting hydra if
                                         ;; no merge conflicts remain.
                                         :post (smerge-auto-leave))
-    "
+	    "
    ^Move^       ^Keep^               ^Diff^                 ^Other^
    ^^-----------^^-------------------^^---------------------^^-------
    _n_ext       _b_ase               _<_: upper/base        _C_ombine
@@ -840,23 +841,23 @@
    ^^           _a_ll                _R_efine
    ^^           _RET_: current       _E_diff
    "
-    ("n" smerge-next)
-    ("p" smerge-prev)
-    ("b" smerge-keep-base)
-    ("u" smerge-keep-mine)
-    ("l" smerge-keep-other)
-    ("a" smerge-keep-all)
-    ("RET" smerge-keep-current)
-    ("\C-m" smerge-keep-current)
-    ("<" smerge-diff-base-mine)
-    ("=" smerge-diff-mine-other)
-    (">" smerge-diff-base-other)
-    ("R" smerge-refine)
-    ("E" smerge-ediff)
-    ("C" smerge-combine-with-next)
-    ("r" smerge-resolve)
-    ("k" smerge-kill-current)
-    ("q" nil "cancel" :color blue))
+	    ("n" smerge-next)
+	    ("p" smerge-prev)
+	    ("b" smerge-keep-base)
+	    ("u" smerge-keep-mine)
+	    ("l" smerge-keep-other)
+	    ("a" smerge-keep-all)
+	    ("RET" smerge-keep-current)
+	    ("\C-m" smerge-keep-current)
+	    ("<" smerge-diff-base-mine)
+	    ("=" smerge-diff-mine-other)
+	    (">" smerge-diff-base-other)
+	    ("R" smerge-refine)
+	    ("E" smerge-ediff)
+	    ("C" smerge-combine-with-next)
+	    ("r" smerge-resolve)
+	    ("k" smerge-kill-current)
+	    ("q" nil "cancel" :color blue))
 
 					;  (bind-key "C-c h s" 'jethro/hydra-smerge/body)
 
@@ -868,21 +869,21 @@
                                             (print rfc/resume-hydra)
                                             (process-inbox/body))
                                         (print rfc/resume-hydra)))
-    "
+	    "
   _r_: Refile     _a_: Archive     _K_: Kill
   _d_: Done       _c_: Cancel      _td_: Schedule for today
   _n_: Next Line  _p_: Prev Line
   _q_: quit
 "
-    ("n" next-line nil :color pink)
-    ("p" previous-line nil :color pink)
-    ("a" org-agenda-archive nil :color red)
-    ("r" org-agenda-refile nil :color red)
-    ("td" org-agenda-schedule :color blue)
-    ("K" org-agenda-kill nil :color red :exit nil)
-    ("d" (lambda () (org-agenda-todo "DONE")) nil :color blue)
-    ("c" (org-agenda-todo "CANCELLED") nil :color blue)
-    ("q" nil nil :color red))
+	    ("n" next-line nil :color pink)
+	    ("p" previous-line nil :color pink)
+	    ("a" org-agenda-archive nil :color red)
+	    ("r" org-agenda-refile nil :color red)
+	    ("td" org-agenda-schedule :color blue)
+	    ("K" org-agenda-kill nil :color red :exit nil)
+	    ("d" (lambda () (org-agenda-todo "DONE")) nil :color blue)
+	    ("c" (org-agenda-todo "CANCELLED") nil :color blue)
+	    ("q" nil nil :color red))
 
 
   (define-key org-agenda-mode-map [(f9)] 'process-inbox/body)
@@ -1018,100 +1019,100 @@
   :straight t)
 
 
-(use-package hyperbole
-  :straight t
-  :config
+;; (use-package hyperbole
+;;   :straight t
+;;   :config
 
-  (global-unset-key  [(f6)])
-  (global-set-key  [(f6)] 'gbut:act)
-  (global-unset-key (kbd "M-<return>"))
-  (global-unset-key (kbd "C-<return>"))
-  (global-set-key (kbd "C-<return>") 'action-key)
-  ;;  (global-unset-key (kbd "C-u C-<return>")  )
-  ;;  (global-set-key (kbd "C-u C-<return>") 'assist-key)
+;;   (global-unset-key  [(f6)])
+;;   (global-set-key  [(f6)] 'gbut:act)
+;;   (global-unset-key (kbd "M-<return>"))
+;;   (global-unset-key (kbd "C-<return>"))
+;;   (global-set-key (kbd "C-<return>") 'action-key)
+;;   ;;  (global-unset-key (kbd "C-u C-<return>")  )
+;;   ;;  (global-set-key (kbd "C-u C-<return>") 'assist-key)
 
-  (defun looking-at-work-item()
-    (or
-     (looking-at "W-[0-9]+")
-     (save-excursion
-       (backward-word-strictly 2)
-       (looking-at "W-[0-9]+"))
-     (save-excursion
-       (backward-word-strictly 1)
-       (looking-at "W-[0-9]+"))
-     (looking-at "a07.*")
-     (save-excursion
-       (backward-word-strictly 1)
-       (looking-at "a07.*"))))
+;;   (defun looking-at-work-item()
+;;     (or
+;;      (looking-at "W-[0-9]+")
+;;      (save-excursion
+;;        (backward-word-strictly 2)
+;;        (looking-at "W-[0-9]+"))
+;;      (save-excursion
+;;        (backward-word-strictly 1)
+;;        (looking-at "W-[0-9]+"))
+;;      (looking-at "a07.*")
+;;      (save-excursion
+;;        (backward-word-strictly 1)
+;;        (looking-at "a07.*"))))
 
-  (defun get-work-item-text()
-    (let* ((match-data (match-data))
-           (start (first match-data))
-           (end (second match-data)))
-      (list (buffer-substring-no-properties start end) start end)))
+;;   (defun get-work-item-text()
+;;     (let* ((match-data (match-data))
+;;            (start (first match-data))
+;;            (end (second match-data)))
+;;       (list (buffer-substring-no-properties start end) start end)))
 
-  (defun in-org-property()
-    (and (hsys-org-mode-p)
-	 (org-at-property-p)))
+;;   (defun in-org-property()
+;;     (and (hsys-org-mode-p)
+;; 	 (org-at-property-p)))
 
-  (defun org-properties-search()
-    (interactive)
-    (if (in-org-property)
-	(let* ((property-name (org-read-property-name))
-	       (property-value (org-entry-get (point) property-name)))
-	  (hact 'org-tags-view nil (concat property-name "={" property-value "}")))))
+;;   (defun org-properties-search()
+;;     (interactive)
+;;     (if (in-org-property)
+;; 	(let* ((property-name (org-read-property-name))
+;; 	       (property-value (org-entry-get (point) property-name)))
+;; 	  (hact 'org-tags-view nil (concat property-name "={" property-value "}")))))
 
 
-  (defib gus()
-    "Gus links"
-    (if (looking-at-work-item)
-	(cl-destructuring-bind (text start end) (get-work-item-text)
-          (ibut:label-set text start end)
-          (hact 'www-url (concat "https://gus.my.salesforce.com/apex/ADM_WorkLocator?bugorworknumber=" text)))
-      nil))
+;;   (defib gus()
+;;     "Gus links"
+;;     (if (looking-at-work-item)
+;; 	(cl-destructuring-bind (text start end) (get-work-item-text)
+;;           (ibut:label-set text start end)
+;;           (hact 'www-url (concat "https://gus.my.salesforce.com/apex/ADM_WorkLocator?bugorworknumber=" text)))
+;;       nil))
 
-  ;; (defib org-property-search()
-  ;;   "org property search"
-  ;;   (org-properties-search))
-  )
+;;   ;; (defib org-property-search()
+;;   ;;   "org property search"
+;;   ;;   (org-properties-search))
+;;   )
 
-(use-package org-roam
-  :straight t
-  :custom
-  (org-roam-directory "~/Dropbox/org-roam/org-roam1")
-  (org-roam-complete-everywhere t)
-  :bind (:map org-mode-map
-              (("<f9>" . org-roam-buffer-toggle)
-               ("C-c n f" . org-roam-node-find)
-               ("C-c n g" . org-roam-graph)
-               ("C-c n i" . org-roam-node-insert)
-               ("C-c n I" . org-roam-capture)
-               ("C-c n j" . org-roam-dailies-capture-today)
-               ))
-  :config
-  (org-roam-setup)
-  (org-roam-db-autosync-mode)
+;; (use-package org-roam
+;;   :straight t
+;;   :custom
+;;   (org-roam-directory "~/Dropbox/org-roam/org-roam1")
+;;   (org-roam-complete-everywhere t)
+;;   :bind (:map org-mode-map
+;;               (("<f9>" . org-roam-buffer-toggle)
+;;                ("C-c n f" . org-roam-node-find)
+;;                ("C-c n g" . org-roam-graph)
+;;                ("C-c n i" . org-roam-node-insert)
+;;                ("C-c n I" . org-roam-capture)
+;;                ("C-c n j" . org-roam-dailies-capture-today)
+;;                ))
+;;   :config
+;;   (org-roam-setup)
+;;   (org-roam-db-autosync-mode)
 
-  (add-to-list 'display-buffer-alist
-	       '("\\*org-roam\\*"
-		 (display-buffer-in-side-window)
-		 (side . right)
-		 (slot . 0)
-		 (window-width . 0.33)
-		 (window-parameters . ((no-other-window . t)
-				       (no-delete-other-windows . t)))))
+;;   (add-to-list 'display-buffer-alist
+;; 	       '("\\*org-roam\\*"
+;; 		 (display-buffer-in-side-window)
+;; 		 (side . right)
+;; 		 (slot . 0)
+;; 		 (window-width . 0.33)
+;; 		 (window-parameters . ((no-other-window . t)
+;; 				       (no-delete-other-windows . t)))))
 
-  (setq org-link-frame-setup
-	(append (seq-filter #'(lambda(x) (not (equal (car x) 'file)))
-			    org-link-frame-setup)
-		'((file . find-file))))
+;;   (setq org-link-frame-setup
+;; 	(append (seq-filter #'(lambda(x) (not (equal (car x) 'file)))
+;; 			    org-link-frame-setup)
+;; 		'((file . find-file))))
 
-  (setq org-roam-completion-everywhere t)
-  (setq org-roam-complete-link-at-point  t)
+;;   (setq org-roam-completion-everywhere t)
+;;   (setq org-roam-complete-link-at-point  t)
 
-  (add-hook 'org-roam-mode-hook #'visual-line-mode)
+;;   (add-hook 'org-roam-mode-hook #'visual-line-mode)
 
-  (add-to-list 'magit-section-initial-visibility-alist (cons 'org-roam-node-section 'hide)))
+;;   (add-to-list 'magit-section-initial-visibility-alist (cons 'org-roam-node-section 'hide)))
 
 ;; --------------- Web Mode ---------------
 (use-package web-mode
@@ -1329,10 +1330,10 @@
   :bind ("C-c L" . prot/scroll-centre-cursor-mode))
 
 (use-package emacs
-  :commands prot/hidden-mode-line-mode
+;  :commands prot/hidden-mode-line-mode
   :config
 
-  (electric-pair-mode 1)
+  (electric-pair-mode 1) 
 
   (setq mode-line-percent-position '(-3 "%p"))
   (setq mode-line-defining-kbd-macro
@@ -1355,21 +1356,85 @@
                   mode-line-misc-info
                   mode-line-end-spaces))
 
+  (fido-mode 1)
+  (setq-default fido-vertical-mode t)
+  (setq-default icomplete-compute-delay 0)
+  (setq-default icomplete-prospects-height 15)
+  (setq-default icomplete-delay-completions-threshold 0)
+  (setq-default icomplete-max-delay-chars 0)
 
-  (define-minor-mode prot/hidden-mode-line-mode
-    "Toggle modeline visibility in the current buffer."
-    :init-value nil
-    :global nil
-    (if prot/hidden-mode-line-mode
-        (setq-local mode-line-format nil)
-      (kill-local-variable 'mode-line-format)
-      (force-mode-line-update)))
+  (setq completion-styles '(flex partial-completion basic emacs22))
+
+  (setq completion-ignore-case t)
+  (setq read-buffer-completion-ignore-case t)
+  (setq read-file-name-completion-ignore-case t)
+
+  ;; Don't show hidden files by default (use C-a to toggle)
+  (setq completion-ignored-extensions
+	'(".o" ".elc" ".class" ".java~" ".ps" ".abs" ".mx" ".~jv" 
+          ".rbc" ".pyc" ".beam" ".aux" ".cp" ".fn" ".ky" ".pg" 
+          ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs"
+          ".idx" ".lof" ".lot" ".glo" ".blg" ".bbl" ".dvi" ".log"
+          ".toc" ".ind" ".ilg" ".out" ".synctex.gz" ".fdb_latexmk"
+          ".fls" ".figdx" ".makefile" ".fdb" ".exe"))
+
+  ;; More intuitive file navigation
+  (setq ido-auto-merge-delay-time 0.7)
+  (setq ido-enable-last-directory-history t)
+  (setq ido-max-work-directory-list 30)
+  (setq ido-max-work-file-list 50)
+
+  ;; Save state between sessions
+  (setq ido-save-directory-list-file "~/.emacs.d/ido.last")
+
+  ;; Highlight matching text in completions
+  (setq icomplete-show-matches-on-no-input t)
+
+  ;; Key Bindings for Better Navigation
+  ;; ============================================================================
+
+  ;; Enhance fido with some useful keybindings
+  (define-key icomplete-minibuffer-map (kbd "C-n") 'icomplete-forward-completions)
+  (define-key icomplete-minibuffer-map (kbd "C-p") 'icomplete-backward-completions)
+  (define-key icomplete-minibuffer-map (kbd "<down>") 'icomplete-forward-completions)
+  (define-key icomplete-minibuffer-map (kbd "<up>") 'icomplete-backward-completions)
+
+  ;; Alternative selection keys
+  (define-key icomplete-minibuffer-map (kbd "C-j") 'icomplete-forward-completions)
+  (define-key icomplete-minibuffer-map (kbd "C-k") 'icomplete-backward-completions)
+
+  ;; Quick selection with M-<number>
+  (define-key icomplete-minibuffer-map (kbd "M-1") (lambda () (interactive) (icomplete-force-complete-and-exit)))
+  (define-key icomplete-minibuffer-map (kbd "M-2") 
+	      (lambda () (interactive) (icomplete-forward-completions) (icomplete-force-complete-and-exit)))
+  (define-key icomplete-minibuffer-map (kbd "M-3") 
+	      (lambda () (interactive) (icomplete-forward-completions) (icomplete-forward-completions) (icomplete-force-complete-and-exit)))
+
+  ;; Enable recent files tracking
+  (recentf-mode 1)
+  (setq recentf-max-menu-items 50)
+  (setq recentf-max-saved-items 100)
+
+  ;; Better buffer switching - group by major mode
+  (setq ido-use-virtual-buffers t)
+  (setq ido-virtual-buffers-first t)
+
+
+
+  ;; (define-minor-mode prot/hidden-mode-line-mode
+  ;;   "Toggle modeline visibility in the current buffer."
+  ;;   :init-value nil
+  ;;   :global nil
+  ;;   (if prot/hidden-mode-line-mode
+  ;;       (setq-local mode-line-format nil)
+  ;;     (kill-local-variable 'mode-line-format)
+  ;;     (force-mode-line-update)))
 
 
 
   (defun setup-theme(frame)
     (with-selected-frame frame
-      (load-theme 'spacemacs-dark 'no-confirm))
+      (load-theme 'modus-vivendi 'no-confirm))
     (remove-hook 'after-make-frame-functions #'setup-theme)
     (fmakunbound 'setup-theme))
 
@@ -1411,65 +1476,65 @@
 (use-package ligature
   :straight t
   :config
-    (ligature-set-ligatures 'haskell-mode
-                        '(;; == === ==== => =| =>>=>=|=>==>> ==< =/=//=// =~
-                          ;; =:= =!=
-                          ("=" (rx (+ (or ">" "<" "|" "/" "~" ":" "!" "="))))
-                          ;; ;; ;;;
-                          (";" (rx (+ ";")))
-                          ;; && &&&
-                          ("&" (rx (+ "&")))
-                          ;; !! !!! !. !: !!. != !== !~
-                          ("!" (rx (+ (or "=" "!" "\." ":" "~"))))
-                          ;; ?? ??? ?:  ?=  ?.
-                          ("?" (rx (or ":" "=" "\." (+ "?"))))
-                          ;; %% %%%
-                          ("%" (rx (+ "%")))
-                          ;; |> ||> |||> ||||> |] |} || ||| |-> ||-||
-                          ;; |->>-||-<<-| |- |== ||=||
-                          ;; |==>>==<<==<=>==//==/=!==:===>
-                          ("|" (rx (+ (or ">" "<" "|" "/" ":" "!" "}" "\]"
-                                          "-" "=" ))))
-                          ;; \\ \\\ \/
-                          ("\\" (rx (or "/" (+ "\\"))))
-                          ;; ++ +++ ++++ +>
-                          ("+" (rx (or ">" (+ "+"))))
-                          ;; :: ::: :::: :> :< := :// ::=
-                          (":" (rx (or ">" "<" "=" "//" ":=" (+ ":"))))
-                          ;; // /// //// /\ /* /> /===:===!=//===>>==>==/
-                          ("/" (rx (+ (or ">"  "<" "|" "/" "\\" "\*" ":" "!"
-                                          "="))))
-                          ;; .. ... .... .= .- .? ..= ..<
-                          ("\." (rx (or "=" "-" "\?" "\.=" "\.<" (+ "\."))))
-                          ;; -- --- ---- -~ -> ->> -| -|->-->>->--<<-|
-                          ("-" (rx (+ (or ">" "<" "|" "~" "-"))))
-                          ;; *> */ *)  ** *** ****
-                          ("*" (rx (or ">" "/" ")" (+ "*"))))
-                          ;; www wwww
-                          ("w" (rx (+ "w")))
-                          ;; <> <!-- <|> <: <~ <~> <~~ <+ <* <$ </  <+> <*>
-                          ;; <$> </> <|  <||  <||| <|||| <- <-| <-<<-|-> <->>
-                          ;; <<-> <= <=> <<==<<==>=|=>==/==//=!==:=>
-                          ;; << <<< <<<<
-                          ("<" (rx (+ (or "\+" "\*" "\$" "<" ">" ":" "~"  "!"
-                                          "-"  "/" "|" "="))))
-                          ;; >: >- >>- >--|-> >>-|-> >= >== >>== >=|=:=>>
-                          ;; >> >>> >>>>
-                          (">" (rx (+ (or ">" "<" "|" "/" ":" "=" "-"))))
-                          ;; #: #= #! #( #? #[ #{ #_ #_( ## ### #####
-                          ("#" (rx (or ":" "=" "!" "(" "\?" "\[" "{" "_(" "_"
-                                       (+ "#"))))
-                          ;; ~~ ~~~ ~=  ~-  ~@ ~> ~~>
-                          ("~" (rx (or ">" "=" "-" "@" "~>" (+ "~"))))
-                          ;; __ ___ ____ _|_ __|____|_
-                          ("_" (rx (+ (or "_" "|"))))
-                          ;; Fira code: 0xFF 0x12
-                          ("0" (rx (and "x" (+ (in "A-F" "a-f" "0-9")))))
-                          ;; Fira code:
-                          "Fl"  "Tl"  "fi"  "fj"  "fl"  "ft"
-                          ;; The few not covered by the regexps.
-                          "{|"  "[|"  "]#"  "(*"  "}#"  "$>"  "^="))
-    (add-hook 'haskell-mode-hook 'ligature-mode))
+  (ligature-set-ligatures 'haskell-mode
+                          '(;; == === ==== => =| =>>=>=|=>==>> ==< =/=//=// =~
+                            ;; =:= =!=
+                            ("=" (rx (+ (or ">" "<" "|" "/" "~" ":" "!" "="))))
+                            ;; ;; ;;;
+                            (";" (rx (+ ";")))
+                            ;; && &&&
+                            ("&" (rx (+ "&")))
+                            ;; !! !!! !. !: !!. != !== !~
+                            ("!" (rx (+ (or "=" "!" "\." ":" "~"))))
+                            ;; ?? ??? ?:  ?=  ?.
+                            ("?" (rx (or ":" "=" "\." (+ "?"))))
+                            ;; %% %%%
+                            ("%" (rx (+ "%")))
+                            ;; |> ||> |||> ||||> |] |} || ||| |-> ||-||
+                            ;; |->>-||-<<-| |- |== ||=||
+                            ;; |==>>==<<==<=>==//==/=!==:===>
+                            ("|" (rx (+ (or ">" "<" "|" "/" ":" "!" "}" "\]"
+                                            "-" "=" ))))
+                            ;; \\ \\\ \/
+                            ("\\" (rx (or "/" (+ "\\"))))
+                            ;; ++ +++ ++++ +>
+                            ("+" (rx (or ">" (+ "+"))))
+                            ;; :: ::: :::: :> :< := :// ::=
+                            (":" (rx (or ">" "<" "=" "//" ":=" (+ ":"))))
+                            ;; // /// //// /\ /* /> /===:===!=//===>>==>==/
+                            ("/" (rx (+ (or ">"  "<" "|" "/" "\\" "\*" ":" "!"
+                                            "="))))
+                            ;; .. ... .... .= .- .? ..= ..<
+                            ("\." (rx (or "=" "-" "\?" "\.=" "\.<" (+ "\."))))
+                            ;; -- --- ---- -~ -> ->> -| -|->-->>->--<<-|
+                            ("-" (rx (+ (or ">" "<" "|" "~" "-"))))
+                            ;; *> */ *)  ** *** ****
+                            ("*" (rx (or ">" "/" ")" (+ "*"))))
+                            ;; www wwww
+                            ("w" (rx (+ "w")))
+                            ;; <> <!-- <|> <: <~ <~> <~~ <+ <* <$ </  <+> <*>
+                            ;; <$> </> <|  <||  <||| <|||| <- <-| <-<<-|-> <->>
+                            ;; <<-> <= <=> <<==<<==>=|=>==/==//=!==:=>
+                            ;; << <<< <<<<
+                            ("<" (rx (+ (or "\+" "\*" "\$" "<" ">" ":" "~"  "!"
+                                            "-"  "/" "|" "="))))
+                            ;; >: >- >>- >--|-> >>-|-> >= >== >>== >=|=:=>>
+                            ;; >> >>> >>>>
+                            (">" (rx (+ (or ">" "<" "|" "/" ":" "=" "-"))))
+                            ;; #: #= #! #( #? #[ #{ #_ #_( ## ### #####
+                            ("#" (rx (or ":" "=" "!" "(" "\?" "\[" "{" "_(" "_"
+					 (+ "#"))))
+                            ;; ~~ ~~~ ~=  ~-  ~@ ~> ~~>
+                            ("~" (rx (or ">" "=" "-" "@" "~>" (+ "~"))))
+                            ;; __ ___ ____ _|_ __|____|_
+                            ("_" (rx (+ (or "_" "|"))))
+                            ;; Fira code: 0xFF 0x12
+                            ("0" (rx (and "x" (+ (in "A-F" "a-f" "0-9")))))
+                            ;; Fira code:
+                            "Fl"  "Tl"  "fi"  "fj"  "fl"  "ft"
+                            ;; The few not covered by the regexps.
+                            "{|"  "[|"  "]#"  "(*"  "}#"  "$>"  "^="))
+  (add-hook 'haskell-mode-hook 'ligature-mode))
 
 (use-package drag-stuff
   :straight t
@@ -1479,15 +1544,17 @@
 	      ("M-<left>" . drag-stuff-left)
 	      ("M-<right>" . drag-stuff-right)))
 
-(use-package undo-tree
-  :straight t
-  :config
-  (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
-  (global-undo-tree-mode)
-
-  (defadvice undo-tree-make-history-save-file-name
-      (after undo-tree activate)
-    (setq ad-return-value (concat ad-return-value ".gz"))))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; (use-package undo-tree						   ;;
+;;   :straight t							   ;;
+;;   :config								   ;;
+;;   (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))) ;;
+;;   (global-undo-tree-mode)						   ;;
+;; 									   ;;
+;;   (defadvice undo-tree-make-history-save-file-name			   ;;
+;;       (after undo-tree activate)					   ;;
+;;     (setq ad-return-value (concat ad-return-value ".gz"))))		   ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package change-inner
   :straight t
