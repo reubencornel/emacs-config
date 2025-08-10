@@ -4,45 +4,21 @@
 
 (use-package eglot )
 
-(use-package vertico
-  :straight t
-  :init
-  (vertico-mode))
-
-(use-package vertico-reverse
-  :after vertico
-  :straight nil
-  :config
-  (vertico-reverse-mode 1))
-
-(use-package savehist
-  :init
-  (savehist-mode))
-
 (use-package completion-preview
-  :config
-  (setf completion-styles '(basic flex)
-	completion-auto-select t ;; Show completion on first call
-	completion-auto-help 'visible ;; Display *Completions* upon first request
-	completions-format 'one-column ;; Use only one column
-	completions-sort 'historical ;; Order based on minibuffer history
-	completions-max-height 20 ;; Limit completions to 15 (completions start at line 5)
-	completion-ignore-case t)
-  (global-completion-preview-mode))
-
-(use-package orderless
-  :straight t
   :custom
-  (completion-styles '(orderless basic))
-  (completion-category-overrides '((file (styles basic partial-completion)))))
-
-(use-package marginalia
-  :straight t
-  :init
-  (marginalia-mode))
+  (completion-styles '(basic flex))
+  (completion-auto-select t) ;; Show completion on first call
+  (completion-auto-help 'visible) ;; Display *Completions* upon first request
+  (completions-format 'one-column) ;; Use only one column
+  (completions-sort 'historical) ;; Order based on minibuffer history
+  (completions-max-height 20) ;; Limit completions to 20
+  (completion-ignore-case t)
+  :hook (after-init . global-completion-preview-mode))
 
 (use-package swiper
-  :straight t)
+  :straight t
+  :bind (("C-s" . swiper-isearch)
+         ("C-r" . swiper-backward)))
 
 (use-package consult
   :straight t
