@@ -149,12 +149,8 @@
 
 (use-package markdown-mode
   :straight t
-  :defer t
   :mode ("\\.md" . markdown-mode))
 
-(use-package eshell
-  :defer t
-  :preface
   (defun my/truncate-eshell-buffers ()
     "Truncates all eshell buffers"
     (interactive)
@@ -164,12 +160,14 @@
 	(when (eq major-mode 'eshell-mode)
 	  (eshell-truncate-buffer)))))
 
+(use-package eshell
+  :defer t
+  :custom
+    (eshell-scroll-to-bottom-on-input 'all)
+    (eshell-buffer-maximum-lines 2000)  
   :config
-  (progn
-    (setq eshell-scroll-to-bottom-on-input 'all)
-    (setq eshell-buffer-maximum-lines 2000)
-    (setq my/eshell-truncate-timer
-	  (run-with-idle-timer 5 t #'my/truncate-eshell-buffers))))
+  (setq my/eshell-truncate-timer
+	(run-with-idle-timer 5 t #'my/truncate-eshell-buffers)))
 
 (use-package eshell-git-prompt
   :straight t
