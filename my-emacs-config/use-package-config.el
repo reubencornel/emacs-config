@@ -2,7 +2,7 @@
 
 (straight-use-package 'use-package)
 
-(use-package eglot )
+(use-package eglot)
 
 (use-package completion-preview
   :custom
@@ -19,6 +19,46 @@
   :straight t
   :bind (("C-s" . swiper-isearch)
          ("C-r" . swiper-backward)))
+
+  (defun reuben/consult-search-org-helper (org-param keyword directory)
+    (let ((old-value consult-ripgrep-args))
+      (unwind-protect
+	  (progn
+	    (customize-set-variable
+	     'consult-ripgrep-args
+	     (concat "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /\  --smart-case --no-heading --line-number --search-zip"
+		     " "
+		    org-param
+		    " "
+		    "."))
+	    (let ((vertico-count 10))
+	      (consult-ripgrep directory keyword)))
+	(progn
+	  (customize-set-variable
+	   'consult-ripgrep-args
+	   old-value)))))
+
+
+  (defun reuben/consult-search-org ()
+    "Call `consult-ripgrep' for my org agenda files."
+    (interactive)
+    (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org"))
+
+  (defun reuben/consult-search-all-org ()
+    "Call `consult-ripgrep' for my org agenda files."
+    (interactive)
+    (reuben/consult-search-org-helper "-t org" "" "~/Dropbox/org"))
+
+  (defun reuben/consult-search-org-roam()
+    "Call `consult-ripgrep' for my org roam files."
+    (interactive)
+    (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org-roam/org-roam1"))
+
+  (defun reuben/consult-search-howm()
+    "Call `consult-ripgrep' for my howm files."
+    (interactive)
+    (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/howm"))
+
 
 (use-package consult
   :straight t
@@ -59,55 +99,10 @@
          ("M-s r" . consult-ripgrep)
          ("M-s l" . consult-line)
          ("M-s m" . consult-multi-occur))
-  :init
+  :custom (consult-narrow-key "<")
+  (xref-show-xrefs-function #'consult-xref)
+  (xref-show-definitions-function #'consult-xref))
 
-  ;; Optionally configure the narrowing key.
-  ;; Both < and C-+ work reasonably well.
-  (setq consult-narrow-key "<") ;; (kbd "C-+")
-
-
-  ;; Use Consult to select xref locations with preview
-  (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref)
-
-  (defun reuben/consult-search-org-helper (org-param keyword directory)
-    (let ((old-value consult-ripgrep-args))
-      (unwind-protect
-	  (progn
-	    (customize-set-variable
-	     'consult-ripgrep-args
-	     (concat "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /\  --smart-case --no-heading --line-number --search-zip"
-		     " "
-		    org-param
-		    " "
-		    "."))
-	    (let ((vertico-count 10))
-	      (consult-ripgrep directory keyword)))
-	(progn
-	  (customize-set-variable
-	   'consult-ripgrep-args
-	   old-value)))))
-
-
-  (defun reuben/consult-search-org ()
-    "Call `consult-ripgrep' for my org agenda files."
-    (interactive)
-    (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org"))
-
-  (defun reuben/consult-search-all-org ()
-    "Call `consult-ripgrep' for my org agenda files."
-    (interactive)
-    (reuben/consult-search-org-helper "-t org" "" "~/Dropbox/org"))
-
-  (defun reuben/consult-search-org-roam()
-    "Call `consult-ripgrep' for my org roam files."
-    (interactive)
-    (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org-roam/org-roam1"))
-
-  (defun reuben/consult-search-howm()
-    "Call `consult-ripgrep' for my howm files."
-    (interactive)
-    (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/howm")))
 
 (use-package howm
   :straight t
@@ -652,7 +647,7 @@
                     org-level-4
                     org-level-5))
       (set-face-attribute face nil :weight 'semi-bold :height 1.0)))
-  
+
   (add-hook 'org-mode-hook #'reuben/org-mode-hook))
 
 
@@ -786,7 +781,7 @@
   (add-to-list 'company-backends 'company-clang)
   (add-to-list 'company-backends 'company-dabbrev)
   (add-to-list 'company-backends 'company-files)
- 
+
   :init (global-company-mode)
   :bind
   (:map company-active-map
@@ -1352,6 +1347,11 @@
   (if (daemonp)
       (add-hook  'after-make-frame-functions #'setup-theme)))
 
+(use-package fido-vertical-mode
+  :custom
+  (icomplete-scroll t)
+  (icomplete-prospects-height 10)
+  :hook (after-init . fido-vertical-mode))
 
 (use-package rainbow-delimiters
   :straight t
