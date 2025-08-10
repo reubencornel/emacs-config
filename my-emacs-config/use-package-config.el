@@ -142,8 +142,10 @@
     (setq plantuml-jar-path "~/bin/plantuml.jar")))
 
 (use-package magit
-  :defer t
-  :straight t)
+  :straight t
+  :bind (("C-x g" . magit-status)
+         ("C-x M-g" . magit-dispatch)
+         ("C-c M-g" . magit-file-dispatch)))
 
 (use-package markdown-mode
   :straight t
