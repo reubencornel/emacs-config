@@ -169,12 +169,16 @@
   (setq my/eshell-truncate-timer
 	(run-with-idle-timer 5 t #'my/truncate-eshell-buffers)))
 
+;; Setup function to run once
+(defun my/setup-eshell-git-prompt ()
+  "Set up eshell git prompt theme."
+  (eshell-git-prompt-use-theme 'robbyrussell)
+  ;; Remove hook after first run
+  (remove-hook 'eshell-mode-hook #'my/setup-eshell-git-prompt))
+
 (use-package eshell-git-prompt
   :straight t
-  :init
-  (eshell-git-prompt-use-theme 'robbyrussell))
-
-
+  :hook (eshell-mode . my/setup-eshell-git-prompt))
 
 (use-package org
   :defer t
@@ -697,62 +701,44 @@
 	      (ibuffer-switch-to-saved-filter-groups "default"))))
 
 ;; --------------- Themeing ---------------
-
 (use-package spaceline
-  :defer t
   :straight t
+  :bind (("C-c t s" . spaceline-toggle-all-the-icons-separator))  ; Add way to trigger loading
   :config
-  (spaceline-compile))
+  (spaceline-compile)) 
 
 (use-package spaceline-all-the-icons
   :straight t
-  :defer t
   :after spaceline
-  :config
-  (setq spaceline-all-the-icons-separator-type 'arrow))
+  :custom
+  (spaceline-all-the-icons-separator-type 'arrow)) 
 
 (use-package spacemacs-theme
-  :straight t
-  :defer t)
+  :straight t)
 
 (use-package doom-themes
   :straight t)
+
 (use-package doom-modeline
-  :straight t)
+  :straight t
+  :hook (after-init . doom-modeline-mode)) 
 
 (use-package color-theme-modern
-  :defer t
-  :straight t)
-
-(use-package doom-themes
-  :straight t)
+  :straight t)  ; Remove :defer - no way to trigger loading
 
 (use-package modus-themes
   :straight t
-  :config
-  (setq modus-themes-italic-constructs t
-	modus-themes-bold-constructs nil
-	modus-themes-variable-pitch-ui nil
-	modus-themes-custom-auto-reload t
-	modus-themes-disable-other-themes t
-
-	;; Options for `modus-themes-prompts' are either nil (the
-	;; default), or a list of properties that may include any of those
-	;; symbols: `italic', `WEIGHT'
-	modus-themes-prompts '(italic bold)
-
-	;; The `modus-themes-completions' is an alist that reads two
-	;; keys: `matches', `selection'.  Each accepts a nil value (or
-	;; empty list) or a list of properties that can include any of
-	;; the following (for WEIGHT read further below):
-	;;
-	;; `matches'   :: `underline', `italic', `WEIGHT'
-	;; `selection' :: `underline', `italic', `WEIGHT'
-	modus-themes-completions
-	'((matches . (extrabold))
-          (selection . (semibold italic text-also)))
-
-	modus-themes-org-blocks 'gray-background)) ; {nil,'gray-background,'tinted-background}
+  :custom
+  (modus-themes-italic-constructs t)
+  (modus-themes-bold-constructs nil)
+  (modus-themes-variable-pitch-ui nil)
+  (modus-themes-custom-auto-reload t)
+  (modus-themes-disable-other-themes t)
+  (modus-themes-prompts '(italic bold))
+  (modus-themes-completions '((matches . (extrabold))
+                              (selection . (semibold italic text-also))))
+  (modus-themes-org-blocks 'gray-background)
+  :hook (after-init . modus-themes-load-operandi))
 
 
 ;; --------------- fly check mode ---------------
