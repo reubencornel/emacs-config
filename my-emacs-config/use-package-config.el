@@ -955,120 +955,120 @@
   :straight t)
 
 
-(use-package elfeed
-  :straight t)
-(use-package elfeed-org
-  :straight t
-  :config
-  (require 'elfeed-org)
-  (elfeed-org)
-  (setq rmh-elfeed-org-files (list "~/Dropbox/feeds.org")))
+;; (use-package elfeed
+;;   :straight t)
+;; (use-package elfeed-org
+;;   :straight t
+;;   :config
+;;   (require 'elfeed-org)
+;;   (elfeed-org)
+;;   (setq rmh-elfeed-org-files (list "~/Dropbox/feeds.org")))
 
-(use-package elfeed-goodies
-  :straight t
-  :config
-  (elfeed-goodies/setup))
+;; (use-package elfeed-goodies
+;;   :straight t
+;;   :config
+;;   (elfeed-goodies/setup))
 
-(use-package elfeed-protocol
-  :straight t  )
-(use-package elfeed-score
-  :straight t)
-
-
-(use-package hyperbole
-  :straight t
-  :config
-
-  (global-unset-key  [(f6)])
-  (global-set-key  [(f6)] 'gbut:act)
-  (global-unset-key (kbd "M-<return>"))
-  (global-unset-key (kbd "C-<return>"))
-  (global-set-key (kbd "C-<return>") 'action-key)
-  ;;  (global-unset-key (kbd "C-u C-<return>")  )
-  ;;  (global-set-key (kbd "C-u C-<return>") 'assist-key)
-
-  (defun looking-at-work-item()
-    (or
-     (looking-at "W-[0-9]+")
-     (save-excursion
-       (backward-word-strictly 2)
-       (looking-at "W-[0-9]+"))
-     (save-excursion
-       (backward-word-strictly 1)
-       (looking-at "W-[0-9]+"))
-     (looking-at "a07.*")
-     (save-excursion
-       (backward-word-strictly 1)
-       (looking-at "a07.*"))))
-
-  (defun get-work-item-text()
-    (let* ((match-data (match-data))
-           (start (first match-data))
-           (end (second match-data)))
-      (list (buffer-substring-no-properties start end) start end)))
-
-  (defun in-org-property()
-    (and (hsys-org-mode-p)
-	 (org-at-property-p)))
-
-  (defun org-properties-search()
-    (interactive)
-    (if (in-org-property)
-	(let* ((property-name (org-read-property-name))
-	       (property-value (org-entry-get (point) property-name)))
-	  (hact 'org-tags-view nil (concat property-name "={" property-value "}")))))
+;; (use-package elfeed-protocol
+;;   :straight t  )
+;; (use-package elfeed-score
+;;   :straight t)
 
 
-  (defib gus()
-    "Gus links"
-    (if (looking-at-work-item)
-	(cl-destructuring-bind (text start end) (get-work-item-text)
-          (ibut:label-set text start end)
-          (hact 'www-url (concat "https://gus.my.salesforce.com/apex/ADM_WorkLocator?bugorworknumber=" text)))
-      nil))
+;; (use-package hyperbole
+;;   :straight t
+;;   :config
+
+;;   (global-unset-key  [(f6)])
+;;   (global-set-key  [(f6)] 'gbut:act)
+;;   (global-unset-key (kbd "M-<return>"))
+;;   (global-unset-key (kbd "C-<return>"))
+;;   (global-set-key (kbd "C-<return>") 'action-key)
+;;   ;;  (global-unset-key (kbd "C-u C-<return>")  )
+;;   ;;  (global-set-key (kbd "C-u C-<return>") 'assist-key)
+
+;;   (defun looking-at-work-item()
+;;     (or
+;;      (looking-at "W-[0-9]+")
+;;      (save-excursion
+;;        (backward-word-strictly 2)
+;;        (looking-at "W-[0-9]+"))
+;;      (save-excursion
+;;        (backward-word-strictly 1)
+;;        (looking-at "W-[0-9]+"))
+;;      (looking-at "a07.*")
+;;      (save-excursion
+;;        (backward-word-strictly 1)
+;;        (looking-at "a07.*"))))
+
+;;   (defun get-work-item-text()
+;;     (let* ((match-data (match-data))
+;;            (start (first match-data))
+;;            (end (second match-data)))
+;;       (list (buffer-substring-no-properties start end) start end)))
+
+;;   (defun in-org-property()
+;;     (and (hsys-org-mode-p)
+;; 	 (org-at-property-p)))
+
+;;   (defun org-properties-search()
+;;     (interactive)
+;;     (if (in-org-property)
+;; 	(let* ((property-name (org-read-property-name))
+;; 	       (property-value (org-entry-get (point) property-name)))
+;; 	  (hact 'org-tags-view nil (concat property-name "={" property-value "}")))))
+
+
+;;   (defib gus()
+;;     "Gus links"
+;;     (if (looking-at-work-item)
+;; 	(cl-destructuring-bind (text start end) (get-work-item-text)
+;;           (ibut:label-set text start end)
+;;           (hact 'www-url (concat "https://gus.my.salesforce.com/apex/ADM_WorkLocator?bugorworknumber=" text)))
+;;       nil))
 
   ;; (defib org-property-search()
   ;;   "org property search"
   ;;   (org-properties-search))
-  )
+;;  )
 
-(use-package org-roam
-  :straight t
-  :custom
-  (org-roam-directory "~/Dropbox/org-roam/org-roam1")
-  (org-roam-complete-everywhere t)
-  :bind (:map org-mode-map
-              (("<f9>" . org-roam-buffer-toggle)
-               ("C-c n f" . org-roam-node-find)
-               ("C-c n g" . org-roam-graph)
-               ("C-c n i" . org-roam-node-insert)
-               ("C-c n I" . org-roam-capture)
-               ("C-c n j" . org-roam-dailies-capture-today)
-               ))
-  :config
-  (org-roam-setup)
-  (org-roam-db-autosync-mode)
+;; (use-package org-roam
+;;   :straight t
+;;   :custom
+;;   (org-roam-directory "~/Dropbox/org-roam/org-roam1")
+;;   (org-roam-complete-everywhere t)
+;;   :bind (:map org-mode-map
+;;               (("<f9>" . org-roam-buffer-toggle)
+;;                ("C-c n f" . org-roam-node-find)
+;;                ("C-c n g" . org-roam-graph)
+;;                ("C-c n i" . org-roam-node-insert)
+;;                ("C-c n I" . org-roam-capture)
+;;                ("C-c n j" . org-roam-dailies-capture-today)
+;;                ))
+;;   :config
+;;   (org-roam-setup)
+;;   (org-roam-db-autosync-mode)
 
-  (add-to-list 'display-buffer-alist
-	       '("\\*org-roam\\*"
-		 (display-buffer-in-side-window)
-		 (side . right)
-		 (slot . 0)
-		 (window-width . 0.33)
-		 (window-parameters . ((no-other-window . t)
-				       (no-delete-other-windows . t)))))
+;;   (add-to-list 'display-buffer-alist
+;; 	       '("\\*org-roam\\*"
+;; 		 (display-buffer-in-side-window)
+;; 		 (side . right)
+;; 		 (slot . 0)
+;; 		 (window-width . 0.33)
+;; 		 (window-parameters . ((no-other-window . t)
+;; 				       (no-delete-other-windows . t)))))
 
-  (setq org-link-frame-setup
-	(append (seq-filter #'(lambda(x) (not (equal (car x) 'file)))
-			    org-link-frame-setup)
-		'((file . find-file))))
+;;   (setq org-link-frame-setup
+;; 	(append (seq-filter #'(lambda(x) (not (equal (car x) 'file)))
+;; 			    org-link-frame-setup)
+;; 		'((file . find-file))))
 
-  (setq org-roam-completion-everywhere t)
-  (setq org-roam-complete-link-at-point  t)
+;;   (setq org-roam-completion-everywhere t)
+;;   (setq org-roam-complete-link-at-point  t)
 
-  (add-hook 'org-roam-mode-hook #'visual-line-mode)
+;;   (add-hook 'org-roam-mode-hook #'visual-line-mode)
 
-  (add-to-list 'magit-section-initial-visibility-alist (cons 'org-roam-node-section 'hide)))
+;;   (add-to-list 'magit-section-initial-visibility-alist (cons 'org-roam-node-section 'hide)))
 
 ;; --------------- Web Mode ---------------
 (use-package web-mode
@@ -1142,8 +1142,8 @@
 (use-package geiser-mit
   :straight t
   :after geiser
-  :config
-  (setq geiser-active-implementations '(mit)))
+  :custom
+  (geiser-active-implementations '(mit)))
 
 (use-package smartparens
   :straight t
@@ -1172,54 +1172,53 @@
 
 (use-package which-key
   :straight t
-  :config
-  (which-key-mode))
+  :hook (after-init . which-key-mode))
 
 ;; Haskell Setup
 
-(use-package flycheck-haskell
-  :straight t)
+;; (use-package flycheck-haskell
+;;   :straight t)
 
-(use-package haskell-mode
-  :straight t
-  :config
-  (add-hook 'haskell-mode-hook #'lsp)
-  (add-hook 'haskell-mode-hook #'lsp-ui-mode)
-  (add-hook 'haskell-mode-hook #'interactive-haskell-mode))
+;; (use-package haskell-mode
+;;   :straight t
+;;   :config
+;;   (add-hook 'haskell-mode-hook #'lsp)
+;;   (add-hook 'haskell-mode-hook #'lsp-ui-mode)
+;;   (add-hook 'haskell-mode-hook #'interactive-haskell-mode))
 
-(use-package hindent
-  :straight t
-  :after haskell-mode
-  :init
-  (add-hook 'haskell-mode-hook #'hindent-mode))
+;; (use-package hindent
+;;   :straight t
+;;   :after haskell-mode
+;;   :init
+;;   (add-hook 'haskell-mode-hook #'hindent-mode))
 
-(use-package lsp-mode
-  :straight
-  :commands lsp
-  :hook (lsp-mode . (lambda ()
-                      (let ((lsp-keymap-prefix "C-x l"))
-                        (lsp-enable-which-key-integration))))
-  :custom
-  ;; what to use when checking on-save. "check" is default, I prefer clippy
-  (lsp-rust-analyzer-cargo-watch-command "clippy")
-  (lsp-eldoc-render-all t)
-  (lsp-idle-delay 0.6)
-  (lsp-rust-analyzer-server-display-inlay-hints t)
-  :config
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-  (define-key lsp-mode-map (kbd "C-x l") lsp-command-map))
-(global-unset-key (kbd "C-x l"))
+;; (use-package lsp-mode
+;;   :straight
+;;   :commands lsp
+;;   :hook (lsp-mode . (lambda ()
+;;                       (let ((lsp-keymap-prefix "C-x l"))
+;;                         (lsp-enable-which-key-integration))))
+;;   :custom
+;;   ;; what to use when checking on-save. "check" is default, I prefer clippy
+;;   (lsp-rust-analyzer-cargo-watch-command "clippy")
+;;   (lsp-eldoc-render-all t)
+;;   (lsp-idle-delay 0.6)
+;;   (lsp-rust-analyzer-server-display-inlay-hints t)
+;;   :config
+;;   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+;;   (define-key lsp-mode-map (kbd "C-x l") lsp-command-map))
+;; (global-unset-key (kbd "C-x l"))
 
-(use-package lsp-ui
-  :straight t
-  :commands lsp-ui-mode)
+;; (use-package lsp-ui
+;;   :straight t
+;;   :commands lsp-ui-mode)
 
-(use-package lsp-haskell
-  :straight t
-  :config
-  (setq lsp-haskell-server-path "~/.ghcup/bin/haskell-language-server-wrapper")
-  (setq lsp-haskell-process-path-hie "~/.ghcup/bin/haskell-language-server-wrapper")
-  (setq lsp-haskell-process-args-hie '()) )
+;; (use-package lsp-haskell
+;;   :straight t
+;;   :config
+;;   (setq lsp-haskell-server-path "~/.ghcup/bin/haskell-language-server-wrapper")
+;;   (setq lsp-haskell-process-path-hie "~/.ghcup/bin/haskell-language-server-wrapper")
+;;   (setq lsp-haskell-process-args-hie '()) )
 
 ;; (use-package lsp-java
 ;;   :straight t
@@ -1322,8 +1321,6 @@
       (kill-local-variable 'mode-line-format)
       (force-mode-line-update)))
 
-
-
   (defun setup-theme(frame)
     (with-selected-frame frame
       (load-theme 'spacemacs-dark 'no-confirm))
@@ -1341,8 +1338,7 @@
 
 (use-package rainbow-delimiters
   :straight t
-  :config
-  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package diminish
   :straight t
@@ -1370,68 +1366,68 @@
 			    :stream t
 			    :key 'my-anthropic-key))))
 
-(use-package ligature
-  :straight t
-  :config
-    (ligature-set-ligatures 'haskell-mode
-                        '(;; == === ==== => =| =>>=>=|=>==>> ==< =/=//=// =~
-                          ;; =:= =!=
-                          ("=" (rx (+ (or ">" "<" "|" "/" "~" ":" "!" "="))))
-                          ;; ;; ;;;
-                          (";" (rx (+ ";")))
-                          ;; && &&&
-                          ("&" (rx (+ "&")))
-                          ;; !! !!! !. !: !!. != !== !~
-                          ("!" (rx (+ (or "=" "!" "\." ":" "~"))))
-                          ;; ?? ??? ?:  ?=  ?.
-                          ("?" (rx (or ":" "=" "\." (+ "?"))))
-                          ;; %% %%%
-                          ("%" (rx (+ "%")))
-                          ;; |> ||> |||> ||||> |] |} || ||| |-> ||-||
-                          ;; |->>-||-<<-| |- |== ||=||
-                          ;; |==>>==<<==<=>==//==/=!==:===>
-                          ("|" (rx (+ (or ">" "<" "|" "/" ":" "!" "}" "\]"
-                                          "-" "=" ))))
-                          ;; \\ \\\ \/
-                          ("\\" (rx (or "/" (+ "\\"))))
-                          ;; ++ +++ ++++ +>
-                          ("+" (rx (or ">" (+ "+"))))
-                          ;; :: ::: :::: :> :< := :// ::=
-                          (":" (rx (or ">" "<" "=" "//" ":=" (+ ":"))))
-                          ;; // /// //// /\ /* /> /===:===!=//===>>==>==/
-                          ("/" (rx (+ (or ">"  "<" "|" "/" "\\" "\*" ":" "!"
-                                          "="))))
-                          ;; .. ... .... .= .- .? ..= ..<
-                          ("\." (rx (or "=" "-" "\?" "\.=" "\.<" (+ "\."))))
-                          ;; -- --- ---- -~ -> ->> -| -|->-->>->--<<-|
-                          ("-" (rx (+ (or ">" "<" "|" "~" "-"))))
-                          ;; *> */ *)  ** *** ****
-                          ("*" (rx (or ">" "/" ")" (+ "*"))))
-                          ;; www wwww
-                          ("w" (rx (+ "w")))
-                          ;; <> <!-- <|> <: <~ <~> <~~ <+ <* <$ </  <+> <*>
-                          ;; <$> </> <|  <||  <||| <|||| <- <-| <-<<-|-> <->>
-                          ;; <<-> <= <=> <<==<<==>=|=>==/==//=!==:=>
-                          ;; << <<< <<<<
-                          ("<" (rx (+ (or "\+" "\*" "\$" "<" ">" ":" "~"  "!"
-                                          "-"  "/" "|" "="))))
-                          ;; >: >- >>- >--|-> >>-|-> >= >== >>== >=|=:=>>
-                          ;; >> >>> >>>>
-                          (">" (rx (+ (or ">" "<" "|" "/" ":" "=" "-"))))
-                          ;; #: #= #! #( #? #[ #{ #_ #_( ## ### #####
-                          ("#" (rx (or ":" "=" "!" "(" "\?" "\[" "{" "_(" "_"
-                                       (+ "#"))))
-                          ;; ~~ ~~~ ~=  ~-  ~@ ~> ~~>
-                          ("~" (rx (or ">" "=" "-" "@" "~>" (+ "~"))))
-                          ;; __ ___ ____ _|_ __|____|_
-                          ("_" (rx (+ (or "_" "|"))))
-                          ;; Fira code: 0xFF 0x12
-                          ("0" (rx (and "x" (+ (in "A-F" "a-f" "0-9")))))
-                          ;; Fira code:
-                          "Fl"  "Tl"  "fi"  "fj"  "fl"  "ft"
-                          ;; The few not covered by the regexps.
-                          "{|"  "[|"  "]#"  "(*"  "}#"  "$>"  "^="))
-    (add-hook 'haskell-mode-hook 'ligature-mode))
+;; (use-package ligature
+;;   :straight t
+;;   :config
+;;     (ligature-set-ligatures 'haskell-mode
+;;                         '(;; == === ==== => =| =>>=>=|=>==>> ==< =/=//=// =~
+;;                           ;; =:= =!=
+;;                           ("=" (rx (+ (or ">" "<" "|" "/" "~" ":" "!" "="))))
+;;                           ;; ;; ;;;
+;;                           (";" (rx (+ ";")))
+;;                           ;; && &&&
+;;                           ("&" (rx (+ "&")))
+;;                           ;; !! !!! !. !: !!. != !== !~
+;;                           ("!" (rx (+ (or "=" "!" "\." ":" "~"))))
+;;                           ;; ?? ??? ?:  ?=  ?.
+;;                           ("?" (rx (or ":" "=" "\." (+ "?"))))
+;;                           ;; %% %%%
+;;                           ("%" (rx (+ "%")))
+;;                           ;; |> ||> |||> ||||> |] |} || ||| |-> ||-||
+;;                           ;; |->>-||-<<-| |- |== ||=||
+;;                           ;; |==>>==<<==<=>==//==/=!==:===>
+;;                           ("|" (rx (+ (or ">" "<" "|" "/" ":" "!" "}" "\]"
+;;                                           "-" "=" ))))
+;;                           ;; \\ \\\ \/
+;;                           ("\\" (rx (or "/" (+ "\\"))))
+;;                           ;; ++ +++ ++++ +>
+;;                           ("+" (rx (or ">" (+ "+"))))
+;;                           ;; :: ::: :::: :> :< := :// ::=
+;;                           (":" (rx (or ">" "<" "=" "//" ":=" (+ ":"))))
+;;                           ;; // /// //// /\ /* /> /===:===!=//===>>==>==/
+;;                           ("/" (rx (+ (or ">"  "<" "|" "/" "\\" "\*" ":" "!"
+;;                                           "="))))
+;;                           ;; .. ... .... .= .- .? ..= ..<
+;;                           ("\." (rx (or "=" "-" "\?" "\.=" "\.<" (+ "\."))))
+;;                           ;; -- --- ---- -~ -> ->> -| -|->-->>->--<<-|
+;;                           ("-" (rx (+ (or ">" "<" "|" "~" "-"))))
+;;                           ;; *> */ *)  ** *** ****
+;;                           ("*" (rx (or ">" "/" ")" (+ "*"))))
+;;                           ;; www wwww
+;;                           ("w" (rx (+ "w")))
+;;                           ;; <> <!-- <|> <: <~ <~> <~~ <+ <* <$ </  <+> <*>
+;;                           ;; <$> </> <|  <||  <||| <|||| <- <-| <-<<-|-> <->>
+;;                           ;; <<-> <= <=> <<==<<==>=|=>==/==//=!==:=>
+;;                           ;; << <<< <<<<
+;;                           ("<" (rx (+ (or "\+" "\*" "\$" "<" ">" ":" "~"  "!"
+;;                                           "-"  "/" "|" "="))))
+;;                           ;; >: >- >>- >--|-> >>-|-> >= >== >>== >=|=:=>>
+;;                           ;; >> >>> >>>>
+;;                           (">" (rx (+ (or ">" "<" "|" "/" ":" "=" "-"))))
+;;                           ;; #: #= #! #( #? #[ #{ #_ #_( ## ### #####
+;;                           ("#" (rx (or ":" "=" "!" "(" "\?" "\[" "{" "_(" "_"
+;;                                        (+ "#"))))
+;;                           ;; ~~ ~~~ ~=  ~-  ~@ ~> ~~>
+;;                           ("~" (rx (or ">" "=" "-" "@" "~>" (+ "~"))))
+;;                           ;; __ ___ ____ _|_ __|____|_
+;;                           ("_" (rx (+ (or "_" "|"))))
+;;                           ;; Fira code: 0xFF 0x12
+;;                           ("0" (rx (and "x" (+ (in "A-F" "a-f" "0-9")))))
+;;                           ;; Fira code:
+;;                           "Fl"  "Tl"  "fi"  "fj"  "fl"  "ft"
+;;                           ;; The few not covered by the regexps.
+;;                           "{|"  "[|"  "]#"  "(*"  "}#"  "$>"  "^="))
+;;     (add-hook 'haskell-mode-hook 'ligature-mode))
 
 (use-package drag-stuff
   :straight t
@@ -1456,8 +1452,7 @@
   :bind ("C-c i" . change-inner))
 
 (use-package devdocs
-  :straight t
-  )
+  :straight t )
 
 (provide 'use-package-config)
 ;;; use-package-config.el ends here
