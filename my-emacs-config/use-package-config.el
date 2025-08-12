@@ -18,7 +18,12 @@
 (use-package swiper
   :straight t
   :bind (("C-s" . swiper-isearch)
-         ("C-r" . swiper-backward)))
+         ("C-r" . swiper-backward))
+  :config
+  (setq icomplete-with-completion-tables
+	(if (listp icomplete-with-completion-tables)
+            icomplete-with-completion-tables
+          '(read-file-name-internal))))
 
   (defun reuben/consult-search-org-helper (org-param keyword directory)
     (let ((old-value consult-ripgrep-args))
@@ -164,7 +169,7 @@
   :defer t
   :custom
     (eshell-scroll-to-bottom-on-input 'all)
-    (eshell-buffer-maximum-lines 2000)  
+    (eshell-buffer-maximum-lines 2000)
   :config
   (setq my/eshell-truncate-timer
 	(run-with-idle-timer 5 t #'my/truncate-eshell-buffers)))
@@ -705,13 +710,13 @@
   :straight t
   :bind (("C-c t s" . spaceline-toggle-all-the-icons-separator))  ; Add way to trigger loading
   :config
-  (spaceline-compile)) 
+  (spaceline-compile))
 
 (use-package spaceline-all-the-icons
   :straight t
   :after spaceline
   :custom
-  (spaceline-all-the-icons-separator-type 'arrow)) 
+  (spaceline-all-the-icons-separator-type 'arrow))
 
 (use-package spacemacs-theme
   :straight t)
@@ -721,7 +726,7 @@
 
 (use-package doom-modeline
   :straight t
-  :hook (after-init . doom-modeline-mode)) 
+  :hook (after-init . doom-modeline-mode))
 
 (use-package color-theme-modern
   :straight t)  ; Remove :defer - no way to trigger loading
@@ -745,15 +750,14 @@
 
 (use-package flycheck
   :straight t
-  :defer t
-  :init (global-flycheck-mode)
+  :custom
+  (flycheck-check-syntax-automatically '(save mode-enable))
+  :hook (after-init . global-flycheck-mode)
   :config
-  (setq flycheck-check-syntax-automatically '(save mode-enable))
   (setq-default flycheck-disabled-checkers
                 (append flycheck-disabled-checkers
                         '(javascript-jshint json-jsonlist)))
-  (flycheck-add-mode 'javascript-eslint 'web-mode)
-  (add-hook 'after-init-hook #'global-flycheck-mode))
+  (flycheck-add-mode 'javascript-eslint 'web-mode))
 
 ;; --------------- company mode ---------------
 (use-package company
@@ -853,7 +857,7 @@
 
 ;; --------------- Rust Config ---------------
 (use-package rustic
-  :straight
+  :straight t  ; Fixed: was missing 't'
   :bind (:map rustic-mode-map
               ("M-j" . lsp-ui-imenu)
               ("M-?" . lsp-find-references)
@@ -863,15 +867,12 @@
               ("C-c C-c q" . lsp-workspace-restart)
               ("C-c C-c Q" . lsp-workspace-shutdown)
               ("C-c C-c s" . lsp-rust-analyzer-status))
-  :config
-  ;; uncomment for less flashiness
-  (setq lsp-eldoc-hook nil)
-  (setq lsp-enable-symbol-highlighting nil)
-  (setq lsp-signature-auto-activate nil)
-
-  ;; comment to disable rustfmt on save
-  (setq rustic-format-on-save t)
-  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
+  :custom
+  (lsp-eldoc-hook nil)
+  (lsp-enable-symbol-highlighting nil)
+  (lsp-signature-auto-activate nil)
+  (rustic-format-on-save t)
+  :hook (rustic-mode . rk/rustic-mode-hook))
 
 (defun rk/rustic-mode-hook ()
   ;; so that run C-c C-c C-r works without having to confirm
@@ -887,10 +888,11 @@
 
 (use-package yasnippet
   :straight t
+  :custom
+  (yas-indent-line nil)
+  :hook (after-init . yas-global-mode)
   :config
-  (setq yas-indent-line nil)
-  (add-to-list 'yas-snippet-dirs '"~/Dropbox/yassnippet/")
-  (yas-global-mode 1))
+  (add-to-list 'yas-snippet-dirs "~/Dropbox/yassnippet/"))
 
 (use-package tide
   :straight t
@@ -915,38 +917,25 @@
   (exec-path-from-shell-initialize))
 
 (use-package slime
-  :defer t
   :straight t
-  :config
-  (progn
-    (setq inferior-lisp-program "sbcl"
-	  slime-contribs '(slime-fancy))))
+  :mode "\\.lisp\\'"
+  :custom
+  (inferior-lisp-program "sbcl")
+  (slime-contribs '(slime-fancy)))
 
 ;; --------------- Writing ---------------
+;; Move fringe setup to a proper function
+(defun my/olivetti-setup ()
+  "Set up olivetti with custom fringe settings."
+  (set-window-fringes (selected-window) 0 0))
+
 (use-package olivetti
   :straight t
-  :after wc-goal-mode
-  :config
-  (setq olivetti-body-width 0.65)
-  (setq olivetti-minimum-body-width 72)
-  (setq olivetti-recall-visual-line-mode-entry-state t)
-  (set-window-fringes (selected-window) 0 0)
-  ;;  :config
-  ;; (defun writing-mode()
-  ;;   (interactive)
-  ;;   (olivetti-mode 1)
-  ;;   (set-background-color "#FCFCFC")
-  ;;   (set-foreground-color "#1A1A1A")
-  ;;   (set-cursor-color "#07BBF2")
-  ;;   (set-face-attribute 'default nil :family "Fira Mono" :width 'normal)
-  ;;   (set-face-attribute 'variable-pitch nil :family "Source Sans Pro")
-  ;;   (set-face-attribute 'fixed-pitch nil :family "Fira Mono")
-  ;;   (setq-default line-spacing 6)
-  ;;   (set-face-attribute 'mode-line (selected-frame) :background "#FFFFFF" :overline "#FCFCFC" :foreground "grey")
-  ;;   (set-fringe-mode 0)
-  ;;   (require 'wc-goal-mode))
-
-  )
+  :custom
+  (olivetti-body-width 0.65)
+  (olivetti-minimum-body-width 72)
+  (olivetti-recall-visual-line-mode-entry-state t)
+  :hook (olivetti-mode . my/olivetti-setup))
 
 (use-package visual-fill-column
   :straight t)
@@ -955,160 +944,41 @@
   :straight t)
 
 
-;; (use-package elfeed
-;;   :straight t)
-;; (use-package elfeed-org
-;;   :straight t
-;;   :config
-;;   (require 'elfeed-org)
-;;   (elfeed-org)
-;;   (setq rmh-elfeed-org-files (list "~/Dropbox/feeds.org")))
-
-;; (use-package elfeed-goodies
-;;   :straight t
-;;   :config
-;;   (elfeed-goodies/setup))
-
-;; (use-package elfeed-protocol
-;;   :straight t  )
-;; (use-package elfeed-score
-;;   :straight t)
-
-
-;; (use-package hyperbole
-;;   :straight t
-;;   :config
-
-;;   (global-unset-key  [(f6)])
-;;   (global-set-key  [(f6)] 'gbut:act)
-;;   (global-unset-key (kbd "M-<return>"))
-;;   (global-unset-key (kbd "C-<return>"))
-;;   (global-set-key (kbd "C-<return>") 'action-key)
-;;   ;;  (global-unset-key (kbd "C-u C-<return>")  )
-;;   ;;  (global-set-key (kbd "C-u C-<return>") 'assist-key)
-
-;;   (defun looking-at-work-item()
-;;     (or
-;;      (looking-at "W-[0-9]+")
-;;      (save-excursion
-;;        (backward-word-strictly 2)
-;;        (looking-at "W-[0-9]+"))
-;;      (save-excursion
-;;        (backward-word-strictly 1)
-;;        (looking-at "W-[0-9]+"))
-;;      (looking-at "a07.*")
-;;      (save-excursion
-;;        (backward-word-strictly 1)
-;;        (looking-at "a07.*"))))
-
-;;   (defun get-work-item-text()
-;;     (let* ((match-data (match-data))
-;;            (start (first match-data))
-;;            (end (second match-data)))
-;;       (list (buffer-substring-no-properties start end) start end)))
-
-;;   (defun in-org-property()
-;;     (and (hsys-org-mode-p)
-;; 	 (org-at-property-p)))
-
-;;   (defun org-properties-search()
-;;     (interactive)
-;;     (if (in-org-property)
-;; 	(let* ((property-name (org-read-property-name))
-;; 	       (property-value (org-entry-get (point) property-name)))
-;; 	  (hact 'org-tags-view nil (concat property-name "={" property-value "}")))))
-
-
-;;   (defib gus()
-;;     "Gus links"
-;;     (if (looking-at-work-item)
-;; 	(cl-destructuring-bind (text start end) (get-work-item-text)
-;;           (ibut:label-set text start end)
-;;           (hact 'www-url (concat "https://gus.my.salesforce.com/apex/ADM_WorkLocator?bugorworknumber=" text)))
-;;       nil))
-
-  ;; (defib org-property-search()
-  ;;   "org property search"
-  ;;   (org-properties-search))
-;;  )
-
-;; (use-package org-roam
-;;   :straight t
-;;   :custom
-;;   (org-roam-directory "~/Dropbox/org-roam/org-roam1")
-;;   (org-roam-complete-everywhere t)
-;;   :bind (:map org-mode-map
-;;               (("<f9>" . org-roam-buffer-toggle)
-;;                ("C-c n f" . org-roam-node-find)
-;;                ("C-c n g" . org-roam-graph)
-;;                ("C-c n i" . org-roam-node-insert)
-;;                ("C-c n I" . org-roam-capture)
-;;                ("C-c n j" . org-roam-dailies-capture-today)
-;;                ))
-;;   :config
-;;   (org-roam-setup)
-;;   (org-roam-db-autosync-mode)
-
-;;   (add-to-list 'display-buffer-alist
-;; 	       '("\\*org-roam\\*"
-;; 		 (display-buffer-in-side-window)
-;; 		 (side . right)
-;; 		 (slot . 0)
-;; 		 (window-width . 0.33)
-;; 		 (window-parameters . ((no-other-window . t)
-;; 				       (no-delete-other-windows . t)))))
-
-;;   (setq org-link-frame-setup
-;; 	(append (seq-filter #'(lambda(x) (not (equal (car x) 'file)))
-;; 			    org-link-frame-setup)
-;; 		'((file . find-file))))
-
-;;   (setq org-roam-completion-everywhere t)
-;;   (setq org-roam-complete-link-at-point  t)
-
-;;   (add-hook 'org-roam-mode-hook #'visual-line-mode)
-
-;;   (add-to-list 'magit-section-initial-visibility-alist (cons 'org-roam-node-section 'hide)))
-
 ;; --------------- Web Mode ---------------
+
+(defun web-mode-init-hook ()
+  "Hooks for Web mode. Adjust indent."
+  (setq web-mode-markup-indent-offset 4))
+
+(defun web-mode-init-prettier-hook ()
+  "Set up prettier for web-mode."
+  (add-node-modules-path)
+  (prettier-js-mode))
+
+
 (use-package web-mode
   :straight t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.html?$" . web-mode))
-  (setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
-
-  (defun web-mode-init-hook ()
-    "Hooks for Web mode.  Adjust indent."
-    (setq web-mode-markup-indent-offset 4))
-
-  (add-hook 'web-mode-hook  'web-mode-init-hook))
-
+  :mode (("\\.jsx?\\'" . web-mode)
+         ("\\.html?\\'" . web-mode))
+  :custom
+  (web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
+  :hook (web-mode . web-mode-init-hook))
 
 (use-package add-node-modules-path
   :straight t
-  :after flycheck
-  :config
-  (add-hook 'flycheck-mode-hook 'add-node-modules-path))
+  :hook (flycheck-mode . add-node-modules-path))
 
 (use-package prettier-js
   :straight t
-  :config
-  (defun web-mode-init-prettier-hook ()
-    (add-node-modules-path)
-    (prettier-js-mode))
-
-  (add-hook 'web-mode-hook  'web-mode-init-prettier-hook))
+  :hook (web-mode . web-mode-init-prettier-hook))
 
 (use-package emmet-mode
   :straight t
-  :config
-  (add-hook 'web-mode-hook  'emmet-mode))
+  :hook (web-mode . emmet-mode))
 
 (use-package typescript-mode
   :straight t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.ts$" . typescript-mode)))
+  :mode "\\.ts\\'")
 
 (use-package tide
   :straight t
@@ -1167,75 +1037,13 @@
 
               ("M-[" . sp-backward-unwrap-sexp)
               ("M-]" . sp-unwrap-sexp))
-  :config
-  (smartparens-global-mode t))
+  :hook
+  (after-init . (lambda() (smartparens-global-mode t))))
+
 
 (use-package which-key
   :straight t
   :hook (after-init . which-key-mode))
-
-;; Haskell Setup
-
-;; (use-package flycheck-haskell
-;;   :straight t)
-
-;; (use-package haskell-mode
-;;   :straight t
-;;   :config
-;;   (add-hook 'haskell-mode-hook #'lsp)
-;;   (add-hook 'haskell-mode-hook #'lsp-ui-mode)
-;;   (add-hook 'haskell-mode-hook #'interactive-haskell-mode))
-
-;; (use-package hindent
-;;   :straight t
-;;   :after haskell-mode
-;;   :init
-;;   (add-hook 'haskell-mode-hook #'hindent-mode))
-
-;; (use-package lsp-mode
-;;   :straight
-;;   :commands lsp
-;;   :hook (lsp-mode . (lambda ()
-;;                       (let ((lsp-keymap-prefix "C-x l"))
-;;                         (lsp-enable-which-key-integration))))
-;;   :custom
-;;   ;; what to use when checking on-save. "check" is default, I prefer clippy
-;;   (lsp-rust-analyzer-cargo-watch-command "clippy")
-;;   (lsp-eldoc-render-all t)
-;;   (lsp-idle-delay 0.6)
-;;   (lsp-rust-analyzer-server-display-inlay-hints t)
-;;   :config
-;;   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-;;   (define-key lsp-mode-map (kbd "C-x l") lsp-command-map))
-;; (global-unset-key (kbd "C-x l"))
-
-;; (use-package lsp-ui
-;;   :straight t
-;;   :commands lsp-ui-mode)
-
-;; (use-package lsp-haskell
-;;   :straight t
-;;   :config
-;;   (setq lsp-haskell-server-path "~/.ghcup/bin/haskell-language-server-wrapper")
-;;   (setq lsp-haskell-process-path-hie "~/.ghcup/bin/haskell-language-server-wrapper")
-;;   (setq lsp-haskell-process-args-hie '()) )
-
-;; (use-package lsp-java
-;;   :straight t
-;;   :config (add-hook 'java-mode-hook 'lsp))
-(use-package dap-mode
-  :straight t
-  :after (lsp-mode)
-  :functions dap-hydra/nil
-  :config
-  (require 'dap-java)
-  :bind (:map lsp-mode-map
-              ("<f5>" . dap-debug)
-              ("M-<f5>" . dap-hydra))
-  :hook ((dap-mode . dap-ui-mode)
-	 (dap-session-created . (lambda (&_rest) (dap-hydra)))
-	 (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
-
 
 (use-package frame
   :commands prot/cursor-type-mode
