@@ -2,7 +2,8 @@
 
 (straight-use-package 'use-package)
 
-(use-package eglot)
+(use-package eglot
+  :defer t)
 
 (use-package completion-preview
   :custom
@@ -111,6 +112,7 @@
 
 (use-package howm
   :straight t
+  :defer t
   :bind (("C-c , ," . howm-menu)
          ("C-c , c" . howm-create)
          ("C-c , a" . howm-list-all)
@@ -150,6 +152,7 @@
 
 (use-package magit
   :straight t
+  :defer t
   :bind (("C-x g" . magit-status)
          ("C-x M-g" . magit-dispatch)
          ("C-c M-g" . magit-file-dispatch)))
@@ -717,17 +720,19 @@
   (spaceline-all-the-icons-separator-type 'arrow))
 
 (use-package spacemacs-theme
-  :straight t)
+  :straight t
+  :defer t)
 
 (use-package doom-themes
-  :straight t)
+  :straight t
+  :defer t)
 
 (use-package doom-modeline
   :straight t
   :hook (after-init . doom-modeline-mode))
 
 (use-package color-theme-modern
-  :straight t)  ; Remove :defer - no way to trigger loading
+  :straight t)
 
 (defun my/load-modus-theme ()
   "Load modus operandi theme."
@@ -753,6 +758,7 @@
 
 (use-package flycheck
   :straight t
+  :defer t
   :custom
   (flycheck-check-syntax-automatically '(save mode-enable))
   :hook (after-init . global-flycheck-mode)
@@ -765,7 +771,7 @@
 ;; --------------- company mode ---------------
 (use-package company
   :straight t
-  :defer t
+  :defer 2
   :custom
   (company-idle-delay 0.5)
   (company-minimum-prefix-length 2)
@@ -994,6 +1000,7 @@
 
 (use-package projectile
   :straight t
+  :defer t
   :config
   (projectile-mode +1)
   (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
