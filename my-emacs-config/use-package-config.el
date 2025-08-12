@@ -734,10 +734,6 @@
 (use-package color-theme-modern
   :straight t)
 
-(defun my/load-modus-theme ()
-  "Load modus operandi theme."
-  (require 'modus-themes)
-  (modus-themes-load-operandi))
 
 (use-package modus-themes
   :straight t
@@ -750,9 +746,7 @@
   (modus-themes-prompts '(italic bold))
   (modus-themes-completions '((matches . (extrabold))
                               (selection . (semibold italic text-also))))
-  (modus-themes-org-blocks 'gray-background)
-  :hook (after-init . my/load-modus-theme))
-
+  (modus-themes-org-blocks 'gray-background))
 
 ;; --------------- fly check mode ---------------
 
@@ -830,32 +824,29 @@
 
 					;  (bind-key "C-c h s" 'jethro/hydra-smerge/body)
 
-
-  (defhydra process-inbox(:exit nil :hint nil
-                                :pre (setq rfc/resume-hydra nil)
-                                :post (if rfc/resume-hydra
-                                          (progn
-                                            (print rfc/resume-hydra)
-                                            (process-inbox/body))
-                                        (print rfc/resume-hydra)))
-    "
-  _r_: Refile     _a_: Archive     _K_: Kill
-  _d_: Done       _c_: Cancel      _td_: Schedule for today
-  _n_: Next Line  _p_: Prev Line
-  _q_: quit
-"
-    ("n" next-line nil :color pink)
-    ("p" previous-line nil :color pink)
-    ("a" org-agenda-archive nil :color red)
-    ("r" org-agenda-refile nil :color red)
-    ("td" org-agenda-schedule :color blue)
-    ("K" org-agenda-kill nil :color red :exit nil)
-    ("d" (lambda () (org-agenda-todo "DONE")) nil :color blue)
-    ("c" (org-agenda-todo "CANCELLED") nil :color blue)
-    ("q" nil nil :color red))
-
-
-  (define-key org-agenda-mode-map [(f9)] 'process-inbox/body)
+;;   (defhydra process-inbox(:exit nil :hint nil
+;;                                 :pre (setq rfc/resume-hydra nil)
+;;                                 :post (if rfc/resume-hydra
+;;                                           (progn
+;;                                             (print rfc/resume-hydra)
+;;                                             (process-inbox/body))
+;;                                         (print rfc/resume-hydra)))
+;;     "
+;;   _r_: Refile     _a_: Archive     _K_: Kill
+;;   _d_: Done       _c_: Cancel      _td_: Schedule for today
+;;   _n_: Next Line  _p_: Prev Line
+;;   _q_: quit
+;; "
+;;     ("n" next-line nil :color pink)
+;;     ("p" previous-line nil :color pink)
+;;     ("a" org-agenda-archive nil :color red)
+;;     ("r" org-agenda-refile nil :color red)
+;;     ("td" org-agenda-schedule :color blue)
+;;     ("K" org-agenda-kill nil :color red :exit nil)
+;;     ("d" (lambda () (org-agenda-todo "DONE")) nil :color blue)
+;;     ("c" (org-agenda-todo "CANCELLED") nil :color blue)
+;;     ("q" nil nil :color red))
+;    (define-key org-agenda-mode-map [(f9)] 'process-inbox/body)
   )
 
 
