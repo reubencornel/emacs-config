@@ -25,44 +25,44 @@
             icomplete-with-completion-tables
           '(read-file-name-internal))))
 
-  (defun reuben/consult-search-org-helper (org-param keyword directory)
-    (let ((old-value consult-ripgrep-args))
-      (unwind-protect
-	  (progn
-	    (customize-set-variable
-	     'consult-ripgrep-args
-	     (concat "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /\  --smart-case --no-heading --line-number --search-zip"
-		     " "
-		    org-param
-		    " "
-		    "."))
-	    (let ((vertico-count 10))
-	      (consult-ripgrep directory keyword)))
+(defun reuben/consult-search-org-helper (org-param keyword directory)
+  (let ((old-value consult-ripgrep-args))
+    (unwind-protect
 	(progn
 	  (customize-set-variable
 	   'consult-ripgrep-args
-	   old-value)))))
+	   (concat "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /\  --smart-case --no-heading --line-number --search-zip"
+		   " "
+		   org-param
+		   " "
+		   "."))
+	  (let ((vertico-count 10))
+	    (consult-ripgrep directory keyword)))
+      (progn
+	(customize-set-variable
+	 'consult-ripgrep-args
+	 old-value)))))
 
 
-  (defun reuben/consult-search-org ()
-    "Call `consult-ripgrep' for my org agenda files."
-    (interactive)
-    (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org"))
+(defun reuben/consult-search-org ()
+  "Call `consult-ripgrep' for my org agenda files."
+  (interactive)
+  (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org"))
 
-  (defun reuben/consult-search-all-org ()
-    "Call `consult-ripgrep' for my org agenda files."
-    (interactive)
-    (reuben/consult-search-org-helper "-t org" "" "~/Dropbox/org"))
+(defun reuben/consult-search-all-org ()
+  "Call `consult-ripgrep' for my org agenda files."
+  (interactive)
+  (reuben/consult-search-org-helper "-t org" "" "~/Dropbox/org"))
 
-  (defun reuben/consult-search-org-roam()
-    "Call `consult-ripgrep' for my org roam files."
-    (interactive)
-    (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org-roam/org-roam1"))
+(defun reuben/consult-search-org-roam()
+  "Call `consult-ripgrep' for my org roam files."
+  (interactive)
+  (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org-roam/org-roam1"))
 
-  (defun reuben/consult-search-howm()
-    "Call `consult-ripgrep' for my howm files."
-    (interactive)
-    (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/howm"))
+(defun reuben/consult-search-howm()
+  "Call `consult-ripgrep' for my howm files."
+  (interactive)
+  (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/howm"))
 
 
 (use-package consult
@@ -87,10 +87,10 @@
          ("<help> a" . consult-apropos)            ;; or
 	 ;;	 ig. apropos-command
          ;; M-g bindings (goto-map)
-          ("M-g e" . consult-compile-error)
-          ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
-          ("M-g g" . consult-goto-line)             ;; orig. goto-line
-          ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+         ("M-g e" . consult-compile-error)
+         ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+         ("M-g g" . consult-goto-line)             ;; orig. goto-line
+         ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
          ;; ("M-g o" . consult-outline)
          ;; ("M-g m" . consult-mark)
          ;; ("M-g k" . consult-global-mark)
@@ -156,20 +156,20 @@
   :straight t
   :mode ("\\.md" . markdown-mode))
 
-  (defun my/truncate-eshell-buffers ()
-    "Truncates all eshell buffers"
-    (interactive)
-    (save-current-buffer
-      (dolist (buffer (buffer-list t))
-	(set-buffer buffer)
-	(when (eq major-mode 'eshell-mode)
-	  (eshell-truncate-buffer)))))
+(defun my/truncate-eshell-buffers ()
+  "Truncates all eshell buffers"
+  (interactive)
+  (save-current-buffer
+    (dolist (buffer (buffer-list t))
+      (set-buffer buffer)
+      (when (eq major-mode 'eshell-mode)
+	(eshell-truncate-buffer)))))
 
 (use-package eshell
   :defer t
   :custom
-    (eshell-scroll-to-bottom-on-input 'all)
-    (eshell-buffer-maximum-lines 2000)
+  (eshell-scroll-to-bottom-on-input 'all)
+  (eshell-buffer-maximum-lines 2000)
   :config
   (setq my/eshell-truncate-timer
 	(run-with-idle-timer 5 t #'my/truncate-eshell-buffers)))
@@ -184,6 +184,180 @@
 (use-package eshell-git-prompt
   :straight t
   :hook (eshell-mode . my/setup-eshell-git-prompt))
+
+(defun skip-done-functions-or-projects()
+  (org-agenda-skip-entry-if 'todo '("DONE" "WAITING" "NEXT")))
+
+(defun org-checkbox-todo ()
+  "Switch header TODO state to either DONE, NEXT, or TODO depending on the number of check boxes ticked"
+  (let ((todo-state (org-get-todo-state)) beg end)
+    (unless (not todo-state)
+      (save-excursion
+  	(org-back-to-heading t)
+  	(let* ((line-start (point))
+  	       (line-end (line-end-position)))
+  	  (if (re-search-forward "\\[\\([0-9]*\\)%\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
+  				 end t)
+  	      (if (match-end 1)
+  		  (let ((percent-done (string-to-number (match-string 1))))
+  		    (handle-percent-case percent-done))
+  		(let ((tasks-done (string-to-number (match-string 2)))
+  		      (tasks-remaining (string-to-number (match-string 3))))
+  		  (handle-task-number-case tasks-done tasks-remaining)))))))))
+
+(defun handle-percent-case(percent-done)
+  (if (= percent-done 100)
+      (org-todo "DONE")
+    (if (> percent-done 0)
+  	(org-todo "NEXT")
+      (org-todo "TODO"))))
+
+(defun handle-task-number-case(tasks-done tasks-remaining)
+  (if (= tasks-done tasks-remaining)
+      (org-todo "DONE")
+    (if (= tasks-done 0)
+  	(org-todo "TODO")
+      (org-todo "NEXT"))))
+
+(defun find-list-of-points-with-log-entry-headings()
+  (org-map-entries (lambda ()
+  		     (let ((current-headline (buffer-substring-no-properties
+  					      (line-beginning-position)
+  					      (line-end-position))))
+  		       (if (string-match-p " Log Entries" current-headline)
+  			   (line-beginning-position)
+  			 nil)))
+  		   nil
+  		   'tree))
+
+(defun find-log-header()
+  (interactive)
+  (let ((filtered-list  (seq-filter (lambda(x)
+  				      (not (null x)))
+  				    (find-list-of-points-with-log-entry-headings))))
+    (if (null filtered-list)
+  	nil
+      (car filtered-list))))
+
+(defun insert-log-entry-heading()
+  (interactive)
+  (let ((depth (org-current-level)))
+    (outline-next-heading)
+    (let ((heading-string (concat
+  			   (make-string (+ depth 1) ?*)
+  			   " Log Entries\n")))
+      (insert heading-string)
+      (goto-char (- (line-beginning-position) 1)))))
+
+
+(defun find-or-insert-entry()
+  (interactive)
+  (let ((log-header-point (find-log-header)))
+    (if (null log-header-point)
+  	(insert-log-entry-heading)
+      (goto-char log-header-point))))
+
+
+(defun custom-log-finder()
+  (if (and (fboundp 'org-clocking-p) (org-clocking-p))
+      (let ()
+  	(org-clock-goto)
+  	(find-or-insert-entry))
+    (let ()
+      (find-file org-default-log-file)
+      (goto-char (point-max)))))
+
+(defun goto-last-heading ()
+  (interactive)
+  (org-end-of-subtree))
+
+(defun add-tag()
+  "This function adds a tag to the log entry if the entry is not going to be appended to an entry that is clocked in."
+  (if (and (fboundp 'org-clocking-p)
+	   (org-clocking-p))
+      ""
+    "%^G"))
+
+
+(defun org-summary-todo (n-done n-not-done)
+  "Switch entry to DONE when all subentries are done, to TODO otherwise."
+  (let ((todo-state (org-get-todo-state)) beg end)
+    (unless (not todo-state)
+      (let (org-log-done org-log-states)   ; turn off logging
+        (if (= n-not-done 0)
+            (progn
+              (org-todo "DONE")
+              (save-excursion
+                (end-of-line)
+                (insert "\n   CLOSED:")
+                (insert (reuben/get-inactive-org-date-time))))
+          (org-todo (if (> n-done 0) "NEXT" "TODO")))))))
+
+(defun jump-to-org-agenda ()
+  (interactive)
+  (push-window-configuration)
+  (let ((recordings-dir "~/Dropbox/Apps/Dropvox"))
+    (ignore-errors
+      (if (directory-files recordings-dir nil "\\`[^.]")
+  	  (find-file recordings-dir))))
+  (let ((buf (get-buffer "*Org Agenda*"))
+  	wind)
+    (if buf
+  	(if (setq wind (get-buffer-window buf))
+  	    (when (called-interactively-p 'any)
+  	      (select-window wind)
+  	      (org-fit-window-to-buffer))
+  	  (if (called-interactively-p 'any)
+  	      (progn
+  		(select-window (display-buffer buf t t))
+  		(org-fit-window-to-buffer))
+  	    (with-selected-window (display-buffer buf)
+  	      (org-fit-window-to-buffer))))
+      (org-agenda "a" "d"))))
+
+
+(defun rasmus/remove-schedule ()
+  "Remove SCHEDULED-cookie is switching state to WAITING."
+  (save-excursion
+    (and (equal (org-get-todo-state) "DONE")
+	 (org-get-scheduled-time (point))
+	 (when (search-forward-regexp org-scheduled-time-regexp nil t)
+	   (or (delete-region (match-beginning 0) (match-end 0)) t))
+	 (get-buffer "*Org Agenda*")
+	 (with-current-buffer "*Org Agenda*"
+	   (org-agenda-redo)))))
+
+(add-hook 'org-after-todo-state-change-hook
+	  'rasmus/remove-schedule)
+
+(defun org-count-todos-in-state (state)
+  (let ((count 0))
+    (org-scan-tags (lambda ()
+		     (when (string= (org-get-todo-state) state)
+		       (setq count (1+ count))))
+		   t t)
+    count))
+
+(defun org-block-wip-limit (change-plist)
+  (catch 'dont-block
+    (when (or (not (eq (plist-get change-plist :type) 'todo-state-change))
+	      (not (string= (plist-get change-plist :to) org-wip-state)))
+      (throw 'dont-block t))
+
+    (when (>= (org-count-todos-in-state org-wip-state) org-wip-limit )
+      (setq org-block-entry-blocking (format "Number of items in NEXT limit(org-wip-limit): %s" org-wip-state))
+      (throw 'dont-block nil))
+
+    t)) ; do not block
+
+(defun reuben/org-mode-hook ()
+  "Stop the org-level headers from increasing in height relative to the other text."
+  (dolist (face '(org-level-1
+                  org-level-2
+                  org-level-3
+                  org-level-4
+                  org-level-5))
+    (set-face-attribute face nil :weight 'semi-bold :height 1.0)))
 
 (use-package org
   :defer t
@@ -409,19 +583,30 @@
   (org-agenda-include-diary t)
   (org-journal-template-entry (concat "* %T [" (system-name)  "]| %^{title} %^G"))
   (org-agenda-window-setup 'only-window)
+  (org-crypt-disable-auto-save t)
+  (org-crypt-key nil)
+  (org-babel-python-command "python3")
+
+  :hook ((org-mode . visual-line-mode)
+         (org-mode . reuben/org-mode-hook)
+         (org-checkbox-statistics . org-checkbox-todo)
+         (org-after-todo-statistics . org-summary-todo)
+         (org-blocker . org-block-wip-limit))
+
   :config
   (add-to-list 'org-modules 'org-id )
   (add-to-list 'org-modules 'org-habit)
+  (add-to-list 'org-modules 'org-crypt)
+  (add-to-list 'org-modules 'org-checklist)
+
   (require 'org-crypt)
   (require 'org-depend)
   (require 'org-protocol)
   (require 'org-checklist)
   (require 'gus-links)
-  (add-to-list 'org-modules 'org-crypt)
-  (add-to-list 'org-modules 'org-checklist)
-  (setq org-crypt-disable-auto-save t)
+
   (org-crypt-use-before-save-magic)
-  (setq org-crypt-key nil)
+
 
   (setq org-directory (expand-file-name "~/Dropbox/org"))
   (setq org-default-inbox-file (concat org-directory "/inbox.org"))
@@ -429,7 +614,6 @@
   (setq org-default-journal-file (concat org-directory "/notes.org"))
   (setq org-default-slipbox-file (concat org-directory "/slipbox.org"))
   (setq org-default-log-file (concat org-directory "/log.org"))
-
   (setq org-show-context-detail (assq-delete-all 'agenda org-show-context-detail))
   (add-to-list 'org-show-context-detail '(agenda . lineage))
 
@@ -455,186 +639,15 @@
   	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| %^{title}  %(add-tag) " :immediate-finish t)))
 
 
-  ;; (add-hook 'org-mode-hook
-  ;;           (lambda()
-  ;;             (visual-line-mode t)
-  ;;             (setq line-spacing 10)
-  ;;             (setq left-margin-width 10 right-margin-width 10)))
-
-  (defun skip-done-functions-or-projects()
-    (org-agenda-skip-entry-if 'todo '("DONE" "WAITING" "NEXT")))
-
-  (defun org-checkbox-todo ()
-    "Switch header TODO state to either DONE, NEXT, or TODO depending on the number of check boxes ticked"
-    (let ((todo-state (org-get-todo-state)) beg end)
-      (unless (not todo-state)
-  	(save-excursion
-  	  (org-back-to-heading t)
-  	  (let* ((line-start (point))
-  		 (line-end (line-end-position)))
-  	    (if (re-search-forward "\\[\\([0-9]*\\)%\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
-  				   end t)
-  		(if (match-end 1)
-  		    (let ((percent-done (string-to-number (match-string 1))))
-  		      (handle-percent-case percent-done))
-  		  (let ((tasks-done (string-to-number (match-string 2)))
-  			(tasks-remaining (string-to-number (match-string 3))))
-  		    (handle-task-number-case tasks-done tasks-remaining)))))))))
-
-  (defun handle-percent-case(percent-done)
-    (if (= percent-done 100)
-  	(org-todo "DONE")
-      (if (> percent-done 0)
-  	  (org-todo "NEXT")
-  	(org-todo "TODO"))))
-
-  (defun handle-task-number-case(tasks-done tasks-remaining)
-    (if (= tasks-done tasks-remaining)
-  	(org-todo "DONE")
-      (if (= tasks-done 0)
-  	  (org-todo "TODO")
-  	(org-todo "NEXT"))))
-
-  (defun find-list-of-points-with-log-entry-headings()
-    (org-map-entries (lambda ()
-  		       (let ((current-headline (buffer-substring-no-properties
-  						(line-beginning-position)
-  						(line-end-position))))
-  			 (if (string-match-p " Log Entries" current-headline)
-  			     (line-beginning-position)
-  			   nil)))
-  		     nil
-  		     'tree))
-
-  (defun find-log-header()
-    (interactive)
-    (let ((filtered-list  (seq-filter (lambda(x)
-  					(not (null x)))
-  				      (find-list-of-points-with-log-entry-headings))))
-      (if (null filtered-list)
-  	  nil
-  	(car filtered-list))))
-
-  (defun insert-log-entry-heading()
-    (interactive)
-    (let ((depth (org-current-level)))
-      (outline-next-heading)
-      (let ((heading-string (concat
-  			     (make-string (+ depth 1) ?*)
-  			     " Log Entries\n")))
-  	(insert heading-string)
-  	(goto-char (- (line-beginning-position) 1)))))
-
-
-  (defun find-or-insert-entry()
-    (interactive)
-    (let ((log-header-point (find-log-header)))
-      (if (null log-header-point)
-  	  (insert-log-entry-heading)
-  	(goto-char log-header-point))))
-
-
-  (defun custom-log-finder()
-    (if (and (fboundp 'org-clocking-p) (org-clocking-p))
-  	(let ()
-  	  (org-clock-goto)
-  	  (find-or-insert-entry))
-      (let ()
-  	(find-file org-default-log-file)
-  	(goto-char (point-max)))))
-
-  (defun goto-last-heading ()
-    (interactive)
-    (org-end-of-subtree))
-
-  (defun add-tag()
-    "This function adds a tag to the log entry if the entry is not going to be appended to an entry that is clocked in."
-    (if (and (fboundp 'org-clocking-p)
-	     (org-clocking-p))
-  	""
-      "%^G"))
-
-
-  (defun org-summary-todo (n-done n-not-done)
-    "Switch entry to DONE when all subentries are done, to TODO otherwise."
-    (let ((todo-state (org-get-todo-state)) beg end)
-      (unless (not todo-state)
-        (let (org-log-done org-log-states)   ; turn off logging
-          (if (= n-not-done 0)
-              (progn
-                (org-todo "DONE")
-                (save-excursion
-                  (end-of-line)
-                  (insert "\n   CLOSED:")
-                  (insert (reuben/get-inactive-org-date-time))))
-            (org-todo (if (> n-done 0) "NEXT" "TODO")))))))
-
-  (defun jump-to-org-agenda ()
-    (interactive)
-    (push-window-configuration)
-    (let ((recordings-dir "~/Dropbox/Apps/Dropvox"))
-      (ignore-errors
-  	(if (directory-files recordings-dir nil "\\`[^.]")
-  	    (find-file recordings-dir))))
-    (let ((buf (get-buffer "*Org Agenda*"))
-  	  wind)
-      (if buf
-  	  (if (setq wind (get-buffer-window buf))
-  	      (when (called-interactively-p 'any)
-  		(select-window wind)
-  		(org-fit-window-to-buffer))
-  	    (if (called-interactively-p 'any)
-  		(progn
-  		  (select-window (display-buffer buf t t))
-  		  (org-fit-window-to-buffer))
-  	      (with-selected-window (display-buffer buf)
-  		(org-fit-window-to-buffer))))
-  	(org-agenda "a" "d"))))
-  (add-hook 'org-checkbox-statistics-hook 'org-checkbox-todo)
+					;(add-hook 'org-checkbox-statistics-hook 'org-checkbox-todo)
 
   (require 'seq)
-  (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
-
-
-  (defun rasmus/remove-schedule ()
-    "Remove SCHEDULED-cookie is switching state to WAITING."
-    (save-excursion
-      (and (equal (org-get-todo-state) "DONE")
-	   (org-get-scheduled-time (point))
-	   (when (search-forward-regexp org-scheduled-time-regexp nil t)
-	     (or (delete-region (match-beginning 0) (match-end 0)) t))
-	   (get-buffer "*Org Agenda*")
-	   (with-current-buffer "*Org Agenda*"
-	     (org-agenda-redo)))))
-
-  (add-hook 'org-after-todo-state-change-hook
-	    'rasmus/remove-schedule)
-
-  (defun org-count-todos-in-state (state)
-    (let ((count 0))
-      (org-scan-tags (lambda ()
-		       (when (string= (org-get-todo-state) state)
-			 (setq count (1+ count))))
-		     t t)
-      count))
-
+					; (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 
   (defvar org-wip-limit 20 "Work-in-progress limit")
   (defvar org-wip-state "NEXT")
 
-  (defun org-block-wip-limit (change-plist)
-    (catch 'dont-block
-      (when (or (not (eq (plist-get change-plist :type) 'todo-state-change))
-		(not (string= (plist-get change-plist :to) org-wip-state)))
-	(throw 'dont-block t))
-
-      (when (>= (org-count-todos-in-state org-wip-state) org-wip-limit )
-	(setq org-block-entry-blocking (format "Number of items in NEXT limit(org-wip-limit): %s" org-wip-state))
-	(throw 'dont-block nil))
-
-      t)) ; do not block
-
-  (add-hook 'org-blocker-hook #'org-block-wip-limit)
+					;(add-hook 'org-blocker-hook #'org-block-wip-limit)
 
   (define-key org-mode-map [(f10)] 'org-mark-ring-goto)
 
@@ -644,20 +657,7 @@
      (scheme . t)
      (python . t)
      (lisp . t)
-     (R . t)))
-
-  (setq org-babel-python-command "python3")
-  (add-hook 'org-mode-hook 'visual-line-mode)
-  (defun reuben/org-mode-hook ()
-    "Stop the org-level headers from increasing in height relative to the other text."
-    (dolist (face '(org-level-1
-                    org-level-2
-                    org-level-3
-                    org-level-4
-                    org-level-5))
-      (set-face-attribute face nil :weight 'semi-bold :height 1.0)))
-
-  (add-hook 'org-mode-hook #'reuben/org-mode-hook))
+     (R . t))))
 
 
 (use-package org-anki
@@ -666,9 +666,7 @@
 
 (use-package org-bullets
   :straight t
-  :after org
-  :config ;; executed after loading package
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+  :hook (org-mode . org-bullets-mode))
 
 (use-package org-ql
   :straight t
@@ -676,10 +674,8 @@
   :after org)
 
 (use-package org-super-agenda
-  :after org
   :straight t
-  :config
-  (org-super-agenda-mode))
+  :hook (after-init . org-super-agenda-mode))
 
 (use-package ibuffer
   :defer t
