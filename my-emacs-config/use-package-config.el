@@ -123,8 +123,6 @@
   :custom
   (howm-home-directory "~/Dropbox/howm/")
   (howm-directory "~/Dropbox/howm/")
-  (howm-keyword-file (expand-file-name ".howm-keys" howm-home-directory))
-  (howm-history-file (expand-file-name ".howm-history" howm-home-directory))
   (howm-file-name-format "%Y/%m/%Y-%m-%d-%H%M%S.org")
   (howm-view-use-grep t)
   (howm-view-grep-command "rg")
@@ -140,7 +138,11 @@
   (define-key riffle-summary-mode-map "\C-h" nil)
   (define-key howm-view-contents-mode-map "\C-h" nil)
   (advice-add 'howm-list-recent :after #'howm-view-sort-by-mtime)
-  (advice-add 'howm-list-all :after #'(lambda () (howm-view-sort-by-date t))))
+  (advice-add 'howm-list-all :after #'(lambda () (howm-view-sort-by-date t)))
+
+  (setq howm-keyword-file (expand-file-name ".howm-keys" howm-home-directory))
+  (setq howm-history-file (expand-file-name ".howm-history" howm-home-directory))
+)
 
 (use-package plantuml-mode
   :straight t
