@@ -1011,8 +1011,6 @@
 
 (use-package geiser
   :straight t
-;  :bind (("C-c g r" . geiser)
-;         ("C-c g z" . geiser-repl))
   :hook (scheme-mode . geiser-mode))
 
 (use-package geiser-mit
@@ -1124,6 +1122,28 @@
                   " "
                   mode-line-misc-info
                   mode-line-end-spaces))
+
+  (setq-default scroll-preserve-screen-position t)
+  (setq-default scroll-conservatively 1) ; affects `scroll-step'
+  (setq-default scroll-margin 0)
+
+  (define-minor-mode prot/scroll-centre-cursor-mode
+    "Toggle centred cursor scrolling behaviour."
+    :init-value nil
+    :lighter " S="
+    :global nil
+    (if prot/scroll-centre-cursor-mode
+        (setq-local scroll-margin (* (frame-height) 2)
+                    scroll-conservatively 0
+                    maximum-scroll-margin 0.5)
+      (dolist (local '(scroll-preserve-screen-position
+                       scroll-conservatively
+                       maximum-scroll-margin
+                       scroll-margin))
+        (kill-local-variable `,local))))
+
+  ;; C-c l is used for `org-store-link'.  The mnemonic for this is to
+  ;; focus the Line and also works as a variant of C-l.
 
 
   (define-minor-mode prot/hidden-mode-line-mode
@@ -1251,22 +1271,64 @@
 	      ("M-<left>" . drag-stuff-left)
 	      ("M-<right>" . drag-stuff-right)))
 
-(use-package undo-tree
-  :straight t
-  :config
-  (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
-  (global-undo-tree-mode)
-
-  (defadvice undo-tree-make-history-save-file-name
-      (after undo-tree activate)
-    (setq ad-return-value (concat ad-return-value ".gz"))))
+;; (use-package undo-tree
+;;   :straight t
+;;   :config
+;;   (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
+;;   (global-undo-tree-mode)
+;;   (defadvice undo-tree-make-history-save-file-name
+;;       (after undo-tree activate)
+;;     (setq ad-return-value (concat ad-return-value ".gz"))))
 
 (use-package change-inner
   :straight t
   :bind ("C-c i" . change-inner))
 
 (use-package devdocs
-  :straight t )
+  :straight t
+  :defer t)
+
+
+(use-package emacs
+  :custom
+  ;; Core completion behavior
+  (completion-styles '(basic flex))           ; Use basic + flexible matching
+  (completion-ignore-case t)                  ; Case-insensitive completion
+  (completion-auto-select t)                  ; Auto-select first completion
+  (completion-auto-help 'visible)             ; Show *Completions* buffer when needed
+
+  ;; Completions buffer formatting
+  (completions-format 'one-column)            ; Single column layout
+  (completions-sort 'historical)              ; Sort by minibuffer history
+  (completions-max-height 20)                 ; Limit to 20 completions
+
+  ;; Performance settings
+  (completion-cycle-threshold 3)              ; Cycle if <= 3 completions
+  (completion-category-overrides              ; Per-category completion styles
+   '((file (styles . (partial-completion)))))
+
+  :config
+  ;; Enable helpful completion features
+  (minibuffer-depth-indicate-mode 1)          ; Show minibuffer depth
+  (minibuffer-electric-default-mode 1))
+
+(use-package completion-preview
+  :hook (after-init . global-completion-preview-mode))
+
+(use-package fido-vertical-mode
+  :hook (after-init . fido-vertical-mode)
+  :custom
+  ;; Icomplete/Fido specific settings
+  (icomplete-scroll t)                        ; Allow scrolling through completions
+  (icomplete-prospects-height 10)             ; Show up to 10 candidates
+  (icomplete-separator "\n")                  ; Vertical separator
+  (icomplete-hide-common-prefix nil)          ; Show full candidates
+  (icomplete-show-matches-on-no-input t)      ; Show matches even with empty input
+
+  :config
+  ;; Additional fido customizations
+  (setq icomplete-compute-delay 0.1)          ; Faster response
+  (setq icomplete-max-delay-chars 2))
 
 (provide 'use-package-config)
 ;;; use-package-config.el ends here
