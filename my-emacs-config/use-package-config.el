@@ -3,7 +3,14 @@
 (straight-use-package 'use-package)
 
 (use-package eglot
-  :defer t)
+  :hook ((python-mode . eglot-ensure)
+         (js-mode . eglot-ensure)
+         ;; Add other language modes as needed
+         ))
+
+(straight-use-package '(eglot :type built-in))
+(straight-use-package '(project :type built-in))
+
 
 (use-package completion-preview
   :custom
@@ -1329,6 +1336,17 @@
   ;; Additional fido customizations
   (setq icomplete-compute-delay 0.1)          ; Faster response
   (setq icomplete-max-delay-chars 2))
+
+(use-package tuareg
+  :straight t
+  :hook (tuareg-mode . eglot-ensure))
+
+(use-package ocaml-eglot
+  :straight t
+  :after (tuareg  eglot)
+  :hook
+  (tuareg-mode . ocaml-eglot)
+  (ocaml-eglot . eglot-ensure))
 
 (provide 'use-package-config)
 ;;; use-package-config.el ends here
