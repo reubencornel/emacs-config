@@ -2,16 +2,6 @@
 
 (straight-use-package 'use-package)
 
-(use-package eglot
-  :hook ((python-mode . eglot-ensure)
-         (js-mode . eglot-ensure)
-         ;; Add other language modes as needed
-         ))
-
-(straight-use-package '(eglot :type built-in))
-(straight-use-package '(project :type built-in))
-
-
 (use-package completion-preview
   :custom
   (completion-styles '(basic flex))
@@ -26,7 +16,7 @@
 (use-package swiper
   :straight t
   :bind (("C-s" . swiper-isearch)
-         ("C-r" . swiper-backward))
+         ("C-r" . swiper-isearch-backward))
   :config
   (setq icomplete-with-completion-tables
 	(if (listp icomplete-with-completion-tables)
@@ -859,62 +849,6 @@
   )
 
 
-(use-package bury-successful-compilation
-  :straight t
-  :hook
-  (c-mode . bury-successful-compilation))
-
-;; --------------- Rust Config ---------------
-(use-package rustic
-  :straight t  ; Fixed: was missing 't'
-  :bind (:map rustic-mode-map
-              ("M-j" . lsp-ui-imenu)
-              ("M-?" . lsp-find-references)
-              ("C-c C-c l" . flycheck-list-errors)
-              ("C-c C-c a" . lsp-execute-code-action)
-              ("C-c C-c r" . lsp-rename)
-              ("C-c C-c q" . lsp-workspace-restart)
-              ("C-c C-c Q" . lsp-workspace-shutdown)
-              ("C-c C-c s" . lsp-rust-analyzer-status))
-  :custom
-  (lsp-eldoc-hook nil)
-  (lsp-enable-symbol-highlighting nil)
-  (lsp-signature-auto-activate nil)
-  (rustic-format-on-save t)
-  :hook (rustic-mode . rk/rustic-mode-hook))
-
-(defun rk/rustic-mode-hook ()
-  ;; so that run C-c C-c C-r works without having to confirm
-  (setq-local buffer-save-without-query t))
-
-(use-package lsp-ui
-  :straight t
-  :commands lsp-ui-mode
-  :custom
-  (lsp-ui-peek-always-show t)
-  (lsp-ui-sideline-show-hover t)
-  (lsp-ui-doc-enable nil))
-
-(use-package yasnippet
-  :straight t
-  :custom
-  (yas-indent-line nil)
-  :hook (after-init . yas-global-mode)
-  :config
-  (add-to-list 'yas-snippet-dirs "~/Dropbox/yassnippet/"))
-
-(use-package tide
-  :straight t
-  :defer t
-  :after (typescript-mode company-mode flycheck)
-  :hook ((typescript-mode . tide-setup)
-         (typescript-mode . tide-hl-identifier-mode)
-         (before-save . tide-format-before-save)))
-
-(use-package restclient
-  :defer t
-  :straight t)
-
 (use-package ledger-mode
   :defer t
   :straight t)
@@ -924,13 +858,6 @@
   :defer t
   :config
   (exec-path-from-shell-initialize))
-
-(use-package slime
-  :straight t
-  :mode "\\.lisp\\'"
-  :custom
-  (inferior-lisp-program "sbcl")
-  (slime-contribs '(slime-fancy)))
 
 ;; --------------- Writing ---------------
 ;; Move fringe setup to a proper function
@@ -952,50 +879,6 @@
 (use-package wc-goal-mode
   :straight t)
 
-
-;; --------------- Web Mode ---------------
-
-(defun web-mode-init-hook ()
-  "Hooks for Web mode. Adjust indent."
-  (setq web-mode-markup-indent-offset 4))
-
-(defun web-mode-init-prettier-hook ()
-  "Set up prettier for web-mode."
-  (add-node-modules-path)
-  (prettier-js-mode))
-
-
-(use-package web-mode
-  :straight t
-  :mode (("\\.jsx?\\'" . web-mode)
-         ("\\.html?\\'" . web-mode))
-  :custom
-  (web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
-  :hook (web-mode . web-mode-init-hook))
-
-(use-package add-node-modules-path
-  :straight t
-  :hook (flycheck-mode . add-node-modules-path))
-
-(use-package prettier-js
-  :straight t
-  :hook (web-mode . web-mode-init-prettier-hook))
-
-(use-package emmet-mode
-  :straight t
-  :hook (web-mode . emmet-mode))
-
-(use-package typescript-mode
-  :straight t
-  :mode "\\.ts\\'")
-
-(use-package tide
-  :straight t
-  :after (typescript-mode flycheck)
-  :hook ((typescript-mode . tide-setup)
-         (typescript-mode . tide-hl-identifier-mode)
-         (before-save . tide-format-before-save)))
-
 ;; --------------- Projectile ---------------
 
 (use-package projectile
@@ -1015,16 +898,6 @@
 ;; --------------- Neotree ---------------
 (use-package neotree
   :straight t)
-
-(use-package geiser
-  :straight t
-  :hook (scheme-mode . geiser-mode))
-
-(use-package geiser-mit
-  :straight t
-  :after geiser
-  :custom
-  (geiser-active-implementations '(mit)))
 
 (use-package smartparens
   :straight t
@@ -1107,7 +980,6 @@
   :commands prot/hidden-mode-line-mode
   :config
 
-  (electric-pair-mode 1)
 
   (setq mode-line-percent-position '(-3 "%p"))
   (setq mode-line-defining-kbd-macro
@@ -1191,11 +1063,6 @@
   (diminish 'projectile-mode "")
   (diminish 'eldoc-mode ""))
 
-(use-package zig-mode
-  :straight t
-  :custom (zig-format-on-save nil)
-  :mode "\\.zig\\'")
-
 (use-package gptel
   :straight t
   :config
@@ -1206,6 +1073,219 @@
       (setq gptel-backend (gptel-make-anthropic "Claude"
 			    :stream t
 			    :key 'my-anthropic-key))))
+
+(use-package drag-stuff
+  :straight t
+  :bind (:map prog-mode-map
+	      ("M-<up>" . drag-stuff-up)
+	      ("M-<down>" . drag-stuff-down)
+	      ("M-<left>" . drag-stuff-left)
+	      ("M-<right>" . drag-stuff-right)))
+
+;; (use-package undo-tree
+;;   :straight t
+;;   :config
+;;   (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
+;;   (global-undo-tree-mode)
+;;   (defadvice undo-tree-make-history-save-file-name
+;;       (after undo-tree activate)
+;;     (setq ad-return-value (concat ad-return-value ".gz"))))
+
+(use-package change-inner
+  :straight t
+  :bind ("C-c i" . change-inner))
+
+(use-package devdocs
+  :straight t
+  :defer t)
+
+
+(use-package emacs
+  :custom
+  ;; Core completion behavior
+  (completion-styles '(basic flex))           ; Use basic + flexible matching
+  (completion-ignore-case t)                  ; Case-insensitive completion
+  (completion-auto-select t)                  ; Auto-select first completion
+  (completion-auto-help 'visible)             ; Show *Completions* buffer when needed
+
+  ;; Completions buffer formatting
+  (completions-format 'one-column)            ; Single column layout
+  (completions-sort 'historical)              ; Sort by minibuffer history
+  (completions-max-height 20)                 ; Limit to 20 completions
+
+  ;; Performance settings
+  (completion-cycle-threshold 3)              ; Cycle if <= 3 completions
+  (completion-category-overrides              ; Per-category completion styles
+   '((file (styles . (partial-completion)))))
+
+  :config
+  ;; Enable helpful completion features
+  (minibuffer-depth-indicate-mode 1) )
+
+(use-package completion-preview
+  :hook (after-init . global-completion-preview-mode))
+
+(use-package fido-vertical-mode
+  :hook (after-init . fido-vertical-mode)
+  :custom
+  ;; Icomplete/Fido specific settings
+  (icomplete-scroll t)                        ; Allow scrolling through completions
+  (icomplete-prospects-height 10)             ; Show up to 10 candidates
+  (icomplete-separator "\n")                  ; Vertical separator
+  (icomplete-hide-common-prefix nil)          ; Show full candidates
+  (icomplete-show-matches-on-no-input t)      ; Show matches even with empty input
+
+  :config
+  ;; Additional fido customizations
+  (setq icomplete-compute-delay 0.1)          ; Faster response
+  (setq icomplete-max-delay-chars 2))
+
+
+;; ------- Programming ---------------
+(use-package eglot
+  :hook ((python-mode . eglot-ensure)
+         (js-mode . eglot-ensure)
+         ;; Add other language modes as needed
+         ))
+
+(straight-use-package '(eglot :type built-in))
+(straight-use-package '(project :type built-in))
+
+
+(use-package tuareg
+  :straight t
+  :hook (tuareg-mode . eglot-ensure))
+
+(use-package ocaml-eglot
+  :straight t
+  :after (tuareg  eglot)
+  :hook
+  (tuareg-mode . ocaml-eglot)
+  (ocaml-eglot . eglot-ensure))
+
+(use-package geiser
+  :straight t
+  :hook (scheme-mode . geiser-mode))
+
+(use-package geiser-mit
+  :straight t
+  :after geiser
+  :custom
+  (geiser-active-implementations '(mit)))
+
+
+;; --------------- Web Mode ---------------
+
+(defun web-mode-init-hook ()
+  "Hooks for Web mode. Adjust indent."
+  (setq web-mode-markup-indent-offset 4))
+
+(defun web-mode-init-prettier-hook ()
+  "Set up prettier for web-mode."
+  (add-node-modules-path)
+  (prettier-js-mode))
+
+
+(use-package web-mode
+  :straight t
+  :mode (("\\.jsx?\\'" . web-mode)
+         ("\\.html?\\'" . web-mode))
+  :custom
+  (web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
+  :hook (web-mode . web-mode-init-hook))
+
+(use-package add-node-modules-path
+  :straight t
+  :hook (flycheck-mode . add-node-modules-path))
+
+(use-package prettier-js
+  :straight t
+  :hook (web-mode . web-mode-init-prettier-hook))
+
+(use-package emmet-mode
+  :straight t
+  :hook (web-mode . emmet-mode))
+
+(use-package typescript-mode
+  :straight t
+  :mode "\\.ts\\'")
+
+(use-package tide
+  :straight t
+  :after (typescript-mode flycheck)
+  :hook ((typescript-mode . tide-setup)
+         (typescript-mode . tide-hl-identifier-mode)
+         (before-save . tide-format-before-save)))
+
+
+(use-package zig-mode
+  :straight t
+  :custom (zig-format-on-save nil)
+  :mode "\\.zig\\'")
+
+(use-package slime
+  :straight t
+  :mode "\\.lisp\\'"
+  :custom
+  (inferior-lisp-program "sbcl")
+  (slime-contribs '(slime-fancy)))
+
+
+(use-package bury-successful-compilation
+  :straight t
+  :hook
+  (c-mode . bury-successful-compilation))
+
+;; --------------- Rust Config ---------------
+(use-package rustic
+  :straight t  ; Fixed: was missing 't'
+  :bind (:map rustic-mode-map
+              ("M-j" . lsp-ui-imenu)
+              ("M-?" . lsp-find-references)
+              ("C-c C-c l" . flycheck-list-errors)
+              ("C-c C-c a" . lsp-execute-code-action)
+              ("C-c C-c r" . lsp-rename)
+              ("C-c C-c q" . lsp-workspace-restart)
+              ("C-c C-c Q" . lsp-workspace-shutdown)
+              ("C-c C-c s" . lsp-rust-analyzer-status))
+  :custom
+  (lsp-eldoc-hook nil)
+  (lsp-enable-symbol-highlighting nil)
+  (lsp-signature-auto-activate nil)
+  (rustic-format-on-save t)
+  :hook (rustic-mode . rk/rustic-mode-hook))
+
+(defun rk/rustic-mode-hook ()
+  ;; so that run C-c C-c C-r works without having to confirm
+  (setq-local buffer-save-without-query t))
+
+(use-package lsp-ui
+  :straight t
+  :commands lsp-ui-mode
+  :custom
+  (lsp-ui-peek-always-show t)
+  (lsp-ui-sideline-show-hover t)
+  (lsp-ui-doc-enable nil))
+
+(use-package yasnippet
+  :straight t
+  :custom
+  (yas-indent-line nil)
+  :hook (after-init . yas-global-mode)
+  :config
+  (add-to-list 'yas-snippet-dirs "~/Dropbox/yassnippet/"))
+
+(use-package tide
+  :straight t
+  :defer t
+  :after (typescript-mode company-mode flycheck)
+  :hook ((typescript-mode . tide-setup)
+         (typescript-mode . tide-hl-identifier-mode)
+         (before-save . tide-format-before-save)))
+
+(use-package restclient
+  :defer t
+  :straight t)
 
 ;; (use-package ligature
 ;;   :straight t
@@ -1270,83 +1350,6 @@
 ;;                           "{|"  "[|"  "]#"  "(*"  "}#"  "$>"  "^="))
 ;;     (add-hook 'haskell-mode-hook 'ligature-mode))
 
-(use-package drag-stuff
-  :straight t
-  :bind (:map prog-mode-map
-	      ("M-<up>" . drag-stuff-up)
-	      ("M-<down>" . drag-stuff-down)
-	      ("M-<left>" . drag-stuff-left)
-	      ("M-<right>" . drag-stuff-right)))
-
-;; (use-package undo-tree
-;;   :straight t
-;;   :config
-;;   (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
-;;   (global-undo-tree-mode)
-;;   (defadvice undo-tree-make-history-save-file-name
-;;       (after undo-tree activate)
-;;     (setq ad-return-value (concat ad-return-value ".gz"))))
-
-(use-package change-inner
-  :straight t
-  :bind ("C-c i" . change-inner))
-
-(use-package devdocs
-  :straight t
-  :defer t)
-
-
-(use-package emacs
-  :custom
-  ;; Core completion behavior
-  (completion-styles '(basic flex))           ; Use basic + flexible matching
-  (completion-ignore-case t)                  ; Case-insensitive completion
-  (completion-auto-select t)                  ; Auto-select first completion
-  (completion-auto-help 'visible)             ; Show *Completions* buffer when needed
-
-  ;; Completions buffer formatting
-  (completions-format 'one-column)            ; Single column layout
-  (completions-sort 'historical)              ; Sort by minibuffer history
-  (completions-max-height 20)                 ; Limit to 20 completions
-
-  ;; Performance settings
-  (completion-cycle-threshold 3)              ; Cycle if <= 3 completions
-  (completion-category-overrides              ; Per-category completion styles
-   '((file (styles . (partial-completion)))))
-
-  :config
-  ;; Enable helpful completion features
-  (minibuffer-depth-indicate-mode 1)          ; Show minibuffer depth
-  (minibuffer-electric-default-mode 1))
-
-(use-package completion-preview
-  :hook (after-init . global-completion-preview-mode))
-
-(use-package fido-vertical-mode
-  :hook (after-init . fido-vertical-mode)
-  :custom
-  ;; Icomplete/Fido specific settings
-  (icomplete-scroll t)                        ; Allow scrolling through completions
-  (icomplete-prospects-height 10)             ; Show up to 10 candidates
-  (icomplete-separator "\n")                  ; Vertical separator
-  (icomplete-hide-common-prefix nil)          ; Show full candidates
-  (icomplete-show-matches-on-no-input t)      ; Show matches even with empty input
-
-  :config
-  ;; Additional fido customizations
-  (setq icomplete-compute-delay 0.1)          ; Faster response
-  (setq icomplete-max-delay-chars 2))
-
-(use-package tuareg
-  :straight t
-  :hook (tuareg-mode . eglot-ensure))
-
-(use-package ocaml-eglot
-  :straight t
-  :after (tuareg  eglot)
-  :hook
-  (tuareg-mode . ocaml-eglot)
-  (ocaml-eglot . eglot-ensure))
 
 (provide 'use-package-config)
 ;;; use-package-config.el ends here
