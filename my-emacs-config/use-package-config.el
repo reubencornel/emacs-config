@@ -1140,8 +1140,43 @@
 (use-package eglot
   :hook ((python-mode . eglot-ensure)
          (js-mode . eglot-ensure)
-         ;; Add other language modes as needed
-         ))
+         (java-ts-mode . eglot-ensure)
+         (rust-mode . eglot-ensure)
+         (typescript-mode . eglot-ensure))
+  :bind (:map eglot-mode-map
+              ;; Essential navigation
+              ("M-." . eglot-find-implementation)
+              ("M-," . pop-tag-mark)
+              
+              ;; Language server actions - flat C-c s prefix
+              ("C-c s a" . eglot-code-actions)
+              ("C-c s r" . eglot-rename)
+              ("C-c s f" . eglot-format-buffer)
+              ("C-c s h" . eldoc-doc-buffer)              ; ← Changed this
+              ("C-c s i" . eglot-find-implementation)
+              ("C-c s t" . eglot-find-typeDefinition)
+              ("C-c s o" . eglot-code-action-organize-imports)
+              ("C-c s d" . flymake-show-buffer-diagnostics)
+              ("C-c s D" . flymake-show-project-diagnostics)
+              ("C-c s R" . eglot-reconnect)
+              ("C-c s S" . eglot-shutdown)
+              
+              ;; Keep error navigation simple
+              ("M-n" . flymake-goto-next-error)
+              ("M-p" . flymake-goto-prev-error))
+  :custom
+  (eglot-autoshutdown t)
+  (eglot-sync-connect nil)
+  (eglot-extend-to-xref t))
+
+(use-package java-ts-mode
+  :mode "\\.java\\'"
+  :hook ((java-ts-mode . (lambda ()
+                           (setq c-basic-offset 4
+                                 tab-width 4
+                                 indent-tabs-mode nil))))
+  :custom
+  (java-ts-mode-indent-offset 4))
 
 (straight-use-package '(eglot :type built-in))
 (straight-use-package '(project :type built-in))
@@ -1411,6 +1446,12 @@
     (cl-destructuring-bind (text start end) button-info
       (ibut:label-set text start end)
       (org-properties-search)))))
+
+
+(use-package rg
+  :straight t
+  :config
+  (rg-enable-default-bindings))
 ;;; -----
 
 (provide 'use-package-config)
