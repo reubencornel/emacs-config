@@ -4,7 +4,6 @@
 
 (use-package completion-preview
   :custom
-  (completion-styles '(basic flex))
   (completion-auto-select t) ;; Show completion on first call
   (completion-auto-help 'visible) ;; Display *Completions* upon first request
   (completions-format 'one-column) ;; Use only one column
@@ -12,6 +11,20 @@
   (completions-max-height 20) ;; Limit completions to 20
   (completion-ignore-case t)
   :hook (after-init . global-completion-preview-mode))
+
+(use-package orderless
+  :straight t
+  :custom
+  (completion-category-overrides '((file (styles basic partial-completion))))
+  (orderless-matching-styles '(orderless-literal orderless-regexp orderless-flex)))
+
+(use-package vertico
+  :straight t
+  :init (vertico-mode)
+  :custom
+  (vertico-cycle t)
+  (vertico-resize t)
+  (vertico-count 15))
 
 (defun swiper-isearch-backward-thing-at-point ()
   "Start swiper-isearch-backward with thing at point."
@@ -1050,11 +1063,6 @@
   (if (daemonp)
       (add-hook  'after-make-frame-functions #'setup-theme)))
 
-(use-package fido-vertical-mode
-  :custom
-  (icomplete-scroll t)
-  (icomplete-prospects-height 10)
-  :hook (after-init . fido-vertical-mode))
 
 (use-package rainbow-delimiters
   :straight t
@@ -1110,7 +1118,7 @@
 (use-package emacs
   :custom
   ;; Core completion behavior
-  ;; (completion-styles '(basic flex))           ; Use basic + flexible matching
+  (completion-styles '(orderless basic))           ; Use basic + flexible matching
   ;; (completion-ignore-case t)                  ; Case-insensitive completion
   ;; (completion-auto-select t)                  ; Auto-select first completion
   ;; (completion-auto-help 'visible)             ; Show *Completions* buffer when needed
@@ -1131,22 +1139,6 @@
 
 (use-package completion-preview
   :hook (after-init . global-completion-preview-mode))
-
-(use-package fido-vertical-mode
-  :hook (after-init . fido-vertical-mode)
-  :custom
-  ;; Icomplete/Fido specific settings
-  (icomplete-scroll t)                        ; Allow scrolling through completions
-  (icomplete-prospects-height 10)             ; Show up to 10 candidates
-  (icomplete-separator "\n")                  ; Vertical separator
-  (icomplete-hide-common-prefix nil)          ; Show full candidates
-  (icomplete-show-matches-on-no-input t)      ; Show matches even with empty input
-
-  :config
-  ;; Additional fido customizations
-  (setq icomplete-compute-delay 0.1)          ; Faster response
-  (setq icomplete-max-delay-chars 2))
-
 
 ;; ------- Programming ---------------
 (use-package eglot
