@@ -66,5 +66,20 @@
 (blink-cursor-mode t)
 (setq-default cursor-type 'box)
 
+(if (and (fboundp 'treesit-available-p)
+	 (treesit-available-p))
+    (setq major-mode-remap-alist
+	  '((yaml-mode . yaml-ts-mode)
+	    (bash-mode . bash-ts-mode)
+	    (js2-mode . js-ts-mode)
+	    (typescript-mode . typescript-ts-mode)
+	    (json-mode . json-ts-mode)
+	    (css-mode . css-ts-mode)
+	    (java-mode . java-ts-mode)
+	    (rust-mode . rust-ts-mode)
+	    (c-mode . c-ts-mode)
+	    (python-mode . python-ts-mode)
+	    (scala-mode . scala-ts-mode))))
+
 (message (emacs-init-time))
 
