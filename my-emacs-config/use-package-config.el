@@ -1110,14 +1110,14 @@
 (use-package emacs
   :custom
   ;; Core completion behavior
-  (completion-styles '(basic flex))           ; Use basic + flexible matching
-  (completion-ignore-case t)                  ; Case-insensitive completion
-  (completion-auto-select t)                  ; Auto-select first completion
-  (completion-auto-help 'visible)             ; Show *Completions* buffer when needed
+  ;; (completion-styles '(basic flex))           ; Use basic + flexible matching
+  ;; (completion-ignore-case t)                  ; Case-insensitive completion
+  ;; (completion-auto-select t)                  ; Auto-select first completion
+  ;; (completion-auto-help 'visible)             ; Show *Completions* buffer when needed
 
-  ;; Completions buffer formatting
-  (completions-format 'one-column)            ; Single column layout
-  (completions-sort 'historical)              ; Sort by minibuffer history
+  ;; ;; Completions buffer formatting
+  ;; (completions-format 'one-column)            ; Single column layout
+  ;; (completions-sort 'historical)              ; Sort by minibuffer history
   (completions-max-height 20)                 ; Limit to 20 completions
 
   ;; Performance settings
