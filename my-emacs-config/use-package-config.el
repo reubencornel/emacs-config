@@ -13,10 +13,18 @@
   (completion-ignore-case t)
   :hook (after-init . global-completion-preview-mode))
 
+(defun swiper-isearch-backward-thing-at-point ()
+  "Start swiper-isearch-backward with thing at point."
+  (interactive)
+  (let ((thing (thing-at-point 'word)))
+    (if thing
+        (swiper-isearch-backward thing)
+      (swiper-isearch-backward))))
+
 (use-package swiper
   :straight t
-  :bind (("C-s" . swiper-isearch)
-         ("C-r" . swiper-isearch-backward))
+  :bind (("C-s" . swiper-isearch-thing-at-point)
+         ("C-r" . swiper-isearch-backward-thing-at-point))
   :config
   (setq icomplete-with-completion-tables
 	(if (listp icomplete-with-completion-tables)
