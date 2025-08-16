@@ -891,7 +891,6 @@
 
 (use-package projectile
   :straight t
-  :defer t
   :config
   (projectile-mode +1)
   (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
