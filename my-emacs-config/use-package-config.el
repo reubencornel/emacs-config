@@ -20,7 +20,8 @@
 
 (use-package vertico
   :straight t
-  :init (vertico-mode)
+  :defer t
+  :hook (after-init . vertico-mode)
   :custom
   (vertico-cycle t)
   (vertico-resize t)
@@ -37,12 +38,7 @@
 (use-package swiper
   :straight t
   :bind (("C-s" . swiper-isearch-thing-at-point)
-         ("C-r" . swiper-isearch-backward-thing-at-point))
-  :config
-  (setq icomplete-with-completion-tables
-	(if (listp icomplete-with-completion-tables)
-            icomplete-with-completion-tables
-          '(read-file-name-internal))))
+         ("C-r" . swiper-isearch-backward-thing-at-point)))
 
 (defun reuben/consult-search-org-helper (org-param keyword directory)
   (let ((old-value consult-ripgrep-args))
@@ -1349,6 +1345,73 @@
 ;;                           "{|"  "[|"  "]#"  "(*"  "}#"  "$>"  "^="))
 ;;     (add-hook 'haskell-mode-hook 'ligature-mode))
 
+;;; -----  hyperbole
+  
+  (defun looking-at-work-item()
+    (or
+     (looking-at "W-[0-9]+")
+     (save-excursion
+       (backward-word-strictly 2)
+       (looking-at "W-[0-9]+"))
+     (save-excursion
+       (backward-word-strictly 1)
+       (looking-at "W-[0-9]+"))
+     (looking-at "a07.*")
+     (save-excursion
+       (backward-word-strictly 1)
+       (looking-at "a07.*"))))
+       
+  (defun get-work-item-text()
+    (let* ((match-data (match-data))
+           (start (first match-data))
+           (end (second match-data)))
+      (list (buffer-substring-no-properties start end) start end)))
+      
+  (defun in-org-property()
+    (and (hsys-org-mode-p)
+	 (org-at-property-p)))
+	 
+  (defun org-properties-search()
+    (interactive)
+    (if (in-org-property)
+	(let* ((property-name (org-read-property-name))
+	       (property-value (org-entry-get (point) property-name)))
+	  (hact 'org-tags-view nil (concat property-name "={" property-value "}")))))
+
+(use-package hyperbole
+  :straight t
+  :defer t
+  :hook ((org-mode . (lambda () (require 'hyperbole)))
+         (text-mode . (lambda () (require 'hyperbole))))
+  :bind (("<f6>" . gbut:act)
+         ("C-<return>" . action-key))
+  :config
+  (global-unset-key (kbd "M-<return>"))
+	  
+  (defib gus()
+    "Gus links"
+    (if (looking-at-work-item)
+	(cl-destructuring-bind (text start end) (get-work-item-text)
+          (ibut:label-set text start end)
+          (hact 'www-url (concat "https://gus.my.salesforce.com/apex/ADM_WorkLocator?bugorworknumber=" text)))
+      nil))
+      
+(defun org-property-button-info ()
+  "Get button info for org property at point."
+  (when (in-org-property)
+    (let* ((bounds (bounds-of-thing-at-point 'symbol))
+           (start (car bounds))
+           (end (cdr bounds)))
+      (when (and start end)
+        (list (buffer-substring-no-properties start end) start end)))))
+
+(defib org-property-search()
+  "org property search"
+  (when-let ((button-info (org-property-button-info)))
+    (cl-destructuring-bind (text start end) button-info
+      (ibut:label-set text start end)
+      (org-properties-search)))))
+;;; -----
 
 (provide 'use-package-config)
 ;;; use-package-config.el ends here
