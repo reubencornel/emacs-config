@@ -139,8 +139,6 @@
          ("C-c , k" . howm-keyword-search)
          ("C-c , ." . howm-list-today))
   :custom
-  (howm-home-directory "~/Dropbox/howm/")
-  (howm-directory "~/Dropbox/howm/")
   (howm-file-name-format "%Y/%m/%Y-%m-%d-%H%M%S.org")
   (howm-view-use-grep t)
   (howm-view-grep-command "rg")
@@ -152,6 +150,8 @@
   :hook ((howm-mode . howm-mode-set-buffer-name)
          (after-save . howm-mode-set-buffer-name))
   :config
+  (setq howm-home-directory "~/Dropbox/howm/")
+  (setq howm-directory "~/Dropbox/howm/")
   (define-key howm-menu-mode-map "\C-h" nil)
   (define-key riffle-summary-mode-map "\C-h" nil)
   (define-key howm-view-contents-mode-map "\C-h" nil)
