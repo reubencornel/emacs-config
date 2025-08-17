@@ -980,9 +980,9 @@
 
 (use-package emacs
   :commands (prot/hidden-mode-line-mode prot/cursor-type-mode)
+  :hook ((prog-mode . prot/cursor-type-mode)
+	 (text-mode . prot/cursor-type-mode))
   :config
-
-
   (setq mode-line-percent-position '(-3 "%p"))
   (setq mode-line-defining-kbd-macro
         (propertize " Macro" 'face 'mode-line-emphasis))
@@ -1026,7 +1026,6 @@
   ;; C-c l is used for `org-store-link'.  The mnemonic for this is to
   ;; focus the Line and also works as a variant of C-l.
 
-
   (define-minor-mode prot/hidden-mode-line-mode
     "Toggle modeline visibility in the current buffer."
     :init-value nil
@@ -1059,9 +1058,6 @@
   ;;     (load-theme 'spacemacs-dark 'no-confirm))
   ;;   (remove-hook 'after-make-frame-functions #'setup-theme)
   ;;   (fmakunbound 'setup-theme))
-
-  (if (daemonp)
-      (add-hook  'after-make-frame-functions #'prot/cursor-type-mode))
   )
 
 
