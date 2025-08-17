@@ -40,6 +40,10 @@
   :bind (("C-s" . swiper-isearch-thing-at-point)
          ("C-r" . swiper-isearch-backward-thing-at-point)))
 
+(use-package ace-window
+  :straight t
+  :defer t)
+
 (defun reuben/consult-search-org-helper (org-param keyword directory)
   (let ((old-value consult-ripgrep-args))
     (unwind-protect
@@ -683,6 +687,7 @@
 
 (use-package org-anki
   :straight t
+  :defer t
   :after org)
 
 (use-package org-bullets
@@ -781,7 +786,7 @@
 ;; --------------- company mode ---------------
 (use-package company
   :straight t
-  :defer 2
+  :defer t
   :custom
   (company-idle-delay 0.5)
   (company-minimum-prefix-length 2)
@@ -946,26 +951,7 @@
   :hook (after-init . which-key-mode))
 
 (use-package frame
-  :commands prot/cursor-type-mode
-  :config
-
-  (blink-cursor-mode -1)
-
-  (define-minor-mode prot/cursor-type-mode
-    "Toggle between static block and pulsing bar cursor."
-    :init-value nil
-    :global t
-    (if prot/cursor-type-mode
-        (progn
-          (setq-local blink-cursor-interval 0.75
-                      cursor-type '(bar . 2)
-                      cursor-in-non-selected-windows 'hollow)
-          (blink-cursor-mode 1))
-      (dolist (local '(blink-cursor-interval
-                       cursor-type
-                       cursor-in-non-selected-windows))
-        (kill-local-variable `,local))
-      (blink-cursor-mode -1))))
+)
 
 (use-package emacs
   :config
@@ -993,7 +979,7 @@
   :bind ("C-c L" . prot/scroll-centre-cursor-mode))
 
 (use-package emacs
-  :commands prot/hidden-mode-line-mode
+  :commands (prot/hidden-mode-line-mode prot/cursor-type-mode)
   :config
 
 
@@ -1050,14 +1036,33 @@
       (kill-local-variable 'mode-line-format)
       (force-mode-line-update)))
 
-  (defun setup-theme(frame)
-    (with-selected-frame frame
-      (load-theme 'spacemacs-dark 'no-confirm))
-    (remove-hook 'after-make-frame-functions #'setup-theme)
-    (fmakunbound 'setup-theme))
+  (blink-cursor-mode -1)
+
+  (define-minor-mode prot/cursor-type-mode
+    "Toggle between static block and pulsing bar cursor."
+    :init-value nil
+    :global t
+    (if prot/cursor-type-mode
+        (progn
+          (setq-local blink-cursor-interval 0.75
+                      cursor-type '(bar . 5)
+                      cursor-in-non-selected-windows 'hollow)
+          (blink-cursor-mode 1))
+      (dolist (local '(blink-cursor-interval
+                       cursor-type
+                       cursor-in-non-selected-windows))
+        (kill-local-variable `,local))
+      (blink-cursor-mode -1)))  
+
+  ;; (defun setup-theme(frame)
+  ;;   (with-selected-frame frame
+  ;;     (load-theme 'spacemacs-dark 'no-confirm))
+  ;;   (remove-hook 'after-make-frame-functions #'setup-theme)
+  ;;   (fmakunbound 'setup-theme))
 
   (if (daemonp)
-      (add-hook  'after-make-frame-functions #'setup-theme)))
+      (add-hook  'after-make-frame-functions #'prot/cursor-type-mode))
+  )
 
 
 (use-package rainbow-delimiters
@@ -1199,6 +1204,7 @@
 
 (use-package geiser-mit
   :straight t
+  :defer t
   :after geiser
   :custom
   (geiser-active-implementations '(mit)))
@@ -1450,6 +1456,8 @@
 
 (use-package rg
   :straight t
+  :defer t
+  :commands (rg rg-project rg-dwim rg-literal rg-regexp)
   :config
   (rg-enable-default-bindings))
 ;;; -----
