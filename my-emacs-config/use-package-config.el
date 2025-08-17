@@ -795,8 +795,7 @@
   (add-to-list 'company-backends 'company-clang)
   (add-to-list 'company-backends 'company-dabbrev)
   (add-to-list 'company-backends 'company-files)
-
-  :init (global-company-mode)
+  :hook  ((prog-mode . company-mode))
   :bind
   (:map company-active-map
 	("C-n". company-select-next)
