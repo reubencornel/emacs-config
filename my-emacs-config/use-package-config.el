@@ -2,47 +2,87 @@
 
 (straight-use-package 'use-package)
 
-(use-package eglot )
-
-(use-package vertico
-  :straight t
-  :init
-  (vertico-mode))
-
-(use-package vertico-reverse
-  :after vertico
-  :straight nil
-  :config
-  (vertico-reverse-mode 1))
-
-(use-package savehist
-  :init
-  (savehist-mode))
-
 (use-package completion-preview
-  :config
-  (setf completion-styles '(basic flex)
-	completion-auto-select t ;; Show completion on first call
-	completion-auto-help 'visible ;; Display *Completions* upon first request
-	completions-format 'one-column ;; Use only one column
-	completions-sort 'historical ;; Order based on minibuffer history
-	completions-max-height 20 ;; Limit completions to 15 (completions start at line 5)
-	completion-ignore-case t)
-  (global-completion-preview-mode))
+  :custom
+  (completion-auto-select t) ;; Show completion on first call
+  (completion-auto-help 'visible) ;; Display *Completions* upon first request
+  (completions-format 'one-column) ;; Use only one column
+  (completions-sort 'historical) ;; Order based on minibuffer history
+  (completions-max-height 20) ;; Limit completions to 20
+  (completion-ignore-case t)
+  :hook (after-init . global-completion-preview-mode))
 
 (use-package orderless
   :straight t
   :custom
-  (completion-styles '(orderless basic))
-  (completion-category-overrides '((file (styles basic partial-completion)))))
+  (completion-category-overrides '((file (styles basic partial-completion))))
+  (orderless-matching-styles '(orderless-literal orderless-regexp orderless-flex)))
 
-(use-package marginalia
+(use-package vertico
   :straight t
-  :init
-  (marginalia-mode))
+  :defer t
+  :hook (after-init . vertico-mode)
+  :custom
+  (vertico-cycle t)
+  (vertico-resize t)
+  (vertico-count 15))
+
+(defun swiper-isearch-backward-thing-at-point ()
+  "Start swiper-isearch-backward with thing at point."
+  (interactive)
+  (let ((thing (thing-at-point 'word)))
+    (if thing
+        (swiper-isearch-backward thing)
+      (swiper-isearch-backward))))
 
 (use-package swiper
-  :straight t)
+  :straight t
+  :bind (("C-s" . swiper-isearch-thing-at-point)
+         ("C-r" . swiper-isearch-backward-thing-at-point)))
+
+(use-package ace-window
+  :straight t
+  :defer t)
+
+(defun reuben/consult-search-org-helper (org-param keyword directory)
+  (let ((old-value consult-ripgrep-args))
+    (unwind-protect
+	(progn
+	  (customize-set-variable
+	   'consult-ripgrep-args
+	   (concat "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /\  --smart-case --no-heading --line-number --search-zip"
+		   " "
+		   org-param
+		   " "
+		   "."))
+	  (let ((vertico-count 10))
+	    (consult-ripgrep directory keyword)))
+      (progn
+	(customize-set-variable
+	 'consult-ripgrep-args
+	 old-value)))))
+
+
+(defun reuben/consult-search-org ()
+  "Call `consult-ripgrep' for my org agenda files."
+  (interactive)
+  (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org"))
+
+(defun reuben/consult-search-all-org ()
+  "Call `consult-ripgrep' for my org agenda files."
+  (interactive)
+  (reuben/consult-search-org-helper "-t org" "" "~/Dropbox/org"))
+
+(defun reuben/consult-search-org-roam()
+  "Call `consult-ripgrep' for my org roam files."
+  (interactive)
+  (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org-roam/org-roam1"))
+
+(defun reuben/consult-search-howm()
+  "Call `consult-ripgrep' for my howm files."
+  (interactive)
+  (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/howm"))
+
 
 (use-package consult
   :straight t
@@ -66,10 +106,10 @@
          ("<help> a" . consult-apropos)            ;; or
 	 ;;	 ig. apropos-command
          ;; M-g bindings (goto-map)
-          ("M-g e" . consult-compile-error)
-          ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
-          ("M-g g" . consult-goto-line)             ;; orig. goto-line
-          ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+         ("M-g e" . consult-compile-error)
+         ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+         ("M-g g" . consult-goto-line)             ;; orig. goto-line
+         ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
          ;; ("M-g o" . consult-outline)
          ;; ("M-g m" . consult-mark)
          ;; ("M-g k" . consult-global-mark)
@@ -83,84 +123,44 @@
          ("M-s r" . consult-ripgrep)
          ("M-s l" . consult-line)
          ("M-s m" . consult-multi-occur))
-  :init
+  :custom (consult-narrow-key "<")
+  (xref-show-xrefs-function #'consult-xref)
+  (xref-show-definitions-function #'consult-xref))
 
-  ;; Optionally configure the narrowing key.
-  ;; Both < and C-+ work reasonably well.
-  (setq consult-narrow-key "<") ;; (kbd "C-+")
-
-
-  ;; Use Consult to select xref locations with preview
-  (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref)
-
-  (defun reuben/consult-search-org-helper (org-param keyword directory)
-    (let ((old-value consult-ripgrep-args))
-      (unwind-protect
-	  (progn
-	    (customize-set-variable
-	     'consult-ripgrep-args
-	     (concat "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /\  --smart-case --no-heading --line-number --search-zip"
-		     " "
-		    org-param
-		    " "
-		    "."))
-	    (let ((vertico-count 10))
-	      (consult-ripgrep directory keyword)))
-	(progn
-	  (customize-set-variable
-	   'consult-ripgrep-args
-	   old-value)))))
-
-
-  (defun reuben/consult-search-org ()
-    "Call `consult-ripgrep' for my org agenda files."
-    (interactive)
-    (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org"))
-
-  (defun reuben/consult-search-all-org ()
-    "Call `consult-ripgrep' for my org agenda files."
-    (interactive)
-    (reuben/consult-search-org-helper "-t org" "" "~/Dropbox/org"))
-
-  (defun reuben/consult-search-org-roam()
-    "Call `consult-ripgrep' for my org roam files."
-    (interactive)
-    (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/org-roam/org-roam1"))
-
-  (defun reuben/consult-search-howm()
-    "Call `consult-ripgrep' for my howm files."
-    (interactive)
-    (reuben/consult-search-org-helper "-g \"*.org\"" "" "~/Dropbox/howm")))
 
 (use-package howm
   :straight t
+  :defer t
+  :bind (("C-c , ," . howm-menu)
+         ("C-c , c" . howm-create)
+         ("C-c , a" . howm-list-all)
+         ("C-c , r" . howm-list-recent)
+         ("C-c , s" . howm-list-grep)
+         ("C-c , k" . howm-keyword-search)
+         ("C-c , ." . howm-list-today))
+  :custom
+  (howm-file-name-format "%Y/%m/%Y-%m-%d-%H%M%S.org")
+  (howm-view-use-grep t)
+  (howm-view-grep-command "rg")
+  (howm-view-grep-option "-nH -i --no-heading --color never --line-buffered")
+  (howm-view-grep-extended-option nil)
+  (howm-view-grep-fixed-option "-F")
+  (howm-view-grep-expr-option nil)
+  (howm-view-grep-file-stdin-option nil)
+  :hook ((howm-mode . howm-mode-set-buffer-name)
+         (after-save . howm-mode-set-buffer-name))
   :config
-  ;; Directory configuration
   (setq howm-home-directory "~/Dropbox/howm/")
   (setq howm-directory "~/Dropbox/howm/")
-  (setq howm-keyword-file (expand-file-name ".howm-keys" howm-home-directory))
-  (setq howm-history-file (expand-file-name ".howm-history" howm-home-directory))
-  (setq howm-file-name-format "%Y/%m/%Y-%m-%d-%H%M%S.org")
-  (setq howm-view-use-grep t)
-  (setq howm-view-grep-command "rg")
-  (setq howm-view-grep-option "-nH -i --no-heading --color never --line-buffered")
-  (setq howm-view-grep-extended-option nil)
-  (setq howm-view-grep-fixed-option "-F")
-  (setq howm-view-grep-expr-option nil)
-  (setq howm-view-grep-file-stdin-option nil)
-
-  (add-hook 'howm-mode-hook 'howm-mode-set-buffer-name)
-  (add-hook 'after-save-hook 'howm-mode-set-buffer-name)
-
   (define-key howm-menu-mode-map "\C-h" nil)
   (define-key riffle-summary-mode-map "\C-h" nil)
   (define-key howm-view-contents-mode-map "\C-h" nil)
-
-  ;; Default recent to sorting by mtime
   (advice-add 'howm-list-recent :after #'howm-view-sort-by-mtime)
-  ;; Default all to sorting by creation, newest first
-  (advice-add 'howm-list-all :after #'(lambda () (howm-view-sort-by-date t))))
+  (advice-add 'howm-list-all :after #'(lambda () (howm-view-sort-by-date t)))
+
+  (setq howm-keyword-file (expand-file-name ".howm-keys" howm-home-directory))
+  (setq howm-history-file (expand-file-name ".howm-history" howm-home-directory))
+)
 
 (use-package plantuml-mode
   :straight t
@@ -171,39 +171,218 @@
     (setq plantuml-jar-path "~/bin/plantuml.jar")))
 
 (use-package magit
+  :straight t
   :defer t
-  :straight t)
+  :bind (("C-x g" . magit-status)
+         ("C-x M-g" . magit-dispatch)
+         ("C-c M-g" . magit-file-dispatch)))
 
 (use-package markdown-mode
   :straight t
-  :defer t
   :mode ("\\.md" . markdown-mode))
+
+(defun my/truncate-eshell-buffers ()
+  "Truncates all eshell buffers"
+  (interactive)
+  (save-current-buffer
+    (dolist (buffer (buffer-list t))
+      (set-buffer buffer)
+      (when (eq major-mode 'eshell-mode)
+	(eshell-truncate-buffer)))))
 
 (use-package eshell
   :defer t
-  :preface
-  (defun my/truncate-eshell-buffers ()
-    "Truncates all eshell buffers"
-    (interactive)
-    (save-current-buffer
-      (dolist (buffer (buffer-list t))
-	(set-buffer buffer)
-	(when (eq major-mode 'eshell-mode)
-	  (eshell-truncate-buffer)))))
-
+  :custom
+  (eshell-scroll-to-bottom-on-input 'all)
+  (eshell-buffer-maximum-lines 2000)
   :config
-  (progn
-    (setq eshell-scroll-to-bottom-on-input 'all)
-    (setq eshell-buffer-maximum-lines 2000)
-    (setq my/eshell-truncate-timer
-	  (run-with-idle-timer 5 t #'my/truncate-eshell-buffers))))
+  (setq my/eshell-truncate-timer
+	(run-with-idle-timer 5 t #'my/truncate-eshell-buffers)))
+
+;; Setup function to run once
+(defun my/setup-eshell-git-prompt ()
+  "Set up eshell git prompt theme."
+  (eshell-git-prompt-use-theme 'robbyrussell)
+  ;; Remove hook after first run
+  (remove-hook 'eshell-mode-hook #'my/setup-eshell-git-prompt))
 
 (use-package eshell-git-prompt
   :straight t
-  :init
-  (eshell-git-prompt-use-theme 'robbyrussell))
+  :hook (eshell-mode . my/setup-eshell-git-prompt))
+
+(defun skip-done-functions-or-projects()
+  (org-agenda-skip-entry-if 'todo '("DONE" "WAITING" "NEXT")))
+
+(defun org-checkbox-todo ()
+  "Switch header TODO state to either DONE, NEXT, or TODO depending on the number of check boxes ticked"
+  (let ((todo-state (org-get-todo-state)) beg end)
+    (unless (not todo-state)
+      (save-excursion
+  	(org-back-to-heading t)
+  	(let* ((line-start (point))
+  	       (line-end (line-end-position)))
+  	  (if (re-search-forward "\\[\\([0-9]*\\)%\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
+  				 end t)
+  	      (if (match-end 1)
+  		  (let ((percent-done (string-to-number (match-string 1))))
+  		    (handle-percent-case percent-done))
+  		(let ((tasks-done (string-to-number (match-string 2)))
+  		      (tasks-remaining (string-to-number (match-string 3))))
+  		  (handle-task-number-case tasks-done tasks-remaining)))))))))
+
+(defun handle-percent-case(percent-done)
+  (if (= percent-done 100)
+      (org-todo "DONE")
+    (if (> percent-done 0)
+  	(org-todo "NEXT")
+      (org-todo "TODO"))))
+
+(defun handle-task-number-case(tasks-done tasks-remaining)
+  (if (= tasks-done tasks-remaining)
+      (org-todo "DONE")
+    (if (= tasks-done 0)
+  	(org-todo "TODO")
+      (org-todo "NEXT"))))
+
+(defun find-list-of-points-with-log-entry-headings()
+  (org-map-entries (lambda ()
+  		     (let ((current-headline (buffer-substring-no-properties
+  					      (line-beginning-position)
+  					      (line-end-position))))
+  		       (if (string-match-p " Log Entries" current-headline)
+  			   (line-beginning-position)
+  			 nil)))
+  		   nil
+  		   'tree))
+
+(defun find-log-header()
+  (interactive)
+  (let ((filtered-list  (seq-filter (lambda(x)
+  				      (not (null x)))
+  				    (find-list-of-points-with-log-entry-headings))))
+    (if (null filtered-list)
+  	nil
+      (car filtered-list))))
+
+(defun insert-log-entry-heading()
+  (interactive)
+  (let ((depth (org-current-level)))
+    (outline-next-heading)
+    (let ((heading-string (concat
+  			   (make-string (+ depth 1) ?*)
+  			   " Log Entries\n")))
+      (insert heading-string)
+      (goto-char (- (line-beginning-position) 1)))))
 
 
+(defun find-or-insert-entry()
+  (interactive)
+  (let ((log-header-point (find-log-header)))
+    (if (null log-header-point)
+  	(insert-log-entry-heading)
+      (goto-char log-header-point))))
+
+
+(defun custom-log-finder()
+  (if (and (fboundp 'org-clocking-p) (org-clocking-p))
+      (let ()
+  	(org-clock-goto)
+  	(find-or-insert-entry))
+    (let ()
+      (find-file org-default-log-file)
+      (goto-char (point-max)))))
+
+(defun goto-last-heading ()
+  (interactive)
+  (org-end-of-subtree))
+
+(defun add-tag()
+  "This function adds a tag to the log entry if the entry is not going to be appended to an entry that is clocked in."
+  (if (and (fboundp 'org-clocking-p)
+	   (org-clocking-p))
+      ""
+    "%^G"))
+
+
+(defun org-summary-todo (n-done n-not-done)
+  "Switch entry to DONE when all subentries are done, to TODO otherwise."
+  (let ((todo-state (org-get-todo-state)) beg end)
+    (unless (not todo-state)
+      (let (org-log-done org-log-states)   ; turn off logging
+        (if (= n-not-done 0)
+            (progn
+              (org-todo "DONE")
+              (save-excursion
+                (end-of-line)
+                (insert "\n   CLOSED:")
+                (insert (reuben/get-inactive-org-date-time))))
+          (org-todo (if (> n-done 0) "NEXT" "TODO")))))))
+
+(defun jump-to-org-agenda ()
+  (interactive)
+  (push-window-configuration)
+  (let ((recordings-dir "~/Dropbox/Apps/Dropvox"))
+    (ignore-errors
+      (if (directory-files recordings-dir nil "\\`[^.]")
+  	  (find-file recordings-dir))))
+  (let ((buf (get-buffer "*Org Agenda*"))
+  	wind)
+    (if buf
+  	(if (setq wind (get-buffer-window buf))
+  	    (when (called-interactively-p 'any)
+  	      (select-window wind)
+  	      (org-fit-window-to-buffer))
+  	  (if (called-interactively-p 'any)
+  	      (progn
+  		(select-window (display-buffer buf t t))
+  		(org-fit-window-to-buffer))
+  	    (with-selected-window (display-buffer buf)
+  	      (org-fit-window-to-buffer))))
+      (org-agenda "a" "d"))))
+
+
+(defun rasmus/remove-schedule ()
+  "Remove SCHEDULED-cookie is switching state to WAITING."
+  (save-excursion
+    (and (equal (org-get-todo-state) "DONE")
+	 (org-get-scheduled-time (point))
+	 (when (search-forward-regexp org-scheduled-time-regexp nil t)
+	   (or (delete-region (match-beginning 0) (match-end 0)) t))
+	 (get-buffer "*Org Agenda*")
+	 (with-current-buffer "*Org Agenda*"
+	   (org-agenda-redo)))))
+
+(add-hook 'org-after-todo-state-change-hook
+	  'rasmus/remove-schedule)
+
+(defun org-count-todos-in-state (state)
+  (let ((count 0))
+    (org-scan-tags (lambda ()
+		     (when (string= (org-get-todo-state) state)
+		       (setq count (1+ count))))
+		   t t)
+    count))
+
+(defun org-block-wip-limit (change-plist)
+  (catch 'dont-block
+    (when (or (not (eq (plist-get change-plist :type) 'todo-state-change))
+	      (not (string= (plist-get change-plist :to) org-wip-state)))
+      (throw 'dont-block t))
+
+    (when (>= (org-count-todos-in-state org-wip-state) org-wip-limit )
+      (setq org-block-entry-blocking (format "Number of items in NEXT limit(org-wip-limit): %s" org-wip-state))
+      (throw 'dont-block nil))
+
+    t)) ; do not block
+
+(defun reuben/org-mode-hook ()
+  "Stop the org-level headers from increasing in height relative to the other text."
+  (dolist (face '(org-level-1
+                  org-level-2
+                  org-level-3
+                  org-level-4
+                  org-level-5))
+    (set-face-attribute face nil :weight 'semi-bold :height 1.0)))
 
 (use-package org
   :defer t
@@ -429,19 +608,30 @@
   (org-agenda-include-diary t)
   (org-journal-template-entry (concat "* %T [" (system-name)  "]| %^{title} %^G"))
   (org-agenda-window-setup 'only-window)
+  (org-crypt-disable-auto-save t)
+  (org-crypt-key nil)
+  (org-babel-python-command "python3")
+
+  :hook ((org-mode . visual-line-mode)
+         (org-mode . reuben/org-mode-hook)
+         (org-checkbox-statistics . org-checkbox-todo)
+         (org-after-todo-statistics . org-summary-todo)
+         (org-blocker . org-block-wip-limit))
+
   :config
   (add-to-list 'org-modules 'org-id )
   (add-to-list 'org-modules 'org-habit)
+  (add-to-list 'org-modules 'org-crypt)
+  (add-to-list 'org-modules 'org-checklist)
+
   (require 'org-crypt)
   (require 'org-depend)
   (require 'org-protocol)
   (require 'org-checklist)
   (require 'gus-links)
-  (add-to-list 'org-modules 'org-crypt)
-  (add-to-list 'org-modules 'org-checklist)
-  (setq org-crypt-disable-auto-save t)
+
   (org-crypt-use-before-save-magic)
-  (setq org-crypt-key nil)
+
 
   (setq org-directory (expand-file-name "~/Dropbox/org"))
   (setq org-default-inbox-file (concat org-directory "/inbox.org"))
@@ -449,7 +639,6 @@
   (setq org-default-journal-file (concat org-directory "/notes.org"))
   (setq org-default-slipbox-file (concat org-directory "/slipbox.org"))
   (setq org-default-log-file (concat org-directory "/log.org"))
-
   (setq org-show-context-detail (assq-delete-all 'agenda org-show-context-detail))
   (add-to-list 'org-show-context-detail '(agenda . lineage))
 
@@ -475,186 +664,15 @@
   	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| %^{title}  %(add-tag) " :immediate-finish t)))
 
 
-  ;; (add-hook 'org-mode-hook
-  ;;           (lambda()
-  ;;             (visual-line-mode t)
-  ;;             (setq line-spacing 10)
-  ;;             (setq left-margin-width 10 right-margin-width 10)))
-
-  (defun skip-done-functions-or-projects()
-    (org-agenda-skip-entry-if 'todo '("DONE" "WAITING" "NEXT")))
-
-  (defun org-checkbox-todo ()
-    "Switch header TODO state to either DONE, NEXT, or TODO depending on the number of check boxes ticked"
-    (let ((todo-state (org-get-todo-state)) beg end)
-      (unless (not todo-state)
-  	(save-excursion
-  	  (org-back-to-heading t)
-  	  (let* ((line-start (point))
-  		 (line-end (line-end-position)))
-  	    (if (re-search-forward "\\[\\([0-9]*\\)%\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
-  				   end t)
-  		(if (match-end 1)
-  		    (let ((percent-done (string-to-number (match-string 1))))
-  		      (handle-percent-case percent-done))
-  		  (let ((tasks-done (string-to-number (match-string 2)))
-  			(tasks-remaining (string-to-number (match-string 3))))
-  		    (handle-task-number-case tasks-done tasks-remaining)))))))))
-
-  (defun handle-percent-case(percent-done)
-    (if (= percent-done 100)
-  	(org-todo "DONE")
-      (if (> percent-done 0)
-  	  (org-todo "NEXT")
-  	(org-todo "TODO"))))
-
-  (defun handle-task-number-case(tasks-done tasks-remaining)
-    (if (= tasks-done tasks-remaining)
-  	(org-todo "DONE")
-      (if (= tasks-done 0)
-  	  (org-todo "TODO")
-  	(org-todo "NEXT"))))
-
-  (defun find-list-of-points-with-log-entry-headings()
-    (org-map-entries (lambda ()
-  		       (let ((current-headline (buffer-substring-no-properties
-  						(line-beginning-position)
-  						(line-end-position))))
-  			 (if (string-match-p " Log Entries" current-headline)
-  			     (line-beginning-position)
-  			   nil)))
-  		     nil
-  		     'tree))
-
-  (defun find-log-header()
-    (interactive)
-    (let ((filtered-list  (seq-filter (lambda(x)
-  					(not (null x)))
-  				      (find-list-of-points-with-log-entry-headings))))
-      (if (null filtered-list)
-  	  nil
-  	(car filtered-list))))
-
-  (defun insert-log-entry-heading()
-    (interactive)
-    (let ((depth (org-current-level)))
-      (outline-next-heading)
-      (let ((heading-string (concat
-  			     (make-string (+ depth 1) ?*)
-  			     " Log Entries\n")))
-  	(insert heading-string)
-  	(goto-char (- (line-beginning-position) 1)))))
-
-
-  (defun find-or-insert-entry()
-    (interactive)
-    (let ((log-header-point (find-log-header)))
-      (if (null log-header-point)
-  	  (insert-log-entry-heading)
-  	(goto-char log-header-point))))
-
-
-  (defun custom-log-finder()
-    (if (and (fboundp 'org-clocking-p) (org-clocking-p))
-  	(let ()
-  	  (org-clock-goto)
-  	  (find-or-insert-entry))
-      (let ()
-  	(find-file org-default-log-file)
-  	(goto-char (point-max)))))
-
-  (defun goto-last-heading ()
-    (interactive)
-    (org-end-of-subtree))
-
-  (defun add-tag()
-    "This function adds a tag to the log entry if the entry is not going to be appended to an entry that is clocked in."
-    (if (and (fboundp 'org-clocking-p)
-	     (org-clocking-p))
-  	""
-      "%^G"))
-
-
-  (defun org-summary-todo (n-done n-not-done)
-    "Switch entry to DONE when all subentries are done, to TODO otherwise."
-    (let ((todo-state (org-get-todo-state)) beg end)
-      (unless (not todo-state)
-        (let (org-log-done org-log-states)   ; turn off logging
-          (if (= n-not-done 0)
-              (progn
-                (org-todo "DONE")
-                (save-excursion
-                  (end-of-line)
-                  (insert "\n   CLOSED:")
-                  (insert (reuben/get-inactive-org-date-time))))
-            (org-todo (if (> n-done 0) "NEXT" "TODO")))))))
-
-  (defun jump-to-org-agenda ()
-    (interactive)
-    (push-window-configuration)
-    (let ((recordings-dir "~/Dropbox/Apps/Dropvox"))
-      (ignore-errors
-  	(if (directory-files recordings-dir nil "\\`[^.]")
-  	    (find-file recordings-dir))))
-    (let ((buf (get-buffer "*Org Agenda*"))
-  	  wind)
-      (if buf
-  	  (if (setq wind (get-buffer-window buf))
-  	      (when (called-interactively-p 'any)
-  		(select-window wind)
-  		(org-fit-window-to-buffer))
-  	    (if (called-interactively-p 'any)
-  		(progn
-  		  (select-window (display-buffer buf t t))
-  		  (org-fit-window-to-buffer))
-  	      (with-selected-window (display-buffer buf)
-  		(org-fit-window-to-buffer))))
-  	(org-agenda "a" "d"))))
-  (add-hook 'org-checkbox-statistics-hook 'org-checkbox-todo)
+					;(add-hook 'org-checkbox-statistics-hook 'org-checkbox-todo)
 
   (require 'seq)
-  (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
-
-
-  (defun rasmus/remove-schedule ()
-    "Remove SCHEDULED-cookie is switching state to WAITING."
-    (save-excursion
-      (and (equal (org-get-todo-state) "DONE")
-	   (org-get-scheduled-time (point))
-	   (when (search-forward-regexp org-scheduled-time-regexp nil t)
-	     (or (delete-region (match-beginning 0) (match-end 0)) t))
-	   (get-buffer "*Org Agenda*")
-	   (with-current-buffer "*Org Agenda*"
-	     (org-agenda-redo)))))
-
-  (add-hook 'org-after-todo-state-change-hook
-	    'rasmus/remove-schedule)
-
-  (defun org-count-todos-in-state (state)
-    (let ((count 0))
-      (org-scan-tags (lambda ()
-		       (when (string= (org-get-todo-state) state)
-			 (setq count (1+ count))))
-		     t t)
-      count))
-
+					; (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 
   (defvar org-wip-limit 20 "Work-in-progress limit")
   (defvar org-wip-state "NEXT")
 
-  (defun org-block-wip-limit (change-plist)
-    (catch 'dont-block
-      (when (or (not (eq (plist-get change-plist :type) 'todo-state-change))
-		(not (string= (plist-get change-plist :to) org-wip-state)))
-	(throw 'dont-block t))
-
-      (when (>= (org-count-todos-in-state org-wip-state) org-wip-limit )
-	(setq org-block-entry-blocking (format "Number of items in NEXT limit(org-wip-limit): %s" org-wip-state))
-	(throw 'dont-block nil))
-
-      t)) ; do not block
-
-  (add-hook 'org-blocker-hook #'org-block-wip-limit)
+					;(add-hook 'org-blocker-hook #'org-block-wip-limit)
 
   (define-key org-mode-map [(f10)] 'org-mark-ring-goto)
 
@@ -664,31 +682,17 @@
      (scheme . t)
      (python . t)
      (lisp . t)
-     (R . t)))
-
-  (setq org-babel-python-command "python3")
-  (add-hook 'org-mode-hook 'visual-line-mode)
-  (defun reuben/org-mode-hook ()
-    "Stop the org-level headers from increasing in height relative to the other text."
-    (dolist (face '(org-level-1
-                    org-level-2
-                    org-level-3
-                    org-level-4
-                    org-level-5))
-      (set-face-attribute face nil :weight 'semi-bold :height 1.0)))
-  
-  (add-hook 'org-mode-hook #'reuben/org-mode-hook))
+     (R . t))))
 
 
 (use-package org-anki
   :straight t
+  :defer t
   :after org)
 
 (use-package org-bullets
   :straight t
-  :after org
-  :config ;; executed after loading package
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+  :hook (org-mode . org-bullets-mode))
 
 (use-package org-ql
   :straight t
@@ -696,10 +700,8 @@
   :after org)
 
 (use-package org-super-agenda
-  :after org
   :straight t
-  :config
-  (org-super-agenda-mode))
+  :hook (after-init . org-super-agenda-mode))
 
 (use-package ibuffer
   :defer t
@@ -726,77 +728,60 @@
 	      (ibuffer-switch-to-saved-filter-groups "default"))))
 
 ;; --------------- Themeing ---------------
-
 (use-package spaceline
-  :defer t
   :straight t
+  :bind (("C-c t s" . spaceline-toggle-all-the-icons-separator))  ; Add way to trigger loading
   :config
   (spaceline-compile))
 
 (use-package spaceline-all-the-icons
   :straight t
-  :defer t
   :after spaceline
-  :config
-  (setq spaceline-all-the-icons-separator-type 'arrow))
+  :custom
+  (spaceline-all-the-icons-separator-type 'arrow))
 
 (use-package spacemacs-theme
   :straight t
   :defer t)
 
 (use-package doom-themes
-  :straight t)
+  :straight t
+  :defer t)
+
 (use-package doom-modeline
-  :straight t)
+  :straight t
+  :hook (after-init . doom-modeline-mode))
 
 (use-package color-theme-modern
-  :defer t
   :straight t)
 
-(use-package doom-themes
-  :straight t)
 
 (use-package modus-themes
   :straight t
-  :config
-  (setq modus-themes-italic-constructs t
-	modus-themes-bold-constructs nil
-	modus-themes-variable-pitch-ui nil
-	modus-themes-custom-auto-reload t
-	modus-themes-disable-other-themes t
-
-	;; Options for `modus-themes-prompts' are either nil (the
-	;; default), or a list of properties that may include any of those
-	;; symbols: `italic', `WEIGHT'
-	modus-themes-prompts '(italic bold)
-
-	;; The `modus-themes-completions' is an alist that reads two
-	;; keys: `matches', `selection'.  Each accepts a nil value (or
-	;; empty list) or a list of properties that can include any of
-	;; the following (for WEIGHT read further below):
-	;;
-	;; `matches'   :: `underline', `italic', `WEIGHT'
-	;; `selection' :: `underline', `italic', `WEIGHT'
-	modus-themes-completions
-	'((matches . (extrabold))
-          (selection . (semibold italic text-also)))
-
-	modus-themes-org-blocks 'gray-background)) ; {nil,'gray-background,'tinted-background}
-
+  :custom
+  (modus-themes-italic-constructs t)
+  (modus-themes-bold-constructs nil)
+  (modus-themes-variable-pitch-ui nil)
+  (modus-themes-custom-auto-reload t)
+  (modus-themes-disable-other-themes t)
+  (modus-themes-prompts '(italic bold))
+  (modus-themes-completions '((matches . (extrabold))
+                              (selection . (semibold italic text-also))))
+  (modus-themes-org-blocks 'gray-background))
 
 ;; --------------- fly check mode ---------------
 
 (use-package flycheck
   :straight t
   :defer t
-  :init (global-flycheck-mode)
+  :custom
+  (flycheck-check-syntax-automatically '(save mode-enable))
+  :hook (after-init . global-flycheck-mode)
   :config
-  (setq flycheck-check-syntax-automatically '(save mode-enable))
   (setq-default flycheck-disabled-checkers
                 (append flycheck-disabled-checkers
                         '(javascript-jshint json-jsonlist)))
-  (flycheck-add-mode 'javascript-eslint 'web-mode)
-  (add-hook 'after-init-hook #'global-flycheck-mode))
+  (flycheck-add-mode 'javascript-eslint 'web-mode))
 
 ;; --------------- company mode ---------------
 (use-package company
@@ -810,8 +795,7 @@
   (add-to-list 'company-backends 'company-clang)
   (add-to-list 'company-backends 'company-dabbrev)
   (add-to-list 'company-backends 'company-files)
- 
-  :init (global-company-mode)
+  :hook  ((prog-mode . company-mode))
   :bind
   (:map company-active-map
 	("C-n". company-select-next)
@@ -860,92 +844,31 @@
 
 					;  (bind-key "C-c h s" 'jethro/hydra-smerge/body)
 
-
-  (defhydra process-inbox(:exit nil :hint nil
-                                :pre (setq rfc/resume-hydra nil)
-                                :post (if rfc/resume-hydra
-                                          (progn
-                                            (print rfc/resume-hydra)
-                                            (process-inbox/body))
-                                        (print rfc/resume-hydra)))
-    "
-  _r_: Refile     _a_: Archive     _K_: Kill
-  _d_: Done       _c_: Cancel      _td_: Schedule for today
-  _n_: Next Line  _p_: Prev Line
-  _q_: quit
-"
-    ("n" next-line nil :color pink)
-    ("p" previous-line nil :color pink)
-    ("a" org-agenda-archive nil :color red)
-    ("r" org-agenda-refile nil :color red)
-    ("td" org-agenda-schedule :color blue)
-    ("K" org-agenda-kill nil :color red :exit nil)
-    ("d" (lambda () (org-agenda-todo "DONE")) nil :color blue)
-    ("c" (org-agenda-todo "CANCELLED") nil :color blue)
-    ("q" nil nil :color red))
-
-
-  (define-key org-agenda-mode-map [(f9)] 'process-inbox/body)
+;;   (defhydra process-inbox(:exit nil :hint nil
+;;                                 :pre (setq rfc/resume-hydra nil)
+;;                                 :post (if rfc/resume-hydra
+;;                                           (progn
+;;                                             (print rfc/resume-hydra)
+;;                                             (process-inbox/body))
+;;                                         (print rfc/resume-hydra)))
+;;     "
+;;   _r_: Refile     _a_: Archive     _K_: Kill
+;;   _d_: Done       _c_: Cancel      _td_: Schedule for today
+;;   _n_: Next Line  _p_: Prev Line
+;;   _q_: quit
+;; "
+;;     ("n" next-line nil :color pink)
+;;     ("p" previous-line nil :color pink)
+;;     ("a" org-agenda-archive nil :color red)
+;;     ("r" org-agenda-refile nil :color red)
+;;     ("td" org-agenda-schedule :color blue)
+;;     ("K" org-agenda-kill nil :color red :exit nil)
+;;     ("d" (lambda () (org-agenda-todo "DONE")) nil :color blue)
+;;     ("c" (org-agenda-todo "CANCELLED") nil :color blue)
+;;     ("q" nil nil :color red))
+;    (define-key org-agenda-mode-map [(f9)] 'process-inbox/body)
   )
 
-
-(use-package bury-successful-compilation
-  :straight t
-  :hook
-  (c-mode . bury-successful-compilation))
-
-;; --------------- Rust Config ---------------
-(use-package rustic
-  :straight
-  :bind (:map rustic-mode-map
-              ("M-j" . lsp-ui-imenu)
-              ("M-?" . lsp-find-references)
-              ("C-c C-c l" . flycheck-list-errors)
-              ("C-c C-c a" . lsp-execute-code-action)
-              ("C-c C-c r" . lsp-rename)
-              ("C-c C-c q" . lsp-workspace-restart)
-              ("C-c C-c Q" . lsp-workspace-shutdown)
-              ("C-c C-c s" . lsp-rust-analyzer-status))
-  :config
-  ;; uncomment for less flashiness
-  (setq lsp-eldoc-hook nil)
-  (setq lsp-enable-symbol-highlighting nil)
-  (setq lsp-signature-auto-activate nil)
-
-  ;; comment to disable rustfmt on save
-  (setq rustic-format-on-save t)
-  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
-
-(defun rk/rustic-mode-hook ()
-  ;; so that run C-c C-c C-r works without having to confirm
-  (setq-local buffer-save-without-query t))
-
-(use-package lsp-ui
-  :straight t
-  :commands lsp-ui-mode
-  :custom
-  (lsp-ui-peek-always-show t)
-  (lsp-ui-sideline-show-hover t)
-  (lsp-ui-doc-enable nil))
-
-(use-package yasnippet
-  :straight t
-  :config
-  (setq yas-indent-line nil)
-  (add-to-list 'yas-snippet-dirs '"~/Dropbox/yassnippet/")
-  (yas-global-mode 1))
-
-(use-package tide
-  :straight t
-  :defer t
-  :after (typescript-mode company-mode flycheck)
-  :hook ((typescript-mode . tide-setup)
-         (typescript-mode . tide-hl-identifier-mode)
-         (before-save . tide-format-before-save)))
-
-(use-package restclient
-  :defer t
-  :straight t)
 
 (use-package ledger-mode
   :defer t
@@ -957,208 +880,25 @@
   :config
   (exec-path-from-shell-initialize))
 
-(use-package slime
-  :defer t
-  :straight t
-  :config
-  (progn
-    (setq inferior-lisp-program "sbcl"
-	  slime-contribs '(slime-fancy))))
-
 ;; --------------- Writing ---------------
+;; Move fringe setup to a proper function
+(defun my/olivetti-setup ()
+  "Set up olivetti with custom fringe settings."
+  (set-window-fringes (selected-window) 0 0))
+
 (use-package olivetti
   :straight t
-  :after wc-goal-mode
-  :config
-  (setq olivetti-body-width 0.65)
-  (setq olivetti-minimum-body-width 72)
-  (setq olivetti-recall-visual-line-mode-entry-state t)
-  (set-window-fringes (selected-window) 0 0)
-  ;;  :config
-  ;; (defun writing-mode()
-  ;;   (interactive)
-  ;;   (olivetti-mode 1)
-  ;;   (set-background-color "#FCFCFC")
-  ;;   (set-foreground-color "#1A1A1A")
-  ;;   (set-cursor-color "#07BBF2")
-  ;;   (set-face-attribute 'default nil :family "Fira Mono" :width 'normal)
-  ;;   (set-face-attribute 'variable-pitch nil :family "Source Sans Pro")
-  ;;   (set-face-attribute 'fixed-pitch nil :family "Fira Mono")
-  ;;   (setq-default line-spacing 6)
-  ;;   (set-face-attribute 'mode-line (selected-frame) :background "#FFFFFF" :overline "#FCFCFC" :foreground "grey")
-  ;;   (set-fringe-mode 0)
-  ;;   (require 'wc-goal-mode))
-
-  )
+  :custom
+  (olivetti-body-width 0.65)
+  (olivetti-minimum-body-width 72)
+  (olivetti-recall-visual-line-mode-entry-state t)
+  :hook (olivetti-mode . my/olivetti-setup))
 
 (use-package visual-fill-column
   :straight t)
 
 (use-package wc-goal-mode
   :straight t)
-
-
-(use-package elfeed
-  :straight t)
-(use-package elfeed-org
-  :straight t
-  :config
-  (require 'elfeed-org)
-  (elfeed-org)
-  (setq rmh-elfeed-org-files (list "~/Dropbox/feeds.org")))
-
-(use-package elfeed-goodies
-  :straight t
-  :config
-  (elfeed-goodies/setup))
-
-(use-package elfeed-protocol
-  :straight t  )
-(use-package elfeed-score
-  :straight t)
-
-
-(use-package hyperbole
-  :straight t
-  :config
-
-  (global-unset-key  [(f6)])
-  (global-set-key  [(f6)] 'gbut:act)
-  (global-unset-key (kbd "M-<return>"))
-  (global-unset-key (kbd "C-<return>"))
-  (global-set-key (kbd "C-<return>") 'action-key)
-  ;;  (global-unset-key (kbd "C-u C-<return>")  )
-  ;;  (global-set-key (kbd "C-u C-<return>") 'assist-key)
-
-  (defun looking-at-work-item()
-    (or
-     (looking-at "W-[0-9]+")
-     (save-excursion
-       (backward-word-strictly 2)
-       (looking-at "W-[0-9]+"))
-     (save-excursion
-       (backward-word-strictly 1)
-       (looking-at "W-[0-9]+"))
-     (looking-at "a07.*")
-     (save-excursion
-       (backward-word-strictly 1)
-       (looking-at "a07.*"))))
-
-  (defun get-work-item-text()
-    (let* ((match-data (match-data))
-           (start (first match-data))
-           (end (second match-data)))
-      (list (buffer-substring-no-properties start end) start end)))
-
-  (defun in-org-property()
-    (and (hsys-org-mode-p)
-	 (org-at-property-p)))
-
-  (defun org-properties-search()
-    (interactive)
-    (if (in-org-property)
-	(let* ((property-name (org-read-property-name))
-	       (property-value (org-entry-get (point) property-name)))
-	  (hact 'org-tags-view nil (concat property-name "={" property-value "}")))))
-
-
-  (defib gus()
-    "Gus links"
-    (if (looking-at-work-item)
-	(cl-destructuring-bind (text start end) (get-work-item-text)
-          (ibut:label-set text start end)
-          (hact 'www-url (concat "https://gus.my.salesforce.com/apex/ADM_WorkLocator?bugorworknumber=" text)))
-      nil))
-
-  ;; (defib org-property-search()
-  ;;   "org property search"
-  ;;   (org-properties-search))
-  )
-
-(use-package org-roam
-  :straight t
-  :custom
-  (org-roam-directory "~/Dropbox/org-roam/org-roam1")
-  (org-roam-complete-everywhere t)
-  :bind (:map org-mode-map
-              (("<f9>" . org-roam-buffer-toggle)
-               ("C-c n f" . org-roam-node-find)
-               ("C-c n g" . org-roam-graph)
-               ("C-c n i" . org-roam-node-insert)
-               ("C-c n I" . org-roam-capture)
-               ("C-c n j" . org-roam-dailies-capture-today)
-               ))
-  :config
-  (org-roam-setup)
-  (org-roam-db-autosync-mode)
-
-  (add-to-list 'display-buffer-alist
-	       '("\\*org-roam\\*"
-		 (display-buffer-in-side-window)
-		 (side . right)
-		 (slot . 0)
-		 (window-width . 0.33)
-		 (window-parameters . ((no-other-window . t)
-				       (no-delete-other-windows . t)))))
-
-  (setq org-link-frame-setup
-	(append (seq-filter #'(lambda(x) (not (equal (car x) 'file)))
-			    org-link-frame-setup)
-		'((file . find-file))))
-
-  (setq org-roam-completion-everywhere t)
-  (setq org-roam-complete-link-at-point  t)
-
-  (add-hook 'org-roam-mode-hook #'visual-line-mode)
-
-  (add-to-list 'magit-section-initial-visibility-alist (cons 'org-roam-node-section 'hide)))
-
-;; --------------- Web Mode ---------------
-(use-package web-mode
-  :straight t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.html?$" . web-mode))
-  (setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
-
-  (defun web-mode-init-hook ()
-    "Hooks for Web mode.  Adjust indent."
-    (setq web-mode-markup-indent-offset 4))
-
-  (add-hook 'web-mode-hook  'web-mode-init-hook))
-
-
-(use-package add-node-modules-path
-  :straight t
-  :after flycheck
-  :config
-  (add-hook 'flycheck-mode-hook 'add-node-modules-path))
-
-(use-package prettier-js
-  :straight t
-  :config
-  (defun web-mode-init-prettier-hook ()
-    (add-node-modules-path)
-    (prettier-js-mode))
-
-  (add-hook 'web-mode-hook  'web-mode-init-prettier-hook))
-
-(use-package emmet-mode
-  :straight t
-  :config
-  (add-hook 'web-mode-hook  'emmet-mode))
-
-(use-package typescript-mode
-  :straight t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.ts$" . typescript-mode)))
-
-(use-package tide
-  :straight t
-  :after (typescript-mode flycheck)
-  :hook ((typescript-mode . tide-setup)
-         (typescript-mode . tide-hl-identifier-mode)
-         (before-save . tide-format-before-save)))
 
 ;; --------------- Projectile ---------------
 
@@ -1178,15 +918,6 @@
 ;; --------------- Neotree ---------------
 (use-package neotree
   :straight t)
-
-(use-package geiser
-  :straight t)
-
-(use-package geiser-mit
-  :straight t
-  :after geiser
-  :config
-  (setq geiser-active-implementations '(mit)))
 
 (use-package smartparens
   :straight t
@@ -1210,98 +941,16 @@
 
               ("M-[" . sp-backward-unwrap-sexp)
               ("M-]" . sp-unwrap-sexp))
-  :config
-  (smartparens-global-mode t))
+  :hook
+  (after-init . (lambda() (smartparens-global-mode t))))
+
 
 (use-package which-key
   :straight t
-  :config
-  (which-key-mode))
-
-;; Haskell Setup
-
-(use-package flycheck-haskell
-  :straight t)
-
-(use-package haskell-mode
-  :straight t
-  :config
-  (add-hook 'haskell-mode-hook #'lsp)
-  (add-hook 'haskell-mode-hook #'lsp-ui-mode)
-  (add-hook 'haskell-mode-hook #'interactive-haskell-mode))
-
-(use-package hindent
-  :straight t
-  :after haskell-mode
-  :init
-  (add-hook 'haskell-mode-hook #'hindent-mode))
-
-(use-package lsp-mode
-  :straight
-  :commands lsp
-  :hook (lsp-mode . (lambda ()
-                      (let ((lsp-keymap-prefix "C-x l"))
-                        (lsp-enable-which-key-integration))))
-  :custom
-  ;; what to use when checking on-save. "check" is default, I prefer clippy
-  (lsp-rust-analyzer-cargo-watch-command "clippy")
-  (lsp-eldoc-render-all t)
-  (lsp-idle-delay 0.6)
-  (lsp-rust-analyzer-server-display-inlay-hints t)
-  :config
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-  (define-key lsp-mode-map (kbd "C-x l") lsp-command-map))
-(global-unset-key (kbd "C-x l"))
-
-(use-package lsp-ui
-  :straight t
-  :commands lsp-ui-mode)
-
-(use-package lsp-haskell
-  :straight t
-  :config
-  (setq lsp-haskell-server-path "~/.ghcup/bin/haskell-language-server-wrapper")
-  (setq lsp-haskell-process-path-hie "~/.ghcup/bin/haskell-language-server-wrapper")
-  (setq lsp-haskell-process-args-hie '()) )
-
-;; (use-package lsp-java
-;;   :straight t
-;;   :config (add-hook 'java-mode-hook 'lsp))
-(use-package dap-mode
-  :straight t
-  :after (lsp-mode)
-  :functions dap-hydra/nil
-  :config
-  (require 'dap-java)
-  :bind (:map lsp-mode-map
-              ("<f5>" . dap-debug)
-              ("M-<f5>" . dap-hydra))
-  :hook ((dap-mode . dap-ui-mode)
-	 (dap-session-created . (lambda (&_rest) (dap-hydra)))
-	 (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
-
+  :hook (after-init . which-key-mode))
 
 (use-package frame
-  :commands prot/cursor-type-mode
-  :config
-
-  (blink-cursor-mode -1)
-
-  (define-minor-mode prot/cursor-type-mode
-    "Toggle between static block and pulsing bar cursor."
-    :init-value nil
-    :global t
-    (if prot/cursor-type-mode
-        (progn
-          (setq-local blink-cursor-interval 0.75
-                      cursor-type '(bar . 2)
-                      cursor-in-non-selected-windows 'hollow)
-          (blink-cursor-mode 1))
-      (dolist (local '(blink-cursor-interval
-                       cursor-type
-                       cursor-in-non-selected-windows))
-        (kill-local-variable `,local))
-      (blink-cursor-mode -1))))
+)
 
 (use-package emacs
   :config
@@ -1329,11 +978,10 @@
   :bind ("C-c L" . prot/scroll-centre-cursor-mode))
 
 (use-package emacs
-  :commands prot/hidden-mode-line-mode
+  :commands (prot/hidden-mode-line-mode prot/cursor-type-mode)
+  :hook ((prog-mode . prot/cursor-type-mode)
+	 (text-mode . prot/cursor-type-mode))
   :config
-
-  (electric-pair-mode 1)
-
   (setq mode-line-percent-position '(-3 "%p"))
   (setq mode-line-defining-kbd-macro
         (propertize " Macro" 'face 'mode-line-emphasis))
@@ -1355,6 +1003,27 @@
                   mode-line-misc-info
                   mode-line-end-spaces))
 
+  (setq-default scroll-preserve-screen-position t)
+  (setq-default scroll-conservatively 1) ; affects `scroll-step'
+  (setq-default scroll-margin 0)
+
+  (define-minor-mode prot/scroll-centre-cursor-mode
+    "Toggle centred cursor scrolling behaviour."
+    :init-value nil
+    :lighter " S="
+    :global nil
+    (if prot/scroll-centre-cursor-mode
+        (setq-local scroll-margin (* (frame-height) 2)
+                    scroll-conservatively 0
+                    maximum-scroll-margin 0.5)
+      (dolist (local '(scroll-preserve-screen-position
+                       scroll-conservatively
+                       maximum-scroll-margin
+                       scroll-margin))
+        (kill-local-variable `,local))))
+
+  ;; C-c l is used for `org-store-link'.  The mnemonic for this is to
+  ;; focus the Line and also works as a variant of C-l.
 
   (define-minor-mode prot/hidden-mode-line-mode
     "Toggle modeline visibility in the current buffer."
@@ -1365,22 +1034,35 @@
       (kill-local-variable 'mode-line-format)
       (force-mode-line-update)))
 
+  (blink-cursor-mode -1)
 
+  (define-minor-mode prot/cursor-type-mode
+    "Toggle between static block and pulsing bar cursor."
+    :init-value nil
+    :global t
+    (if prot/cursor-type-mode
+        (progn
+          (setq-local blink-cursor-interval 0.75
+                      cursor-type '(bar . 5)
+                      cursor-in-non-selected-windows 'hollow)
+          (blink-cursor-mode 1))
+      (dolist (local '(blink-cursor-interval
+                       cursor-type
+                       cursor-in-non-selected-windows))
+        (kill-local-variable `,local))
+      (blink-cursor-mode -1)))  
 
-  (defun setup-theme(frame)
-    (with-selected-frame frame
-      (load-theme 'spacemacs-dark 'no-confirm))
-    (remove-hook 'after-make-frame-functions #'setup-theme)
-    (fmakunbound 'setup-theme))
-
-  (if (daemonp)
-      (add-hook  'after-make-frame-functions #'setup-theme)))
+  ;; (defun setup-theme(frame)
+  ;;   (with-selected-frame frame
+  ;;     (load-theme 'spacemacs-dark 'no-confirm))
+  ;;   (remove-hook 'after-make-frame-functions #'setup-theme)
+  ;;   (fmakunbound 'setup-theme))
+  )
 
 
 (use-package rainbow-delimiters
   :straight t
-  :config
-  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package diminish
   :straight t
@@ -1391,11 +1073,6 @@
   (diminish 'org-roam-ui-mode "")
   (diminish 'projectile-mode "")
   (diminish 'eldoc-mode ""))
-
-(use-package zig-mode
-  :straight t
-  :custom (zig-format-on-save nil)
-  :mode "\\.zig\\'")
 
 (use-package gptel
   :straight t
@@ -1408,69 +1085,6 @@
 			    :stream t
 			    :key 'my-anthropic-key))))
 
-(use-package ligature
-  :straight t
-  :config
-    (ligature-set-ligatures 'haskell-mode
-                        '(;; == === ==== => =| =>>=>=|=>==>> ==< =/=//=// =~
-                          ;; =:= =!=
-                          ("=" (rx (+ (or ">" "<" "|" "/" "~" ":" "!" "="))))
-                          ;; ;; ;;;
-                          (";" (rx (+ ";")))
-                          ;; && &&&
-                          ("&" (rx (+ "&")))
-                          ;; !! !!! !. !: !!. != !== !~
-                          ("!" (rx (+ (or "=" "!" "\." ":" "~"))))
-                          ;; ?? ??? ?:  ?=  ?.
-                          ("?" (rx (or ":" "=" "\." (+ "?"))))
-                          ;; %% %%%
-                          ("%" (rx (+ "%")))
-                          ;; |> ||> |||> ||||> |] |} || ||| |-> ||-||
-                          ;; |->>-||-<<-| |- |== ||=||
-                          ;; |==>>==<<==<=>==//==/=!==:===>
-                          ("|" (rx (+ (or ">" "<" "|" "/" ":" "!" "}" "\]"
-                                          "-" "=" ))))
-                          ;; \\ \\\ \/
-                          ("\\" (rx (or "/" (+ "\\"))))
-                          ;; ++ +++ ++++ +>
-                          ("+" (rx (or ">" (+ "+"))))
-                          ;; :: ::: :::: :> :< := :// ::=
-                          (":" (rx (or ">" "<" "=" "//" ":=" (+ ":"))))
-                          ;; // /// //// /\ /* /> /===:===!=//===>>==>==/
-                          ("/" (rx (+ (or ">"  "<" "|" "/" "\\" "\*" ":" "!"
-                                          "="))))
-                          ;; .. ... .... .= .- .? ..= ..<
-                          ("\." (rx (or "=" "-" "\?" "\.=" "\.<" (+ "\."))))
-                          ;; -- --- ---- -~ -> ->> -| -|->-->>->--<<-|
-                          ("-" (rx (+ (or ">" "<" "|" "~" "-"))))
-                          ;; *> */ *)  ** *** ****
-                          ("*" (rx (or ">" "/" ")" (+ "*"))))
-                          ;; www wwww
-                          ("w" (rx (+ "w")))
-                          ;; <> <!-- <|> <: <~ <~> <~~ <+ <* <$ </  <+> <*>
-                          ;; <$> </> <|  <||  <||| <|||| <- <-| <-<<-|-> <->>
-                          ;; <<-> <= <=> <<==<<==>=|=>==/==//=!==:=>
-                          ;; << <<< <<<<
-                          ("<" (rx (+ (or "\+" "\*" "\$" "<" ">" ":" "~"  "!"
-                                          "-"  "/" "|" "="))))
-                          ;; >: >- >>- >--|-> >>-|-> >= >== >>== >=|=:=>>
-                          ;; >> >>> >>>>
-                          (">" (rx (+ (or ">" "<" "|" "/" ":" "=" "-"))))
-                          ;; #: #= #! #( #? #[ #{ #_ #_( ## ### #####
-                          ("#" (rx (or ":" "=" "!" "(" "\?" "\[" "{" "_(" "_"
-                                       (+ "#"))))
-                          ;; ~~ ~~~ ~=  ~-  ~@ ~> ~~>
-                          ("~" (rx (or ">" "=" "-" "@" "~>" (+ "~"))))
-                          ;; __ ___ ____ _|_ __|____|_
-                          ("_" (rx (+ (or "_" "|"))))
-                          ;; Fira code: 0xFF 0x12
-                          ("0" (rx (and "x" (+ (in "A-F" "a-f" "0-9")))))
-                          ;; Fira code:
-                          "Fl"  "Tl"  "fi"  "fj"  "fl"  "ft"
-                          ;; The few not covered by the regexps.
-                          "{|"  "[|"  "]#"  "(*"  "}#"  "$>"  "^="))
-    (add-hook 'haskell-mode-hook 'ligature-mode))
-
 (use-package drag-stuff
   :straight t
   :bind (:map prog-mode-map
@@ -1479,15 +1093,14 @@
 	      ("M-<left>" . drag-stuff-left)
 	      ("M-<right>" . drag-stuff-right)))
 
-(use-package undo-tree
-  :straight t
-  :config
-  (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
-  (global-undo-tree-mode)
-
-  (defadvice undo-tree-make-history-save-file-name
-      (after undo-tree activate)
-    (setq ad-return-value (concat ad-return-value ".gz"))))
+;; (use-package undo-tree
+;;   :straight t
+;;   :config
+;;   (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
+;;   (global-undo-tree-mode)
+;;   (defadvice undo-tree-make-history-save-file-name
+;;       (after undo-tree activate)
+;;     (setq ad-return-value (concat ad-return-value ".gz"))))
 
 (use-package change-inner
   :straight t
@@ -1495,7 +1108,354 @@
 
 (use-package devdocs
   :straight t
-  )
+  :defer t)
+
+
+(use-package emacs
+  :custom
+  ;; Core completion behavior
+  (completion-styles '(orderless basic))           ; Use basic + flexible matching
+  ;; (completion-ignore-case t)                  ; Case-insensitive completion
+  ;; (completion-auto-select t)                  ; Auto-select first completion
+  ;; (completion-auto-help 'visible)             ; Show *Completions* buffer when needed
+
+  ;; ;; Completions buffer formatting
+  ;; (completions-format 'one-column)            ; Single column layout
+  ;; (completions-sort 'historical)              ; Sort by minibuffer history
+  (completions-max-height 20)                 ; Limit to 20 completions
+
+  ;; Performance settings
+  (completion-cycle-threshold 3)              ; Cycle if <= 3 completions
+  (completion-category-overrides              ; Per-category completion styles
+   '((file (styles . (partial-completion)))))
+
+  :config
+  ;; Enable helpful completion features
+  (minibuffer-depth-indicate-mode 1) )
+
+(use-package completion-preview
+  :hook (after-init . global-completion-preview-mode))
+
+;; ------- Programming ---------------
+(use-package eglot
+  :hook ((python-mode . eglot-ensure)
+         (js-mode . eglot-ensure)
+         (java-ts-mode . eglot-ensure)
+         (rust-mode . eglot-ensure)
+         (typescript-mode . eglot-ensure))
+  :bind (:map eglot-mode-map
+              ;; Essential navigation
+              ("M-." . eglot-find-implementation)
+              ("M-," . pop-tag-mark)
+              
+              ;; Language server actions - flat C-c s prefix
+              ("C-c s a" . eglot-code-actions)
+              ("C-c s r" . eglot-rename)
+              ("C-c s f" . eglot-format-buffer)
+              ("C-c s h" . eldoc-doc-buffer)              ; ← Changed this
+              ("C-c s i" . eglot-find-implementation)
+              ("C-c s t" . eglot-find-typeDefinition)
+              ("C-c s o" . eglot-code-action-organize-imports)
+              ("C-c s d" . flymake-show-buffer-diagnostics)
+              ("C-c s D" . flymake-show-project-diagnostics)
+              ("C-c s R" . eglot-reconnect)
+              ("C-c s S" . eglot-shutdown)
+              
+              ;; Keep error navigation simple
+              ("M-n" . flymake-goto-next-error)
+              ("M-p" . flymake-goto-prev-error))
+  :custom
+  (eglot-autoshutdown t)
+  (eglot-sync-connect nil)
+  (eglot-extend-to-xref t))
+
+(use-package java-ts-mode
+  :mode "\\.java\\'"
+  :hook ((java-ts-mode . (lambda ()
+                           (setq c-basic-offset 4
+                                 tab-width 4
+                                 indent-tabs-mode nil))))
+  :custom
+  (java-ts-mode-indent-offset 4))
+
+(straight-use-package '(eglot :type built-in))
+(straight-use-package '(project :type built-in))
+
+
+(use-package tuareg
+  :straight t
+  :hook (tuareg-mode . eglot-ensure))
+
+(use-package ocaml-eglot
+  :straight t
+  :after (tuareg  eglot)
+  :hook
+  (tuareg-mode . ocaml-eglot)
+  (ocaml-eglot . eglot-ensure))
+
+(use-package geiser
+  :straight t
+  :hook (scheme-mode . geiser-mode))
+
+(use-package geiser-mit
+  :straight t
+  :defer t
+  :after geiser
+  :custom
+  (geiser-active-implementations '(mit)))
+
+
+;; --------------- Web Mode ---------------
+
+(defun web-mode-init-hook ()
+  "Hooks for Web mode. Adjust indent."
+  (setq web-mode-markup-indent-offset 4))
+
+(defun web-mode-init-prettier-hook ()
+  "Set up prettier for web-mode."
+  (add-node-modules-path)
+  (prettier-js-mode))
+
+
+(use-package web-mode
+  :straight t
+  :mode (("\\.jsx?\\'" . web-mode)
+         ("\\.html?\\'" . web-mode))
+  :custom
+  (web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
+  :hook (web-mode . web-mode-init-hook))
+
+(use-package add-node-modules-path
+  :straight t
+  :hook (flycheck-mode . add-node-modules-path))
+
+(use-package prettier-js
+  :straight t
+  :hook (web-mode . web-mode-init-prettier-hook))
+
+(use-package emmet-mode
+  :straight t
+  :hook (web-mode . emmet-mode))
+
+(use-package typescript-mode
+  :straight t
+  :mode "\\.ts\\'")
+
+(use-package tide
+  :straight t
+  :after (typescript-mode flycheck)
+  :hook ((typescript-mode . tide-setup)
+         (typescript-mode . tide-hl-identifier-mode)
+         (before-save . tide-format-before-save)))
+
+
+(use-package zig-mode
+  :straight t
+  :custom (zig-format-on-save nil)
+  :mode "\\.zig\\'")
+
+(use-package slime
+  :straight t
+  :mode "\\.lisp\\'"
+  :custom
+  (inferior-lisp-program "sbcl")
+  (slime-contribs '(slime-fancy)))
+
+
+(use-package bury-successful-compilation
+  :straight t
+  :hook
+  (c-mode . bury-successful-compilation))
+
+;; --------------- Rust Config ---------------
+(use-package rustic
+  :straight t  ; Fixed: was missing 't'
+  :bind (:map rustic-mode-map
+              ("M-j" . lsp-ui-imenu)
+              ("M-?" . lsp-find-references)
+              ("C-c C-c l" . flycheck-list-errors)
+              ("C-c C-c a" . lsp-execute-code-action)
+              ("C-c C-c r" . lsp-rename)
+              ("C-c C-c q" . lsp-workspace-restart)
+              ("C-c C-c Q" . lsp-workspace-shutdown)
+              ("C-c C-c s" . lsp-rust-analyzer-status))
+  :custom
+  (lsp-eldoc-hook nil)
+  (lsp-enable-symbol-highlighting nil)
+  (lsp-signature-auto-activate nil)
+  (rustic-format-on-save t)
+  :hook (rustic-mode . rk/rustic-mode-hook))
+
+(defun rk/rustic-mode-hook ()
+  ;; so that run C-c C-c C-r works without having to confirm
+  (setq-local buffer-save-without-query t))
+
+(use-package lsp-ui
+  :straight t
+  :commands lsp-ui-mode
+  :custom
+  (lsp-ui-peek-always-show t)
+  (lsp-ui-sideline-show-hover t)
+  (lsp-ui-doc-enable nil))
+
+(use-package yasnippet
+  :straight t
+  :custom
+  (yas-indent-line nil)
+  :hook (after-init . yas-global-mode)
+  :config
+  (add-to-list 'yas-snippet-dirs "~/Dropbox/yassnippet/"))
+
+(use-package tide
+  :straight t
+  :defer t
+  :after (typescript-mode company-mode flycheck)
+  :hook ((typescript-mode . tide-setup)
+         (typescript-mode . tide-hl-identifier-mode)
+         (before-save . tide-format-before-save)))
+
+(use-package restclient
+  :defer t
+  :straight t)
+
+;; (use-package ligature
+;;   :straight t
+;;   :config
+;;     (ligature-set-ligatures 'haskell-mode
+;;                         '(;; == === ==== => =| =>>=>=|=>==>> ==< =/=//=// =~
+;;                           ;; =:= =!=
+;;                           ("=" (rx (+ (or ">" "<" "|" "/" "~" ":" "!" "="))))
+;;                           ;; ;; ;;;
+;;                           (";" (rx (+ ";")))
+;;                           ;; && &&&
+;;                           ("&" (rx (+ "&")))
+;;                           ;; !! !!! !. !: !!. != !== !~
+;;                           ("!" (rx (+ (or "=" "!" "\." ":" "~"))))
+;;                           ;; ?? ??? ?:  ?=  ?.
+;;                           ("?" (rx (or ":" "=" "\." (+ "?"))))
+;;                           ;; %% %%%
+;;                           ("%" (rx (+ "%")))
+;;                           ;; |> ||> |||> ||||> |] |} || ||| |-> ||-||
+;;                           ;; |->>-||-<<-| |- |== ||=||
+;;                           ;; |==>>==<<==<=>==//==/=!==:===>
+;;                           ("|" (rx (+ (or ">" "<" "|" "/" ":" "!" "}" "\]"
+;;                                           "-" "=" ))))
+;;                           ;; \\ \\\ \/
+;;                           ("\\" (rx (or "/" (+ "\\"))))
+;;                           ;; ++ +++ ++++ +>
+;;                           ("+" (rx (or ">" (+ "+"))))
+;;                           ;; :: ::: :::: :> :< := :// ::=
+;;                           (":" (rx (or ">" "<" "=" "//" ":=" (+ ":"))))
+;;                           ;; // /// //// /\ /* /> /===:===!=//===>>==>==/
+;;                           ("/" (rx (+ (or ">"  "<" "|" "/" "\\" "\*" ":" "!"
+;;                                           "="))))
+;;                           ;; .. ... .... .= .- .? ..= ..<
+;;                           ("\." (rx (or "=" "-" "\?" "\.=" "\.<" (+ "\."))))
+;;                           ;; -- --- ---- -~ -> ->> -| -|->-->>->--<<-|
+;;                           ("-" (rx (+ (or ">" "<" "|" "~" "-"))))
+;;                           ;; *> */ *)  ** *** ****
+;;                           ("*" (rx (or ">" "/" ")" (+ "*"))))
+;;                           ;; www wwww
+;;                           ("w" (rx (+ "w")))
+;;                           ;; <> <!-- <|> <: <~ <~> <~~ <+ <* <$ </  <+> <*>
+;;                           ;; <$> </> <|  <||  <||| <|||| <- <-| <-<<-|-> <->>
+;;                           ;; <<-> <= <=> <<==<<==>=|=>==/==//=!==:=>
+;;                           ;; << <<< <<<<
+;;                           ("<" (rx (+ (or "\+" "\*" "\$" "<" ">" ":" "~"  "!"
+;;                                           "-"  "/" "|" "="))))
+;;                           ;; >: >- >>- >--|-> >>-|-> >= >== >>== >=|=:=>>
+;;                           ;; >> >>> >>>>
+;;                           (">" (rx (+ (or ">" "<" "|" "/" ":" "=" "-"))))
+;;                           ;; #: #= #! #( #? #[ #{ #_ #_( ## ### #####
+;;                           ("#" (rx (or ":" "=" "!" "(" "\?" "\[" "{" "_(" "_"
+;;                                        (+ "#"))))
+;;                           ;; ~~ ~~~ ~=  ~-  ~@ ~> ~~>
+;;                           ("~" (rx (or ">" "=" "-" "@" "~>" (+ "~"))))
+;;                           ;; __ ___ ____ _|_ __|____|_
+;;                           ("_" (rx (+ (or "_" "|"))))
+;;                           ;; Fira code: 0xFF 0x12
+;;                           ("0" (rx (and "x" (+ (in "A-F" "a-f" "0-9")))))
+;;                           ;; Fira code:
+;;                           "Fl"  "Tl"  "fi"  "fj"  "fl"  "ft"
+;;                           ;; The few not covered by the regexps.
+;;                           "{|"  "[|"  "]#"  "(*"  "}#"  "$>"  "^="))
+;;     (add-hook 'haskell-mode-hook 'ligature-mode))
+
+;;; -----  hyperbole
+  
+  (defun looking-at-work-item()
+    (or
+     (looking-at "W-[0-9]+")
+     (save-excursion
+       (backward-word-strictly 2)
+       (looking-at "W-[0-9]+"))
+     (save-excursion
+       (backward-word-strictly 1)
+       (looking-at "W-[0-9]+"))
+     (looking-at "a07.*")
+     (save-excursion
+       (backward-word-strictly 1)
+       (looking-at "a07.*"))))
+       
+  (defun get-work-item-text()
+    (let* ((match-data (match-data))
+           (start (first match-data))
+           (end (second match-data)))
+      (list (buffer-substring-no-properties start end) start end)))
+      
+  (defun in-org-property()
+    (and (hsys-org-mode-p)
+	 (org-at-property-p)))
+	 
+  (defun org-properties-search()
+    (interactive)
+    (if (in-org-property)
+	(let* ((property-name (org-read-property-name))
+	       (property-value (org-entry-get (point) property-name)))
+	  (hact 'org-tags-view nil (concat property-name "={" property-value "}")))))
+
+(use-package hyperbole
+  :straight t
+  :defer t
+  :hook ((org-mode . (lambda () (require 'hyperbole)))
+         (text-mode . (lambda () (require 'hyperbole))))
+  :bind (("<f6>" . gbut:act)
+         ("C-<return>" . action-key))
+  :config
+  (global-unset-key (kbd "M-<return>"))
+	  
+  (defib gus()
+    "Gus links"
+    (if (looking-at-work-item)
+	(cl-destructuring-bind (text start end) (get-work-item-text)
+          (ibut:label-set text start end)
+          (hact 'www-url (concat "https://gus.my.salesforce.com/apex/ADM_WorkLocator?bugorworknumber=" text)))
+      nil))
+      
+(defun org-property-button-info ()
+  "Get button info for org property at point."
+  (when (in-org-property)
+    (let* ((bounds (bounds-of-thing-at-point 'symbol))
+           (start (car bounds))
+           (end (cdr bounds)))
+      (when (and start end)
+        (list (buffer-substring-no-properties start end) start end)))))
+
+(defib org-property-search()
+  "org property search"
+  (when-let ((button-info (org-property-button-info)))
+    (cl-destructuring-bind (text start end) button-info
+      (ibut:label-set text start end)
+      (org-properties-search)))))
+
+
+(use-package rg
+  :straight t
+  :defer t
+  :commands (rg rg-project rg-dwim rg-literal rg-regexp)
+  :config
+  (rg-enable-default-bindings))
+;;; -----
 
 (provide 'use-package-config)
 ;;; use-package-config.el ends here

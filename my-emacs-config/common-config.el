@@ -73,7 +73,6 @@
 
 
 ;; --------------- electric pair mode ---------------
-(setq electric-pair-preserve-balance nil)
 (setq create-lockfiles nil)
 
 ;;;---------- line number configuration --------------
