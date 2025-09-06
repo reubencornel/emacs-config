@@ -981,8 +981,35 @@
 (use-package emacs
   :commands (prot/hidden-mode-line-mode prot/cursor-type-mode)
   :hook ((prog-mode . prot/cursor-type-mode)
-	 (text-mode . prot/cursor-type-mode))
+	 (text-mode . prot/cursor-type-mode)
+	 (pascal-mode . (lambda ()
+                          ;; Indentation settings
+                          (setq indent-tabs-mode t)
+                          (setq tab-width 8)
+                          (setq pascal-indent-level 8)
+                          (setq pascal-case-indent 8)
+                          (setq pascal-auto-newline nil)
+                          ;; Set compile command
+                          (set (make-local-variable 'compile-command)
+                               (concat "fpc " (file-name-nondirectory buffer-file-name))))))
   :config
+  ;; Set up FreePascal error recognition for compilation mode
+  (with-eval-after-load 'compile
+    ;; Clean up any existing freepascal entries
+    (setq compilation-error-regexp-alist 
+          (remove 'freepascal compilation-error-regexp-alist))
+    (setq compilation-error-regexp-alist-alist
+          (assq-delete-all 'freepascal compilation-error-regexp-alist-alist))
+    
+    ;; Add FreePascal error format
+    (add-to-list 'compilation-error-regexp-alist-alist
+                 '(freepascal
+                   "^\\([^( \t\n]+\\)(\\([0-9]+\\),\\([0-9]+\\))[ \t]*\\([^:\n]*\\):"
+                   1 2 3))
+    
+    ;; Activate the freepascal error recognition
+    (add-to-list 'compilation-error-regexp-alist 'freepascal))
+  
   (setq mode-line-percent-position '(-3 "%p"))
   (setq mode-line-defining-kbd-macro
         (propertize " Macro" 'face 'mode-line-emphasis))
