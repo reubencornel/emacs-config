@@ -516,7 +516,15 @@
 					(org-agenda-time-grid nil)
 					(org-agenda-files '("~/Dropbox/org/inbox.org"))))
 				 ))
-     ("r" "Review" ((agenda ""
+     ("r" "Review" (
+		    (org-ql-block '(and (property "ENTRY_TYPE" "PROJECT")
+					(not (descendants (scheduled))))
+        		   	  ((org-ql-block-header "Stuck Projects")
+                                   (org-agenda-overriding-header "Other Items")
+                                   (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
+				   (org-super-agenda-groups  '((:auto-category t)))
+                                   ))
+		    (agenda ""
                             ((org-agenda-overriding-header "Tasks in the next 2 weeks")
                              (org-agenda-entry-types '(:scheduled :deadline))
 			     (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org" "~/Dropbox/org/inbox.org"))
@@ -551,13 +559,6 @@
 		    (org-ql-block '(and (property "ENTRY_TYPE" "PROJECT")
 					(null (deadline)))
         		   	  ((org-ql-block-header "Projects With no Deadline - Add a Deadline to make projects disappear")
-                                   (org-agenda-overriding-header "Other Items")
-                                   (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
-				   (org-super-agenda-groups  '((:auto-category t)))
-                                   ))
-		    (org-ql-block '(and (property "ENTRY_TYPE" "PROJECT")
-					(not (descendants (scheduled))))
-        		   	  ((org-ql-block-header "Stuck Projects")
                                    (org-agenda-overriding-header "Other Items")
                                    (org-agenda-files '("~/Dropbox/org/main.org" "~/Dropbox/org/work.org"))
 				   (org-super-agenda-groups  '((:auto-category t)))
@@ -1456,6 +1457,12 @@
   :config
   (rg-enable-default-bindings))
 ;;; -----
+
+
+(use-package pdf-tools
+  :straight t
+  :custom
+  (doc-view-resolution 300))
 
 (provide 'use-package-config)
 ;;; use-package-config.el ends here
