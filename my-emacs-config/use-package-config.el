@@ -1138,6 +1138,21 @@
   :straight t
   :defer t)
 
+(defun my-setup-new-frame (frame)
+  "Set up new frames with desired size/position."
+  (with-selected-frame frame
+    (when (display-graphic-p frame)
+      ;; Choose one of these:
+      ;; Full maximize:
+      (toggle-frame-maximized)
+      
+      ;; Or horizontal maximize:
+      ;; (set-frame-parameter frame 'fullscreen 'maximized-horizontally)
+      
+      ;; Or specific size:
+      ;; (set-frame-width frame 120)
+      ;; (set-frame-height frame 50)
+      )))
 
 (use-package emacs
   :custom
@@ -1158,6 +1173,12 @@
    '((file (styles . (partial-completion)))))
 
   :config
+  (add-hook 'after-make-frame-functions 'my-setup-new-frame)
+
+  ;; Also apply to the initial frame if starting GUI Emacs directly
+  (when (display-graphic-p)
+    (my-setup-new-frame (selected-frame)))
+
   ;; Enable helpful completion features
   (minibuffer-depth-indicate-mode 1) )
 
