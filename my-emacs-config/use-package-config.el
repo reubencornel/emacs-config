@@ -735,6 +735,9 @@
   :config
   (spaceline-compile))
 
+(use-package borland-blue-theme
+  :straight t)
+
 (use-package spaceline-all-the-icons
   :straight t
   :after spaceline
@@ -751,7 +754,41 @@
 
 (use-package doom-modeline
   :straight t
-  :hook (after-init . doom-modeline-mode))
+  :hook (after-init . doom-modeline-mode)  ; Load after Emacs starts
+  :config
+  ;; Height of the mode-line
+  (setq doom-modeline-height 25)
+  
+  ;; Width of the bar on the left
+  (setq doom-modeline-bar-width 4)
+  
+  ;; Show file icon
+  (setq doom-modeline-icon t)
+  
+  ;; Show project name
+  (setq doom-modeline-project-detection 'auto)
+  
+  ;; Show buffer encoding (UTF-8, etc.)
+  (setq doom-modeline-buffer-encoding nil) ; Set to t if you want to see it
+  
+  ;; Show indentation info
+  (setq doom-modeline-indent-info nil)
+  
+  ;; Show checker (flycheck/flymake) info
+  (setq doom-modeline-checker-simple-format t)
+  
+  ;; Show line/column numbers
+  (setq doom-modeline-lsp t)
+  
+  ;; Show workspace/persp name
+  (setq doom-modeline-persp-name t)
+  
+  ;; Show version control info
+  (setq doom-modeline-vcs-max-length 12)
+  
+  ;; Show time (optional)
+  (setq doom-modeline-time t)
+  (setq doom-modeline-time-icon nil))
 
 (use-package color-theme-modern
   :straight t)
