@@ -80,7 +80,6 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (blink-cursor-mode t)
-(setq-default cursor-type 'box)
 
 (message (emacs-init-time))
 

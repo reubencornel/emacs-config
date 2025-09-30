@@ -1070,8 +1070,8 @@
     :global t
     (if prot/cursor-type-mode
         (progn
-          (setq-local blink-cursor-interval 0.75
-                      cursor-type '(bar . 5)
+          (setq-local blink-cursor-interval 0.7
+                      cursor-type '(bar . 3)
                       cursor-in-non-selected-windows 'hollow)
           (blink-cursor-mode 1))
       (dolist (local '(blink-cursor-interval
