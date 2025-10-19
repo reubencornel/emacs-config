@@ -1212,6 +1212,9 @@
   :config
   (add-hook 'after-make-frame-functions 'my-setup-new-frame)
   (windmove-default-keybindings)
+  (require 'misc)
+  (global-set-key (kbd "M-f") 'forward-to-word)
+  
   ;; Also apply to the initial frame if starting GUI Emacs directly
   (when (display-graphic-p)
     (my-setup-new-frame (selected-frame)))
