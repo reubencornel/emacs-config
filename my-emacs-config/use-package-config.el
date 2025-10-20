@@ -384,6 +384,15 @@
                   org-level-5))
     (set-face-attribute face nil :weight 'semi-bold :height 1.0)))
 
+(defun get-plain-date-string()
+  (format-time-string "%Y-%m-%d %a %H:%M:%S %z"))
+
+(defun get-inactive-date-string()
+  (concat "[" (get-plain-date-string) "]"))
+
+(defun get-active-date-string()
+  (concat "<" (get-plain-date-string) ">"))
+
 (use-package org
   :defer t
   :straight org-contrib
@@ -645,16 +654,16 @@
 
   (setq org-capture-templates
   	'(("t" "Todo" entry (file org-default-inbox-file)
-  	   "* TODO %^{entry}\n:PROPERTIES:\n:ENTRYDATE:   %U\n:END:\n %?\n")
+  	   "* TODO %^{entry}\n:PROPERTIES:\n:ENTRYDATE:   %(get-inactive-date-string)\n:END:\n %?\n")
 	  ("n" "Note" entry (file org-default-inbox-file)
-	   "* %^{title}\n:PROPERTIES:\n:ENTRYDATE:   %U\n:ID: %(uuid-create)\n:END:\n\n%?\n")
+	   "* %^{title}\n:PROPERTIES:\n:ENTRYDATE:   %(get-inactive-date-string)\n:ID: %(uuid-create)\n:END:\n\n%?\n")
   	  ("r" "Code Review" entry (file org-default-inbox-file) "* TOREVIEW Code Review %^{author} [[%^{link}][%^{description}]] [/]\n:PROPERTIES:\n:ENTRYDATE:   %U\n:ID: %(uuid-create)\n:END:\n\n** TODO Questions before the code review [/]\n    - [ ] Describe the problem the author is trying to solve\n    - [ ] Do I think its required\n    - [ ] Backward compatibility: Will this code execute against existing data?\n    - [ ] List the areas of the code the author has changed [0/0]\n** TODO Questions after a code review [/]\n    - [ ] Describe the code change in detail.\n    - [ ] Does the code satisfy the original intent?\n    - [ ] If the code will execute against older data, how does the author handle backward compatibility?\n    - [ ] Does the author have tests to show his method of handling backward compatibility works?\n    - [ ] Does the author have tests that cover all the areas of the code change?\n    - [ ] What are the error scenarios for the code in question?\n    - [ ] Does the author handle these scenarios well\n    - [ ] Are there variables names you don't understand?\n** Questions unrelated to the code review\n" :immediate-finish t)
 	  ("l" "Link" entry (file org-default-inbox-file)
-	   "* %a\n:PROPERTIES:\n:ENTRYDATE:   %U\n:END:\n %i" :immediate-finish t)
+	   "* %a\n:PROPERTIES:\n:ENTRYDATE:   %(get-inactive-date-string)\n:END:\n %i" :immediate-finish t)
   	  ("q" "Question" entry (file org-default-inbox-file)
   	   "* QUESTION %^{question} \n%?\n\nEntered on %U\n %i\n")
-  	  ("j" "Journal" entry (file org-default-inbox-file)
-  	   "* %^{title} %^G \n:PROPERTIES:\n:ENTRYDATE:   %U\n:END:\n\n%?\n\nEntered on %U\n %i\n")
+  	  ("j" "Journal" entry (file org-default-notes-file)
+  	   "* %^{title}\n :PROPERTIES:\n :ENTRYDATE:  %(get-active-date-string) \n :DEVICE: %(system-name)\n :END:\n\n" :immediate-finish t)
 	  ("i" "Time checkin" entry (file org-default-log-file)
 	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| [ check in ] |%^{title}"
 	   :immediate-finish t)
