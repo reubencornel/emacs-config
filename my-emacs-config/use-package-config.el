@@ -27,18 +27,18 @@
   (vertico-resize t)
   (vertico-count 15))
 
-(defun swiper-isearch-backward-thing-at-point ()
-  "Start swiper-isearch-backward with thing at point."
-  (interactive)
-  (let ((thing (thing-at-point 'word)))
-    (if thing
-        (swiper-isearch-backward thing)
-      (swiper-isearch-backward))))
+;; (defun swiper-isearch-backward-thing-at-point ()
+;;   "Start swiper-isearch-backward with thing at point."
+;;   (interactive)
+;;   (let ((thing (thing-at-point 'word)))
+;;     (if thing
+;;         (swiper-isearch-backward thing)
+;;       (swiper-isearch-backward))))
 
-(use-package swiper
-  :straight t
-  :bind (("C-s" . swiper-isearch-thing-at-point)
-         ("C-r" . swiper-isearch-backward-thing-at-point)))
+;; (use-package swiper
+;;   :straight t
+;;   :bind (("C-s" . swiper-isearch-thing-at-point)
+;;          ("C-r" . swiper-isearch-backward-thing-at-point)))
 
 (use-package ace-window
   :straight t
