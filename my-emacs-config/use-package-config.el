@@ -27,18 +27,18 @@
   (vertico-resize t)
   (vertico-count 15))
 
-;; (defun swiper-isearch-backward-thing-at-point ()
-;;   "Start swiper-isearch-backward with thing at point."
-;;   (interactive)
-;;   (let ((thing (thing-at-point 'word)))
-;;     (if thing
-;;         (swiper-isearch-backward thing)
-;;       (swiper-isearch-backward))))
+(defun swiper-isearch-backward-thing-at-point ()
+  "Start swiper-isearch-backward with thing at point."
+  (interactive)
+  (let ((thing (thing-at-point 'word)))
+    (if thing
+        (swiper-isearch-backward thing)
+      (swiper-isearch-backward))))
 
-;; (use-package swiper
-;;   :straight t
-;;   :bind (("C-s" . swiper-isearch-thing-at-point)
-;;          ("C-r" . swiper-isearch-backward-thing-at-point)))
+(use-package swiper
+  :straight t
+  :bind (("C-c s s" . swiper-isearch-thing-at-point)
+         ("C-c s r" . swiper-isearch-backward-thing-at-point)))
 
 (use-package ace-window
   :straight t
@@ -626,7 +626,8 @@
          (org-mode . reuben/org-mode-hook)
          (org-checkbox-statistics . org-checkbox-todo)
          (org-after-todo-statistics . org-summary-todo)
-         (org-blocker . org-block-wip-limit))
+         (org-blocker . org-block-wip-limit)
+	 (org-mode . auto-revert-mode))
 
   :config
   (add-to-list 'org-modules 'org-id )
