@@ -1031,7 +1031,6 @@
 	 (text-mode . prot/cursor-type-mode)
 	 (pascal-mode . (lambda ()
                           ;; Indentation settings
-                          (setq indent-tabs-mode t)
                           (setq tab-width 8)
                           (setq pascal-indent-level 8)
                           (setq pascal-case-indent 8)

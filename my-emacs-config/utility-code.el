@@ -597,3 +597,25 @@ It requires the standard emacs package manager to be working."
       (insert num)
       (insert "> "))))
 
+(defun reuben/call-ptop()
+  (interactive )
+
+  ;; when the buffer is a pascal buffer
+  (when (and (eq major-mode 'pascal-mode)
+	     (buffer-file-name))
+    ;; if buffer is not saved save it
+    (let ((temp-file (make-temp-file "ptop"))
+	  (current-point (point)))
+      (write-region (point-min) (point-max ) temp-file nil 'silent)
+      (if (zerop (call-process "ptop" nil nil nil "-i" "4" temp-file temp-file))
+	  (progn
+	    (erase-buffer)
+	    (goto-char (point-min))
+	    (insert-file-contents temp-file)
+	    (message "Formatted with PTop"))
+	(message "PTop Failed"))
+      (goto-char current-point))))
+
+(defun reuben/pascal-mode-save-hook ()
+  (add-hook 'before-save-hook 'reuben/call-ptop nil t))
+
