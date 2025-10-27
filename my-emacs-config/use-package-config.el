@@ -990,7 +990,7 @@
               ("M-[" . sp-backward-unwrap-sexp)
               ("M-]" . sp-unwrap-sexp))
   :hook
-  (after-init . (lambda() (smartparens-global-mode t))))
+  (prog-mode . smartparens-mode))
 
 
 (use-package which-key
