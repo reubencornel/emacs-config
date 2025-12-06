@@ -18,10 +18,14 @@
   (completion-category-overrides '((file (styles basic partial-completion))))
   (orderless-matching-styles '(orderless-literal orderless-regexp orderless-flex)))
 
+(defun init-vertico()
+  (vertico-mode)
+  (vertico-reverse-mode))
+
 (use-package vertico
   :straight t
   :defer t
-  :hook (after-init . vertico-mode)
+  :hook (after-init . init-vertico)
   :custom
   (vertico-cycle t)
   (vertico-resize t)
@@ -768,34 +772,34 @@
   :config
   ;; Height of the mode-line
   (setq doom-modeline-height 25)
-  
+
   ;; Width of the bar on the left
   (setq doom-modeline-bar-width 4)
-  
+
   ;; Show file icon
   (setq doom-modeline-icon t)
-  
+
   ;; Show project name
   (setq doom-modeline-project-detection 'auto)
-  
+
   ;; Show buffer encoding (UTF-8, etc.)
   (setq doom-modeline-buffer-encoding nil) ; Set to t if you want to see it
-  
+
   ;; Show indentation info
   (setq doom-modeline-indent-info nil)
-  
+
   ;; Show checker (flycheck/flymake) info
   (setq doom-modeline-checker-simple-format t)
-  
+
   ;; Show line/column numbers
   (setq doom-modeline-lsp t)
-  
+
   ;; Show workspace/persp name
   (setq doom-modeline-persp-name t)
-  
+
   ;; Show version control info
   (setq doom-modeline-vcs-max-length 12)
-  
+
   ;; Show time (optional)
   (setq doom-modeline-time t)
   (setq doom-modeline-time-icon nil))
@@ -1005,7 +1009,6 @@
   (setq-default scroll-preserve-screen-position t)
   (setq-default scroll-conservatively 1) ; affects `scroll-step'
   (setq-default scroll-margin 0)
-
   (define-minor-mode prot/scroll-centre-cursor-mode
     "Toggle centred cursor scrolling behaviour."
     :init-value nil
@@ -1042,20 +1045,20 @@
   ;; Set up FreePascal error recognition for compilation mode
   (with-eval-after-load 'compile
     ;; Clean up any existing freepascal entries
-    (setq compilation-error-regexp-alist 
+    (setq compilation-error-regexp-alist
           (remove 'freepascal compilation-error-regexp-alist))
     (setq compilation-error-regexp-alist-alist
           (assq-delete-all 'freepascal compilation-error-regexp-alist-alist))
-    
+
     ;; Add FreePascal error format
     (add-to-list 'compilation-error-regexp-alist-alist
                  '(freepascal
                    "^\\([^( \t\n]+\\)(\\([0-9]+\\),\\([0-9]+\\))[ \t]*\\([^:\n]*\\):"
                    1 2 3))
-    
+
     ;; Activate the freepascal error recognition
     (add-to-list 'compilation-error-regexp-alist 'freepascal))
-  
+
   (setq mode-line-percent-position '(-3 "%p"))
   (setq mode-line-defining-kbd-macro
         (propertize " Macro" 'face 'mode-line-emphasis))
@@ -1124,7 +1127,7 @@
                        cursor-type
                        cursor-in-non-selected-windows))
         (kill-local-variable `,local))
-      (blink-cursor-mode -1)))  
+      (blink-cursor-mode -1)))
 
   ;; (defun setup-theme(frame)
   ;;   (with-selected-frame frame
@@ -1191,14 +1194,15 @@
       ;; Choose one of these:
       ;; Full maximize:
       (toggle-frame-maximized)
-      
+
       ;; Or horizontal maximize:
       ;; (set-frame-parameter frame 'fullscreen 'maximized-horizontally)
-      
+
       ;; Or specific size:
       ;; (set-frame-width frame 120)
       ;; (set-frame-height frame 50)
       )))
+
 
 (use-package emacs
   :custom
@@ -1220,16 +1224,20 @@
 
   :config
   (add-hook 'after-make-frame-functions 'my-setup-new-frame)
-  (windmove-default-keybindings)
+  (add-hook 'prog-mode-hook 'windmove-default-keybindings)
   (require 'misc)
   (global-set-key (kbd "M-f") 'forward-to-word)
-  
+
   ;; Also apply to the initial frame if starting GUI Emacs directly
   (when (display-graphic-p)
     (my-setup-new-frame (selected-frame)))
 
   ;; Enable helpful completion features
-  (minibuffer-depth-indicate-mode 1) )
+  (minibuffer-depth-indicate-mode 1)
+
+  (setq compilation-scroll-output t)
+  (setq compilation-auto-jump-to-first-error t)
+  (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter))
 
 (use-package completion-preview
   :hook (after-init . global-completion-preview-mode))
@@ -1245,7 +1253,7 @@
               ;; Essential navigation
               ("M-." . eglot-find-implementation)
               ("M-," . pop-tag-mark)
-              
+
               ;; Language server actions - flat C-c s prefix
               ("C-c s a" . eglot-code-actions)
               ("C-c s r" . eglot-rename)
@@ -1258,7 +1266,7 @@
               ("C-c s D" . flymake-show-project-diagnostics)
               ("C-c s R" . eglot-reconnect)
               ("C-c s S" . eglot-shutdown)
-              
+
               ;; Keep error navigation simple
               ("M-n" . flymake-goto-next-error)
               ("M-p" . flymake-goto-prev-error))
@@ -1363,7 +1371,8 @@
 (use-package bury-successful-compilation
   :straight t
   :hook
-  (c-mode . bury-successful-compilation))
+  (c-mode . bury-successful-compilation)
+  (pascal-mode . bury-successful-compilation))
 
 ;; --------------- Rust Config ---------------
 (use-package rustic
@@ -1480,7 +1489,7 @@
 ;;     (add-hook 'haskell-mode-hook 'ligature-mode))
 
 ;;; -----  hyperbole
-  
+
   (defun looking-at-work-item()
     (or
      (looking-at "W-[0-9]+")
@@ -1494,17 +1503,17 @@
      (save-excursion
        (backward-word-strictly 1)
        (looking-at "a07.*"))))
-       
+
   (defun get-work-item-text()
     (let* ((match-data (match-data))
            (start (first match-data))
            (end (second match-data)))
       (list (buffer-substring-no-properties start end) start end)))
-      
+
   (defun in-org-property()
     (and (hsys-org-mode-p)
 	 (org-at-property-p)))
-	 
+
   (defun org-properties-search()
     (interactive)
     (if (in-org-property)
@@ -1521,7 +1530,7 @@
          ("C-<return>" . action-key))
   :config
   (global-unset-key (kbd "M-<return>"))
-	  
+
   (defib gus()
     "Gus links"
     (if (looking-at-work-item)
@@ -1529,7 +1538,7 @@
           (ibut:label-set text start end)
           (hact 'www-url (concat "https://gus.my.salesforce.com/apex/ADM_WorkLocator?bugorworknumber=" text)))
       nil))
-      
+
 (defun org-property-button-info ()
   "Get button info for org property at point."
   (when (in-org-property)
