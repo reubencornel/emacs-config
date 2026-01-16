@@ -10,9 +10,10 @@
 
 (defun capture-log()
   (interactive)
-  (org-capture nil "g"))
-(global-unset-key [(f7)])
-(global-set-key [(f7)] 'capture-log)
+  (org-capture nil "j"))
+
+(global-unset-key [(f2)])
+(global-set-key [(f2)] 'capture-log)
 
 (global-unset-key [(f10)])
 (global-set-key [(f10)] 'kmacro-start-macro)

@@ -668,7 +668,7 @@
   	  ("q" "Question" entry (file org-default-inbox-file)
   	   "* QUESTION %^{question} \n%?\n\nEntered on %U\n %i\n")
   	  ("j" "Journal" entry (file org-default-notes-file)
-  	   "* %^{title}\n :PROPERTIES:\n :ENTRYDATE:  %(get-active-date-string) \n :DEVICE: %(system-name)\n :END:\n\n" :immediate-finish t)
+  	   "* %^{title}\n :PROPERTIES:\n :ENTRYDATE:  %(get-active-date-string) \n :DEVICE: %(system-name)\n :ID: %(uuid-create)\n :END:\n\n" :immediate-finish t)
 	  ("i" "Time checkin" entry (file org-default-log-file)
 	   "* %T [%(car (split-string (system-name)  \"[\.]\"))]| [ check in ] |%^{title}"
 	   :immediate-finish t)
@@ -1224,7 +1224,7 @@
 
   :config
   (add-hook 'after-make-frame-functions 'my-setup-new-frame)
-  (add-hook 'prog-mode-hook 'windmove-default-keybindings)
+  ;(add-hook 'prog-mode-hook 'windmove-default-keybindings)
   (require 'misc)
   (global-set-key (kbd "M-f") 'forward-to-word)
 

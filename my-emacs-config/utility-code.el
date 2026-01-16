@@ -419,7 +419,8 @@ It requires the standard emacs package manager to be working."
 (defun reuben/set-ids()
   (interactive)
   (if (or (equalp (buffer-name) "inbox.org" )
-          (equalp (buffer-name) "slipbox_raw.org"))
+          (equalp (buffer-name) "slipbox_raw.org")
+	  (equalp (buffer-name) "notes.org"))
       (save-excursion
 	(goto-char (point-max))
 	;; Go up the tree
