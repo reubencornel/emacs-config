@@ -12,8 +12,17 @@
   (interactive)
   (org-capture nil "j"))
 
+(global-unset-key [(f1)])
+(global-set-key [(f1)] '(lambda ()
+			  (interactive)
+			  (org-agenda nil "a")))
 (global-unset-key [(f2)])
-(global-set-key [(f2)] 'capture-log)
+(global-set-key [(f2)] '(lambda ()
+			  (interactive)
+			  (org-agenda nil "i")))
+
+(global-unset-key [(f3)])
+(global-set-key [(f3)] 'capture-log)
 
 (global-unset-key [(f10)])
 (global-set-key [(f10)] 'kmacro-start-macro)
