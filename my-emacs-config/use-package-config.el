@@ -1152,6 +1152,8 @@
   (diminish 'eldoc-mode ""))
 
 (use-package gptel
+  :bind (:map gptel-mode-map
+         ("C-<return>" . gptel-send))  
   :straight t
   :config
   (global-set-key (kbd "C-c g s") 'gptel-send)
