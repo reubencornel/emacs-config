@@ -58,19 +58,6 @@
 (add-hook 'after-save-hook
  	  'reuben/update-projects-hook)
 
-;; Set font for all frames (including after lock/unlock)
-(set-face-attribute 'default nil :family "Jetbrains Mono" :height 150)
-(set-face-attribute 'variable-pitch nil :family "DejaVu Sans Mono" :height 150)
-(set-face-attribute 'fixed-pitch nil :family "Jetbrains Mono" :height 150)
-
-;; Ensure fonts persist across frame creation (e.g., after lock/unlock)
-(add-to-list 'default-frame-alist '(font . "Jetbrains Mono-15"))
-(add-hook 'after-make-frame-functions
-          (lambda (frame)
-            (with-selected-frame frame
-              (set-face-attribute 'default nil :family "Jetbrains Mono" :height 150)
-              (set-face-attribute 'variable-pitch nil :family "DejaVu Sans Mono" :height 150)
-              (set-face-attribute 'fixed-pitch nil :family "Jetbrains Mono" :height 150))))
 
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
