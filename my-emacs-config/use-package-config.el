@@ -1001,9 +1001,6 @@
   :straight t
   :hook (after-init . which-key-mode))
 
-(use-package frame
-)
-
 (use-package emacs
   :config
   (setq-default scroll-preserve-screen-position t)
@@ -1033,10 +1030,9 @@
   :hook ((prog-mode . prot/cursor-type-mode)
 	 (text-mode . prot/cursor-type-mode)
 	 (pascal-mode . (lambda ()
+			  (set-fill-column 80)
+			  (display-fill-column-indicator-mode)
                           ;; Indentation settings
-                          (setq tab-width 8)
-                          (setq pascal-indent-level 8)
-                          (setq pascal-case-indent 8)
                           (setq pascal-auto-newline nil)
                           ;; Set compile command
                           (set (make-local-variable 'compile-command)
@@ -1058,6 +1054,9 @@
 
     ;; Activate the freepascal error recognition
     (add-to-list 'compilation-error-regexp-alist 'freepascal))
+  (add-hook 'pascal-mode-hook
+	    (lambda ()
+	      (add-hook 'after-save-hook #'format-pascal-file nil t)))
 
   (setq mode-line-percent-position '(-3 "%p"))
   (setq mode-line-defining-kbd-macro
@@ -1129,6 +1128,7 @@
         (kill-local-variable `,local))
       (blink-cursor-mode -1)))
 
+  (show-paren-mode)
   ;; (defun setup-theme(frame)
   ;;   (with-selected-frame frame
   ;;     (load-theme 'spacemacs-dark 'no-confirm))
@@ -1153,7 +1153,7 @@
 
 (use-package gptel
   :bind (:map gptel-mode-map
-         ("C-<return>" . gptel-send))  
+         ("C-<return>" . gptel-send))
   :straight t
   :config
   (global-set-key (kbd "C-c g s") 'gptel-send)

@@ -77,7 +77,6 @@
 			    (setq display-line-numbers 'relative)))
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
-
 (defun disable-line-numbers()
   (display-line-numbers-mode -1))
 (mapcar (lambda(mode)
@@ -94,7 +93,7 @@
 
 (defun center-buffer-text()
   "This function centers the text in a buffer. Use this for writing."
-  
+
   (interactive)
   (visual-fill-column-mode)
   (auto-fill-mode)
@@ -123,8 +122,30 @@
        0 nil 'message
        (concat "Hidden Mode Line Mode enabled.  "
                "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
+;;; -------------------------
 
-(show-paren-mode)
+(defun format-pascal-file()
+  "This function is a hook to format pascal programs."
+  (interactive)
+  (unless (executable-find "fpc")
+    (user-error "Could not find fpc"))
+  (unless (executable-find "ptop")
+    (user-error "Could not find ptop"))
+
+  (let* ((current-file-name (buffer-file-name (current-buffer)))
+	 (syntax-check-result (call-process "fpc" nil nil nil "-FE/tmp/""-s" current-file-name)))
+    (if (zerop syntax-check-result)
+	(let* ((temp-file (make-temp-file "current-pascal-file"))
+	       (format-result (call-process "ptop" nil nil nil current-file-name temp-file)))
+	  (if (zerop format-result)
+	      (progn
+  		(copy-file temp-file current-file-name t)
+		(revert-buffer :ignore-auto :noconfirm))
+	    (print (format "Could not format file %d" format-result)))
+	  (delete-file temp-file))
+      (print (format "Could not Syntax check file %d" syntax-check-result)))))
+
+;;;--------------------
 ;; (setq-default blink-cursor-blinks -1)
 ;; (setq-default blink-cursor-interval .6)
 ;; (setq-default blink-cursor-delay .6)
