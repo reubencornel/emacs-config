@@ -1055,8 +1055,8 @@
     ;; Activate the freepascal error recognition
     (add-to-list 'compilation-error-regexp-alist 'freepascal))
   (add-hook 'pascal-mode-hook
-	    (lambda ()
-	      (add-hook 'after-save-hook #'format-pascal-file nil t)))
+	    (lambda ()	
+      (add-hook 'after-save-hook #'reuben/call-jcf nil t)))
 
   (setq mode-line-percent-position '(-3 "%p"))
   (setq mode-line-defining-kbd-macro
@@ -1226,7 +1226,12 @@
 
   :config
   (add-hook 'after-make-frame-functions 'my-setup-new-frame)
-  ;(add-hook 'prog-mode-hook 'windmove-default-keybindings)
+;  (add-hook 'prog-mode-hook 'windmove-default-keybindings)
+  (windmove-default-keybindings)
+  (add-hook 'org-shiftup-final-hook 'windmove-up)
+  (add-hook 'org-shiftdown-final-hook 'windmove-down)
+  (add-hook 'org-shiftleft-final-hook 'windmove-left)
+  (add-hook 'org-shiftright-final-hook 'windmove-right)
   (require 'misc)
   (global-set-key (kbd "M-f") 'forward-to-word)
 
