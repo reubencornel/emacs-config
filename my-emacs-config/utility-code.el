@@ -625,6 +625,3 @@ It requires the standard emacs package manager to be working."
 ;; 	(message "PTop Failed"))
 ;;       (goto-char current-point)))
 
-  (defun reuben/pascal-mode-save-hook ()
-    (add-hook 'after-save-hook 'reuben/call-jcf nil t))
-
