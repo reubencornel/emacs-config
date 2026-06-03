@@ -2,16 +2,6 @@
 
 (straight-use-package 'use-package)
 
-(use-package completion-preview
-  :custom
-  (completion-auto-select t) ;; Show completion on first call
-  (completion-auto-help 'visible) ;; Display *Completions* upon first request
-  (completions-format 'one-column) ;; Use only one column
-  (completions-sort 'historical) ;; Order based on minibuffer history
-  (completions-max-height 20) ;; Limit completions to 20
-  (completion-ignore-case t)
-  :hook (after-init . global-completion-preview-mode))
-
 (use-package orderless
   :straight t
   :custom
@@ -703,8 +693,10 @@
   :straight t
   :init
   (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
   :config
-  (define-key evil-insert-state-map (kbd "C-c C-c") 'evil-normal-state))
+  (define-key evil-insert-state-map (kbd "C-c C-c") 'evil-normal-state)
+  (evil-set-initial-state 'eshell-mode 'emacs))
 
 (use-package evil-collection
   :after evil
@@ -1241,23 +1233,6 @@
 
 
 (use-package emacs
-  :custom
-  ;; Core completion behavior
-  (completion-styles '(orderless basic))           ; Use basic + flexible matching
-  ;; (completion-ignore-case t)                  ; Case-insensitive completion
-  ;; (completion-auto-select t)                  ; Auto-select first completion
-  ;; (completion-auto-help 'visible)             ; Show *Completions* buffer when needed
-
-  ;; ;; Completions buffer formatting
-  ;; (completions-format 'one-column)            ; Single column layout
-  ;; (completions-sort 'historical)              ; Sort by minibuffer history
-  (completions-max-height 20)                 ; Limit to 20 completions
-
-  ;; Performance settings
-  (completion-cycle-threshold 3)              ; Cycle if <= 3 completions
-  (completion-category-overrides              ; Per-category completion styles
-   '((file (styles . (partial-completion)))))
-
   :config
   (add-hook 'after-make-frame-functions 'my-setup-new-frame)
 ;  (add-hook 'prog-mode-hook 'windmove-default-keybindings)
@@ -1280,8 +1255,6 @@
   (setq compilation-auto-jump-to-first-error t)
   (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter))
 
-(use-package completion-preview
-  :hook (after-init . global-completion-preview-mode))
 
 ;; ------- Programming ---------------
 (use-package eglot
@@ -1610,6 +1583,9 @@
   :straight t
   :custom
   (doc-view-resolution 300))
+
+(use-package color-theme-sanityinc-tomorrow
+  :straight t)
 
 (provide 'use-package-config)
 ;;; use-package-config.el ends here
