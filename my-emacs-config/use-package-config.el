@@ -695,8 +695,9 @@
   (setq evil-want-keybinding nil)
   (setq evil-want-C-u-scroll t)
   :config
-  (define-key evil-insert-state-map (kbd "C-c C-c") 'evil-normal-state)
-  (evil-set-initial-state 'eshell-mode 'emacs))
+  (evil-set-initial-state 'dired-mode 'emacs)
+  (evil-set-initial-state 'eshell-mode 'emacs)
+  (define-key evil-insert-state-map (kbd "C-c C-c") 'evil-normal-state))
 
 (use-package evil-collection
   :after evil
