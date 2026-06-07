@@ -1237,7 +1237,7 @@
   :config
   (add-hook 'after-make-frame-functions 'my-setup-new-frame)
 ;  (add-hook 'prog-mode-hook 'windmove-default-keybindings)
-  (windmove-default-keybindings)
+  (windmove-default-keybindings 'super)
   (add-hook 'org-shiftup-final-hook 'windmove-up)
   (add-hook 'org-shiftdown-final-hook 'windmove-down)
   (add-hook 'org-shiftleft-final-hook 'windmove-left)
@@ -1539,8 +1539,6 @@
 (use-package hyperbole
   :straight t
   :defer t
-  :hook ((org-mode . (lambda () (require 'hyperbole)))
-         (text-mode . (lambda () (require 'hyperbole))))
   :bind (("<f6>" . gbut:act)
          ("C-<return>" . action-key))
   :config
