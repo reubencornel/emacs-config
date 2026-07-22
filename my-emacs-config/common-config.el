@@ -47,9 +47,9 @@
 (setq eshell-aliases-file "~/Dropbox/emacs.alias")
 
 
-(add-hook 'text-mode-hook
-	  (lambda ()
-	    (variable-pitch-mode 1)))
+;; (add-hook 'text-mode-hook
+;; 	  (lambda ()
+;; 	    (variable-pitch-mode 1)))
 
 (add-hook 'after-save-hook
 	  'reuben/set-ids)

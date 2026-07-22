@@ -827,8 +827,8 @@
   (ef-themes-take-over-modus-themes-mode 1)
   :config
   ;; All customisations here.
-  (setq modus-themes-mixed-fonts t)
-  (setq modus-themes-italic-constructs t)
+;  (setq modus-themes-mixed-fonts t)
+ ; (setq modus-themes-italic-constructs t)
 
   ;; Finally, load your theme of choice (or a random one with
   ;; `modus-themes-load-random', `modus-themes-load-random-dark',
@@ -840,7 +840,7 @@
   :custom
   (modus-themes-italic-constructs t)
   (modus-themes-bold-constructs nil)
-  (modus-themes-variable-pitch-ui nil)
+;  (modus-themes-variable-pitch-ui nil)
   (modus-themes-custom-auto-reload t)
   (modus-themes-disable-other-themes t)
   (modus-themes-prompts '(italic bold))

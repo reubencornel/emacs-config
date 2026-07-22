@@ -216,7 +216,7 @@ being the working directory of the buffer"
   (interactive)
   (load-config 'color-theme)
   (color-theme-dark-laptop)
-  (load-config 'emacs-graphical-font)
+;  (load-config 'emacs-graphical-font)
   (load-config 'thin-cursor-config)
   (forward-char (point-max))
   (auto-fill-mode)
