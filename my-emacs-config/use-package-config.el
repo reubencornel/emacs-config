@@ -369,14 +369,14 @@
 
     t)) ; do not block
 
-(defun reuben/org-mode-hook ()
-  "Stop the org-level headers from increasing in height relative to the other text."
-  (dolist (face '(org-level-1
-                  org-level-2
-                  org-level-3
-                  org-level-4
-                  org-level-5))
-    (set-face-attribute face nil :weight 'semi-bold :height 1.0)))
+;; (defun reuben/org-mode-hook ()
+;;   "Stop the org-level headers from increasing in height relative to the other text."
+;;   (dolist (face '(org-level-1
+;;                   org-level-2
+;;                   org-level-3
+;;                   org-level-4
+;;                   org-level-5))
+;;     (set-face-attribute face nil :weight 'semi-bold :height 1.0)))
 
 (defun get-plain-date-string()
   (format-time-string "%Y-%m-%d %a %H:%M:%S %z"))
@@ -617,7 +617,7 @@
   (org-babel-python-command "python3")
 
   :hook ((org-mode . visual-line-mode)
-         (org-mode . reuben/org-mode-hook)
+;         (org-mode . reuben/org-mode-hook)
          (org-checkbox-statistics . org-checkbox-todo)
          (org-after-todo-statistics . org-summary-todo)
          (org-blocker . org-block-wip-limit)
@@ -1580,6 +1580,7 @@
 
 (use-package pdf-tools
   :straight t
+  :mode ("\\.pdf\\'" . pdf-view-mode)
   :custom
   (doc-view-resolution 300))
 
