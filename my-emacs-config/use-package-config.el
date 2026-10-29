@@ -1237,11 +1237,7 @@
   :config
   (add-hook 'after-make-frame-functions 'my-setup-new-frame)
 ;  (add-hook 'prog-mode-hook 'windmove-default-keybindings)
-  (windmove-default-keybindings 'super)
-  (add-hook 'org-shiftup-final-hook 'windmove-up)
-  (add-hook 'org-shiftdown-final-hook 'windmove-down)
-  (add-hook 'org-shiftleft-final-hook 'windmove-left)
-  (add-hook 'org-shiftright-final-hook 'windmove-right)
+  (windmove-default-keybindings 'super)   ; Super+arrows
   (require 'misc)
   (global-set-key (kbd "M-f") 'forward-to-word)
 

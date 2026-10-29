@@ -606,6 +606,20 @@ It requires the standard emacs package manager to be working."
     (call-process "pascal-format" nil nil nil (buffer-file-name))
     (revert-buffer t t t)))
 
+(defun reuben/capture-current-font ()
+  "Capture the current frame's font family and size, copy it, and display it."
+  (interactive)
+  (let* ((font-name (frame-parameter nil 'font))
+         (font-info (font-info font-name))
+         (family (aref font-info 0))
+         (size (face-attribute 'default :height))
+         ;; Convert face height (1/10 pt) to standard points
+         (pt-size (/ size 10.0))
+         (config-string (format "(set-face-attribute 'default nil :font \"%s\" :height %d)" family size)))
+    (kill-new config-string)
+    (message "Copied to clipboard: %s" config-string)))
+
+
 ;; (defun reuben/call-ptop()
 ;;   (interactive )
 
